@@ -444,5 +444,5 @@ $scope.redirectPageURL = function(pageName) {
         link.href = baseUrl + "#/" + pageName;
         link.click();
     }
-}; 
+};
 });

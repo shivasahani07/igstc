@@ -9,7 +9,7 @@ public String candidateId {get;set;}
 public Proposal_Controller(){
 ApplicantPortalSiteURL = Constants.CANDIDATE_SITE ;
 thematicAreaList = JSON.serialize(fetchAllThematicArea());
-duration = JSON.serialize(Utility.getPicklistValues('Application_Proposal__c' , 'Duration_In_Months_Max_36__c'));
+
 candidateId = Apexpages.currentPage().getParameters().get('id'); 
 system.debug('candidateId---'+candidateId);
 }*/
@@ -77,58 +77,99 @@ return proposalRecord;
     
     
     // insert association record, tag proposal to association, account
-    public static String insertApplication(Application_Proposal__c applicantDetails, List<string> setThemeList, integer day, integer month, integer year,String conId, String recordType ){
-        try{
-            //system.debug('day----'+day+'---month----'+month+'year----'+year);
-            if(day==0 && month==0 && year==0){
-                
-            }else{
-                applicantDetails.Tentative_Start_Date__c = Date.newInstance(year, month, day);
-            }
-            //Added by Aman to stop updating the Stage back to 1st from 2nd stage
-            // applicantDetails.Stage__c = '1st Stage';
-            applicantDetails.Stage__c = String.isNotBlank(applicantDetails.Stage__c) ? applicantDetails.Stage__c :'1st Stage';
-            applicantDetails.RecordTypeId = Utility.getProposalRecordType('Two Plus Two');
-            applicantDetails.Proposal_Stages__c = 'Draft';
-            System.debug('applicantDetails.Id ===> ' + applicantDetails.Id);
-            
-            upsert applicantDetails;
-            system.debug('setThemeList----'+setThemeList);
-            System.debug('applicantDetails.Id ===> ' + applicantDetails.Id);
-            System.debug('conId ===> ' + conId);
-            
-            List<Applicant_Proposal_Association__c> existingAppPropAssoc = [SELECT Id, Contact__c, Proposals__c FROM Applicant_Proposal_Association__c WHERE Contact__c =:conId AND Proposals__c =: applicantDetails.Id LIMIT 1];
-            if(existingAppPropAssoc.isEmpty()){
-                Applicant_Proposal_Association__c association = new Applicant_Proposal_Association__c(Contact__c = conId,Proposals__c = applicantDetails.Id);
-                insert association;
-            }
-            
-            List<Application_Thematic_Area__c> deleteInstance=new List<Application_Thematic_Area__c>();
-            deleteInstance=[select id from Application_Thematic_Area__c where Application__c=:applicantDetails.Id];
-            delete deleteInstance;
-            List<Application_Thematic_Area__c> appThemeticAreaList = New List<Application_Thematic_Area__c>();
-            for(string theme:setThemeList){
-                appThemeticAreaList.add(new Application_Thematic_Area__c(Application__c=applicantDetails.Id,Thematic_Area__c=theme));
-            }
-            system.debug('appThemeticAreaList----'+appThemeticAreaList);
-            upsert appThemeticAreaList;
-            system.debug('appThemeticAreaList-----------'+appThemeticAreaList);
-            //Contact con = new Contact(Id=conId,Proposals__c = applicantDetails.Id);
-            Contact con = new Contact(Id=conId);
-            update con;
-            contact conRec = [select id,AccountId from Contact where id=:con.Id];
-            if(!string.isBlank(conRec.AccountId)){
-                Account acc = New Account();
-                acc.Id = conRec.AccountId;
-                //  acc.Proposals__c = applicantDetails.Id;
-                update acc;
-            }
-            return applicantDetails.Id;
-        }catch(Exception e){
-            system.debug('exception ----'+e.getLineNumber()+'-----'+e.getMessage());
-            return e.getLineNumber()+'-----'+e.getMessage();
+    public static insertApplicationWrapper insertApplication(
+    Application_Proposal__c applicantDetails, 
+    List<String> setThemeList, 
+    Integer day, 
+    Integer month, 
+    Integer year,
+    String conId, 
+    String recordType, 
+    String yearlyCallId
+) {
+    insertApplicationWrapper datawrapper = new insertApplicationWrapper();
+    
+    try {
+        // Set tentative start date if valid date parameters provided
+        if (day != null && month != null && year != null && day > 0 && month > 0 && year > 0) {
+            applicantDetails.Tentative_Start_Date__c = Date.newInstance(year, month, day);
         }
+        
+        // Set proposal stage with fallback value
+        applicantDetails.Stage__c = String.isNotBlank(applicantDetails.Stage__c) ? applicantDetails.Stage__c : '1st Stage';
+        applicantDetails.RecordTypeId = Utility.getProposalRecordType('Two Plus Two');
+        applicantDetails.Proposal_Stages__c = 'Draft';
+        applicantDetails.yearly_Call__c = yearlyCallId;
+        
+        // Upsert the proposal
+        upsert applicantDetails;
+        
+        // Handle Applicant_Proposal_Association__c - create if doesn't exist
+        Applicant_Proposal_Association__c association;
+        List<Applicant_Proposal_Association__c> existingAppPropAssoc = [
+            SELECT Id, Contact__c, Proposals__c 
+            FROM Applicant_Proposal_Association__c 
+            WHERE Contact__c = :conId 
+            AND Proposals__c = :applicantDetails.Id 
+            LIMIT 1
+        ];
+        
+        if (existingAppPropAssoc.isEmpty()) {
+            association = new Applicant_Proposal_Association__c(
+                Contact__c = conId,
+                Proposals__c = applicantDetails.Id
+            );
+            insert association;
+        } else {
+            association = existingAppPropAssoc[0];
+        }
+        
+        // Handle Application_Thematic_Area__c records
+        if (setThemeList != null && !setThemeList.isEmpty()) {
+            // Delete existing thematic areas for this application
+            delete [SELECT Id FROM Application_Thematic_Area__c WHERE Application__c = :applicantDetails.Id];
+            
+            // Create new thematic area records
+            List<Application_Thematic_Area__c> appThematicAreaList = new List<Application_Thematic_Area__c>();
+            for (String theme : setThemeList) {
+                appThematicAreaList.add(new Application_Thematic_Area__c(
+                    Application__c = applicantDetails.Id,
+                    Thematic_Area__c = theme
+                ));
+            }
+            insert appThematicAreaList;
+        }
+        
+        // Update related contact and account if needed
+        // Note: The original code was updating Contact and Account without changing any fields
+        // This has been removed as it's unnecessary. If you need to set specific fields, add them here.
+        
+        // Populate wrapper with results
+        datawrapper.proposalId = applicantDetails.Id;
+        datawrapper.proposal = applicantDetails;
+        datawrapper.apa = association;
+        
+        return datawrapper;
+        
+    } catch (Exception e) {
+        // Log the error properly
+        System.debug('Error in insertApplication at line ' + e.getLineNumber() + ': ' + e.getMessage());
+        System.debug('Stack trace: ' + e.getStackTraceString());
+        
+        // Instead of returning null, return wrapper with error information
+        // You might want to add error fields to your wrapper class
+        throw new AuraHandledException('Error creating application: ' + e.getMessage());
     }
+}
+
+public class insertApplicationWrapper {
+    public String proposalId { get; set; }
+    public Application_Proposal__c proposal { get; set; }
+    public Applicant_Proposal_Association__c apa { get; set; }
+    // Consider adding error fields if needed
+    // public Boolean isSuccess { get; set; }
+    // public String errorMessage { get; set; }
+}
     
     
     public static List<Thematic_Area__c> fetchAllThematicArea(){
@@ -253,6 +294,9 @@ system.debug('accountContactList---'+accountContactList);
 return accountContactList;
 }
 */
+	
+    // OLD METHOD 
+    /*
     public static list<account> getPatnerDetails(string applicantHashCode){
         system.debug('applicantHashCode---'+applicantHashCode);
         contact conRec = [select name,id,Proposals__c,Account.Name,account.Website, 
@@ -334,6 +378,85 @@ return accountContactList;
         system.debug('accountContactList---'+accountContactList);
         return accountContactList;
     }
+    */
+    
+    // NEW METHOD TO GET PARTNER DETAILS USING PROPOSALID
+    public static List<Account> getPatnerDetails(String proposalId) {
+        System.debug('proposalId --- ' + proposalId);
+    
+        // Get all APA records using Proposal Id
+        List<Applicant_Proposal_Association__c> associations = [
+            SELECT Id, Contact__c, Proposals__c
+            FROM Applicant_Proposal_Association__c
+            WHERE Proposals__c = :proposalId
+        ];
+    
+        if (associations.isEmpty()) {
+            System.debug('-------------------------- NO APA FOUND --------------------------');
+            return new List<Account>();
+        }
+    
+        // Collect Contact IDs
+        Set<Id> contactIdSet = new Set<Id>();
+        for (Applicant_Proposal_Association__c apa : associations) {
+            if (apa.Contact__c != null) {
+                contactIdSet.add(apa.Contact__c);
+            }
+        }
+    
+        if (contactIdSet.isEmpty()) {
+            System.debug('-------------------------- Contact Set is Empty --------------------------');
+            return new List<Account>();
+        }
+    
+        // Fetch Contacts
+        List<Contact> allContacts = [
+            SELECT Id, AccountId
+            FROM Contact
+            WHERE Id IN :contactIdSet
+            AND AccountId != null
+        ];
+    
+        if (allContacts.isEmpty()) {
+            System.debug('-------------------------- NO Contacts FOUND --------------------------');
+            return new List<Account>();
+        }
+    
+        // Collect Account IDs
+        Set<Id> accountIds = new Set<Id>();
+        for (Contact c : allContacts) {
+            if (c.AccountId != null) {
+                accountIds.add(c.AccountId);
+            }
+        }
+    
+        if (accountIds.isEmpty()) {
+            System.debug('-------------------------- Account Set is Empty --------------------------');
+            return new List<Account>();
+        }
+    
+        // Fetch Accounts with their Contacts
+        List<Account> accountContactList = [
+            SELECT Name, Website, Id, Is_Coordinator__c, Is_Primary__c, Year_Of_Establishment__c,
+            Last_Year_s_Balance__c, SME__c, Homepage_URL__c, Country_Type__c, Industry__c,
+            Email__c, Is_DSIR_Available__c, DSIR_Recoginition_Details__c, Company_Profile__c,
+            Ownership_Profile__c, Company_Website__c, Academia__c, Phone, Main_Business_Area__c,
+            Infrastructural_Facilities__c, Domain_Expertise_Available__c, Large_Industry__c,
+            Start_Up__c, BillingStreet, BillingCity, BillingState, BillingPostalCode, BillingCountry,
+            Department__c,
+                (SELECT Title, Name, Id, Designation__c, FirstName, LastName, Email, Phone, Campaign__c,
+                    Actual_Position__c, Head_Of_Project__c, Department, Profile_Pic_Attachment_Id__c
+                FROM Contacts
+                ORDER BY CreatedDate ASC)
+            FROM Account
+            WHERE Id IN :accountIds
+            ORDER BY Is_Coordinator__c DESC NULLS LAST, CreatedDate ASC
+        ];
+    
+        System.debug('accountContactList : ' + accountContactList);
+        return accountContactList;
+    }
+
     
     
     public static contact getSinglePatnerDetails(string applicantHashCode){
@@ -448,6 +571,8 @@ return accountContactList;
 return null;
 }
 */
+
+/*
     public static List<Account> getPatnerDetails3(String applicantHashCode, String proposalId){
         System.debug('======================== getPatnerDetails3() ===========================');
         System.debug('applicantHashCode : ' + applicantHashCode);
@@ -460,25 +585,34 @@ return null;
         String workshopRecordTypeId = Schema.SObjectType.Application_Proposal__c.getRecordTypeInfosByName().get('Workshop').getRecordTypeId();
         System.debug('workshopRecordTypeId : ' + workshopRecordTypeId);
         
+        List<Applicant_Proposal_Association__c> apaRecord;
         if(conRec != null){
             
-            List<Applicant_Proposal_Association__c> apaRecord = [
-                SELECT Id, Name, Proposals__c, Contact__c, Proposals__r.RecordTypeId, Proposals__r.RecordType.Name
-                FROM Applicant_Proposal_Association__c
-                WHERE Contact__c = :conRec.Id
-                AND Proposals__r.RecordType.Id =: workshopRecordTypeId
-                // AND Proposals__r.RecordType.Name =: 'Workshop'
-                LIMIT 1
-            ];
-            System.debug('apaRecord : ' + apaRecord);
-            
-            
-            
-            /*
-* ============================================================
-*  FALLBACK CASE: NO PROPOSAL EXISTS FOR THIS CONTACT YET
-* ============================================================
-*/
+            if(proposalId != null){
+                apaRecord = [
+                    SELECT Id, Name, Proposals__c, Contact__c, Proposals__r.RecordTypeId, Proposals__r.RecordType.Name
+                    FROM Applicant_Proposal_Association__c
+                    WHERE Contact__c = :conRec.Id
+                    AND Proposals__c = :proposalId
+                    AND Proposals__r.RecordType.Id =: workshopRecordTypeId
+                    // AND Proposals__r.RecordType.Name =: 'Workshop'
+                    LIMIT 1
+                ];
+                System.debug('IF apaRecord : ' + apaRecord);
+            }else{
+                apaRecord = [
+                    SELECT Id, Name, Proposals__c, Contact__c, Proposals__r.RecordTypeId, Proposals__r.RecordType.Name
+                    FROM Applicant_Proposal_Association__c
+                    WHERE Contact__c = :conRec.Id
+                    AND Proposals__r.RecordType.Id =: workshopRecordTypeId
+                    // AND Proposals__r.RecordType.Name =: 'Workshop'
+                    LIMIT 1
+                ];
+                System.debug('ELSE apaRecord : ' + apaRecord);
+            }
+    
+            //FALLBACK CASE: NO PROPOSAL EXISTS FOR THIS CONTACT YET
+    
             if (apaRecord.isEmpty()) {
                 
                 System.debug('It should come to this block');
@@ -500,18 +634,10 @@ return null;
             
             // MAIN LOGIC — CONTACT ALREADY HAS WORKSHOP PROPOSAL
             
-            /*
-List<Applicant_Proposal_Association__c> apaListForPropsals = [
-SELECT Id, Name, Proposals__c, Contact__c, Proposals__r.RecordTypeId
-FROM Applicant_Proposal_Association__c
-WHERE Proposals__c = :proposalId
-AND Proposals__r.RecordTypeId = :workshopRecordTypeId
-];*/
-            
             List<Applicant_Proposal_Association__c> apaListForPropsals = [
                 SELECT Id, Name, Proposals__c, Contact__c, Proposals__r.RecordTypeId
                 FROM Applicant_Proposal_Association__c
-                WHERE Proposals__c = :apaRecord[0].Proposals__c
+                WHERE Proposals__c = :proposalId
                 AND Proposals__r.RecordTypeId = :workshopRecordTypeId
             ];
             System.debug('apaListForPropsals : ' + apaListForPropsals.size());
@@ -560,7 +686,85 @@ AND Proposals__r.RecordTypeId = :workshopRecordTypeId
         
         return null;
     }
-    
+*/
+
+public static List<Account> getPatnerDetails3(String applicantHashCode, String proposalId){
+        System.debug('======================== getPatnerDetails3() ===========================');
+        System.debug('applicantHashCode : ' + applicantHashCode);
+        System.debug('proposalId : ' + proposalId);
+        
+        Contact conRec = [SELECT Name, Id FROM Contact WHERE Login_Hash_Code__c = :applicantHashCode LIMIT 1];
+        System.debug('conRec : ' + conRec);
+        
+        String workshopRecordTypeId = Schema.SObjectType.Application_Proposal__c.getRecordTypeInfosByName().get('Workshop').getRecordTypeId();
+        System.debug('workshopRecordTypeId : ' + workshopRecordTypeId);
+
+        if(String.isBlank(proposalId)){
+            List<Account> accountContactList = [
+                SELECT Name, Id, Homepage_URL__c, Country_Type__c, Academia__c,
+                BillingStreet, BillingCity, BillingState, BillingPostalCode, BillingCountry,
+                Department__c, Industry__c,
+                (SELECT Salutation, Name, FirstName, Id, LastName, Email, Phone, Department 
+                    FROM Contacts ORDER BY CreatedDate ASC)
+                FROM Account
+                WHERE Id IN (SELECT AccountId FROM Contact WHERE Id = :conRec.Id)
+                ORDER BY CreatedDate ASC
+            ];
+            system.debug('accountContactList---' + accountContactList);
+            return accountContactList;
+        }
+        else{
+            // MAIN LOGIC — CONTACT ALREADY HAS WORKSHOP PROPOSAL
+            
+            List<Applicant_Proposal_Association__c> apaListForPropsals = [
+                SELECT Id, Name, Proposals__c, Contact__c, Proposals__r.RecordTypeId
+                FROM Applicant_Proposal_Association__c
+                WHERE Proposals__c = :proposalId
+                AND Proposals__r.RecordTypeId = :workshopRecordTypeId
+            ];
+            System.debug('apaListForPropsals : ' + apaListForPropsals.size());
+            System.debug('apaListForPropsals : ' + apaListForPropsals);
+            
+            Set<Id> contactIdSet = new Set<Id>();
+            for(Applicant_Proposal_Association__c apa : apaListForPropsals){
+                contactIdSet.add(apa.Contact__c);
+            }
+            System.debug('contactIdSet : ' + contactIdSet);
+            
+            if(!contactIdSet.isEmpty()){
+                
+                List<Contact> lstContacts = [
+                    SELECT Salutation, Name, FirstName, Id, AccountId, LastName, Email, Phone, Department 
+                    FROM Contact
+                    WHERE Id IN :contactIdSet
+                    ORDER BY CreatedDate ASC
+                ];
+                System.debug('lstContacts : ' + lstContacts.size());
+                
+                Set<Id> accountIdSet = new Set<Id>();
+                for(Contact con : lstContacts){
+                    accountIdSet.add(con.AccountId);
+                }
+                System.debug('accountIdSet : ' + accountIdSet);
+                
+                List<Account> accountContactList = [
+                    SELECT Name, Id, Homepage_URL__c, Country_Type__c, Academia__c, BillingStreet, BillingCity, BillingState, BillingPostalCode,
+                    BillingCountry, Department__c, Industry__c,
+                    (SELECT Salutation, Name, FirstName, Id, LastName, Email, Phone, Department 
+                     FROM Contacts 
+                     ORDER BY CreatedDate ASC)
+                    FROM Account
+                    WHERE Id IN :accountIdSet
+                ]; 
+                System.debug('accountContactList : ' + accountContactList);
+                
+                return accountContactList;
+            } else {
+                return null;
+            }
+        }
+    }
+
     public static  list<account> getPatnerDetails2(string applicantHashCode){
         system.debug('applicantHashCode---'+applicantHashCode);
         contact conRec = [select name,id,Proposals__c from contact where Login_Hash_Code__c =:applicantHashCode limit 1];
@@ -751,7 +955,7 @@ return conRec;
     
     //*******************************************  *********************************************
     public static Contact getCvDetails(string contactId){
-        Contact conRec = [SELECT Id,Name,FirstName,LastName,Actual_Position__c,MailingCity,MailingState,MailingStreet,MailingCountry,Department,MailingPostalCode,
+        Contact conRec = [SELECT Id,Name,FirstName,LastName,Actual_Position__c,MailingCity,MailingState,MailingStreet,MailingCountry,Department,MailingPostalCode,AccountId,Designation__c,Title,
                           Head_Of_Project__c,Homepage_URL__c,Email,Phone,(SELECT Id,Name,Institution_Name__c,Area_of_specialization__c,Degree__c,End_Year__c FROM Education_Details__r),
                           (SELECT Id,Name,Organization_Name__c,Position__c,End_Year__c FROM Employment_Details__r),(select name,id,description__c from Publications_Patents__r)
                           From Contact WHERE Id=: contactId Limit 1];
@@ -1527,7 +1731,8 @@ return appProposal;
     public static String insertCoordinatorsInformation2(
     	List<Account> accList,
         List<Contact> conList,
-        String proposalId)
+        String proposalId,
+        String yearlyCallId)
     {
         try{
             system.debug( 'proposalId ===> ' + proposalId + ' conList::'+conList);
@@ -1601,7 +1806,8 @@ return appProposal;
                 Application_Proposal__c newProposal = new Application_Proposal__c(
                     Title_Of__c = 'Workshop',
                     RecordTypeId = workshopRecordTypeId,
-                    Campaign__c = camp.Id
+                    Campaign__c = camp.Id,
+                    yearly_Call__c = yearlyCallId
                 );
                 insert newProposal;
                 
@@ -3896,8 +4102,7 @@ return null;
             
             // Query contacts linked via junction for that proposal
             conList = [SELECT Id, FirstName, LastName, Email, AccountId, Account.Name, MailingCountry, Is_Primary__c, Birthdate 
-                       FROM Contact 
-                       WHERE Id IN (SELECT Contact__c FROM Applicant_Proposal_Association__c WHERE Proposals__c = :proposalId)];
+                       FROM Contact WHERE Id IN (SELECT Contact__c FROM Applicant_Proposal_Association__c WHERE Proposals__c = :proposalId)];
         } else {       
             // Return only the single contact just linked newly
             conList = new List<Contact>{conRec};
@@ -4783,6 +4988,7 @@ return null;
             Map<String, User_Document__c> idXUserDoc = new Map<String, User_Document__c>();
             Map<String,ContentDocumentLink> udIdXcdLink = New Map<String,ContentDocumentLink>();
             
+            /*
             Id contactIdUsed;
             List<Application_Proposal__c> proposalList = [
                 SELECT Id, Name, 
@@ -4797,6 +5003,23 @@ return null;
             } else {
                 System.debug('No contacts found for the specified Application Proposal.');
             }
+            */
+            
+            Id contactIdUsed;
+            List<Applicant_Proposal_Association__c> apaList = [
+                SELECT Id, Name, Proposals__c, Contact__c, Contact__r.Applicant_Host__c
+                FROM Applicant_Proposal_Association__c
+                WHERE Proposals__c = :proposalId
+                AND Contact__r.Applicant_Host__c = 'Applicant'
+            ];
+            
+            if (!apaList.isEmpty() && apaList[0].Contact__r.Applicant_Host__c != null) {
+                contactIdUsed = apaList[0].Contact__c;
+            } else {
+                System.debug('No contacts found for the specified Application Proposal.');
+            }
+            
+            
             
             List<User_Document__c> getUserDoc = [
                 SELECT Name, Id, Status__c, Attachment_Name__c, 
@@ -5724,11 +5947,13 @@ return null;
         public String validFor {get; set;}
     }
     
-    public static Contact getCoodinatorDetList(string hashcode){
+    public static Contact getCoodinatorDetList(string hashcode,string apaId){
         //29 Aug 2023 D: Modified query to get OtherStreet field and try to store the value of MailingStreet from js.
         Contact ContactRecord = [SELECT Id,Title,FirstName,LastName,Name,Email,Actual_Position__c,MailingStreet,OtherStreet,MailingCity,MailingState,MailingCountry,MailingPostalCode,Country__c,States__c,Account.Name,Publications_Patents__c,Publications_Patents_Relevant__c,
-                                 Account.BillingCountry,(SELECT Name,Degree__c,Start_Year__c,End_Year__c,CGPA__c,End_Date__c,Start_Date__c,Institution_Name__c,Area_of_specialization__c,Percentage__c,Percentage_cgpa__c 
-                                                         FROM Education_Details__r),(SELECT Id,Organization_Name__c,Position__c,Start_Year__c,End_Year__c FROM Employment_Details__r)
+                                 Account.BillingCountry,
+                                     (SELECT Name,Degree__c,Start_Year__c,End_Year__c,CGPA__c,End_Date__c,Start_Date__c,Institution_Name__c,Area_of_specialization__c,Percentage__c,Percentage_cgpa__c 
+                                      FROM Education_Details__r where Applicant_Proposal_Association__c =:apaId ORDER BY End_Year__c DESC),
+                                     (SELECT Id,Organization_Name__c,Position__c,Start_Year__c,End_Year__c FROM Employment_Details__r  where Applicant_Proposal_Association__c =:apaId)
                                  FROM Contact WHERE Login_Hash_Code__c=: hashcode];
         return ContactRecord;
     }
@@ -5849,7 +6074,8 @@ return null;
         try{
             addressDetails.NumberOfEmployees = Integer.valueOf(addressDetails.NumberOfEmployees);
             addressDetails.BillingState = addressDetails.Shipping_State__c;
-            addressDetails.Country_Type__c = addressDetails.BillingCountry; // Added 
+            addressDetails.Country_Type__c = addressDetails.BillingCountry; // Added
+            addressDetails.DSIR_Recoginition_Details__c = addressDetails.DSIR_Recoginition_Details__c;
             
             upsert contactList;
             upsert addressDetails;

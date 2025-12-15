@@ -1,5 +1,5 @@
 public without sharing class ApplicantPortal_Contoller {
-       public string tabValues  {get;set;}
+    public string tabValues  {get;set;}
     public string thematicAreaList {get;set;}
     public string countrytype  {get;set;}
     public string countryCode  {get;set;}
@@ -44,6 +44,9 @@ public without sharing class ApplicantPortal_Contoller {
     public string currencyPickList  {get;set;}
     public Boolean partnerSubmission {get;set;}
     public List<proposalWrap> proposalWrapperList {get;set;}
+
+   public String yearList { get; set; } //Added by Karthik for year dropdown
+
     
     public ApplicantPortal_Contoller() {
         ApplicantPortalSiteURL = Constants.CANDIDATE_SITE ;
@@ -66,6 +69,12 @@ public without sharing class ApplicantPortal_Contoller {
         states = JSON.serialize(Utility.getPicklistValues('Contact' , 'States__c'));
         presentingWorkshop = JSON.serialize(Utility.getPicklistValues('Contact' , 'Presenting_Workshop__c'));
         financialConDetails = JSON.serialize([SELECT German_Academia__c,German_Institute__c,Indian__c,Indian_Institute__c FROM Financial_Overview_Conditions__c limit 1]);
+
+        // Fetch Year__c records (year object)//Added By karthik
+        List<Year__c> yearRecs = [SELECT Id, Name,Is_Active__c,Is_Current_Year__c FROM Year__c ORDER BY Name DESC];
+        yearList = JSON.serialize(yearRecs);
+
+
         campaignData=JSON.serialize([SELECT Id,Name,Description,EndDate,Image_URL__c,RedirectPage__c,(select name,id from Attachments order by createdDate DESC),(SELECT Id,Campaign__c,Name,Description__c FROM Campaign_Guidlines__r) FROM Campaign]);
         stage = JSON.serialize(Utility.getPicklistValues('Application_Proposal__c' , 'Stage__c'));
         String rawId = ApexPages.currentPage().getParameters().get('id');
@@ -175,7 +184,7 @@ public without sharing class ApplicantPortal_Contoller {
     
     //*********************************** NEW GLOBAL LOGIN METHODS *********************************************
     //Added by Vikash
-    public class ApplicantWrap {
+   /*public class ApplicantWrap {
         public List<Campaign> campaignList {get; set;}
         public List<Applicant_Proposal_Association__c> appliedCampaign {get; set;}
     }
@@ -197,7 +206,47 @@ public without sharing class ApplicantPortal_Contoller {
             System.debug('Error while getting Applicant Data ===> ' + e.getMessage() + ' at Line Number ===> ' + e.getLineNumber() + ' Stack Trace String ===> ' + e.getStackTraceString());
             return null;
         }
+    } 
+    
+    */
+      
+ //Added By karthik  ( I need to add Attachments and Campaign_Guidlines from campaign in this query.)
+   public class ApplicantWrap {
+        public List<YealyCall__c> campaignList {get; set;}  // Changed to YearlyCall__c
+        public List<Applicant_Proposal_Association__c> appliedCampaign {get; set;}
     }
+    
+    @RemoteAction
+    public static ApplicantWrap getApplicantData(String candidateId, String yearId) {
+        ApplicantWrap wrap = new ApplicantWrap();
+        try {
+            // Fetch campaigns through Yearly-Call 
+            List<YealyCall__c> yearlyCalls = [
+                SELECT Id, Name, Campaign__c,Campaign__r.Name, Campaign__r.Description,Campaign__r.Actual_End_Date__c,Campaign__r.Disable_Campaign__c, Years__c, 
+                       Campaign__r.EndDate,Campaign__r.Image_URL__c,Campaign__r.RedirectPage__c,Campaign__r.Cut_Off_Start_Date__c,Campaign__r.Cut_Off_End_Date__c,Campaign__r.Icon__c,Campaign_Start_Date__c,Campaign_End_Date__c
+                FROM YealyCall__c   WHERE Active__c = true AND Years__c = :yearId];
+            
+            if(!yearlyCalls.isEmpty()) {
+                wrap.campaignList = yearlyCalls;
+            }
+            
+            // Applied campaigns 
+            List<Applicant_Proposal_Association__c> applicantAssociationList = [
+                SELECT Id, Contact__c, Proposals__c,Proposals__r.Id,Proposals__r.Name, Proposals__r.Campaign__r.Id,Proposals__r.Campaign__r.Name, Proposals__r.Campaign__r.Description, Proposals__r.Campaign__r.Actual_End_Date__c, Proposals__r.Campaign__r.Icon__c, Proposals__r.Campaign__r.RedirectPage__c,Proposals__r.yearly_Call__c,Proposals__r.yearly_Call__r.Id,Proposals__r.yearly_Call__r.Campaign_Start_Date__c,Proposals__r.yearly_Call__r.Campaign_End_Date__c
+                FROM Applicant_Proposal_Association__c WHERE Contact__r.Login_hash_code__c = :candidateId  AND Proposals__r.yearly_Call__r.Years__C = :yearId];
+            
+            if(!applicantAssociationList.isEmpty()) {
+                wrap.appliedCampaign = applicantAssociationList;
+            }        
+            return wrap;
+        }
+        catch(Exception e) {
+            System.debug('Error: ' + e.getMessage());
+            return null;
+        }
+    }
+
+
     
     
     @RemoteAction
@@ -224,6 +273,7 @@ public without sharing class ApplicantPortal_Contoller {
         String title;
         String password;
         String country;
+        String birthdate;
     }
     @RemoteAction
     public static String insertNewUser( UserWrap newUser ) {
@@ -232,31 +282,52 @@ public without sharing class ApplicantPortal_Contoller {
             return 'No data was passed!';
         }
         try {
-            List<Contact> conList = [SELECT Id,Name,Email From Contact WHERE Email=: newUser.email];
-            system.debug('conList ::'+conList);
-            if(conList.size() > 0){
+            // Check for existing user by email
+            List<Contact> conListByEmail = [SELECT Id,Name,Email From Contact WHERE Email=: newUser.email];
+            system.debug('conListByEmail ::'+conListByEmail);
+            if(conListByEmail.size() > 0){
                 return 'A User with this email already exists in our system please try with new Email!';
-            }else{
-                Account acc = new Account();
-                Contact con = new Contact();
-                acc.Name = newUser.org;
-                acc.Is_Coordinator__c = true; // Changed by Rukasar
-                acc.Is_Primary__c = true;
-                insert acc;
-                con.AccountId = acc.Id;
-                con.Title = newUser.title;
-                con.FirstName = newUser.firstName;
-                con.LastName = newUser.lastName;
-                con.Email = newUser.Email;
-                con.Password__c = newUser.password;
-                con.MailingCountry = newUser.country;
-                con.Is_Primary__c = true;
-                insert con;
-                return 'Successfully created new user!';
             }
+            
+            // Check for existing user by Date of Birth + First Name + Last Name combination
+            if(String.isNotBlank(newUser.birthdate)) {
+                Date birthDate = Date.valueOf(newUser.birthdate);
+                List<Contact> conListByDOB = [
+                    SELECT Id, Name, Email, FirstName, LastName, Birthdate 
+                    FROM Contact 
+                    WHERE Birthdate = :birthDate 
+                    AND FirstName = :newUser.firstName 
+                    AND LastName = :newUser.lastName
+                ];
+                system.debug('conListByDOB ::'+conListByDOB);
+                if(conListByDOB.size() > 0){
+                    return 'A User with this Date of Birth and Name combination already exists in our system. Please contact support if you believe this is an error.';
+                }
+            }
+            
+            // If no existing user found, create new user
+            Account acc = new Account();
+            Contact con = new Contact();
+            acc.Name = newUser.org;
+            acc.Is_Coordinator__c = true; // Changed by Rukasar
+            acc.Is_Primary__c = true;
+            insert acc;
+            con.AccountId = acc.Id;
+            con.Title = newUser.title;
+            con.FirstName = newUser.firstName;
+            con.LastName = newUser.lastName;
+            con.Email = newUser.Email;
+            con.Password__c = newUser.password;
+            con.MailingCountry = newUser.country;
+            con.Is_Primary__c = true;
+            if(String.isNotBlank(newUser.birthdate)) {
+                con.Birthdate = Date.valueOf(newUser.birthdate);
+            }
+            insert con;
+            return 'Successfully created new user!';
         }catch(Exception e) {
             System.debug('Error while craeting new contact and account ==> ' + e.getMessage() + ' at Line ===> ' + e.getLineNumber() + ' Stack Trace ===> ' + e.getStackTraceString());
-            return 'Error creating new user!';
+            return 'Error creating new user: ' + e.getMessage();
         }
     }
     
@@ -264,8 +335,7 @@ public without sharing class ApplicantPortal_Contoller {
 @RemoteAction
 public static List<Campaign> getActiveCampaign(string campaign_name) {
     try {
-        List<Campaign> campaigns = [SELECT Id, Name,Yearly_Call__r.Pecfar_age_limit__c,Yearly_Call__r.Date_of_Birth_PECFAR__c FROM Campaign WHERE Yearly_Call__c !=null And  IsActive = true and name= :campaign_name                                   
-                                 ];
+        List<Campaign> campaigns = [SELECT Id, Name,Yearly_Call__r.Pecfar_age_limit__c,Yearly_Call__r.Date_of_Birth_PECFAR__c FROM Campaign WHERE Yearly_Call__c !=null And  IsActive = true and name= :campaign_name];
         
         if (!campaigns.isEmpty()) {
             return campaigns;
@@ -278,7 +348,7 @@ public static List<Campaign> getActiveCampaign(string campaign_name) {
 }
     
     // Campaign method for If added by rukasar:
-    @RemoteAction
+/* @RemoteAction
 public static List<Campaign> getActiveCampaignIf(string campaign_name) {
     try {
         List<Campaign> campaigns = [SELECT Id, Name, Yearly_Call__r.PIEF_Age_Limit__c,Yearly_Call__r.PIEF_PhD_time__c,
@@ -290,6 +360,27 @@ public static List<Campaign> getActiveCampaignIf(string campaign_name) {
    									     
         if (!campaigns.isEmpty()) {
             return campaigns;
+        }
+        
+        return null;
+    } catch (Exception e) {
+        System.debug('Error: ' + e.getMessage());
+        return null;
+    }
+}*/
+
+ @RemoteAction
+public static List<YealyCall__c> getActiveCampaignIf(String yearlyCallId) {
+    try {
+        List<YealyCall__c> yearlycalls = [SELECT Id, Name, PIEF_Age_Limit__c,PIEF_PhD_time__c,
+                                    Date_of_Birth_PIEF__c,PhD_Enrollment_Date_PIEF__c,
+                                    PDIF_Age_Limit__c,PDIF_PhD_time__c,
+                                    Date_of_Birth_PDIF__c,PhD_Enroll_ment_Date_PDIF__c 
+                                    FROM YealyCall__c WHERE Id = :yearlyCallId];
+        							
+   									     
+        if (!yearlycalls.isEmpty()) {
+            return yearlycalls;
         }
         
         return null;
@@ -383,8 +474,8 @@ public static List<Campaign> getActiveCampaignIf(string campaign_name) {
     }
     
     @RemoteAction
-    public static String insertApplication(Application_Proposal__c applicantDetails, List<string> selThemeList, integer day, integer month, integer year, String conId, String recordType){
-        return Proposal_Controller.insertApplication(applicantDetails, selThemeList, day, month, year, conId, recordType);
+    public static Proposal_Controller.insertApplicationWrapper insertApplication(Application_Proposal__c applicantDetails, List<string> selThemeList, integer day, integer month, integer year, String conId, String recordType, String yearlyCallId){
+        return Proposal_Controller.insertApplication(applicantDetails, selThemeList, day, month, year, conId, recordType, yearlyCallId);
     }
     
     @RemoteAction
@@ -482,6 +573,24 @@ public static List<Campaign> getActiveCampaignIf(string campaign_name) {
     @RemoteAction
     public static Contact getCvDetails(string contactId){
         return Proposal_Controller.getCvDetails(contactId);
+    }
+    
+    @RemoteAction
+    public static Account getAccountByContactId(string accountId){
+        try {
+            Account acc = [
+                SELECT Id, Name, Website, Homepage_URL__c, Phone, BillingCountry, 
+                       BillingState, BillingCity, BillingStreet, BillingPostalCode,
+                       Academia__c, Industry__c, Is_Coordinator__c
+                FROM Account
+                WHERE Id = :accountId
+                LIMIT 1
+            ];
+            return acc;
+        } catch (Exception e) {
+            System.debug('Error in getAccountByContactId: ' + e.getMessage());
+            return null;
+        }
     }
     
     //******************************************* COMPANY PROFILE *********************************************
@@ -1122,7 +1231,7 @@ public static List<Campaign> getActiveCampaignIf(string campaign_name) {
     }
     
     @RemoteAction
-    public static list<Proposal_Controller.UserDocumentWrapper> getContactUserDoc(id parentId, Id proposalId){
+    public static list<Proposal_Controller.UserDocumentWrapper> getContactUserDoc(id parentId, Id proposalId){ 
         Proposal_Controller proposalCon = New Proposal_Controller();
         
         return proposalCon.getContactUserDoc(parentId, proposalId);
@@ -1167,8 +1276,8 @@ public static List<Campaign> getActiveCampaignIf(string campaign_name) {
     }
     
     @RemoteAction
-    public static String insertCoordinatorsInformation2(List<Account> accList,List<Contact> conList, string proposalId){
-        return Proposal_Controller.insertCoordinatorsInformation2(accList, conList,proposalId);
+    public static String insertCoordinatorsInformation2(List<Account> accList,List<Contact> conList, string proposalId, string yearlyCallId){
+        return Proposal_Controller.insertCoordinatorsInformation2(accList, conList,proposalId, yearlyCallId);
     }
     
     @RemoteAction
@@ -1783,8 +1892,8 @@ userDocc.Id = udId;
     }
     
     @RemoteAction
-    public static Contact getCoodinatorDetList(string hashcode){
-        return Proposal_Controller.getCoodinatorDetList(hashcode);
+    public static Contact getCoodinatorDetList(string hashcode, string apaId){
+        return Proposal_Controller.getCoodinatorDetList(hashcode, apaId);
     }
     
     @RemoteAction

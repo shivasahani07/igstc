@@ -12,7 +12,7 @@ var partnerSubmission;
 
 var app = angular.module('cp_app');
 debugger;
-var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard';    // ======================>
+var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/Testing';    // ======================>
 app.config(function ($routeProvider, $locationProvider) {
     $locationProvider.html5Mode(false).hashPrefix('');
     var rp = $routeProvider;
@@ -50,15 +50,22 @@ app.controller('cp_dashboard_ctrl', function ($scope, $rootScope, $timeout, $win
     $scope.config = {};
     debugger;
     $scope.isLoading = false;
+    
+    // FIX: Initialize isRoutedView immediately based on current path
+    // This ensures route detection happens before function execution
+    $rootScope.isRoutedView = $location.path() !== '' && $location.path() !== '/';
+    
+    // Also update on location change for navigation
     $scope.$on('$locationChangeSuccess', function () {
         $scope.$evalAsync(function () {
             $rootScope.isRoutedView = $location.path() !== '' && $location.path() !== '/';
         });
     });
+    
     $scope.load = function () {
         const hashCode = localStorage.getItem('hashCode');
         if (hashCode == null || hashCode == '') {
-            window.location.href = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard';
+            window.location.href = window.location.href.includes('/apex') ? '/apex' : '/Testing';
             history.pushState(null, null, window.location.href);
         }
     };
@@ -205,15 +212,6 @@ app.controller('cp_dashboard_ctrl', function ($scope, $rootScope, $timeout, $win
             return obj;
         });
 
-    // if(secondstage == "1st Stage"){
-    //     $rootScope.secondStage = false;
-    // }else{
-    //     $rootScope.secondStage = true;
-    // }
-    // if(secondstage == '' || secondstage == undefined){
-    //     $rootScope.secondStage = false;
-    // }
-
     $rootScope.contactId = contactId;
     $rootScope.projectId = '';
     $rootScope.campaignName = '';
@@ -222,144 +220,15 @@ app.controller('cp_dashboard_ctrl', function ($scope, $rootScope, $timeout, $win
     $rootScope.secondstage = false;
     $rootScope.emailVerified;
     $rootScope.proposalStage = false;
-    // if(secondstage == "2nd Stage"){
-    //     $rootScope.secondstage = true;
-    // }else{
-    //     $rootScope.secondstage = false;
-    // }
-
-    //added by Aman 4th September
-    // Desc: to account for Per partner submission.
-    // if(proposalStage != "Draft" || (proposalStage == "Draft" && partnerSubmission == "true")){
-    //     // if(proposalStage != "Draft"){
-    //     $rootScope.proposalStage = true;
-    //     CKEDITOR.config.readOnly = true;
-    // }else{
-    //     $rootScope.proposalStage = false;
-    // }
-    // if(proposalStage==undefined || proposalStage==''){
-    //     $rootScope.proposalStage = false;
-    //     CKEDITOR.config.readOnly = false;
-    // }
-    //  CKEDITOR.replace( 'Resolution', {
-    //     height: 800
-    // } );
-    //  $scope.checkCampaign = function(){
-    //     debugger;
-    //     if($rootScope.campaigntype.toUpperCase() != $scope.programmeHeaderName){
-    //         swal(
-    //             '',
-    //             'incorrect',
-    //             'error'
-    //         );
-    //         if($rootScope.campaigntype == "pecfar"){
-    //             var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard?campaign=Landing_Page_Pecfar';
-    //             setTimeout(function() {window.location.replace(window.location.origin + sitePrefix )}, 5000);
-    //         }
-    //         if($rootScope.campaigntype == "wiser"){
-    //             var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard?campaign=LANDING_PAGE_WISER';
-    //             setTimeout(function() {window.location.replace(window.location.origin + sitePrefix )}, 5000);
-    //         }
-    //         if($rootScope.campaigntype == "if"){
-    //             var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard?campaign=Landing_Page_Industrial_Fellowship';
-    //             setTimeout(function() {window.location.replace(window.location.origin + sitePrefix )}, 5000);
-    //         }
-    //         if($rootScope.campaigntype == "sing"){
-    //             var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard?campaign=LANDING_PAGE_SING';
-    //             setTimeout(function() {window.location.replace(window.location.origin + sitePrefix )}, 5000);
-    //         }
-    //         if($rootScope.campaigntype == "workshop"){
-    //             var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard?campaign=Landing_Page_Workshop';
-    //             setTimeout(function() {window.location.replace(window.location.origin + sitePrefix )}, 5000);
-    //         }
-    //         if($rootScope.campaigntype == "2plus2"){
-    //             var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard?campaign=Landing_Page_Two_Plus_Two';
-    //             setTimeout(function() {window.location.replace(window.location.origin + sitePrefix )}, 5000);
-    //         }
-    //         return;
-    //     }else{
-    //     }
-    // }
-    // $scope.checkCampaign();
 
     CKEDITOR.addCss('border:solid 1px red !important;');
-    // $scope.redirect = function(){
-    //     debugger;
-    //     if($scope.res == "workshop"){
-    //         var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard?campaign=Landing_Page_Workshop';
-    //         setTimeout(function() {window.location.replace(window.location.origin + sitePrefix )}, 5000);
 
-    //     }else if($scope.res == "pecfar"){
-    //         var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard?campaign=Landing_Page_Pecfar';
-    //         setTimeout(function() {window.location.replace(window.location.origin + sitePrefix )}, 5000);
-
-    //     }else if($scope.res == "if"){
-    //         var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard?campaign=Landing_Page_Industrial_Fellowship';
-    //         setTimeout(function() {window.location.replace(window.location.origin + sitePrefix )}, 5000);
-
-    //     }
-    //     else if($scope.res == "sing"){
-    //         var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard?campaign=LANDING_PAGE_SING';
-    //         setTimeout(function() {window.location.replace(window.location.origin + sitePrefix )}, 5000);
-
-    //     }
-    //     else if($scope.res == "wiser"){
-    //         var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard?campaign=LANDING_PAGE_WISER';
-    //         setTimeout(function() {window.location.replace(window.location.origin + sitePrefix )}, 5000);
-
-    //     }
-    //     else if($scope.res == "2plus2"){
-    //         var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard?campaign=Landing_Page_Two_Plus_Two';
-    //         setTimeout(function() {window.location.replace(window.location.origin + sitePrefix )}, 5000);
-    //     }
-    //     else if($scope.res == "connect"){
-    //         var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard?campaign=Landing_Page_CONNECT_PLUS';
-    //         setTimeout(function() {window.location.replace(window.location.origin + sitePrefix )}, 5000);
-    //     }
-
-    //         var sitePrefix; 
-    //         // switch($rootScope.CampainURL.toUpperCase()){
-    //         //         case 'if':
-    //         //             sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/?campaign=Landing_Page_Industrial_Fellowship';
-    //         //             break;
-    //         //         case 'pecfar':
-    //         //             sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/?campaign=Landing_Page_Pecfar';
-    //         //             break;
-    //         //         case 'workshop':
-    //         //             sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/?campaign=Landing_Page_Workshop';
-    //         //             break;
-    //         //         case '2plus2':
-    //         //             sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/?campaign=Landing_Page_Two_Plus_Two';
-    //         //             break;
-    //         //         case 'wiser':
-    //         //             sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/?campaign=LANDING_PAGE_WISER';
-    //         //             break;
-    //         //         case 'sing':
-    //         //             sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/?campaign=LANDING_PAGE_SING';
-    //         //             break;
-    //         //             // default:
-    //         //             //     sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/?campaign=Landing_Page_Industrial_Fellowship';
-    //         //             //     break;
-    //         // }  
-    //         // window.location.replace(window.location.origin +sitePrefix);
-    // }
-    // $scope.LogoutApplicant=function(){        
-    //     ApplicantPortal_Contoller.LogoutApplicant($rootScope.candidateId, function (result, event) {
-    //         debugger
-    //         console.log(result);
-    //         console.log(event);
-    //         if(event.status){
-    //             $rootScope.applicantEmail='';
-    //             $rootScope.applicantName='';
-    //             $rootScope.campaignId = '';
-    //             $scope.res=result;
-    //             $scope.redirect();
-    //             $scope.$apply();
-    //         }
-    //     });   
-    // }
-
+    // FIX: Add conditional check to skip execution on routed views (child pages)
     $scope.getContactName = function () {
+        // Skip if on a routed view (child page)
+        if ($rootScope.isRoutedView) {
+            return;
+        }
         debugger;
 
         //$scope.isLoading = true;
@@ -371,94 +240,8 @@ app.controller('cp_dashboard_ctrl', function ($scope, $rootScope, $timeout, $win
     }
     $scope.getContactName();
 
-    /*$scope.getApplicantData = function () {
-        debugger;
-        $scope.isLoading = true;
-        ApplicantPortal_Contoller.getApplicantData($scope.candidateId, function (result, event) {
-            debugger;
-            if (event.status && result != null) {
-                debugger;
-                console.log('campaign::=>');
-                console.log(result);
-                $scope.allCamapigns = result.campaignList;
-                $scope.appliedCampaigns = result.appliedCampaign;
-
-                $scope.appliedPrograms = $scope.appliedCampaigns ? $scope.appliedCampaigns.map(item => {
-                    return {
-                        name: item?.Proposals__r?.Campaign__r?.Name ?? "",
-                        desc: item?.Proposals__r?.Campaign__r?.Description ?? "",
-                        deadline: item.Proposals__r?.Campaign__r?.Actual_End_Date__c ? new Date(item.Proposals__r?.Campaign__r?.Actual_End_Date__c).toLocaleDateString('en-GB', {
-                            day: '2-digit',
-                            month: 'short',
-                            year: 'numeric'
-                        }) : 'Not mentioned',
-                        icon: item.Proposals__r?.Campaign__r?.Icon__c ?? "",
-                        redirectUrl: item?.Proposals__r?.Campaign__r?.RedirectPage__c ?? "",
-                        campaignId: item?.Proposals__r?.Campaign__r?.Id ?? "",
-                        proposalId: item?.Proposals__c ?? "",
-                        category: 'applied'
-                    }
-                }) : [];
-
-                if (!$scope.appliedPrograms || !$scope.appliedPrograms.length) {
-                    // If no applied programs → keep all campaigns
-                    $scope.allPrograms = $scope.allCamapigns.map(item => ({
-                        name: item.Name,
-                        desc: item.Description,
-                        deadline: item.Actual_End_Date__c
-                            ? new Date(item.Actual_End_Date__c).toLocaleDateString('en-GB', {
-                                day: '2-digit',
-                                month: 'short',
-                                year: 'numeric'
-                            })
-                            : 'Not mentioned',
-                        icon: item.Icon__c,
-                        redirectUrl: item.RedirectPage__c,
-                        campaignId: item.Id,
-                        proposalId: '',
-                        category: 'not applied'
-                    }));
-                } else {
-                    // Build a Set of applied program names
-                    const appliedNames = new Set(
-                        $scope.appliedPrograms
-                            .filter(a => a && a.name) // safety filter
-                            .map(a => a.name)
-                    );
-
-                    // Exclude already applied campaigns
-                    $scope.allPrograms = $scope.allCamapigns
-                        .filter(item => !appliedNames.has(item.Name)) // not equal condition
-                        .map(item => ({
-                            name: item.Name,
-                            desc: item.Description,
-                            deadline: item.Actual_End_Date__c
-                                ? new Date(item.Actual_End_Date__c).toLocaleDateString('en-GB', {
-                                    day: '2-digit',
-                                    month: 'short',
-                                    year: 'numeric'
-                                })
-                                : 'Not mentioned',
-                            icon: item.Icon__c,
-                            redirectUrl: item.RedirectPage__c,
-                            campaignId: item.Id,
-                            category: 'not applied'
-                        }));
-                }
-                $scope.isLoading = false;
-                $scope.$apply();
-            }
-        },
-            { escape: true }
-        );
-    }
-    $scope.getApplicantData();*/
-
-
-
     // *******************************************************************************    
     //Added By karthik
-
 
     function isPastDate(dateStr) {
         if (!dateStr) return false; // treat no date as not expired
@@ -470,7 +253,7 @@ app.controller('cp_dashboard_ctrl', function ($scope, $rootScope, $timeout, $win
         return d < today;
     }
 
-
+    // FIX: Add conditional check to skip execution on routed views (child pages)
     $scope.getApplicantData = function (yearIdParam) {
         // Skip if on a routed view (child page)
         if ($rootScope.isRoutedView) {
@@ -506,7 +289,7 @@ app.controller('cp_dashboard_ctrl', function ($scope, $rootScope, $timeout, $win
                             year: 'numeric'
                         }) : 'Not mentioned',
                     icon: item.Proposals__r?.Campaign__r?.Icon__c ?? "",
-                    redirectUrl: item?.Proposals__r?.Campaign__r?.RedirectPage__c ?? "",
+                    redirectUrl:'Testing',
                     campaignId: item?.Proposals__r?.Campaign__r?.Id ?? "",
                     proposalId: item?.Proposals__c ?? "",
                     apaId: item?.Id ?? "",
@@ -573,14 +356,6 @@ app.controller('cp_dashboard_ctrl', function ($scope, $rootScope, $timeout, $win
         $scope.getApplicantData();
     }
 
-
-    // $scope.onYearChange = function () {
-    //     if (!$scope.selectedYear) {
-    //         return;
-    //     }
-    //     $scope.getApplicantData();
-    // };
-
     //************************************************************************************************** */
     $scope.redirectToForm = function (val) {
         debugger;
@@ -624,39 +399,15 @@ app.controller('cp_dashboard_ctrl', function ($scope, $rootScope, $timeout, $win
     $scope.logout = function () {
         // Redirect to login page after logout
         debugger;
-        /*
-        $scope.isLoading = true;
-        ApplicantPortal_Contoller.LogoutApplicant($rootScope.candidateId,function(result,event){
-            debugger;
-            if(event.status && result == 'Success'){
-                localStorage.setItem('hashCode','');
-                window.location.href = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard';
-                history.pushState(null, null, window.location.href);
-                // history.back();
-                $scope.isLoading = false;
-            }else if(result == 'Error'){
-                window.location.href = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard';
-                history.pushState(null, null, window.location.href);
-                // history.back();
-                $scope.isLoading = false;
-            }else{
-                alert('Error logging Out !');
-                console.log('Error ---> '+event.message);
-                $scope.isLoading = false;
-            }
-            $scope.$apply();
-        });
-    };
-   */
         $scope.isLoading = true;
         ApplicantPortal_Contoller.LogoutApplicant($rootScope.candidateId, function (result, event) {
             debugger;
             if (event.status && result === 'Success') {
                 localStorage.setItem('hashCode', '');
-                window.location.href = 'https://indo-germansciencetechnologycentre--newdevutil.sandbox.my.salesforce-sites.com/ApplicantDashboard/';
+                window.location.href = 'https://indo-germansciencetechnologycentre--newdevutil.sandbox.my.salesforce-sites.com/Testing/';
                 $scope.isLoading = false;
             } else if (result === 'Error') {
-                window.location.href = 'https://indo-germansciencetechnologycentre--newdevutil.sandbox.my.salesforce-sites.com/ApplicantDashboard/';
+                window.location.href = 'https://indo-germansciencetechnologycentre--newdevutil.sandbox.my.salesforce-sites.com/Testing/';
                 $scope.isLoading = false;
             } else {
                 alert('Error logging Out!');
@@ -669,6 +420,4 @@ app.controller('cp_dashboard_ctrl', function ($scope, $rootScope, $timeout, $win
 
 
 });
-
-
 

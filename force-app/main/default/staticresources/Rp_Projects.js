@@ -522,63 +522,88 @@ angular.module('rp_app').controller('projects_ctrl', function ($scope, $sce, $ro
     $scope.clearProgrammeFilter = function() {
         $scope.allProgrammes.forEach(p => (p.selected = false));
     };
-    //for button download all reviews---------------------------------------------------------------------------------------------------------------------------------------------------------------
-  $scope.downloadDocument = function () {
 
-    // Take proposals that are visible on the page
-    const visibleProposals = $scope.draftList.filter($scope.programmeFilterFn);
 
-    const proposalIds = visibleProposals
-        .map(r => r.Proposals__r.Id[0])        // extract proposal id
-        .filter(id => id);                 // remove null/undefined
-        console.log('Downloading reviews for proposals:', proposalIds);
-    if (!proposalIds || proposalIds.length === 0) {
-        console.error("No proposals available on page!");
+    $scope.downloadDocument = function () {
+    const visibleProposals = $scope.submittedList.filter($scope.programmeFilterFn);
+    let proposalIds = visibleProposals
+        .map(r => r.Proposals__r?.Id || r.Proposal__c || r.Proposals__c)
+        .filter(id => id);
+    if (proposalIds.length === 0) {
+        console.error("No proposal IDs found");
         return;
     }
-
     $scope.isLoading = true;
-
-    ReviewerPortal_Controller.updateReviewerReport(proposalIds, function (result, event) {
-
-        $scope.isLoading = false;
-        $scope.$apply();
-
+    ReviewerPortal_Controller.updateReviewerStatuses(proposalIds, function (result, event) {
         if (!event.status) {
-            console.error("Error:", event.message);
+            console.error("Update failed:", event.message);
+            $scope.isLoading = false;
+            $scope.$applyAsync();
             return;
         }
+        ReviewerPortal_Controller.generateReviewerReport(function (pdfResult, event2) {
 
-        try {
-            const parsed = JSON.parse(result);
-            const base64Pdf = parsed.base64Pdf;
-            const attachmentId = parsed.attachmentId;
-
-            const fileContent = atob(base64Pdf);
-            const byteArray = [];
-            for (let i = 0; i < fileContent.length; i++) {
-                byteArray.push(fileContent.charCodeAt(i));
+            if (!event2.status) {
+                console.error("Callout failed:", event2.message);
+                $scope.isLoading = false;
+                $scope.$applyAsync();
+                return;
             }
-
-            const blob = new Blob([new Uint8Array(byteArray)], { type: "application/pdf" });
-
-            const link = document.createElement("a");
+            const byteCharacters = atob(pdfResult);
+            const byteArray = new Uint8Array(byteCharacters.length);
+            for (let i = 0; i < byteCharacters.length; i++) {
+                byteArray[i] = byteCharacters.charCodeAt(i);
+            }
+            const blob = new Blob([byteArray], { type: 'application/pdf' });
+            const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = "ReviewerReports.pdf";
+            link.download = 'Submitted Reviewer Report.pdf';
             link.click();
 
-            ReviewerPortal_Controller.deleteAttachment(attachmentId, function (delRes, delEvt) {
-                if (!delEvt.status) {
-                    console.error("Attachment delete failed:", delEvt.message);
-                }
-            });
-
-        } catch (e) {
-            console.error("PDF Download Error:", e);
-        }
+            $scope.isLoading = false;
+            $scope.$applyAsync();
+        });
     });
 };
 
+
+    // $scope.downloadDocument = function () {
+    //     debugger;
+
+    //     const visibleProposals = $scope.submittedList.filter($scope.programmeFilterFn);
+    //     let proposalIds = visibleProposals.map(r => r.Proposals__r?.Id ||  r.Proposal__c ||  r.Proposals__c)
+    //         .filter(id => id);
+    //     console.log("Initial  proposal IDs:", proposalIds);
+
+    //     if (proposalIds.length === 0 && visibleProposals.length > 0) {
+    //         console.error("No proposal  ID found!");
+    //         return;
+    //     }
+
+    //     $scope.isLoading = true;
+        
+    //     ReviewerPortal_Controller.updateReviewerReport(proposalIds ,function (result, event) {
+    //         if (event.status) {
+
+    //             var byteCharacters = atob(result);
+    //             var byteNumbers = new Array(byteCharacters.length);
+
+    //             for (var i = 0; i < byteCharacters.length; i++) {
+    //                 byteNumbers[i] = byteCharacters.charCodeAt(i);
+    //             }
+
+    //             var byteArray = new Uint8Array(byteNumbers);
+    //             var blob = new Blob([byteArray], { type: 'application/pdf' });
+
+    //             var link = document.createElement('a');
+    //             link.href = URL.createObjectURL(blob);
+    //             link.download = 'Submitted Reviewer Report.pdf';
+    //             link.click();
+    //             $scope.isLoading = false;
+    //             $scope.$applyAsync(); 
+    //         }
+    //     });
+    // };
 
 
     // ----------------------

@@ -345,9 +345,16 @@ public without sharing class WorkshopController {
         return Proposal_Controller.getApplicantDetails(applicantHashCode);
     }
     
+    /*
     @RemoteAction
-    public static String insertApplication(Application_Proposal__c applicantDetails, List<string> selThemeList, integer day, integer month, integer year, String conId, String recordType){
-        return Proposal_Controller.insertApplication(applicantDetails, selThemeList, day, month, year, conId, recordType);
+    public static String insertApplication(Application_Proposal__c applicantDetails, List<string> selThemeList, integer day, integer month, integer year, String conId, String recordType, String yearlyCallId){
+        return Proposal_Controller.insertApplication(applicantDetails, selThemeList, day, month, year, conId, recordType, yearlyCallId);
+    }
+    */
+    
+    @RemoteAction
+    public static Proposal_Controller.insertApplicationWrapper insertApplication(Application_Proposal__c applicantDetails, List<string> selThemeList, integer day, integer month, integer year, String conId, String recordType, String yearlyCallId){
+        return Proposal_Controller.insertApplication(applicantDetails, selThemeList, day, month, year, conId, recordType, yearlyCallId);
     }
     
     @RemoteAction
@@ -868,9 +875,9 @@ return Proposal_Controller.insertParticipants(allParticipantDetails);
         return Proposal_Controller.insertPairingDetails(contactList);
     } */
 
-    @RemoteAction
-    public static String insertPairingDetails(List<Proposal_Controller.wrapperPairing> contactList,String campaignId){
-        return Proposal_Controller.insertPairingDetails(contactList,campaignId);
+     @RemoteAction
+    public static String insertPairingDetails(List<Proposal_Controller.wrapperPairing> contactList,String campaignId,String yearlyCall){
+        return Proposal_Controller.insertPairingDetails(contactList,campaignId,yearlyCall);
     }
     
     @RemoteAction
@@ -880,7 +887,7 @@ return Proposal_Controller.insertParticipants(allParticipantDetails);
     
     @RemoteAction
     public static string insertPersonalInfo(Contact conDetails, integer birthday, integer birthmonth, integer birthyear){
-        return Proposal_Controller.insertPersonalInfo(conDetails, birthday, birthmonth, birthyear);
+        return Proposal_Controller.insertPersonalInfo(conDetails, birthday, birthmonth, birthyear); 
     }
     
     @RemoteAction
@@ -1097,7 +1104,8 @@ return Proposal_Controller.insertParticipants(allParticipantDetails);
     
     @RemoteAction
     public static list<Proposal_Controller.UserDocumentWrapper> getContactUserDoc(id parentId, Id proposalId){
-        return Proposal_Controller.getContactUserDoc(parentId, proposalId);
+        Proposal_Controller pc = new Proposal_Controller();
+        return pc.getContactUserDoc(parentId, proposalId);
     }
     @RemoteAction
     public static list<Proposal_Controller.ProposalDocumentWrapper> getAllProposalDoc(id parentId){
@@ -1140,8 +1148,8 @@ return Proposal_Controller.insertParticipants(allParticipantDetails);
     
     // ================================== WORKSHOP METHOD ===================================== //
     @RemoteAction
-    public static String insertCoordinatorsInformation2(List<Account> accList,List<Contact> conList, String proposalId){
-        return Proposal_Controller.insertCoordinatorsInformation2(accList, conList, proposalId);
+    public static String insertCoordinatorsInformation2(List<Account> accList,List<Contact> conList, String proposalId, String yearlyCallId){
+        return Proposal_Controller.insertCoordinatorsInformation2(accList, conList, proposalId, yearlyCallId);
     }
     
     @RemoteAction
@@ -1751,9 +1759,17 @@ return Proposal_Controller.insertParticipants(allParticipantDetails);
         return Proposal_Controller.createAnotherCoord(projectId);
     }
     
+    /*
     @RemoteAction
     public static Contact getCoodinatorDetList(string hashcode){
         return Proposal_Controller.getCoodinatorDetList(hashcode);
+    }
+    */
+    
+    // ------------------------------- WORKSHOP METHOD ------------------------------------ //
+    @RemoteAction
+    public static Contact getCoodinatorDetList(string hashcode, string apaId){
+        return Proposal_Controller.getCoodinatorDetList(hashcode, apaId);
     }
     
     @RemoteAction

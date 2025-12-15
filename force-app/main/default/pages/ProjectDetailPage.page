@@ -38,7 +38,8 @@
                                             <div class="icon-circle">
                                                 <i class="fa fa-user"></i>
                                             </div>
-                                            <span>Consortium Details</span>
+                                            <span>Consortium Details</span>acack
+                                            
                                         </a>
                                     </li>
                                     <li class="active pb-cursor">
@@ -268,7 +269,7 @@
                 <div class="row box-shadow-2 mt-5 mx-5 p-3 mb-5">
                     <div class="col-md-6 mt-5">
                         <label class="pb-3 color-theme">
-                            Project Acronym
+                            Project Acronym (Max. characters 32,768)
                         </label>
                         <span class="required-asterisk" style="color:red;">*</span>
                         <input ng-focus="removeClass2('Acronym')" id="Acronym" name="Acronym" placeholder="Acronym" class="form-control" type="text" ng-model="applicantDetails.Acronym__c" maxlength="32768" ng-disabled="proposalStage" required="true" ng-required="applicantDetails.Acronym__c" />
@@ -276,7 +277,7 @@
 
                     <div class="col-md-6 mt-5">
                         <label class="pb-3 color-theme">
-                            Title Of Proposal
+                            Title Of Proposal (Max. characters 32,768)
                         </label>
                         <span class="required-asterisk" style="color:red;">*</span>
                         <input ng-focus="removeClass2('title')" id="title" name="Title Of Proposal" placeholder="Title Of Proposal" class="form-control" type="text" ng-model="applicantDetails.Title_Of__c" ng-disabled="proposalStage"/>
@@ -284,7 +285,7 @@
 
                     <div class="col-md-6 mt-5">
                         <label class="pb-3 color-theme">
-                            Title des Antrages(In German)
+                            Title des Antrages(In German) (Max. characters 32,768)
                         </label>
                         <span class="required-asterisk" style="color:red;">*</span>
                         <input ng-focus="removeClass2('titleG')" id="titleG" name="Title In German" placeholder="Title In German" class="form-control" type="text" ng-model="applicantDetails.Title_In_German__c" ng-disabled="proposalStage"/>

@@ -4,17 +4,21 @@ global  without sharing class CongaHelperToolLightning1 {
     // HttpReq1 Method
     // - Callout to Conga and return response as Blob
     // -----------------------------------------------------------------------
-    public static Blob HttpReq1(String url){
+    public static String HttpReq1(String url){
         Http h = new Http();
         HttpRequest req = new HttpRequest();
         req.setEndpoint(url);
         req.setMethod('GET');
         req.setTimeout(120000);
         HttpResponse res = h.send(req);
+        System.debug('Conga response status: ' + res.getStatusCode() + ' Body: ' + res.getBody());
         if(res.getStatusCode() != 200){
             throw new AuraHandledException('Conga callout failed: ' + res.getBody());
         }
-        return res.getBodyAsBlob();
+       // return res.getBodyAsBlob();
+        String responseBody = res.getBody();
+        System.debug('Conga response body length: ' + responseBody.length());
+        return responseBody;
     }
 
     // -----------------------------------------------------------------------
@@ -66,7 +70,7 @@ global  without sharing class CongaHelperToolLightning1 {
         String baseUrl = 'https://composer.congamerge.com/composer8/index.html';
         String serverUrl = System.Url.getOrgDomainUrl().toExternalForm() + '/services/Soap/u/60.0';
 
-       /* String congaUrl = baseUrl +
+    /* String congaUrl = baseUrl +
     '?SessionId=' + sessionId +
     '&ServerUrl=' + EncodingUtil.urlEncode(serverUrl,'UTF-8') +
     '&Id=' + recordId +
@@ -102,49 +106,49 @@ global  without sharing class CongaHelperToolLightning1 {
     // -----------------------------------------------------------------------
     // - Return Base64 PDF for front-end download
     // -----------------------------------------------------------------------
-   @RemoteAction
-    global static String generateReport1(List<String> recordIds){
+    @RemoteAction
+    global static String generateReport1(String recordIds){
         try {
-            // Join all Ids into a single comma-separated string
-            String allIds = String.join(recordIds, ',');
-            String url = prepareCongaUrl(allIds);
+        
+            //String allIds = String.join(recordIds, ',');
+            String url = prepareCongaUrl(recordIds);
             System.debug('Calling Conga URL = ' + url);
-            Blob pdfBlob = HttpReq1(url);
-            System.debug('PDF received. Size = ' + pdfBlob.size());
-            return EncodingUtil.base64Encode(pdfBlob);
+            String pdfstring = HttpReq1(url);
+            System.debug('PDF received. Size = ' + pdfstring);
+            return pdfstring;
         } catch(Exception e){
             System.debug('ERROR in generateReport1: ' + e.getMessage());
             return null; 
         }
     }
 
-    @RemoteAction
-    global static Map<String, String> generateAndSave(String recordId) {
-        Map<String, String> response = new Map<String, String>();
+    // @RemoteAction
+    // global static Map<String, String> generateAndSave(String recordId) {
+    //     Map<String, String> response = new Map<String, String>();
     
-        try {
-            // 1. Generate Conga PDF as Blob
-            String url = prepareCongaUrl(recordId);
-            Blob pdfBlob = HttpReq1(url);
+    //     try {
+    //         // 1. Generate Conga PDF as Blob
+    //         String url = prepareCongaUrl(recordId);
+    //         String pdfString = HttpReq1(url);
     
-            // 2. Save as Attachment
-            Attachment att = new Attachment();
-            att.ParentId = recordId;     // <-- Attach under this Id
-            att.Name = 'ReviewerReport.pdf';
-            att.Body = pdfBlob;
-            att.ContentType = 'application/pdf';
-            insert att;
+    //         // 2. Save as Attachment
+    //         Attachment att = new Attachment();
+    //         att.ParentId = recordId;     // <-- Attach under this Id
+    //         att.Name = 'ReviewerReport.pdf';
+    //         att.Body = pdfString;
+    //         att.ContentType = 'application/pdf';
+    //         insert att;
     
-            // 3. Return attachment Id + base64 (for JS download)
-            response.put('attachmentId', att.Id);
-            response.put('base64Pdf', EncodingUtil.base64Encode(pdfBlob));
+    //         // 3. Return attachment Id + base64 (for JS download)
+    //         response.put('attachmentId', att.Id);
+    //         response.put('base64Pdf', (pdfString));
     
-            return response;
+    //         return response;
     
-        } catch (Exception e) {
-            throw new AuraHandledException(e.getMessage());
-        }
-    }
+    //     } catch (Exception e) {
+    //         throw new AuraHandledException(e.getMessage());
+    //     }
+    // }
     @RemoteAction
     global static Boolean deleteAttachment(String attachmentId) {
         try {

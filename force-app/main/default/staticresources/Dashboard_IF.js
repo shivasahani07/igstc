@@ -4,7 +4,7 @@ angular.module('cp_app').controller('Dashboard_iF_Ctlr', function($scope,$sce,$r
     
     $rootScope.proposalId;
     
-    $scope.yearlyCallId;
+    $rootScope.yearlyCallId;
     $scope.eduQualification=false;
     $scope.achievements=false;
     $scope.employmentDetails=false;
@@ -39,10 +39,16 @@ angular.module('cp_app').controller('Dashboard_iF_Ctlr', function($scope,$sce,$r
                 $rootScope.campaignId = localStorage.getItem('campaignId');
                 console.log('Loaded campaignId from localStorage:', $rootScope.campaignId);
             }
+
+    // Fetching the yearlyCallId from Local Storage
+    if (localStorage.getItem('yearlyCallId')) {
+        $rootScope.yearlyCallId = localStorage.getItem('yearlyCallId');
+        console.log('Loaded proposalId from localStorage:', $rootScope.yearlyCallId);
+    }
     
     // Method to validate If Yearly call condions added by Rukasar:
  
-    $scope.getActiveCampaignData = function() {
+   /* $scope.getActiveCampaignData = function() {
     debugger;
     ApplicantPortal_Contoller.getActiveCampaignIf('Industrial Fellowships', function(result, event) {
         console.log('Direct Test Result:', result);
@@ -94,7 +100,55 @@ angular.module('cp_app').controller('Dashboard_iF_Ctlr', function($scope,$sce,$r
         }
     });
 }
-$scope.getActiveCampaignData(); 
+$scope.getActiveCampaignData(); */
+
+
+$scope.getActiveCampaignData = function() {
+    debugger;
+    ApplicantPortal_Contoller.getActiveCampaignIf($rootScope.yearlyCallId, function(result, event) {
+        console.log('Direct Test Result:', result);
+        console.log('Direct Test Event:', event);
+        
+        if (event.status && result != null && result.length > 0) {        
+                 
+             // Fetching the campaignId from Local Storage
+            if (localStorage.getItem('campaignId')) {
+                $rootScope.campaignId = localStorage.getItem('campaignId');
+                console.log('Loaded campaignId from localStorage:', $rootScope.campaignId);
+            }
+            
+      
+            if (result) {
+                $scope.PIEF_age_limit = result[0].PIEF_Age_Limit__c;
+                $scope.PDIF_age_limit = result[0].PDIF_Age_Limit__c;
+                $scope.PDIF_phd_limit = result[0].PDIF_PhD_time__c;
+                $scope.PIEF_DOB = result[0].Date_of_Birth_PIEF__c;
+                $scope.PIEF_phddate = result[0].PhD_Enrollment_Date_PIEF__c;
+                $scope.PIEF_phddate_onlydate = result[0].PhD_Enrollment_Date_PIEF__c;
+                $scope.PDIF_DOB = result[0].Date_of_Birth_PDIF__c;
+                $scope.PDIF_phddate = result[0].PhD_Enroll_ment_Date_PDIF__c;
+                $scope.PDIF_phddate_onlydate = result[0].PhD_Enroll_ment_Date_PDIF__c;
+                $scope.PIEF_PhD_time = result[0].PIEF_PhD_time__c;
+  
+            } else {
+                console.error('Yearly Call relationship data not found');
+               
+            }
+            console.log('Campaign Data Loaded:', {
+               // name: result[0].Name,
+                PIEF_Age_Limit: $scope.PIEF_Age_Limit,
+                PDIF_Age_Limit: $scope.PDIF_Age_Limit
+            });
+            //delete $scope.result.Yearly_Call__r;
+          //delete  $scope.activeCampaign[0].Yearly_Call__r;
+            $scope.$apply();
+        } else {
+            console.warn('No active campaign found or error occurred');
+         
+        }
+    });
+}
+$scope.getActiveCampaignData();
     
     $scope.getCampaignEndDate=function(){
       ApplicantPortal_Contoller.getCampaignEndDate('Industrial Fellowships',function (result, event) {
@@ -135,10 +189,7 @@ $scope.getActiveCampaignData();
               //  $scope.PDIF_phddate = new Date($scope.objContact.Applicant_Proposal_Associations__r[0].Proposals__r.yearly_Call__r.PhD_Enroll_ment_Date_PDIF__c);
             //    $scope.PDIF_phddate_onlydate = $scope.objContact.Applicant_Proposal_Associations__r[0].Proposals__r.yearly_Call__r.PhD_Enroll_ment_Date_PDIF__c;
                 
-                //$scope.objContact.Industrial_Fellowship_Type__c='PIEF';
-                    if(result.Applicant_Proposal_Associations__r[0].Proposals__r!=undefined && result.Applicant_Proposal_Associations__r[0].Proposals__r!=''){
-                      $scope.objProposal=result.Applicant_Proposal_Associations__r[0].Proposals__r;
-                  }
+                //$scope.objContact.Industrial_Fellowship_Type__c='PIEF';                    
                   
                     if(result.Birthdate!=undefined && result.Birthdate!=''){
                       $scope.Birthdate=new Date($scope.objContact.Birthdate);
@@ -159,6 +210,9 @@ $scope.getActiveCampaignData();
                       $scope.clickRadioPDIF();
                       $scope.changeAward();                      
                     }
+                    if(result.Applicant_Proposal_Associations__r[0].Proposals__r!=undefined && result.Applicant_Proposal_Associations__r[0].Proposals__r!=''){
+                      $scope.objProposal=result.Applicant_Proposal_Associations__r[0].Proposals__r?result.Applicant_Proposal_Associations__r[0].Proposals__r:null;
+                  }
                     delete $scope.objContact.Applicant_Proposal_Associations__r[0].Proposals__r;
                 
                     $scope.$apply();
@@ -453,7 +507,7 @@ $scope.getActiveCampaignData();
     
         
     $scope.objProposal.Campaign__c = $rootScope.campaignId;
-    $scope.objProposal.yearly_Call__c = $scope.yearlyCallId;
+    $scope.objProposal.yearly_Call__c = $rootScope.yearlyCallId;
     ApplicantPortal_Contoller.updateIndusrianFellowshipBasicDet($rootScope.campaignId,$rootScope.candidateId,$scope.objContact, 
           birthDay,birthMonth,birthYear,
           phdEnrollYear,phdEnrollMonth,phdEnrollDay,
@@ -465,7 +519,7 @@ $scope.getActiveCampaignData();
             if (event.status) {
                if(result!=null){
              // Saving the ProposalId in Local Storage
-				localStorage.setItem('proposalId', result);
+				    localStorage.setItem('proposalId', result);
               
                    
                    

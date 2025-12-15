@@ -11,7 +11,7 @@
         </head>
 
         <body>
-            
+
             <div class="container mt-5">
                 <div class="row mx-5">
                     <div class="col-md-12">
@@ -249,8 +249,12 @@
 
                 <div class="row mx-5">
                     <div class="col-md-12 mt-5 box-shadow-1 mb-5" style="padding-bottom: 7px; padding-top: 7px;">
-                        <i ng-if="allDetailList.Account.ShippingCountry=='India'"><apex:image url="{!$Resource.indiaFlag}" styleClass="img-fluid" style="max-width:30px;" /></i>
-                        <i ng-if="allDetailList.Account.ShippingCountry=='Germany'"><apex:image url="{!$Resource.germanyFlag}" styleClass="img-fluid" style="max-width:30px;" /></i>
+                        <i ng-if="allDetailList.Account.ShippingCountry=='India'">
+                            <apex:image url="{!$Resource.indiaFlag}" styleClass="img-fluid" style="max-width:30px;" />
+                        </i>
+                        <i ng-if="allDetailList.Account.ShippingCountry=='Germany'">
+                            <apex:image url="{!$Resource.germanyFlag}" styleClass="img-fluid" style="max-width:30px;" />
+                        </i>
                         <span class="pb-3 h4 color-theme ms-3">{{allDetailList.Account.Name}}</span>
                     </div>
                 </div>
@@ -262,7 +266,11 @@
                                 <i class="fa-solid fa-user"></i>
                             </div>
                             <div class="row mt-3">
-                                <div class="col-md-4"><label class="font-if"><b>Basic Details</b></label></div>
+                                <div class="col-md-4">
+                                    <label class="font-if">
+                                        <b>Basic Details</b>
+                                    </label>
+                                </div>
                             </div>
                             <div class="row mt-3">
                                 <!-- <div class="col-md-2">
@@ -275,56 +283,83 @@
                                     </select>
                                 </div> -->
                                 <div class="col-md-4">
-                                    <label class="font-if">First Name<span class="text-danger ms-2">*</span></label>
-                                    <input ng-focus="removeClass2('FName')" id="FName" class="form-control" ng-model="allDetailList.FirstName" type="text" ng-disabled="proposalStage"/>
-                                </div>            
+                                    <label class="font-if">First Name (Max. char 40)
+                                        <span class="text-danger ms-2">*</span>
+                                    </label>
+                                    <input ng-focus="removeClass2('FName')" id="FName" class="form-control" ng-model="allDetailList.FirstName" type="text" ng-disabled="proposalStage"
+                                    />
+                                </div>
                                 <div class="col-md-4">
-                                    <label class="font-if">Last Name<span class="text-danger ms-2">*</span></label>
-                                    <input ng-focus="removeClass2('LName')" id="LName" class="form-control" ng-model="allDetailList.LastName" type="text" ng-disabled="proposalStage"/>
-                                </div>            
+                                    <label class="font-if">Last Name (Max. char 80)
+                                        <span class="text-danger ms-2">*</span>
+                                    </label>
+                                    <input ng-focus="removeClass2('LName')" id="LName" class="form-control" ng-model="allDetailList.LastName" type="text" ng-disabled="proposalStage"
+                                    />
+                                </div>
                                 <div class="col-md-4">
-                                    <label class="font-if">Email<span class="text-danger ms-2">*</span></label>
-                                    <input ng-focus="removeClass2('email')" id="email" class="form-control" ng-model="allDetailList.Email" type="text" ng-disabled="true"/>
+                                    <label class="font-if">Email
+                                        <span class="text-danger ms-2">*</span>
+                                    </label>
+                                    <input ng-focus="removeClass2('email')" id="email" class="form-control" ng-model="allDetailList.Email" type="text" ng-disabled="true"
+                                    />
                                 </div>
                             </div>
-        
+
                             <div class="row mt-3">
                                 <div class="col-md-4">
-                                    <label class="font-if">Actual Position<span class="text-danger ms-2">*</span></label>
-                                    <input ng-focus="removeClass2('position')" id="position" class="form-control" ng-model="allDetailList.Actual_Position__c" type="text" ng-disabled="proposalStage"/>
+                                    <label class="font-if">Actual Position (Max. char 80)
+                                        <span class="text-danger ms-2">*</span>
+                                    </label>
+                                    <input ng-focus="removeClass2('position')" id="position" class="form-control" ng-model="allDetailList.Actual_Position__c"
+                                        type="text" ng-disabled="proposalStage" />
                                 </div>
-        
+
                                 <div class="col-md-4">
-                                    <label class="font-if">Street<span class="text-danger ms-2">*</span></label>
-                                    <input ng-focus="removeClass2('street')" id="street" class="form-control" ng-model="allDetailList.MailingStreet" type="text" ng-disabled="proposalStage"/>
+                                    <label class="font-if">Street
+                                        <span class="text-danger ms-2">*</span>
+                                    </label>
+                                    <input ng-focus="removeClass2('street')" id="street" class="form-control" ng-model="allDetailList.MailingStreet" type="text"
+                                        ng-disabled="proposalStage" />
                                 </div>
-        
+
                                 <div class="col-md-4">
-                                    <label class="font-if">City<span class="text-danger ms-2">*</span></label>
-                                    <input ng-focus="removeClass2('city')" id="city" class="form-control" ng-model="allDetailList.MailingCity" type="text" ng-disabled="proposalStage"/>
+                                    <label class="font-if">City
+                                        <span class="text-danger ms-2">*</span>
+                                    </label>
+                                    <input ng-focus="removeClass2('city')" id="city" class="form-control" ng-model="allDetailList.MailingCity" type="text" ng-disabled="proposalStage"
+                                    />
                                 </div>
                             </div>
-        
+
                             <div class="row mt-3 pb-5">
                                 <div class="col-md-4">
-                                    <label class="font-if">Country<span class="text-danger ms-2">*</span></label>
-                                    <select class="form-control" aria-label="Default select example" ng-focus="removeClass2('country')" id="country" ng-model="allDetailList.MailingCountry" required="true" ng-disabled="proposalStage" ng-change="onCountryChange()">
+                                    <label class="font-if">Country
+                                        <span class="text-danger ms-2">*</span>
+                                    </label>
+                                    <select class="form-control" aria-label="Default select example" ng-focus="removeClass2('country')" id="country" ng-model="allDetailList.MailingCountry"
+                                        required="true" ng-disabled="proposalStage" ng-change="onCountryChange()">
                                         <option ng-repeat="staff in countrytype">{{staff}}</option>
                                     </select>
                                     <!-- <input class="form-control" ng-model="allDetailList.MailingCountry" type="text" ng-disabled="proposalStage" ng-change="onCountryChange()"/> -->
                                 </div>
-        
+
                                 <div class="col-md-4">
-                                    <label class="font-if">State<span class="text-danger ms-2">*</span></label>
-                                    <select class="form-control" aria-label="Default select example" ng-focus="removeClass2('state')" id="state" ng-model="allDetailList.MailingState" required="true" ng-disabled="proposalStage">
+                                    <label class="font-if">State
+                                        <span class="text-danger ms-2">*</span>
+                                    </label>
+                                    <select class="form-control" aria-label="Default select example" ng-focus="removeClass2('state')" id="state" ng-model="allDetailList.MailingState"
+                                        required="true" ng-disabled="proposalStage">
                                         <option ng-repeat="staff in allDetailList.stateList">{{staff}}</option>
                                     </select>
                                     <!-- <input class="form-control" ng-model="allDetailList.MailingState" type="text" ng-disabled="proposalStage"/> -->
                                 </div>
-        
+
                                 <div class="col-md-4">
-                                    <label class="font-if">Post Code<span class="text-danger ms-2">*</span></label>
-                                    <input class="form-control" ng-focus="removeClass2('pCode')" id="pCode" ng-model="allDetailList.MailingPostalCode" type="text" ng-disabled="proposalStage"/>
+                                    <label class="font-if">Post Code
+                                        <span class="text-danger ms-2">*</span>
+                                    </label>
+                                    <input class="form-control" ng-focus="removeClass2('pCode')" id="pCode" ng-model="allDetailList.MailingPostalCode" type="text"
+                                        ng-disabled="proposalStage" />
                                 </div>
                             </div>
                         </div>
@@ -333,9 +368,13 @@
                                 <i class="fa-solid fa-user-graduate"></i>
                             </div>
                             <div class="row">
-                                <div class="col-md-4"><label class="font-if"><b>Education</b></label></div>
+                                <div class="col-md-4">
+                                    <label class="font-if">
+                                        <b>Education</b>
+                                    </label>
+                                </div>
                             </div>
-        
+
                             <div class=" row mt-3 pb-5">
                                 <div class="col-md-12">
                                     <table class="table2" style="width: 100%" cellpadding="4">
@@ -344,40 +383,52 @@
                                                 <th class="pb-3 color-theme">Degree
                                                     <span class="required-asterisk" style="color:red;">*</span>
                                                 </th>
-                                                <th class="pb-3 color-theme">Institution
+                                                <th class="pb-3 color-theme">Institution (Max. char 255)
                                                     <span class="required-asterisk" style="color:red;">*</span>
                                                 </th>
-                                                <th class="pb-3 color-theme">Specialization
-                                                    <span class="required-asterisk" style="color:red;">*</span>
-                                                </th>                                                       
-                                                <th class="pb-3 color-theme">Start Year
+                                                <th class="pb-3 color-theme">Specialization (Max. char 255)
                                                     <span class="required-asterisk" style="color:red;">*</span>
                                                 </th>
-                                                <th class="pb-3 color-theme">End Year
+                                                <th class="pb-3 color-theme">Start Year (Max. char 255)
                                                     <span class="required-asterisk" style="color:red;">*</span>
                                                 </th>
-                                                <th ng-hide="proposalStage" class="text-center"><i class="fas fa-plus-circle icon" ng-click="addEducationRow()"></i></th>
+                                                <th class="pb-3 color-theme">End Year (Max. char 255)
+                                                    <span class="required-asterisk" style="color:red;">*</span>
+                                                </th>
+                                                <th ng-hide="proposalStage" class="text-center">
+                                                    <i class="fas fa-plus-circle icon" ng-click="addEducationRow()"></i>
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr ng-repeat="row in allDetailList.Education_Details__r">
                                                 <td>
-                                                    <input ng-focus="removeClass('degree',$index)" id="degree{{$index}}" ng-model="row.Degree__c" ng-disabled="proposalStage" class="form-control" type="text"/>
+                                                    <input ng-focus="removeClass('degree',$index)" id="degree{{$index}}" ng-model="row.Degree__c" ng-disabled="proposalStage"
+                                                        class="form-control" type="text" />
                                                 </td>
-                                                <td><input type="text" ng-focus="removeClass('institution',$index)" id="institution{{$index}}" ng-model="row.Institution_Name__c" class="form-control" ng-disabled="proposalStage"/>
-                                                </td>
-            
                                                 <td>
-                                                    <input ng-focus="removeClass('specialization',$index)" id="specialization{{$index}}" ng-model="row.Area_of_specialization__c" ng-disabled="proposalStage" class="form-control" type="text"/>
+                                                    <input type="text" ng-focus="removeClass('institution',$index)" id="institution{{$index}}" ng-model="row.Institution_Name__c"
+                                                        class="form-control" ng-disabled="proposalStage" />
                                                 </td>
-                                                                                                        
-                                                <td><input type="text" ng-focus="removeClass('zipCode1',$index)" maxlength="100" ng-model="row.Start_Year__c" id="zipCode1{{$index}}" class="form-control" ng-disabled="proposalStage"/>
+
+                                                <td>
+                                                    <input ng-focus="removeClass('specialization',$index)" id="specialization{{$index}}" ng-model="row.Area_of_specialization__c"
+                                                        ng-disabled="proposalStage" class="form-control" type="text" />
                                                 </td>
-            
-                                                <td><input type="text" ng-focus="removeClass('zipCode2',$index)" maxlength="100" ng-model="row.End_Year__c" id="zipCode2{{$index}}" class="form-control" ng-disabled="proposalStage"/>
+
+                                                <td>
+                                                    <input type="text" ng-focus="removeClass('zipCode1',$index)" maxlength="100" ng-model="row.Start_Year__c" id="zipCode1{{$index}}"
+                                                        class="form-control" ng-disabled="proposalStage" />
                                                 </td>
-            
-                                                <td ng-show="!proposalStage" class="text-center"><i class="fa-sharp fa-solid fa-circle-xmark fa-2x text-danger" ng-click="removeEducationRow($index)"></i></td>
+
+                                                <td>
+                                                    <input type="text" ng-focus="removeClass('zipCode2',$index)" maxlength="100" ng-model="row.End_Year__c" id="zipCode2{{$index}}"
+                                                        class="form-control" ng-disabled="proposalStage" />
+                                                </td>
+
+                                                <td ng-show="!proposalStage" class="text-center">
+                                                    <i class="fa-sharp fa-solid fa-circle-xmark fa-2x text-danger" ng-click="removeEducationRow($index)"></i>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -389,49 +440,62 @@
                                 <i class="fa-solid fa-briefcase"></i>
                             </div>
                             <div class="row">
-                                <div class="col-md-4"><label class="font-if"><b>Employment</b></label></div>
+                                <div class="col-md-4">
+                                    <label class="font-if">
+                                        <b>Employment</b>
+                                    </label>
+                                </div>
                             </div>
-        
+
                             <div class="row mt-3 pb-5">
                                 <div class="col-md-12">
                                     <table class="table2" cellpadding="4" style="width: 100%">
                                         <thead>
                                             <tr>
-                                                <th class="pb-3 color-theme">Organization
+                                                <th class="pb-3 color-theme">Organization (Max. char 255)
                                                     <span class="required-asterisk" style="color:red;">*</span>
                                                 </th>
-                                                <th class="pb-3 color-theme">Position
+                                                <th class="pb-3 color-theme">Position (Max. char 255)
                                                     <span class="required-asterisk" style="color:red;">*</span>
                                                 </th>
-                                                <th class="pb-3 color-theme">Start Year
+                                                <th class="pb-3 color-theme">Start Year (Max. char 255)
                                                     <span class="required-asterisk" style="color:red;">*</span>
                                                 </th>
-                                                <th class="pb-3 color-theme">End Year
+                                                <th class="pb-3 color-theme">End Year (Max. char 255)
                                                     <span class="required-asterisk" style="color:red;">*</span>
                                                 </th>
-                                                <th ng-hide="proposalStage" class="text-center"><i class="fas fa-plus-circle icon" ng-click="addEmploymentRow()"></i></th>
+                                                <th ng-hide="proposalStage" class="text-center">
+                                                    <i class="fas fa-plus-circle icon" ng-click="addEmploymentRow()"></i>
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr ng-repeat="row in allDetailList.Employment_Details__r">
                                                 <td>
-                                                    <input type="text" ng-focus="removeClass('org',$index)" id="org{{$index}}" ng-model="row.Organization_Name__c" class="form-control" ng-disabled="proposalStage"/>
+                                                    <input type="text" ng-focus="removeClass('org',$index)" id="org{{$index}}" ng-model="row.Organization_Name__c" class="form-control"
+                                                        ng-disabled="proposalStage" />
                                                 </td>
                                                 <td>
-                                                    <input type="text" ng-focus="removeClass('position1',$index)" id="position1{{$index}}" ng-model="row.Position__c" class="form-control" ng-disabled="proposalStage"/>
+                                                    <input type="text" ng-focus="removeClass('position1',$index)" id="position1{{$index}}" ng-model="row.Position__c" class="form-control"
+                                                        ng-disabled="proposalStage" />
                                                 </td>
                                                 <td>
-                                                    <input type="text" number="row.Start_Year__c" ng-focus="removeClass('zipCode11',$index)" ng-model="row.Start_Year__c" min="1000" max="9999" maxlength="4" minlength="4" id="zipCode11{{$index}}" class="form-control" ng-disabled="proposalStage"/>
+                                                    <input type="text" number="row.Start_Year__c" ng-focus="removeClass('zipCode11',$index)" ng-model="row.Start_Year__c" min="1000"
+                                                        max="9999" maxlength="4" minlength="4" id="zipCode11{{$index}}" class="form-control"
+                                                        ng-disabled="proposalStage" />
                                                 </td>
                                                 <td>
-                                                    <input type="text" ng-focus="removeClass('zipCode22',$index)" ng-model="row.End_Year__c" id="zipCode22{{$index}}" class="form-control" ng-disabled="proposalStage"/>
+                                                    <input type="text" ng-focus="removeClass('zipCode22',$index)" ng-model="row.End_Year__c" id="zipCode22{{$index}}" class="form-control"
+                                                        ng-disabled="proposalStage" />
                                                 </td>
-                                                <td ng-show="!proposalStage" class="text-center"><i class="fa-sharp fa-solid fa-circle-xmark fa-2x text-danger" ng-click="removeEmploymentRow($index)"></i></td>
+                                                <td ng-show="!proposalStage" class="text-center">
+                                                    <i class="fa-sharp fa-solid fa-circle-xmark fa-2x text-danger" ng-click="removeEmploymentRow($index)"></i>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
-                                
+
                             </div>
                         </div>
                         <div class="vertical-scroll">
@@ -439,20 +503,27 @@
                                 <i class="fas fa-file-invoice"></i>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-md-12"><label class="font-if"><b>Publications/Patents <i>(Only five relevant to the proposals / best five in last five years)</i></b></label></div>
+                                <div class="col-md-12">
+                                    <label class="font-if">
+                                        <b>Publications/Patents
+                                            <i>(Only five relevant to the proposals / best five in last five years)</i>
+                                        </b>
+                                    </label>
+                                </div>
                             </div>
                             <div class="mb-5">
                                 <ng-ckeditor id="publication" read-Only="true" ng-model="allDetailList.Publications_Patents__c" name="ckEditor" ng-config="config"></ng-ckeditor>
                             </div>
                         </div>
-                            <div class="row mb-3" ng-if="!proposalStage">
-                                <div class="col-md-12">
-                                    <button class="blue-btn float-end" id="btnSubmit" ng-click="saveAllDetails()" type="button">
-                                        <i class="fa-solid fa-check me-2"></i>Save and Next</button>
-                                    <button class="btn btn-secondary float-end me-2" style="padding: 8px 20px !important;font-size: 16px !important;" ng-click="redirectPageURL('ConsortiaAddress')" type="button">
-                                        <i class="fa-solid fa-arrow-left me-2"></i>Back</button>
-                                </div>
-                            </div>    
+                        <div class="row mb-3" ng-if="!proposalStage">
+                            <div class="col-md-12">
+                                <button class="blue-btn float-end" id="btnSubmit" ng-click="saveAllDetails()" type="button">
+                                    <i class="fa-solid fa-check me-2"></i>Save and Next</button>
+                                <button class="btn btn-secondary float-end me-2" style="padding: 8px 20px !important;font-size: 16px !important;" ng-click="redirectPageURL('ConsortiaAddress')"
+                                    type="button">
+                                    <i class="fa-solid fa-arrow-left me-2"></i>Back</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

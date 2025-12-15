@@ -303,7 +303,7 @@
                         </div> -->
                         <div class="col-md-2">
                             <label class="font-if">Salutation<span class="ms-2 text-danger">*</span></label>
-                            <select class="form-control" id="ddTitle" ng-focus="removeClass('ddTitle')" ng-model='addressDetails.Contacts[0].Title' ng-disabled="proposalStage || disableConsortiaAddressFields">
+                            <select class="form-control" id="ddTitle" ng-focus="removeClass('ddTitle')" ng-model='addressDetails.Contacts[0].Title' ng-disabled="proposalStage">
                                 <option value="Prof." ng-selected="Mr">Prof.</option>
                                 <option value="Dr.">Dr.</option>
                                 <option value="Mr.">Mr.</option>
@@ -311,42 +311,34 @@
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <label class="font-if">Project Head<span class="ms-2 text-danger">*</span></label>
-                            <!-- <input ng-focus="removeClass2('head')" id="head" type="text" ng-model="addressDetails.Contacts[0].Name" class="form-control" ng-disabled="true" /> -->
-                            <input ng-focus="removeClass2('head')" id="head" type="text" ng-model="addressDetails.Contacts[0].Name" class="form-control" ng-disabled="proposalStage || disableConsortiaAddressFields" />
+                            <label class="font-if">Project Head (Max. char 40)<span class="ms-2 text-danger">*</span></label>
+                            <input ng-focus="removeClass2('head')" id="head" type="text" ng-model="addressDetails.Contacts[0].Name" class="form-control" ng-disabled="true" />
                         </div>
                         <!-- <div class="col-md-3">
                             <label class="font-if">Project Head<span class="ms-2 text-danger">*</span></label>
                             <input ng-focus="removeClass2('head')" id="head" type="text" ng-model="addressDetails.Head_Of_Project__c" class="form-control" ng-disabled="proposalStage" />
                         </div> -->
                         <div class="col-md-3">                                                
-                            <label class="font-if">Current Position/Designation<span class="ms-2 text-danger">*</span></label>
-                            <!--<input type="text" ng-focus="removeClass2('currPosition')" id="currPosition" ng-model="addressDetails.Contacts[0].Designation__c" class="form-control" ng-disabled="proposalStage" /> -->
- 							<input type="text" ng-focus="removeClass2('currPosition')" id="currPosition" ng-model="addressDetails.Contacts[0].Designation__c" class="form-control" ng-disabled="proposalStage || disableConsortiaAddressFields" />
-						</div>
+                            <label class="font-if">Current Position/Designation (Max. char 80)<span class="ms-2 text-danger">*</span></label>
+                            <input type="text" ng-focus="removeClass2('currPosition')" id="currPosition" ng-model="addressDetails.Contacts[0].Designation__c" class="form-control" ng-disabled="proposalStage" />
+                        </div>
                         <div class="col-md-4">
-                            <label class="font-if">Department/Division<span class="ms-2 text-danger">*</span></label>
-                            <!-- <input ng-focus="removeClass2('dept')" id="dept" type="text" ng-model="addressDetails.Contacts[0].Department" class="form-control" ng-disabled="proposalStage" /> -->
-                            <input ng-focus="removeClass2('dept')" id="dept" type="text" ng-model="addressDetails.Contacts[0].Department" class="form-control" ng-disabled="proposalStage || disableConsortiaAddressFields" />
+                            <label class="font-if">Department/Division (Max. char 80)<span class="ms-2 text-danger">*</span></label>
+                            <input ng-focus="removeClass2('dept')" id="dept" type="text" ng-model="addressDetails.Contacts[0].Department" class="form-control" ng-disabled="proposalStage" />
                         </div>
                     </div>
                     <div class="row mt-5">
                         <div class="col-md-4">
                             <label class="font-if">Institution/Industry Name<span class="ms-2 text-danger">*</span></label>
-                            <!-- <input ng-focus="removeClass2('inst')" id="inst" type="text" ng-model="addressDetails.Name" class="form-control" ng-disabled="proposalStage"  /> -->
-                            <input ng-focus="removeClass2('inst')" id="inst" type="text" ng-model="addressDetails.Name" class="form-control" ng-disabled="proposalStage || disableConsortiaAddressFields"  />
+                            <input ng-focus="removeClass2('inst')" id="inst" type="text" ng-model="addressDetails.Name" class="form-control" ng-disabled="proposalStage" />
                         </div>
                         <div class="col-md-4">
-                            <label class="font-if">HomePage URL <span class="ms-2 text-danger">*</span> </label>
-                            <!-- <input ng-focus="removeClass2('home')" id="home" type="text" ng-model="addressDetails.Website" class="form-control" ng-disabled="proposalStage" /> -->
-                            <input ng-focus="removeClass2('home')" id="home" type="text" ng-model="addressDetails.Website" class="form-control" ng-disabled="proposalStage || disableConsortiaAddressFields" />
+                            <label class="font-if">HomePage URL (Max. char 255)<span class="ms-2 text-danger">*</span> </label>
+                            <input ng-focus="removeClass2('home')" id="home" type="text" ng-model="addressDetails.Website" class="form-control" ng-disabled="proposalStage" />
                         </div>
                         <div class="col-md-4">
                             <label class="font-if">Country Type</label>
-                            <!--<select class="form-control" aria-label="Default select example" ng-focus="removeClass2('ct')" id="ct" ng-change="setSaveStatus($index)" ng-model="addressDetails.BillingCountry" ng-disabled="true">
-                                <option ng-repeat="staff in countrytype">{{staff}}</option>
-                            </select>-->
-                            <select class="form-control" aria-label="Default select example" ng-focus="removeClass2('ct')" id="ct" ng-change="setSaveStatus($index)" ng-model="addressDetails.BillingCountry" ng-disabled="proposalStage || disableConsortiaAddressFields">
+                            <select class="form-control" aria-label="Default select example" ng-focus="removeClass2('ct')" id="ct" ng-change="setSaveStatus($index)" ng-model="addressDetails.BillingCountry" ng-disabled="true">
                                 <option ng-repeat="staff in countrytype">{{staff}}</option>
                             </select>
                         </div>
@@ -354,18 +346,16 @@
                     <div class="row mt-5">                        
                         <div class="col-md-4">
                             <label class="font-if">Email<span class="ms-2 text-danger">*</span></label>
-                            <!-- <input ng-focus="removeClass2('email')" id="email" type="email" ng-model="addressDetails.Contacts[0].Email" class="form-control" ng-disabled="true" /> -->
-                            <input ng-focus="removeClass2('email')" id="email" type="email" ng-model="addressDetails.Contacts[0].Email" class="form-control" ng-disabled="proposalStage || disableConsortiaAddressFields" />
+                            <input ng-focus="removeClass2('email')" id="email" type="email" ng-model="addressDetails.Contacts[0].Email" class="form-control" ng-disabled="true" />
                         </div>
                         <div class="col-md-4">
                             <label class="font-if">Phone<span class="ms-2 text-danger">*</span></label>
-                            <!-- <input ng-focus="removeClass2('phone')" id="phone" type="text" number="addressDetails.Phone" ng-model="addressDetails.Contacts[0].Phone" class="form-control" ng-disabled="proposalStage" /> -->
-                            <input ng-focus="removeClass2('phone')" id="phone" type="text" number="addressDetails.Phone" ng-model="addressDetails.Contacts[0].Phone" class="form-control" ng-disabled="proposalStage || disableConsortiaAddressFields" />
+                            <input ng-focus="removeClass2('phone')" id="phone" type="text" number="addressDetails.Phone" ng-model="addressDetails.Contacts[0].Phone" class="form-control" ng-disabled="proposalStage" />
                         </div>
                     </div>
                     <div class="row mt-5" ng-if="addressDetails.Industry__c == true && addressDetails.BillingCountry == 'India'">
                         <div class="col-md-4">
-                            <label class="font-if">DSIR Certificate number</label>
+                            <label class="font-if">DSIR Certificate number (Max. char 255)</label>
                             <!-- <span class="required-asterisk" style="color:red;">*</span> -->
                             <input type="text" ng-focus="removeClass('dsir')" id="dsir" ng-model="addressDetails.DSIR_Recoginition_Details__c" ng-keyup="setSaveStatus($index)" ng-disabled="proposalStage" class="form-control" />
                         </div>
@@ -444,43 +434,43 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label class="font-if">Year Of Establishment<span class="ms-2 text-danger">*</span></label>
+                                <label class="font-if">Year Of Establishment (Max. char 4)<span class="ms-2 text-danger">*</span></label>
                                 <input ng-focus="removeClass2('establish')" id="establish" type="text" number="addressDetails.Year_Of_Establishment__c" min="1000" max="9999" maxlength="4" minlength="4" ng-model="addressDetails.Year_Of_Establishment__c" class="form-control" ng-disabled="proposalStage" />
                             </div>
                         </div>
     
                         <div class="row mt-5">
                             <div class="col-md-6">
-                                <label class="font-if">Main Business Area<span class="ms-2 text-danger">*</span></label>
+                                <label class="font-if">Main Business Area (Max. char 255)<span class="ms-2 text-danger">*</span></label>
                                 <input ng-focus="removeClass2('business')" id="business" type="text" ng-model="addressDetails.Main_Business_Area__c" class="form-control" ng-disabled="proposalStage" />
                             </div>
     
                             <div class="col-md-6">
-                                <label class="font-if">Number Of Permanent Employees<span class="ms-2 text-danger">*</span></label>
+                                <label class="font-if">Number Of Permanent Employees (Max. char 8)<span class="ms-2 text-danger">*</span></label>
                                 <input ng-focus="removeClass2('employees')" id="employees" type="text" number="addressDetails.NumberOfEmployees" ng-model="addressDetails.NumberOfEmployees" class="form-control" ng-disabled="proposalStage" />
                             </div>
                         </div>
     
                         <div class="row mt-5">
                             <div class="col-md-6">
-                                <label class="font-if">Infrastructural Facilities<span class="ms-2 text-danger">*</span></label>
+                                <label class="font-if">Infrastructural Facilities (Max. char 255)<span class="ms-2 text-danger">*</span></label>
                                 <input ng-focus="removeClass2('facility')" id="facility" type="text" ng-model="addressDetails.Infrastructural_Facilities__c" class="form-control" ng-disabled="proposalStage" />
                             </div>
     
                             <div class="col-md-6">
-                                <label class="font-if">Domain Expertise Available/Existing<span class="ms-2 text-danger">*</span></label>
+                                <label class="font-if">Domain Expertise Available/Existing (Max. char 255)<span class="ms-2 text-danger">*</span></label>
                                 <input ng-focus="removeClass2('domain')" id="domain" type="text" ng-model="addressDetails.Domain_Expertise_Available__c" class="form-control" ng-disabled="proposalStage" />
                             </div>
                         </div>
     
                         <div class="row mt-5 mb-5">
                             <div class="col-md-6">
-                                <label class="font-if">Ownership Profile<span class="ms-2 text-danger">*</span></label>
+                                <label class="font-if">Ownership Profile (Max. char 1,31,072)<span class="ms-2 text-danger">*</span></label>
                                 <input ng-focus="removeClass2('ownership')" id="ownership" type="text" ng-model="addressDetails.Ownership_Profile__c" class="form-control" ng-disabled="proposalStage" />
                             </div>
     
                             <div class="col-md-6">
-                                <label class="font-if">Last Year’s Revenue<span class="ms-2 text-danger">*</span></label>
+                                <label class="font-if">Last Year’s Revenue (Max. char 16)<span class="ms-2 text-danger">*</span></label>
                                 <input ng-focus="removeClass2('balance')" id="balance" type="text" number="addressDetails.Last_Year_s_Balance__c" ng-model="addressDetails.Last_Year_s_Balance__c" class="form-control" ng-disabled="proposalStage" />
                             </div>
                         </div>
@@ -506,14 +496,12 @@
                         <div class="row mt-5">    
                             <div class="col-md-6">
                                 <label class="font-if">Street<span class="ms-2 text-danger">*</span></label>
-                                <!-- <input ng-focus="removeClass2('IStreet')" id="IStreet" type="text" ng-model="addressDetails.BillingStreet" class="form-control" ng-disabled="proposalStage" /> -->
-                                <input ng-focus="removeClass2('IStreet')" id="IStreet" type="text" ng-model="addressDetails.BillingStreet" class="form-control" ng-disabled="proposalStage || disableConsortiaAddressFields" />
+                                <input ng-focus="removeClass2('IStreet')" id="IStreet" type="text" ng-model="addressDetails.BillingStreet" class="form-control" ng-disabled="proposalStage" />
                             </div>
 
                             <div class="col-md-6">
                                 <label class="font-if">City<span class="ms-2 text-danger">*</span></label>
-                                <!-- <input ng-focus="removeClass2('ICity')" id="ICity" type="text" ng-model="addressDetails.BillingCity" class="form-control" ng-disabled="proposalStage" /> -->
-                                <input ng-focus="removeClass2('ICity')" id="ICity" type="text" ng-model="addressDetails.BillingCity" class="form-control" ng-disabled="proposalStage || disableConsortiaAddressFields" />
+                                <input ng-focus="removeClass2('ICity')" id="ICity" type="text" ng-model="addressDetails.BillingCity" class="form-control" ng-disabled="proposalStage" />
                             </div>
                         </div>
     
@@ -521,22 +509,16 @@
     
                             <div class="col-md-6">
                                 <label class="font-if">Country<span class="ms-2 text-danger">*</span></label>
-                                <!-- <select class="form-control" aria-label="Default select example" ng-focus="removeClass2('ICountry')" id="ICountry" ng-model="addressDetails.BillingCountry" required="true" ng-disabled="true" ng-change="onCountryChange()">
-                                    <option ng-repeat="staff in countrytype">{{staff}}</option>
-                                </select> -->
-                                <select class="form-control" aria-label="Default select example" ng-focus="removeClass2('ICountry')" id="ICountry" ng-model="addressDetails.BillingCountry" required="true" ng-disabled="proposalStage || disableConsortiaAddressFields" ng-change="onCountryChange()">
+                                <select class="form-control" aria-label="Default select example" ng-focus="removeClass2('ICountry')" id="ICountry" ng-model="addressDetails.BillingCountry" required="true" ng-disabled="true" ng-change="onCountryChange()">
                                     <option ng-repeat="staff in countrytype">{{staff}}</option>
                                 </select>
                             </div>
 
                             <div class="col-md-6">
                                 <label class="font-if">State<span class="ms-2 text-danger">*</span></label>
-                                <!-- <select aria-label="Default select example" ng-focus="removeClass2('IState')" id="IState" type="text" ng-model="addressDetails.BillingState" class="form-control" ng-disabled="proposalStage">
+                                <select aria-label="Default select example" ng-focus="removeClass2('IState')" id="IState" type="text" ng-model="addressDetails.BillingState" class="form-control" ng-disabled="proposalStage">
                                     <option ng-repeat="staff in stateList">{{staff}}</option>
-                                   </select> -->
-                                <select aria-label="Default select example" ng-focus="removeClass2('IState')" id="IState" type="text" ng-model="addressDetails.BillingState" class="form-control" ng-disabled="proposalStage || disableConsortiaAddressFields">
-                                    <option ng-repeat="staff in stateList">{{staff}}</option>
-                               </select>
+                                   </select>
                                 <!-- <input ng-focus="removeClass2('IState')" id="IState" type="text" ng-model="addressDetails.BillingState" class="form-control" ng-disabled="proposalStage" /> -->
                             </div>
                         </div>
@@ -545,8 +527,7 @@
     
                             <div class="col-md-6">
                                 <label class="font-if">Postal/Zip Code<span class="ms-2 text-danger">*</span></label>
-                                2<!-- <input ng-focus="removeClass2('IPcode')" id="IPcode" type="text" ng-model="addressDetails.BillingPostalCode" class="form-control" ng-disabled="proposalStage" /> -->
-                                <input ng-focus="removeClass2('IPcode')" id="IPcode" type="text" ng-model="addressDetails.BillingPostalCode" class="form-control" ng-disabled="proposalStage || disableConsortiaAddressFields" />
+                                <input ng-focus="removeClass2('IPcode')" id="IPcode" type="text" ng-model="addressDetails.BillingPostalCode" class="form-control" ng-disabled="proposalStage" />
                             </div>
                         </div>
     

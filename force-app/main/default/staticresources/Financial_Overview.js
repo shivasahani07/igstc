@@ -234,8 +234,8 @@ angular.module('cp_app').controller('financialCtrl', function ($scope, $rootScop
         for (var i = 0; i < SecondAccountIGSTCContr.length; i++) {
             TotalContri = parseInt(TotalContri) + parseInt(SecondAccountIGSTCContr[i]);
         }
-        if (FisrtAccountCountry == 'Germany' && TotalContri > 50000) {
-            swal('info', 'For German partners max. limit for IGSTC funding is €50,000', 'info');
+        if (FisrtAccountCountry == 'Germany' && TotalContri > 500000) {
+            swal('info', 'For German partners max. limit for IGSTC funding is €500,000', 'info');
             //$("#total"+i+"").addClass('border-theme');
             return false;
         }
@@ -251,13 +251,13 @@ angular.module('cp_app').controller('financialCtrl', function ($scope, $rootScop
                 if (FisrtAccountIGSTContri > 15000000) {
                     swal('info', 'For Indian industry max. limit for IGSTC funding is Rs. 15,000,000', 'info');
                     //$("#total"+i+"").addClass('border-theme');
-                     $scope.disableBtn = true;
+                    $scope.disableBtn = true;
                     return false;
                 }
                 if (TotalContri > 35000000) {
                     swal('info', 'For Indian partners max. limit for IGSTC funding is Rs. 35,000,000', 'info');
                     //$("#total"+i+"").addClass('border-theme');
-                     $scope.disableBtn = true;
+                    $scope.disableBtn = true;
                     return false;
                 }
             }
@@ -265,168 +265,352 @@ angular.module('cp_app').controller('financialCtrl', function ($scope, $rootScop
         return true;
     }
     let indianIndustryContri;
+
+    // $scope.submitFinancialDetails = function () {
+    //     debugger;
+    //     var financialList = [];
+    //     $scope.disableBtn = false;
+    //     financialList = $scope.input;
+
+    //     for (let i = 0; i < financialList.length; i++) {
+    //         if (financialList[i].Financial_Contribution__r != undefined) {
+    //             for (let j = 0; j < financialList[i].Financial_Contribution__r.length; j++) {
+    //                 //Added by Aman 10th Oct 2023 : Check the Industry Contribution
+    //                 if (financialList[i].Contact__r.Account.BillingCountry == 'India' && financialList[i].Contact__r.Account.Industry__c == true && financialList[i].Financial_Contribution__r[j].Own_Contribution__c < financialList[i].Financial_Contribution__r[j].IGSTC_Contribution__c) {
+    //                     swal("Financial Details", "For Indian Industry, Own Contribution should not be less than IGSTC contribution.");
+    //                     $("#own" + i + "").addClass('border-theme');
+    //                     return;
+    //                 }
+    //                 //Modified by Aman 30th Aug 2023 : financialList[i].BillingCountry as financialList[i].Financial_Contribution__r[j].Country__c not filling in start
+    //                 if (financialList[i].Financial_Contribution__r[j].Country__c == 'India' && financialList[i].Financial_Contribution__r[j].Account_Type__c == 'Industry') {
+    //                     // if (financialList[i].BillingCountry == 'India' && financialList[i].Financial_Contribution__r[j].Account_Type__c == 'Industry') {
+    //                     indianIndustryContri = financialList[i].Financial_Contribution__r[j].IGSTC_Contribution__c;
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     for (let i = 0; i < financialList.length; i++) {
+    //         if ($rootScope.accountId == financialList[i].Id) {
+    //             for (let j = 0; j < financialList[i].Financial_Contribution__r.length; j++) {
+    //                 if (financialList[i].Financial_Contribution__r[j].Own_Contribution__c == undefined || financialList[i].Financial_Contribution__r[j].Own_Contribution__c === "") {
+    //                     swal("Financial Details", "Please Enter Own Contribution.");
+    //                     $("#own" + j + "").addClass('border-theme');
+    //                     return;
+    //                 }
+    //                 if (financialList[i].Financial_Contribution__r[j].IGSTC_Contribution__c == undefined || financialList[i].Financial_Contribution__r[j].IGSTC_Contribution__c === "") {
+    //                     swal("Financial Details", "Please Enter IGSTC Contribution.");
+    //                     $("#igstc" + j + "").addClass('border-theme');
+    //                     return;
+    //                 }
+    //                 if (financialList[i].Financial_Contribution__r[j].Own_Contribution__c < 0) {
+    //                     swal("Financial Details", "Own Contribution should not be less than 0.");
+    //                     $("#own" + j + "").addClass('border-theme');
+    //                     return;
+    //                 }
+    //                 if (financialList[i].Financial_Contribution__r[j].IGSTC_Contribution__c <= 0) {
+    //                     swal("Financial Details", "IGSTC Contribution should be greater than 0.");
+    //                     $("#igstc" + j + "").addClass('border-theme');
+    //                     return;
+    //                 }
+    //                 if (financialList[i].Contact__r.Account.BillingCountry == 'India' && financialList[i].Contact__r.Account.Academia__c == true && (financialList[i].Financial_Contribution__r[j].IGSTC_Contribution__c > 20000000 - indianIndustryContri || financialList[i].Financial_Contribution__r[j].IGSTC_Contribution__c > 20000000)) {
+    //                     swal("Financial Details", "For Indian Academia, IGSTC Contribution should not be greater than Rs. 20,000,000 minus Indian Industry IGSTC contribution.");
+    //                     $("#igstc" + j + "").addClass('border-theme');
+    //                     return;
+    //                 }
+    //                 if (financialList[i].Contact__r.Account.BillingCountry == 'India' && financialList[i].Contact__r.Account.Academia__c == true && financialList[i].Financial_Contribution__r[j].IGSTC_Contribution__c > 20000000) {
+    //                     swal("Financial Details", "IGSTC Contribution should not be greater than Rs. 20,000,000.");
+    //                     $("#igstc" + j + "").addClass('border-theme');
+    //                     return;
+    //                 }
+    //                 // if (financialList[i].BillingCountry == 'India' && financialList[i].Industry__c == true && financialList[i].Financial_Contribution__r[j].Own_Contribution__c < financialList[i].Financial_Contribution__r[j].IGSTC_Contribution__c ) {
+    //                 //     swal("Financial Details", "For Indian Industry, Own Contribution should not be less than IGSTC contribution.");
+    //                 //     $("#igstc"+j+"").addClass('border-theme');
+    //                 //     return;
+    //                 // }
+    //                 if (financialList[i].Contact__r.Account.BillingCountry == 'India' && financialList[i].Contact__r.Account.Industry__c == true && financialList[i].Financial_Contribution__r[j].IGSTC_Contribution__c > 15000000) {
+    //                     swal("Financial Details", "For Indian Industry, IGSTC Contribution should not be greater than 1.5cr.");
+    //                     $("#igstc" + j + "").addClass('border-theme');
+    //                     return;
+    //                 }
+    //                 if (financialList[i].Contact__r.Account.BillingCountry == 'Germany' && financialList[i].Contact__r.Account.Academia__c == true && financialList[i].Financial_Contribution__r[j].IGSTC_Contribution__c > 50000) {
+    //                     swal("Financial Details", "For German Academia, IGSTC Contribution should not be greater than €50,000.");
+    //                     $("#igstc" + j + "").addClass('border-theme');
+    //                     return;
+    //                 }
+    //                 if (financialList[i].Contact__r.Account.BillingCountry == 'Germany' && financialList[i].Contact__r.Account.Industry__c == true && financialList[i].Financial_Contribution__r[j].IGSTC_Contribution__c > 50000) {
+    //                     swal("Financial Details", "For German Industry, IGSTC Contribution should not be greater than €50,000.");
+    //                     $("#igstc" + j + "").addClass('border-theme');
+    //                     return;
+    //                 }
+    //                 // validation
+    //                 var firstAccountId = financialList[i].Id;
+    //                 for (var n = 0; n < 2; n++) {
+    //                     var FisrtAccountCountry;
+    //                     var FirstAccountAcademia;
+    //                     var FisrtAccountIGSTContri;
+
+    //                     if (n == 0) {
+    //                         FisrtAccountCountry = financialList[i].Contact__r.Account.BillingCountry;
+    //                         FirstAccountAcademia = financialList[i].Contact__r.Account.Academia__c;
+    //                         FisrtAccountIGSTContri = financialList[i].Financial_Contribution__r[0].IGSTC_Contribution__c;
+    //                     }
+    //                     else {
+    //                         for (var o = 0; o < $scope.applicantDetails.length; o++) {
+    //                             if (FisrtAccountCountry != $scope.applicantDetails[o].Contact__r.Account.BillingCountry) {
+    //                                 FisrtAccountCountry = $scope.applicantDetails[o].Contact__r.Account.BillingCountry;
+    //                                 FirstAccountAcademia = $scope.applicantDetails[o].Contact__r.Account.Academia__c;
+    //                                 FisrtAccountIGSTContri = $scope.applicantDetails[o].Financial_Contribution__r[0].IGSTC_Contribution__c;
+    //                                 firstAccountId = $scope.applicantDetails[o].Id;
+    //                                 break;
+    //                             }
+    //                         }
+    //                     }
+
+    //                     var SecondAccountAcademia = [];
+    //                     var SecondAccountIndustry = [];
+    //                     var SecondAccountIGSTCContr = [];
+
+    //                     if ($rootScope.isPrimaryContact == "true") {
+    //                         for (var k = 0; k < financialList.length; k++) {
+    //                             if (financialList[k].Contact__r.Account.BillingCountry == FisrtAccountCountry && financialList[k].Id != firstAccountId) {
+    //                                 SecondAccountAcademia.push(financialList[k].Contact__r.Account.Academia__c);
+    //                                 SecondAccountIndustry.push(financialList[k].Contact__r.Account.Industry__c);
+    //                                 SecondAccountIGSTCContr.push(financialList[k].Financial_Contribution__r[0].IGSTC_Contribution__c);
+    //                             }
+    //                         }
+    //                     }
+    //                     else {
+    //                         for (var l = 0; l < $scope.applicantDetails.length; l++) {
+    //                             if ($scope.applicantDetails[l].Contact__r.Account.BillingCountry == FisrtAccountCountry && $scope.applicantDetails[l].Id != firstAccountId) {
+    //                                 SecondAccountAcademia.push($scope.applicantDetails[l].Contact__r.Account.Academia__c);
+    //                                 SecondAccountIndustry.push($scope.applicantDetails[l].Contact__r.Account.Industry__c);
+    //                                 SecondAccountIGSTCContr.push($scope.applicantDetails[l].Financial_Contribution__r[0].IGSTC_Contribution__c);
+    //                             }
+    //                         }
+    //                     }
+    //                     var TotalContri = FisrtAccountIGSTContri;
+    //                     for (var m = 0; m < SecondAccountIGSTCContr.length; m++) {
+    //                         TotalContri = parseInt(TotalContri) + parseInt(SecondAccountIGSTCContr[m]);
+    //                         // TotalContri=TotalContri+SecondAccountIGSTCContr[m];
+    //                     }
+    //                     if (FisrtAccountCountry == 'Germany' && TotalContri > 50000) {
+    //                         swal('info', 'For German partners max. limit for IGSTC funding is €50,000', 'info');
+    //                         $scope.disableBtn = true;
+    //                         return;
+    //                     }
+    //                     else {
+    //                         if (FirstAccountAcademia) {
+    //                             if (TotalContri > 35000000) {
+    //                                 swal('info', 'For Indian partners max. limit for IGSTC funding is Rs. 35,000,000', 'info');
+    //                                 $scope.disableBtn = true;
+    //                                 return;
+    //                             }
+    //                         } else {
+    //                             if (FisrtAccountIGSTContri > 15000000) {
+    //                                 swal('info', 'For Indian industry max. limit for IGSTC funding is Rs. 15,000,000', 'info');
+    //                                 $scope.disableBtn = true;
+    //                                 return false;
+    //                             }
+    //                             if (TotalContri > 35000000) {
+    //                                 swal('info', 'For Indian partners max. limit for IGSTC funding is Rs. 35000000', 'info');
+    //                                 $scope.disableBtn = true;
+    //                                 return;
+    //                             }
+    //                         }
+    //                     }
+    //                 }
+    //                 // end validating
+    //             }
+    //         }
+    //     }
+    //     // var retResult=$scope.validateFinacialDet(0);
+    //     // if(!retResult){
+    //     //     return;
+    //     // }
+    //     debugger
+    //     for (let i = 0; i < financialList.length; i++) {
+    //         delete (financialList[i]['Name']);
+    //         delete (financialList[i]['$$hashKey']);
+    //         delete (financialList[i].Contacts);
+    //         if (financialList[i].Financial_Contribution__r != undefined && financialList[i].Financial_Contribution__r.length > 0) {
+    //             for (let j = 0; j < financialList[i].Financial_Contribution__r.length; j++) {
+    //                 $scope.finance.push(financialList[i].Financial_Contribution__r[j]);
+    //             }
+    //         }
+    //     }
+
+    //     // for(var i=0;i<$scope.finance.length;i++){
+    //     //     if($scope.finance[i].Own_Contribution__c == undefined || $scope.finance[i].Own_Contribution__c == ""){
+    //     //         swal("Financial Details", "Please Enter your Own Contribution");
+    //     //     }
+    //     //     if($scope.finance[i].IGSTC_Contribution__c == undefined || $scope.finance[i].IGSTC_Contribution__c == ""){
+    //     //         swal("Financial Details", "Please Enter IGSTC Contribution");
+    //     //     }
+    //     //     if($scope.finance[i].IGSTC_Contribution__c <= 0){
+    //     //         swal("Financial Details", "Own Contribution should be greate than 0");
+    //     //     }
+    //     //     if($scope.finance[i].IGSTC_Contribution__c <= 0){
+    //     //         swal("Financial Details", "IGSTC Contribution should be greate than 0");
+    //     //     }
+    //     // }
+    //     $("#btnSubmit").html('<i class="fa-solid fa-spinner fa-spin-pulse me-3"></i>Please wait...');
+    //     ApplicantPortal_Contoller.insertFinancialDetails($scope.finance, function (result, event) {
+    //         $("#btnSubmit").html('<i class="fa-solid fa-check me-2"></i>Save and Next');
+    //         if (event.status) {
+    //             debugger;
+    //             swal({
+    //                 title: "Success",
+    //                 text: "Your Financial detail has been saved successfully.",
+    //                 icon: "success",
+    //                 buttons: true,
+    //                 dangerMode: false,
+    //             }).then((willDelete) => {
+    //                 if (willDelete) {
+    //                     $scope.redirectPageURL('ProjectDetail');
+    //                     $scope.finance = result;
+    //                     $scope.$apply();
+    //                 } else {
+    //                     return;
+    //                 }
+    //             });
+    //             // Swal.fire(
+    //             //     'Financial Detail',
+    //             //     'Your Financial detail has been saved successfully.',
+    //             //     'success'
+    //             // );
+    //             // $scope.redirectPageURL('ProjectDetail');
+    //             // $scope.finance = result;
+    //             // $scope.$apply();
+    //         }
+    //     },
+    //         { escape: true }
+    //     )
+    // }
+
     $scope.submitFinancialDetails = function () {
         debugger;
         var financialList = [];
         $scope.disableBtn = false;
         financialList = $scope.input;
 
-        for (let i = 0; i < financialList.length; i++) {
-            if (financialList[i].Financial_Contribution__r != undefined) {
-                for (let j = 0; j < financialList[i].Financial_Contribution__r.length; j++) {
-                    //Added by Aman 10th Oct 2023 : Check the Industry Contribution
-                    if (financialList[i].Contact__r.Account.BillingCountry == 'India' && financialList[i].Contact__r.Account.Industry__c == true && financialList[i].Financial_Contribution__r[j].Own_Contribution__c < financialList[i].Financial_Contribution__r[j].IGSTC_Contribution__c) {
-                        swal("Financial Details", "For Indian Industry, Own Contribution should not be less than IGSTC contribution.");
-                        $("#own" + i + "").addClass('border-theme');
-                        return;
-                    }
-                    //Modified by Aman 30th Aug 2023 : financialList[i].BillingCountry as financialList[i].Financial_Contribution__r[j].Country__c not filling in start
-                    if (financialList[i].Financial_Contribution__r[j].Country__c == 'India' && financialList[i].Financial_Contribution__r[j].Account_Type__c == 'Industry') {
-                        // if (financialList[i].BillingCountry == 'India' && financialList[i].Financial_Contribution__r[j].Account_Type__c == 'Industry') {
-                        indianIndustryContri = financialList[i].Financial_Contribution__r[j].IGSTC_Contribution__c;
+        // Calculate total German contribution first
+        let totalGermanIGSTC = 0;
+        let totalIndianIGSTC = 0;
+        let indianIndustryContri = 0;
+
+        // First pass: Calculate totals
+        for (let i = 0; i < $scope.applicantDetails.length; i++) {
+            if ($scope.applicantDetails[i].Financial_Contribution__r != undefined &&
+                $scope.applicantDetails[i].Financial_Contribution__r.length > 0) {
+
+                if ($scope.applicantDetails[i].Contact__r.Account.BillingCountry == 'Germany') {
+                    totalGermanIGSTC += Number($scope.applicantDetails[i].Financial_Contribution__r[0].IGSTC_Contribution__c) || 0;
+                }
+
+                if ($scope.applicantDetails[i].Contact__r.Account.BillingCountry == 'India') {
+                    totalIndianIGSTC += Number($scope.applicantDetails[i].Financial_Contribution__r[0].IGSTC_Contribution__c) || 0;
+
+                    if ($scope.applicantDetails[i].Contact__r.Account.Industry__c == true) {
+                        indianIndustryContri += Number($scope.applicantDetails[i].Financial_Contribution__r[0].IGSTC_Contribution__c) || 0;
                     }
                 }
             }
         }
+
+        // Check total German funding limit
+        if (totalGermanIGSTC > 500000) {
+            swal('Validation Error', `Total IGSTC funding for all German partners is €${totalGermanIGSTC.toLocaleString()}, which exceeds the maximum limit of €500,000.`, 'error');
+            $scope.disableBtn = true;
+            return;
+        }
+
+        // Check total Indian funding limit
+        if (totalIndianIGSTC > 35000000) {
+            swal('Validation Error', `Total IGSTC funding for all Indian partners is Rs. ${totalIndianIGSTC.toLocaleString()}, which exceeds the maximum limit of Rs. 35,000,000.`, 'error');
+            $scope.disableBtn = true;
+            return;
+        }
+
+        // Second pass: Individual validations
         for (let i = 0; i < financialList.length; i++) {
-            if ($rootScope.accountId == financialList[i].Id) {
+            if (financialList[i].Financial_Contribution__r != undefined &&
+                financialList[i].Financial_Contribution__r.length > 0) {
+
                 for (let j = 0; j < financialList[i].Financial_Contribution__r.length; j++) {
-                    if (financialList[i].Financial_Contribution__r[j].Own_Contribution__c == undefined || financialList[i].Financial_Contribution__r[j].Own_Contribution__c === "") {
+                    var contribution = financialList[i].Financial_Contribution__r[j];
+                    var account = financialList[i].Contact__r.Account;
+
+                    // Basic validations
+                    if (contribution.Own_Contribution__c == undefined || contribution.Own_Contribution__c === "") {
                         swal("Financial Details", "Please Enter Own Contribution.");
-                        $("#own" + j + "").addClass('border-theme');
+                        $("#own" + i).addClass('border-theme');
                         return;
                     }
-                    if (financialList[i].Financial_Contribution__r[j].IGSTC_Contribution__c == undefined || financialList[i].Financial_Contribution__r[j].IGSTC_Contribution__c === "") {
+
+                    if (contribution.IGSTC_Contribution__c == undefined || contribution.IGSTC_Contribution__c === "") {
                         swal("Financial Details", "Please Enter IGSTC Contribution.");
-                        $("#igstc" + j + "").addClass('border-theme');
+                        $("#igstc" + i).addClass('border-theme');
                         return;
                     }
-                    if (financialList[i].Financial_Contribution__r[j].Own_Contribution__c < 0) {
+
+                    if (Number(contribution.Own_Contribution__c) < 0) {
                         swal("Financial Details", "Own Contribution should not be less than 0.");
-                        $("#own" + j + "").addClass('border-theme');
+                        $("#own" + i).addClass('border-theme');
                         return;
                     }
-                    if (financialList[i].Financial_Contribution__r[j].IGSTC_Contribution__c <= 0) {
+
+                    if (Number(contribution.IGSTC_Contribution__c) <= 0) {
                         swal("Financial Details", "IGSTC Contribution should be greater than 0.");
-                        $("#igstc" + j + "").addClass('border-theme');
+                        $("#igstc" + i).addClass('border-theme');
                         return;
                     }
-                    if (financialList[i].Contact__r.Account.BillingCountry == 'India' && financialList[i].Contact__r.Account.Academia__c == true && (financialList[i].Financial_Contribution__r[j].IGSTC_Contribution__c > 20000000 - indianIndustryContri || financialList[i].Financial_Contribution__r[j].IGSTC_Contribution__c > 20000000)) {
-                        swal("Financial Details", "For Indian Academia, IGSTC Contribution should not be greater than Rs. 20,000,000 minus Indian Industry IGSTC contribution.");
-                        $("#igstc" + j + "").addClass('border-theme');
-                        return;
-                    }
-                    if (financialList[i].Contact__r.Account.BillingCountry == 'India' && financialList[i].Contact__r.Account.Academia__c == true && financialList[i].Financial_Contribution__r[j].IGSTC_Contribution__c > 20000000) {
-                        swal("Financial Details", "IGSTC Contribution should not be greater than Rs. 20,000,000.");
-                        $("#igstc" + j + "").addClass('border-theme');
-                        return;
-                    }
-                    // if (financialList[i].BillingCountry == 'India' && financialList[i].Industry__c == true && financialList[i].Financial_Contribution__r[j].Own_Contribution__c < financialList[i].Financial_Contribution__r[j].IGSTC_Contribution__c ) {
-                    //     swal("Financial Details", "For Indian Industry, Own Contribution should not be less than IGSTC contribution.");
-                    //     $("#igstc"+j+"").addClass('border-theme');
-                    //     return;
-                    // }
-                    if (financialList[i].Contact__r.Account.BillingCountry == 'India' && financialList[i].Contact__r.Account.Industry__c == true && financialList[i].Financial_Contribution__r[j].IGSTC_Contribution__c > 15000000) {
-                        swal("Financial Details", "For Indian Industry, IGSTC Contribution should not be greater than 1.5cr.");
-                        $("#igstc" + j + "").addClass('border-theme');
-                        return;
-                    }
-                    if (financialList[i].Contact__r.Account.BillingCountry == 'Germany' && financialList[i].Contact__r.Account.Academia__c == true && financialList[i].Financial_Contribution__r[j].IGSTC_Contribution__c > 50000) {
-                        swal("Financial Details", "For German Academia, IGSTC Contribution should not be greater than €50,000.");
-                        $("#igstc" + j + "").addClass('border-theme');
-                        return;
-                    }
-                    if (financialList[i].Contact__r.Account.BillingCountry == 'Germany' && financialList[i].Contact__r.Account.Industry__c == true && financialList[i].Financial_Contribution__r[j].IGSTC_Contribution__c > 50000) {
-                        swal("Financial Details", "For German Industry, IGSTC Contribution should not be greater than €50,000.");
-                        $("#igstc" + j + "").addClass('border-theme');
-                        return;
-                    }
-                    // validation
-                    var firstAccountId = financialList[i].Id;
-                    for (var n = 0; n < 2; n++) {
-                        var FisrtAccountCountry;
-                        var FirstAccountAcademia;
-                        var FisrtAccountIGSTContri;
 
-                        if (n == 0) {
-                            FisrtAccountCountry = financialList[i].Contact__r.Account.BillingCountry;
-                            FirstAccountAcademia = financialList[i].Contact__r.Account.Academia__c;
-                            FisrtAccountIGSTContri = financialList[i].Financial_Contribution__r[0].IGSTC_Contribution__c;
-                        }
-                        else {
-                            for (var o = 0; o < $scope.applicantDetails.length; o++) {
-                                if (FisrtAccountCountry != $scope.applicantDetails[o].Contact__r.Account.BillingCountry) {
-                                    FisrtAccountCountry = $scope.applicantDetails[o].Contact__r.Account.BillingCountry;
-                                    FirstAccountAcademia = $scope.applicantDetails[o].Contact__r.Account.Academia__c;
-                                    FisrtAccountIGSTContri = $scope.applicantDetails[o].Financial_Contribution__r[0].IGSTC_Contribution__c;
-                                    firstAccountId = $scope.applicantDetails[o].Id;
-                                    break;
-                                }
-                            }
-                        }
-
-                        var SecondAccountAcademia = [];
-                        var SecondAccountIndustry = [];
-                        var SecondAccountIGSTCContr = [];
-
-                        if ($rootScope.isPrimaryContact == "true") {
-                            for (var k = 0; k < financialList.length; k++) {
-                                if (financialList[k].Contact__r.Account.BillingCountry == FisrtAccountCountry && financialList[k].Id != firstAccountId) {
-                                    SecondAccountAcademia.push(financialList[k].Contact__r.Account.Academia__c);
-                                    SecondAccountIndustry.push(financialList[k].Contact__r.Account.Industry__c);
-                                    SecondAccountIGSTCContr.push(financialList[k].Financial_Contribution__r[0].IGSTC_Contribution__c);
-                                }
-                            }
-                        }
-                        else {
-                            for (var l = 0; l < $scope.applicantDetails.length; l++) {
-                                if ($scope.applicantDetails[l].Contact__r.Account.BillingCountry == FisrtAccountCountry && $scope.applicantDetails[l].Id != firstAccountId) {
-                                    SecondAccountAcademia.push($scope.applicantDetails[l].Contact__r.Account.Academia__c);
-                                    SecondAccountIndustry.push($scope.applicantDetails[l].Contact__r.Account.Industry__c);
-                                    SecondAccountIGSTCContr.push($scope.applicantDetails[l].Financial_Contribution__r[0].IGSTC_Contribution__c);
-                                }
-                            }
-                        }
-                        var TotalContri = FisrtAccountIGSTContri;
-                        for (var m = 0; m < SecondAccountIGSTCContr.length; m++) {
-                            TotalContri = parseInt(TotalContri) + parseInt(SecondAccountIGSTCContr[m]);
-                            // TotalContri=TotalContri+SecondAccountIGSTCContr[m];
-                        }
-                        if (FisrtAccountCountry == 'Germany' && TotalContri > 50000) {
-                            swal('info', 'For German partners max. limit for IGSTC funding is €50,000', 'info');
-                            $scope.disableBtn = true;
+                    // Indian Industry validation
+                    if (account.BillingCountry == 'India' && account.Industry__c == true) {
+                        if (Number(contribution.Own_Contribution__c) < Number(contribution.IGSTC_Contribution__c)) {
+                            swal("Financial Details", "For Indian Industry, Own Contribution should not be less than IGSTC contribution.");
+                            $("#own" + i).addClass('border-theme');
                             return;
                         }
-                        else {
-                            if (FirstAccountAcademia) {
-                                if (TotalContri > 35000000) {
-                                    swal('info', 'For Indian partners max. limit for IGSTC funding is Rs. 35,000,000', 'info');
-                                    $scope.disableBtn = true;
-                                    return;
-                                }
-                            } else {
-                                if (FisrtAccountIGSTContri > 15000000) {
-                                    swal('info', 'For Indian industry max. limit for IGSTC funding is Rs. 15,000,000', 'info');
-                                    $scope.disableBtn = true;
-                                    return false;
-                                }
-                                if (TotalContri > 35000000) {
-                                    swal('info', 'For Indian partners max. limit for IGSTC funding is Rs. 35000000', 'info');
-                                    $scope.disableBtn = true;
-                                    return;
-                                }
-                            }
+
+                        if (Number(contribution.IGSTC_Contribution__c) > 15000000) {
+                            swal("Financial Details", "For Indian Industry, IGSTC Contribution should not be greater than Rs. 15,000,000.");
+                            $("#igstc" + i).addClass('border-theme');
+                            return;
                         }
                     }
-                    // end validating
+
+                    // Indian Academia validation
+                    if (account.BillingCountry == 'India' && account.Academia__c == true) {
+                        var maxForAcademia = 35000000 - indianIndustryContri;
+                        if (Number(contribution.IGSTC_Contribution__c) > maxForAcademia) {
+                            swal("Financial Details",
+                                `For Indian Academia, IGSTC Contribution should not be greater than Rs. ${maxForAcademia.toLocaleString()}. ` +
+                                `(Rs. 20,000,000 minus Indian Industry contribution of Rs. ${indianIndustryContri.toLocaleString()})`);
+                            $("#igstc" + i).addClass('border-theme');
+                            return;
+                        }
+
+                        // if (Number(contribution.IGSTC_Contribution__c) > 20000000) {
+                        //     swal("Financial Details", "For Indian Academia, IGSTC Contribution should not be greater than Rs. 20,000,000.");
+                        //     $("#igstc" + i).addClass('border-theme');
+                        //     return;
+                        // }
+                    }
+
+                    // German validation (individual - each German partner)
+                    if (account.BillingCountry == 'Germany') {
+                        if (Number(contribution.IGSTC_Contribution__c) > 500000) {
+                            swal("Financial Details", "For German partners, IGSTC Contribution should not be greater than €500,000 per partner.");
+                            $("#igstc" + i).addClass('border-theme');
+                            return;
+                        }
+                    }
                 }
             }
         }
-        // var retResult=$scope.validateFinacialDet(0);
-        // if(!retResult){
-        //     return;
-        // }
-        debugger
+
+        // If all validations pass, prepare and submit data
         for (let i = 0; i < financialList.length; i++) {
             delete (financialList[i]['Name']);
             delete (financialList[i]['$$hashKey']);
@@ -438,20 +622,6 @@ angular.module('cp_app').controller('financialCtrl', function ($scope, $rootScop
             }
         }
 
-        // for(var i=0;i<$scope.finance.length;i++){
-        //     if($scope.finance[i].Own_Contribution__c == undefined || $scope.finance[i].Own_Contribution__c == ""){
-        //         swal("Financial Details", "Please Enter your Own Contribution");
-        //     }
-        //     if($scope.finance[i].IGSTC_Contribution__c == undefined || $scope.finance[i].IGSTC_Contribution__c == ""){
-        //         swal("Financial Details", "Please Enter IGSTC Contribution");
-        //     }
-        //     if($scope.finance[i].IGSTC_Contribution__c <= 0){
-        //         swal("Financial Details", "Own Contribution should be greate than 0");
-        //     }
-        //     if($scope.finance[i].IGSTC_Contribution__c <= 0){
-        //         swal("Financial Details", "IGSTC Contribution should be greate than 0");
-        //     }
-        // }
         $("#btnSubmit").html('<i class="fa-solid fa-spinner fa-spin-pulse me-3"></i>Please wait...');
         ApplicantPortal_Contoller.insertFinancialDetails($scope.finance, function (result, event) {
             $("#btnSubmit").html('<i class="fa-solid fa-check me-2"></i>Save and Next');
@@ -472,19 +642,12 @@ angular.module('cp_app').controller('financialCtrl', function ($scope, $rootScop
                         return;
                     }
                 });
-                // Swal.fire(
-                //     'Financial Detail',
-                //     'Your Financial detail has been saved successfully.',
-                //     'success'
-                // );
-                // $scope.redirectPageURL('ProjectDetail');
-                // $scope.finance = result;
-                // $scope.$apply();
             }
         },
             { escape: true }
         )
     }
+
 
     $scope.redirectPageURL = function (pageName) {
         debugger;

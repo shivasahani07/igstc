@@ -3,14 +3,14 @@
     <div ng-controller="coordinators_ctrl">
 
         <head>
-            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" /> 
             <apex:stylesheet value="{!$Resource.timeLineCss}" />
             <script>
                 var userId = '{!$CurrentPage.parameters.id}';
             </script>
         </head>
 
-        <body ng-init="getDependentPicklistValues()"> 
+        <body ng-init="getDependentPicklistValues()">   
             <div class="container mt-5">
                 <div class="row mx-5">
                     <div class="col-md-12">
@@ -18,9 +18,9 @@
                             <div class="progress">
                                 <div class="progress-success w-100"></div>
                             </div>
-                            <ul>
+                            <ul> 
                                 <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('Coordinators_Page')">
+                                    <a ng-click="redirectPageURL('Coordinators_Page')"> 
                                         <div class="icon-circle">
                                             <i class="fab fa-wpforms"></i>
                                         </div>

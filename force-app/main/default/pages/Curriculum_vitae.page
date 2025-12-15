@@ -1,9 +1,9 @@
-<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="IndustrialFellowshipController">
-<!-- <apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="WorkshopController"> -->
+<!-- <apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="IndustrialFellowshipController"> -->
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="WorkshopController">
     <html>
         <div ng-controller="CV_Ctrl">
         <head>
-            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" /> 
             <apex:stylesheet value="{!$Resource.timeLineCss}" />
             <script>
             var userId = '{!$CurrentPage.parameters.id}'; 

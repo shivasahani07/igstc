@@ -57,10 +57,34 @@ public with sharing class ReviewerReport {
     }
 
 
+    //@AuraEnabled(cacheable=true)
+    // public static List<Application_Proposal__c > getProposals(Id campaignId, String yearValue) {
+    //     return [
+    //         SELECT Id,Name , Campaign__r.Name,Title_Of__c,Stage__c,Proposal_Stages__c, Question_Template__r.Yearly_Call__r.Year__c FROM Application_Proposal__c  WHERE Campaign__c = :campaignId AND 
+    //         CALENDAR_YEAR(CreatedDate) = 2025  AND ( Proposal_Stages__c = 'Under Review' OR Proposal_Stages__c ='Under SC Review') ORDER BY CreatedDate DESC
+    //     ];
+    // }
     @AuraEnabled(cacheable=true)
-    public static List<Application_Proposal__c > getProposals(Id campaignId, String yearValue) {
+    public static List<Application_Proposal__c> getProposals(Id campaignId, String yearValue) {
+
+        if (campaignId == null || String.isBlank(yearValue)) {
+            return new List<Application_Proposal__c>();
+        }
+
+        Integer year;
+        try {
+            year = Integer.valueOf(yearValue);
+        } catch (Exception e) {
+            return new List<Application_Proposal__c>();
+        }
+
+        DateTime startDate = DateTime.newInstance(year, 1, 1, 0, 0, 0);
+        DateTime endDate   = DateTime.newInstance(year + 1, 1, 1, 0, 0, 0);
+
         return [
-            SELECT Id,Name , Campaign__r.Name,Title_Of__c,Stage__c,Proposal_Stages__c, Question_Template__r.Yearly_Call__r.Year__c FROM Application_Proposal__c  WHERE Campaign__c = :campaignId AND Question_Template__r.Yearly_Call__r.Year__c = :yearValue  ORDER BY CreatedDate DESC
+            SELECT Id, Name, Campaign__r.Name, Title_Of__c, Stage__c, Proposal_Stages__c,Question_Template__r.Yearly_Call__r.Year__c FROM Application_Proposal__c
+            WHERE Campaign__c = :campaignId AND CreatedDate >= :startDate AND CreatedDate <  :endDate AND Proposal_Stages__c IN ('Under Review', 'Under SC Review')
+            ORDER BY CreatedDate DESC
         ];
     }
 
@@ -71,28 +95,39 @@ public with sharing class ReviewerReport {
     }
 
     
+
+    
     @AuraEnabled
-    public static void updateGenerateReviewerDoc(List<Application_Proposal__c> proposalList) {
-        if (proposalList.isEmpty()) return;
-        Set<Id> selectedIds = new Set<Id>();
-        for (Application_Proposal__c p : proposalList) {
-            selectedIds.add(p.Id);
-        }
-        List<Application_Proposal__c> resetRecords = [
-            SELECT Id 
-            FROM Application_Proposal__c 
-            WHERE Generate_Reviewer_Document__c = true
-            AND Id NOT IN :selectedIds
-        ];
+public static void updateGenerateReviewerDoc(List<Application_Proposal__c> proposalList) {
 
-        for (Application_Proposal__c rec : resetRecords) {
-            rec.Generate_Reviewer_Document__c = false;
-        }
-
-        update resetRecords;
-        update proposalList;
-        
+    if (proposalList == null || proposalList.isEmpty()) {
+        return;
     }
+
+    Set<Id> selectedIds = new Set<Id>();
+    for (Application_Proposal__c p : proposalList) {
+        selectedIds.add(p.Id);
+    }
+
+    List<Application_Proposal__c> toReset = [
+        SELECT Id
+        FROM Application_Proposal__c
+        WHERE Generate_Reviewer_Document__c = true
+        AND Id NOT IN :selectedIds
+    ];
+
+    for (Application_Proposal__c rec : toReset) {
+        rec.Generate_Reviewer_Document__c = false;
+    }
+
+    for (Application_Proposal__c p : proposalList) {
+        p.Generate_Reviewer_Document__c = true;
+    }
+
+    update toReset;
+    update proposalList;
+}
+
 
 
 //     @AuraEnabled

@@ -18,7 +18,7 @@ angular.module('cp_app').controller('budget_ctrl', function($scope, $rootScope){
         console.log('Loaded proposalId from localStorage:', $rootScope.proposalId);
 
         $rootScope.projectId = $rootScope.proposalId;
-        $scope.getExpenseRecords();
+        // $scope.getExpenseRecords();
     }
 
 
@@ -27,19 +27,19 @@ angular.module('cp_app').controller('budget_ctrl', function($scope, $rootScope){
 
 
 
-    // $scope.getContact = function(){
-    //     debugger;
-    //     ApplicantPortal_Contoller.getConSing222($rootScope.candidateId,function(result,event){
-    //         debugger;
-    //         if(event.status && result){
-    //             $scope.conRecord = result;
-    //             $rootScope.projectId = result.Applicant_Proposal_Associations__r[0].Proposals__c;
-    //         }
-    //         $scope.$apply();
-    //         $scope.getExpenseRecords();
-    //     })
-    // }
-    // $scope.getContact();
+    $scope.getContact = function(){
+        debugger;
+        ApplicantPortal_Contoller.getConSing222($rootScope.candidateId,function(result,event){
+            debugger;
+            if(event.status && result){
+                $scope.conRecord = result;
+                // $rootScope.projectId = result.Applicant_Proposal_Associations__r[0].Proposals__c;
+            }
+            $scope.$apply();
+            $scope.getExpenseRecords();
+        })
+    }
+    $scope.getContact();
 
 
     $scope.getExpenseRecords = function(){
@@ -88,7 +88,7 @@ angular.module('cp_app').controller('budget_ctrl', function($scope, $rootScope){
         {escape: true}
         )
     } 
-    
+    $scope.getExpenseRecords();
    
 
     $scope.addRow = function (param1) {

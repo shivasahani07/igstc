@@ -69,6 +69,8 @@
         <script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.1.2/textAngular.min.js'></script>
         <script src="{!$Resource.datetimepicker}"></script>
         <c:Controllers />
+        <!-- Override ApplicantPortal.js with ApplicantPortalV2.js (includes fixes) -->
+        <apex:includeScript value="{!$Resource.ApplicantPortalV2}" />
         <style> 
         
 /* body {
@@ -370,194 +372,15 @@
     </head>
     <body ng-app="cp_app" ng-controller="cp_dashboard_ctrl" style="background-color: #ffffff; !important;">
 
-        <!-- <div class="top-nav">
-            <div class="container-fluid">
-                <div class="row mx-5">
-                    <div class="col-7">
-                        Email:
-                        <a href="mailto:info@igstc.com" class="link">
-                            info@igstc.com
-                        </a>
-                    </div>
-                    <div class="col-5">
-                        <ul class="social text-end">
-                            <li>
-                                <a href="https://www.facebook.com/IGSTC.IndoGerman/" target="_blank">
-                                    <i class="fab fa-facebook"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://twitter.com/INDOGSTC" target="_blank">
-                                    <i class="fab fa-twitter"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://in.linkedin.com/company/igstc" target="_blank">
-                                    <i class="fab fa-linkedin"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>        
+    <div ng-if="isLoading">
+        <div class="modal fade show d-block" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered justify-content-center" role="document">
+                <span class="loader"></span>
             </div>
-        </div> -->
-
-        <!-- <nav class="navbar navbar-expand-lg">
-            <div class="container-fluid mx-5">
-                <a class="navbar-brand" href="#/Home">
-                    <apex:image url="{!$Resource.Logo}" style="margin-top:-20px;" alt="IGSTC"/>
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-                    <ul class="navbar-nav mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#/Home">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#/Campaign">Campaign</a>
-                        </li>
-                        <li class="nav-item" ng-if="projectId != ''">
-                            <a class="nav-link" href="#/MyProposal">MyProposal</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span>Login</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-success btn-sm" href="#">
-                                Sign Up
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav> -->
-        <!-- <a class="nav-link" href="#/Home" ng-class="{activeColor:activeTab==0}" style="color: rgba(63,63,70,1)"></a> -->
-        <!-- <nav class="navbar navbar-expand-lg navbar-light" ng-hide="programmeHeaderName=='CONNECT PLUS'">
-            <div class="wrapper px-5">
-                <a class="navbar-brand p-0" href="#/Home">
-                    <apex:image url="{!$Resource.Logo}" alt="IGSTC" styleClass="brand-logo"/>
-                </a>
-                <div class=""> -->
-                    <!-- <p class="nav-link text-center ps-5"><b>Application submission Deadline :</b></p> -->
-                    <!-- <li class="nav-link text-center" ng-if="programmeHeaderName=='Workshop'"><b>Cut-off dates: {{cutOffSD}} and {{cutOffED}}</b></li>
-                    <li class="nav-link text-center" ng-if="programmeHeaderName=='2+2 Call' || programmeHeaderName=='PECFAR' || programmeHeaderName=='INDUSTRIAL FELLOWSHIPS'"><b>Application submission Deadline : {{campaignEndDate}}</b></li>
-                    <li class="nav-link text-center" ng-if="programmeHeaderName=='WISER'"><b>Application submission: 1 February to 31 March every year</b></li> -->
-                    <!-- <marquee>
-                        <p class="nav-link"><b>{{campaignEndDate}}</b></p>
-                     </marquee> -->
-                <!-- </div>
-                <button class="navbar-toggler float-end m-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown"
-                    aria-expanded="false" aria-label="Toggle navigation"> -->
-                    <!-- <span class="navbar-toggler-icon"></span> -->
-                    <!-- <i class="fa fa-bars" />
-                </button>
-                <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNavDarkDropdown">                 
-                    <ul class="navbar-nav mt-2">
-                            <li class="nav-item pe-5">
-                                <a class="nav-link" href="#/Home" ng-class="{activeColor:activeTab==0}">Home/{{programmeHeaderName}}</a>
-                            </li> -->
-                            <!-- <li class="nav-item me-5">
-                                <a class="nav-link" href="#/Campaign" ng-class="{activeColor:activeTab==1}">Campaign</a>
-                            </li> -->
-                           
-                            <!-- <li class="nav-item me-5">
-                                <a class="nav-link" href="#/CampaignTheme" ng-class="{activeColor:activeTab==2}" style="color: rgba(63,63,70,1)">Campaign Theme</a>
-                            </li> -->
-                             <!-- <li class="nav-item pe-5" ng-if="projectId != ''" >
-                                <a class="nav-link" href="#/MyProposal" ng-class="{activeColor:activeTab==3}">My Proposal</a>
-                            </li>
-                    </ul> -->
-                        <!-- <div class="nav-item">
-                            <button type="button" class="nav-link btn btn-dark"  href="" ng-class="{activeColor:activeTab==2}" style="color: white;padding-right:1%;padding-left:1%" ng-click="redirect()">Login/Signup</button>
-                        </div> -->
-                        <!-- <div class="d-flex" ng-if="applicantName==''">
-                            <a class="blue-btn" href="#/RegistrationForm" ng-click="redirect()">Login/Signup</a>
-                        </div>
-                        <div class="d-flex text-align-center" ng-if="applicantName!=''">
-                        <div class="dropdown" ng-if="applicantName!=''">
-                            <i class="far fa-user fa-2x" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            </i>
-                            <ul class="dropdown-menu" style="width: 300px" aria-labelledby="dropdownMenuButton1">                                                            
-                              <li><a class="dropdown-item pe-5"><i class="fa-solid fa-user me-3"></i>{{applicantName}}</a></li>
-                              <li>
-                                <hr class="dropdown-divider" />
-                            </li>
-                              <li><a class="dropdown-item pe-5"><i class="fa-solid fa-at me-3"></i>{{applicantEmail}}</a></li>
-                              <li>
-                                <hr class="dropdown-divider" />
-                            </li>
-                            <li>
-                                <a class="dropdown-item pe-5" ng-click="LogoutApplicant()"><i class="fa-solid fa-right-from-bracket me-3"></i>Logout</a>
-                            </li>
-                            </ul>
-                          </div>
-                        </div> -->
-                        <!-- <div class="d-flex" ng-if="applicantName!=''">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-                                    style="color: white !important;">
-                                    <div class="profile-header-img">
-                                        <img ng-show="profilePicId == undefined" class=" rounded-circle mr-2 img-circle" src="https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"
-                                            width="40" height="40" alt="avatar" />
-                                        <img ng-hide="profilePicId == undefined" class="rounded-circle mr-2 profile-pic" src="https://ondonte--dev--c.documentforce.com/sfc/servlet.shepherd/version/download/{{profilePicId}}"
-                                            width="40" height="40" alt="avatar" />
-                                    </div>
-                                    <span class="rank-label-container">
-                                        <span class="label label-default rank-label">{{userDetails.LastName}}</span>
-                                    </span>
-                                </a>
-                                <ul class="dropdown-menu me-5 mobile-drops" aria-labelledby="navbarDropdown" style="margin-left: -100px">
-                                    <li>
-                                        <a class="dropdown-item" href="#/CP_EditProfile">Edit Profile</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#referralModal">Referrals</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" ng-click="redirectToSchdlPlnr()">My Calender</a>
-                                    </li>
-                                    <li>
-                                        <hr class="dropdown-divider" />
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" ng-click="logoutContact()">Logout</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </div> -->
-                       
-                <!-- </div>
-            </div>
-        </nav> -->
-<!-- <div>
-    <ul class="nav nav-pills nav-fill gap-2 p-1 small bg-white border rounded-5 shadow-sm" id="pillNav2" role="tablist">
-        <li class="nav-item" role="presentation">                
-          <button class="nav-link active rounded-5" id="basic_tab" data-bs-toggle="tab" type="button" role="tab" aria-selected="true"><i class="fa fa-home i-padding"></i>Basic Details</button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link rounded-5" id="consortia_tab" data-bs-toggle="tab" type="button" role="tab" aria-selected="false"><i class="fa-solid fa-people-group i-padding"></i>Consortia Details</button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link rounded-5" id="finance_tab" data-bs-toggle="tab" type="button" role="tab" aria-selected="false"><i class="fa-solid fa-money-bill-trend-up i-padding"></i>Finance Contribution</button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link rounded-5" id="project_tab" data-bs-toggle="tab" type="button" role="tab" aria-selected="false"><i class="fa-solid fa-arrows-to-dot i-padding"></i>Project Details</button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link rounded-5" id="packge_tab" data-bs-toggle="tab" type="button" role="tab" aria-selected="false"><i class="fa-solid fa-box i-padding"></i>Work Package</button>
-        </li>
-    </ul>
-</div> -->
-            <!-- <div style="background-color: #fff;">  
-                <ng-view>
-                </ng-view>
-            </div> -->
-            <!-- <apex:includeScript value="{!$Resource.SlickJs}" />
-    <apex:includeScript value="{!$Resource.CustomJs}" /> -->
+        </div>
+        <div class="modal-backdrop fade show"></div>
+    </div>
+    <div ng-else="isLoading">
     <div ng-else="isLoading" class="main-div" ng-if="!$root.isRoutedView">
         <div class="sidebar-appPortal">
             <div class="logo">IGSTC</div>
@@ -571,7 +394,7 @@
                 <i class="fa-solid fa-circle-question"></i> Get Help
             </div>
             <div class="nav-item" ng-class="{active: selectedMenu === 'FAQ'}" ng-click="showSection('FAQ')">
-                <i class="fa-solid fa-question"></i> FAQ’s
+                <i class="fa-solid fa-question"></i> FAQ's
             </div>
             <div class="bottom-nav">
                 <div class="nav-item" ng-class="{active: selectedMenu === 'Profile'}" ng-click="showSection('Profile')">
@@ -610,24 +433,10 @@
                         <div class="program-desc">{{p.desc}}</div>
                         <div class="btn-container">
                             <div class="btn" ng-click="redirectToForm(p)">View</div>
-                            <!-- <div class="btn">Know More</div> -->
                         </div>
                     </div>
                 </div>
                 <h2 ng-if="allPrograms.length > 0">Call Year</h2>
-                <!-- Added By Karthik -->
-                <!-- <div ng-if="yearList.length > 0" style="margin-bottom: 10px;">
-                    <label style="margin-right: 8px;">Year:</label>
-                    <select ng-model="selectedYear"
-                            ng-options="y.Id as y.Name for y in yearList">
-                        <option value="">Select</option>
-                    </select>
-                    <!- <select ng-model="selectedYear"
-                            ng-options="y.Name as y.Name for y in yearList"
-                            ng-change="onYearChange()">
-                        <option value="">Select</option>
-                    </select> ->
-                </div> -->
 
                 <div class="card-grid">
                     <div class="program-card" ng-repeat="p in allPrograms">
@@ -635,14 +444,9 @@
                             <i class="{{p.icon}}"></i>
                         </div>
                         <div class="program-title">{{p.name}}</div>
-                        <!-- <div class="program-title">{{p.yearlyCallId}}</div> -->
                         <div class="program-title">{{p.yearlyCall}}</div>
                         <div class="program-deadline">Application Deadline: {{p.deadline}}</div>
                         <div class="program-desc">{{p.desc}}</div>
-                        <!-- <div class="btn-container">
-                            <div class="btn" ng-click="redirectToForm(p)">Apply</div>
-                            <div class="btn">Know More</div>
-                        </div> -->
                         <div class="btn-container">
                             <div class="btn"
                                 ng-click="!p.isExpired && redirectToForm(p)"
@@ -651,8 +455,6 @@
                             </div>
                             <div class="btn">Know More</div>
                         </div>
-
-
                     </div>
                 </div>
             </div>
@@ -662,16 +464,6 @@
         <ng-view>
         </ng-view>
     </div>
-    <!-- <div ng-if="isLoading">
-        <div class="modal fade show d-block" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-dialog-centered justify-content-center" role="document">
-                <span class="loader"></span>
-            </div>
-        </div>
-        <div class="modal-backdrop fade show"></div>
-    </div> -->
-    
+    </div>
     </body>
-    
-   
 </apex:page>

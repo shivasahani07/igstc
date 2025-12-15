@@ -18,7 +18,7 @@ angular.module('cp_app').controller('educQual_ctrl', function($scope,$rootScope)
         $rootScope.proposalId = localStorage.getItem('proposalId');
         console.log('Loaded proposalId from localStorage:', $rootScope.proposalId);
     }
-
+    
     
     $scope.getEduQualification=function(){
         IndustrialFellowshipController.getEduQualification($rootScope.candidateId, function (result, event) {
@@ -34,19 +34,19 @@ angular.module('cp_app').controller('educQual_ctrl', function($scope,$rootScope)
                     educationRecCount=educationRecCount+1;
                     // result[i].End_Year__c=parseInt(result[i].End_Year__c);
                     $scope.eduList.push(result[i]);
-
+                    
                     if(result[i].Degree__c != undefined || result[i].Degree__c != ''){
                         result[i].Degree__c = result[i].Degree__c ? result[i].Degree__c.replace(/&amp;/g,'&').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&amp;','&') : result[i].Degree__c;  
                     }
-
+                    
                     if(result[i].Area_of_specialization__c != undefined || result[i].Area_of_specialization__c != ''){
                         result[i].Area_of_specialization__c = result[i].Area_of_specialization__c ? result[i].Area_of_specialization__c.replace(/&amp;/g,'&').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&amp;','&') : result[i].Area_of_specialization__c;  
                     }
-
+                    
                     if(result[i].End_Year__c != undefined || result[i].End_Year__c != ''){
                         result[i].End_Year__c = result[i].End_Year__c ? result[i].End_Year__c.replace(/&amp;/g,'&').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&amp;','&') : result[i].End_Year__c;  
                     }
-
+                    
                     if(result[i].Institution_Name__c != undefined || result[i].Institution_Name__c != ''){
                         result[i].Institution_Name__c = result[i].Institution_Name__c ? result[i].Institution_Name__c.replace(/&amp;/g,'&').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&amp;','&') : result[i].Institution_Name__c;  
                     }
@@ -69,23 +69,23 @@ angular.module('cp_app').controller('educQual_ctrl', function($scope,$rootScope)
                         if($scope.objMasterThesis.End_Date__c!=undefined && $scope.objMasterThesis.End_Date__c!=''){
                             $scope.EndDate=new Date($scope.objMasterThesis.End_Date__c);
                         }
-
+                        
                         if(result[i].Title_Thesis__c != undefined || result[i].Title_Thesis__c != ''){
                             $scope.objMasterThesis.Title_Thesis__c = $scope.objMasterThesis.Title_Thesis__c ? $scope.objMasterThesis.Title_Thesis__c.replace(/&amp;/g,'&').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&amp;','&') : $scope.objMasterThesis.Title_Thesis__c;  
                         }
-
+                        
                         if(result[i].Institution_Name__c != undefined || result[i].Institution_Name__c != ''){
                             $scope.objMasterThesis.Institution_Name__c = $scope.objMasterThesis.Institution_Name__c ? $scope.objMasterThesis.Institution_Name__c.replace(/&amp;/g,'&').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&amp;','&') : $scope.objMasterThesis.Institution_Name__c;  
                         }
-
+                        
                         if(result[i].Area_of_specialization__c != undefined || result[i].Area_of_specialization__c != ''){
                             $scope.objMasterThesis.Area_of_specialization__c = $scope.objMasterThesis.Area_of_specialization__c ? $scope.objMasterThesis.Area_of_specialization__c.replace(/&amp;/g,'&').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&amp;','&') : $scope.objMasterThesis.Area_of_specialization__c;  
                         }
-
+                        
                         if(result[i].Thesis_Supervisor__c != undefined || result[i].Thesis_Supervisor__c != ''){
                             $scope.objMasterThesis.Thesis_Supervisor__c = $scope.objMasterThesis.Thesis_Supervisor__c ? $scope.objMasterThesis.Thesis_Supervisor__c.replace(/&amp;/g,'&').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&amp;','&') : $scope.objMasterThesis.Thesis_Supervisor__c;  
                         }
-
+                        
                     }
                     else if(result[i].Thesis_Type__c=="PhD Thesis"){
                         phdRecCount=1;
@@ -104,19 +104,19 @@ angular.module('cp_app').controller('educQual_ctrl', function($scope,$rootScope)
                         if($scope.objPhDThesis.End_Date__c!=undefined && $scope.objPhDThesis.End_Date__c!=''){
                             $scope.masterEndDate=new Date($scope.objPhDThesis.End_Date__c);
                         }
-
+                        
                         if(result[i].Title_Thesis__c != undefined || result[i].Title_Thesis__c != ''){
                             $scope.objPhDThesis.Title_Thesis__c = $scope.objPhDThesis.Title_Thesis__c ? $scope.objPhDThesis.Title_Thesis__c.replace(/&amp;/g,'&').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&amp;','&') : $scope.objPhDThesis.Title_Thesis__c;  
                         }
-
+                        
                         if(result[i].Institution_Name__c != undefined || result[i].Institution_Name__c != ''){
                             $scope.objPhDThesis.Institution_Name__c = $scope.objPhDThesis.Institution_Name__c ? $scope.objPhDThesis.Institution_Name__c.replace(/&amp;/g,'&').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&amp;','&') : $scope.objPhDThesis.Institution_Name__c;  
                         }
-
+                        
                         if(result[i].Area_of_specialization__c != undefined || result[i].Area_of_specialization__c != ''){
                             $scope.objPhDThesis.Area_of_specialization__c = $scope.objPhDThesis.Area_of_specialization__c ? $scope.objPhDThesis.Area_of_specialization__c.replace(/&amp;/g,'&').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&amp;','&') : $scope.objPhDThesis.Area_of_specialization__c;  
                         }
-
+                        
                         if(result[i].Thesis_Supervisor__c != undefined || result[i].Thesis_Supervisor__c != ''){
                             $scope.objPhDThesis.Thesis_Supervisor__c = $scope.objPhDThesis.Thesis_Supervisor__c ? $scope.objPhDThesis.Thesis_Supervisor__c.replace(/&amp;/g,'&').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&amp;','&') : $scope.objPhDThesis.Thesis_Supervisor__c;  
                         }
@@ -189,68 +189,68 @@ angular.module('cp_app').controller('educQual_ctrl', function($scope,$rootScope)
         link.id = 'someLink'; //give it an ID!
         link.href='#/'+URL+'';
         link.click();
-      }
+    }
     $scope.saveEduDetailIF=function(){
         debugger;
-            for(var i=0;i<$scope.eduList.length;i++){
-                if($scope.eduList[i].Degree__c == undefined || $scope.eduList[i].Degree__c == ""){
-                    swal('info','Please Enter Education Degree','info');
-                    $("#degree"+i+"").addClass('border-theme');
-                    return;
-                }  
-                if($scope.eduList[i].End_Year__c == undefined || $scope.eduList[i].End_Year__c == ""){
-                    swal('info','Please Enter Year of Completion','info');
-                    $("#endYear"+i+"").addClass('border-theme');
-                    return;
-                }
-                if($scope.eduList[i].Institution_Name__c == undefined || $scope.eduList[i].Institution_Name__c == ""){
-                    swal('info','Please Enter Institution Name','info');
-                    $("#instName"+i+"").addClass('border-theme');
-                    return;
-                }
-                if($scope.eduList[i].Percentage_cgpa__c == undefined || $scope.eduList[i].Percentage_cgpa__c == ""){
-                    swal('info','Please choose either CGPA/Percentage','info');
-                    $("#cgpa"+i+"").addClass('border-theme');
+        for(var i=0;i<$scope.eduList.length;i++){
+            if($scope.eduList[i].Degree__c == undefined || $scope.eduList[i].Degree__c == ""){
+                swal('info','Please Enter Education Degree','info');
+                $("#degree"+i+"").addClass('border-theme');
+                return;
+            }  
+            if($scope.eduList[i].End_Year__c == undefined || $scope.eduList[i].End_Year__c == ""){
+                swal('info','Please Enter Year of Completion','info');
+                $("#endYear"+i+"").addClass('border-theme');
+                return;
+            }
+            if($scope.eduList[i].Institution_Name__c == undefined || $scope.eduList[i].Institution_Name__c == ""){
+                swal('info','Please Enter Institution Name','info');
+                $("#instName"+i+"").addClass('border-theme');
+                return;
+            }
+            if($scope.eduList[i].Percentage_cgpa__c == undefined || $scope.eduList[i].Percentage_cgpa__c == ""){
+                swal('info','Please choose either CGPA/Percentage','info');
+                $("#cgpa"+i+"").addClass('border-theme');
+                return; 
+            }
+            if($scope.eduList[i].Percentage_cgpa__c == "Percentage"){
+                if($scope.eduList[i].Percentage__c==undefined||$scope.eduList[i].Percentage__c==""){
+                    swal('info','Please enter Percentage.','info');
+                    $("#txtPer"+i+"").addClass('border-theme');
                     return; 
                 }
-                if($scope.eduList[i].Percentage_cgpa__c == "Percentage"){
-                    if($scope.eduList[i].Percentage__c==undefined||$scope.eduList[i].Percentage__c==""){
-                        swal('info','Please enter Percentage.','info');
-                        $("#txtPer"+i+"").addClass('border-theme');
-                        return; 
-                    }
-    
-                    if($scope.eduList[i].Percentage__c==00){
-                        swal('info','Please enter Percentage more than 0.','info');
-                        $("#txtPer"+i+"").addClass('border-theme');
-                        return;  
-                    }
-
+                
+                if($scope.eduList[i].Percentage__c==00){
+                    swal('info','Please enter Percentage more than 0.','info');
+                    $("#txtPer"+i+"").addClass('border-theme');
+                    return;  
                 }
-                if($scope.eduList[i].Percentage_cgpa__c == "CGPA"){
-                    if($scope.eduList[i].CGPA__c==undefined||$scope.eduList[i].CGPA__c==""){
-                        swal('info','Please enter CGPA.','info');
-                        $("#txtPer"+i+"").addClass('border-theme');
-                        return; 
-                    }
-    
-                    if($scope.eduList[i].CGPA__c==00 || $scope.eduList[i].CGPA__c == 0){
-                        swal('info','Please enter CGPA more than 0.','info');
-                        $("#txtPer"+i+"").addClass('border-theme');
-                        return;  
-                    }
-
+                
+            }
+            if($scope.eduList[i].Percentage_cgpa__c == "CGPA"){
+                if($scope.eduList[i].CGPA__c==undefined||$scope.eduList[i].CGPA__c==""){
+                    swal('info','Please enter CGPA.','info');
+                    $("#txtPer"+i+"").addClass('border-theme');
+                    return; 
                 }
-                // if($scope.eduList[i].Percentage__c==undefined||$scope.eduList[i].CGPA__c==""){
-                //     swal('info','Please enter Percentage / CGPA','info');
-                //     $("#txtPer"+i+"").addClass('border-theme');
-                //     return;
-                // }
-                if($scope.eduList[i].Area_of_specialization__c==undefined||$scope.eduList[i].Area_of_specialization__c==""){
-                    swal('info','Please enter Area of specialization','info');
-                    $("#txtSpecialization"+i+"").addClass('border-theme');
-                    return;
+                
+                if($scope.eduList[i].CGPA__c==00 || $scope.eduList[i].CGPA__c == 0){
+                    swal('info','Please enter CGPA more than 0.','info');
+                    $("#txtPer"+i+"").addClass('border-theme');
+                    return;  
                 }
+                
+            }
+            // if($scope.eduList[i].Percentage__c==undefined||$scope.eduList[i].CGPA__c==""){
+            //     swal('info','Please enter Percentage / CGPA','info');
+            //     $("#txtPer"+i+"").addClass('border-theme');
+            //     return;
+            // }
+            if($scope.eduList[i].Area_of_specialization__c==undefined||$scope.eduList[i].Area_of_specialization__c==""){
+                swal('info','Please enter Area of specialization','info');
+                $("#txtSpecialization"+i+"").addClass('border-theme');
+                return;
+            }
         }
         
         $scope.objSendData=[];
@@ -269,7 +269,7 @@ angular.module('cp_app').controller('educQual_ctrl', function($scope,$rootScope)
             delete($scope.objSendData[i]['RecordTypeId']);
             delete $scope.objSendData[i].RecordType;
         }
-       
+        
         debugger
         $scope.dateList=[];
         var years=0;
@@ -282,146 +282,146 @@ angular.module('cp_app').controller('educQual_ctrl', function($scope,$rootScope)
         var mjStartDate = null;
         var mjEndDate = null;
         if($scope.masterStartDate!=undefined && $scope.masterStartDate!=''){
-        years = $scope.masterStartDate.getUTCFullYear();
-        //month = $scope.masterStartDate.getUTCMonth()+1;
-          month = $scope.startDateCheckPHD[i]?$scope.masterStartDate.getUTCMonth()+1:$scope.masterStartDate.getUTCMonth()+2;
-        day = $scope.masterStartDate.getDate();
-        mjStartDate = moment([years, month, day]);
-        $scope.dateList.push({GroupName:'phd',fromTo:'start',year:years,month:month,day:day});
-      }
-    
+            years = $scope.masterStartDate.getUTCFullYear();
+            //month = $scope.masterStartDate.getUTCMonth()+1;
+            month = $scope.startDateCheckPHD[i]?$scope.masterStartDate.getUTCMonth()+1:$scope.masterStartDate.getUTCMonth()+2;
+            day = $scope.masterStartDate.getDate();
+            mjStartDate = moment([years, month, day]);
+            $scope.dateList.push({GroupName:'phd',fromTo:'start',year:years,month:month,day:day});
+        }
         
-      
-      years=0;
-      month=0;
-      day=0;
-    if($scope.masterEndDate!=undefined && $scope.masterEndDate!=''){
-      years = $scope.masterEndDate.getUTCFullYear();
-      month = $scope.masterEndDate.getUTCMonth()+1;
-      day = $scope.masterEndDate.getDate();
-      mjEndDate = moment([years, month, day]);
-      $scope.dateList.push({GroupName:'phd',fromTo:'end',year:years,month:month,day:day});
-    }
-    years=0;
-      month=0;
-      day=0;
-      if($scope.StartDate!=undefined && $scope.StartDate!=''){
-          years = $scope.StartDate.getUTCFullYear();
-          month = $scope.startDateCheckMaster[i]?$scope.StartDate.getUTCMonth()+1:$scope.StartDate.getUTCMonth()+2;
-          day = $scope.StartDate.getDate();
-        $scope.dateList.push({GroupName:'mt',fromTo:'start',year:years,month:month,day:day});
-      } 
-      years=0;
-      month=0;
-      day=0;
-      if($scope.EndDate!=undefined && $scope.EndDate!=''){
-        years = $scope.EndDate.getUTCFullYear();
-        month = $scope.EndDate.getUTCMonth()+1;
-        day = $scope.EndDate.getDate();
-        $scope.dateList.push({GroupName:'mt',fromTo:'end',year:years,month:month,day:day});
-      } 
-    if($scope.StartDate != undefined && $scope.StartDate != ""){
-        if($scope.StartDate > today){
-        // if($scope.StartDate.getDate() > dd && $scope.StartDate.getUTCMonth()+1 >= mm && $scope.StartDate.getUTCFullYear() >= yyyy){
-            swal('info','Master  Thesis Start Date should not be future date.','info');    
-            $("#masterSD").addClass('border-theme');
-                    return;
+        
+        
+        years=0;
+        month=0;
+        day=0;
+        if($scope.masterEndDate!=undefined && $scope.masterEndDate!=''){
+            years = $scope.masterEndDate.getUTCFullYear();
+            month = $scope.masterEndDate.getUTCMonth()+1;
+            day = $scope.masterEndDate.getDate();
+            mjEndDate = moment([years, month, day]);
+            $scope.dateList.push({GroupName:'phd',fromTo:'end',year:years,month:month,day:day});
         }
+        years=0;
+        month=0;
+        day=0;
+        if($scope.StartDate!=undefined && $scope.StartDate!=''){
+            years = $scope.StartDate.getUTCFullYear();
+            month = $scope.startDateCheckMaster[i]?$scope.StartDate.getUTCMonth()+1:$scope.StartDate.getUTCMonth()+2;
+            day = $scope.StartDate.getDate();
+            $scope.dateList.push({GroupName:'mt',fromTo:'start',year:years,month:month,day:day});
+        } 
+        years=0;
+        month=0;
+        day=0;
+        if($scope.EndDate!=undefined && $scope.EndDate!=''){
+            years = $scope.EndDate.getUTCFullYear();
+            month = $scope.EndDate.getUTCMonth()+1;
+            day = $scope.EndDate.getDate();
+            $scope.dateList.push({GroupName:'mt',fromTo:'end',year:years,month:month,day:day});
+        } 
+        if($scope.StartDate != undefined && $scope.StartDate != ""){
+            if($scope.StartDate > today){
+                // if($scope.StartDate.getDate() > dd && $scope.StartDate.getUTCMonth()+1 >= mm && $scope.StartDate.getUTCFullYear() >= yyyy){
+                swal('info','Master  Thesis Start Date should not be future date.','info');    
+                $("#masterSD").addClass('border-theme');
+                return;
+            }
+            // }
+        }
+        
+        // if($scope.EndDate != undefined && $scope.EndDate != ""){
+        //     if($scope.EndDate.getDate() > today){
+        //         swal("info", "Master Thesis End Date should not be future date.","info");
+        //         $("#masterED").addClass('border-theme');
+        //                 return;
+        //     }
         // }
-    }
-
-    // if($scope.EndDate != undefined && $scope.EndDate != ""){
-    //     if($scope.EndDate.getDate() > today){
-    //         swal("info", "Master Thesis End Date should not be future date.","info");
-    //         $("#masterED").addClass('border-theme');
-    //                 return;
-    //     }
-    // }
-
-    if(($scope.StartDate != undefined && $scope.StartDate != "") && ($scope.EndDate != undefined && $scope.EndDate != "")){
-        if($scope.StartDate > $scope.EndDate){
-            swal("info", "Master Thesis start date should not be previous to Master Thesis end date.","info");
-            $("#masterED").addClass('border-theme');
-            $("#masterSD").addClass('border-theme');
-                    return;
+        
+        if(($scope.StartDate != undefined && $scope.StartDate != "") && ($scope.EndDate != undefined && $scope.EndDate != "")){
+            if($scope.StartDate > $scope.EndDate){
+                swal("info", "Master Thesis start date should not be previous to Master Thesis end date.","info");
+                $("#masterED").addClass('border-theme');
+                $("#masterSD").addClass('border-theme');
+                return;
+            }
         }
-    }
-    
-    if(($scope.StartDate != undefined && $scope.StartDate != "") && ($scope.EndDate != undefined && $scope.EndDate != "")){
-        if($scope.StartDate == $scope.EndDate){
-            swal("info", "Master Thesis start date should not be same date to Master Thesis end date.","info");
-            $("#masterED").addClass('border-theme');
-            $("#masterSD").addClass('border-theme');
-                    return;
+        
+        if(($scope.StartDate != undefined && $scope.StartDate != "") && ($scope.EndDate != undefined && $scope.EndDate != "")){
+            if($scope.StartDate == $scope.EndDate){
+                swal("info", "Master Thesis start date should not be same date to Master Thesis end date.","info");
+                $("#masterED").addClass('border-theme');
+                $("#masterSD").addClass('border-theme');
+                return;
+            }
         }
-    }
-    
-    if($scope.masterStartDate != undefined && $scope.masterStartDate != ""){
-        if($scope.masterStartDate > today){
-            swal("info", "PHD Thesis Start Date should not be future date.","info");
-            $("#phdSD").addClass('border-theme');
-                    return;
+        
+        if($scope.masterStartDate != undefined && $scope.masterStartDate != ""){
+            if($scope.masterStartDate > today){
+                swal("info", "PHD Thesis Start Date should not be future date.","info");
+                $("#phdSD").addClass('border-theme');
+                return;
+            }
         }
-    }
-    
-    // if($scope.masterEndDate != undefined && $scope.masterEndDate != ""){
-    //     if($scope.masterEndDate > today){
-    //         swal("info", "PHD Thesis End Date should not be future date.","info");
-    //         $("#phdED").addClass('border-theme');
-    //                 return;
-    //     }
-    // }
-
-    if(($scope.masterStartDate != undefined && $scope.masterStartDate != "") && ($scope.masterEndDate != undefined && $scope.masterEndDate != "")){
-        if($scope.masterStartDate > $scope.masterEndDate){
-            swal("info", "PHD Thesis start date should not be previous to PHD Thesis end date.","info");
-            $("#phdSD").addClass('border-theme');
-            $("#phdED").addClass('border-theme');
-                    return;
+        
+        // if($scope.masterEndDate != undefined && $scope.masterEndDate != ""){
+        //     if($scope.masterEndDate > today){
+        //         swal("info", "PHD Thesis End Date should not be future date.","info");
+        //         $("#phdED").addClass('border-theme');
+        //                 return;
+        //     }
+        // }
+        
+        if(($scope.masterStartDate != undefined && $scope.masterStartDate != "") && ($scope.masterEndDate != undefined && $scope.masterEndDate != "")){
+            if($scope.masterStartDate > $scope.masterEndDate){
+                swal("info", "PHD Thesis start date should not be previous to PHD Thesis end date.","info");
+                $("#phdSD").addClass('border-theme');
+                $("#phdED").addClass('border-theme');
+                return;
+            }
         }
-    }
-
-    if(($scope.masterStartDate != undefined && $scope.masterStartDate != "") && ($scope.masterEndDate != undefined && $scope.masterEndDate != "")){
-        if($scope.masterStartDate == $scope.masterEndDate){
-            swal("info", "PHD Thesis start date should not be same date to PHD Thesis end date.","info");
-            $("#phdSD").addClass('border-theme');
-            $("#phdED").addClass('border-theme');
-                    return;
+        
+        if(($scope.masterStartDate != undefined && $scope.masterStartDate != "") && ($scope.masterEndDate != undefined && $scope.masterEndDate != "")){
+            if($scope.masterStartDate == $scope.masterEndDate){
+                swal("info", "PHD Thesis start date should not be same date to PHD Thesis end date.","info");
+                $("#phdSD").addClass('border-theme');
+                $("#phdED").addClass('border-theme');
+                return;
+            }
         }
-    }
-
-    for (let i = 0; i < $scope.objSendData.length; i++) {
-        delete($scope.objSendData[i]['$$hashKey']);
-        delete($scope.objSendData[i]['Name']);
-        delete($scope.objSendData[i]['RecordTypeId']);
-        delete $scope.objSendData[i].RecordType;
-    }
-    
-    //$scope.dateList.push({GroupName:'mt',fromTo:'end',year:years,month:month,day:day});
-    debugger;
+        
+        for (let i = 0; i < $scope.objSendData.length; i++) {
+            delete($scope.objSendData[i]['$$hashKey']);
+            delete($scope.objSendData[i]['Name']);
+            delete($scope.objSendData[i]['RecordTypeId']);
+            delete $scope.objSendData[i].RecordType;
+        }
+        
+        //$scope.dateList.push({GroupName:'mt',fromTo:'end',year:years,month:month,day:day});
+        debugger;
         IndustrialFellowshipController.saveEduDetailIF($rootScope.candidateId,$scope.objSendData,$scope.dateList, function (result, event) {
             debugger
             console.log(result);
             console.log(event);
             if (event.status) {
                 swal({
-                  title: "Education Qualification",
-                  text: result,
-                  icon: "success",
-                  button: "ok!",
+                    title: "Education Qualification",
+                    text: result,
+                    icon: "success",
+                    button: "ok!",
                 }).then((value) => {
                     $scope.redirectPageURL('Employment_Details');
-                    });
-              }
-              else
-              {
-                swal({
-                  title: "Education Qualification",
-                  text: "Exception Occured, Please try again or contact to support.",
-                  icon: "error",
-                  button: "ok!",
                 });
-              }
+                }
+                    else
+                    {
+                    swal({
+                    title: "Education Qualification",
+                    text: "Exception Occured, Please try again or contact to support.",
+                    icon: "error",
+                    button: "ok!",
+                });
+            }
         })
     }
     $scope.myFilter=function(item){
@@ -440,24 +440,24 @@ angular.module('cp_app').controller('educQual_ctrl', function($scope,$rootScope)
         link.click();
     }
     $scope.getEduQualification();
-
+    
     var inputQuantity = [];
     $(function() { 
         debugger;    
-      $("#zipCode").on("keyup", function (e) {
-        var $field = $(this),
-            val=this.value,
-            $thisIndex=parseInt($field.data("idx"),10); 
-        if (this.validity && this.validity.badInput || isNaN(val) || $field.is(":invalid") ) {
-            this.value = inputQuantity[$thisIndex];
-            return;
-        } 
-        if (val.length > Number($field.attr("maxlength"))) {
-          val=val.slice(0, 5);
-          $field.val(val);
-        }
-        inputQuantity[$thisIndex]=val;
-      });      
+        $("#zipCode").on("keyup", function (e) {
+            var $field = $(this),
+                val=this.value,
+                $thisIndex=parseInt($field.data("idx"),10); 
+            if (this.validity && this.validity.badInput || isNaN(val) || $field.is(":invalid") ) {
+                this.value = inputQuantity[$thisIndex];
+                return;
+            } 
+            if (val.length > Number($field.attr("maxlength"))) {
+                val=val.slice(0, 5);
+                $field.val(val);
+            }
+            inputQuantity[$thisIndex]=val;
+        });      
     });    
     $scope.restrictDecimalVal = function(myVar){
         debugger;
@@ -471,7 +471,7 @@ angular.module('cp_app').controller('educQual_ctrl', function($scope,$rootScope)
     }
     $scope.validatePercentage=function(index,event){
         debugger;
-
+        
         if($scope.eduList[index].Percentage_cgpa__c=="Percentage"){
             stringP = $scope.eduList[index].Percentage__c.toString()
             var splitPercent = stringP.split(".");
@@ -490,19 +490,19 @@ angular.module('cp_app').controller('educQual_ctrl', function($scope,$rootScope)
             }
             else{
                 if((event.keyCode>=48 && event.keyCode<=57) || event.keyCode==48 || event.keyCode==8 || event.keyCode==190){
-                if($scope.eduList[index].Percentage__c>100){
-                    $scope.eduList[index].Percentage__c='100';
+                    if($scope.eduList[index].Percentage__c>100){
+                        $scope.eduList[index].Percentage__c='100';
+                    }
+                }else{
+                    $scope.eduList[index].Percentage__c=0;
                 }
-            }else{
-                $scope.eduList[index].Percentage__c=0;
-            }
             }
         }else{
-        if($scope.eduList[index].Percentage__c>100){
-            $scope.eduList[index].Percentage__c=100;
+            if($scope.eduList[index].Percentage__c>100){
+                $scope.eduList[index].Percentage__c=100;
+            }
         }
-    }
-
+        
     };
     $scope.validatePerCGPA=function(index){
         debugger
@@ -528,13 +528,13 @@ angular.module('cp_app').controller('educQual_ctrl', function($scope,$rootScope)
         $("#spnErrMsg"+index+"").addClass('hide');
         $("#txtPer"+index+"").removeClass('border-theme');
     }
-
+    
     $scope.removeClass=function(controlid,index){
         var controlIdfor=controlid+""+index;
         $("#"+controlIdfor+"").removeClass('border-theme');
-      }
-
-      $scope.removeClass2=function(controlid){
+    }
+    
+    $scope.removeClass2=function(controlid){
         $("#"+controlid+"").removeClass('border-theme');
-      }
+    }
 });

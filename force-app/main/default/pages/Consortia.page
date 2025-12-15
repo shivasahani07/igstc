@@ -279,8 +279,12 @@
                 </div>
                 <div ng-show="divPartner">
                     <div class="row mx-5 mt-3" ng-show="isCoordinator=='true'">
-                        <div class="col-md-12 float-end">
-                            <button type="button" ng-click="addAccount()" class="blue-btn pull-right" ng-disabled="proposalStage">
+                        <div class="col-md-8">
+                            <label class="font-if">Search Partner by Email</label>
+                            <input type="email" ng-model="searchEmail" class="form-control" placeholder="Enter email to search for existing contact (leave blank to create new)" />
+                        </div>
+                        <div class="col-md-4 mt-4">
+                            <button type="button" ng-click="addAccount()" class="blue-btn" ng-disabled="proposalStage">
                                 <i class="fa-sharp fa-solid fa-plus me-2"></i>Add Partner
                             </button>
                         </div>
@@ -350,17 +354,17 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <label class="font-if">Project Partner (First Name)<span class="ms-2 text-danger">*</span></label>
+                                                    <label class="font-if">Project Partner (First Name) (Max. char 40) <span class="ms-2 text-danger">*</span></label>
                                                     <!-- <input type="text" ng-focus="removeClass('head',$index)" id="head{{$index}}" ng-model="account.Contacts[0].FirstName" class="form-control" ng-disabled="proposalStage" /> -->
                                                     <input type="text" ng-focus="removeClass('head',$index)" id="head{{$index}}" ng-model="account.Contacts[0].FirstName" class="form-control" ng-disabled="proposalStage || disableProjectPartnerDetailsOnConsortiaPage" />
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <label class="font-if">Project Partner (Last Name)<span class="ms-2 text-danger">*</span></label>
+                                                    <label class="font-if">Project Partner (Last Name) (Max. char 80)<span class="ms-2 text-danger">*</span></label>
                                                     <!-- <input type="text" ng-focus="removeClass('head',$index)" id="head{{$index}}" ng-model="account.Contacts[0].LastName" class="form-control" ng-disabled="proposalStage" /> -->
                                                     <input type="text" ng-focus="removeClass('head',$index)" id="head{{$index}}" ng-model="account.Contacts[0].LastName" class="form-control" ng-disabled="proposalStage || disableProjectPartnerDetailsOnConsortiaPage" />
                                                 </div> 
                                                 <div class="col-md-4">                                                
-                                                    <label class="font-if">Current Position/Designation<span class="ms-2 text-danger">*</span></label>
+                                                    <label class="font-if">Current Position/Designation (Max. char 80)<span class="ms-2 text-danger">*</span></label>
                                                     <!-- <input type="text" ng-focus="removeClass('dept',$index)" id="dept{{$index}}" ng-model="account.Contacts[0].Designation__c" class="form-control" ng-disabled="proposalStage" /> -->
                                                     <input type="text" ng-focus="removeClass('dept',$index)" id="dept{{$index}}" ng-model="account.Contacts[0].Designation__c" class="form-control" ng-disabled="proposalStage || disableProjectPartnerDetailsOnConsortiaPage" />
                                                 </div>
@@ -395,12 +399,12 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <label class="font-if">Institution/Organization Name<span class="ms-2 text-danger">*</span></label>
+                                                    <label class="font-if">Institution/Organization Name (Max. char 80)<span class="ms-2 text-danger">*</span></label>
                                                     <!-- <input type="text" ng-focus="removeClass('inst',$index)" id="inst{{$index}}" ng-model="account.Name" class="form-control" ng-disabled="proposalStage" /> -->
                                                     <input type="text" ng-focus="removeClass('inst',$index)" id="inst{{$index}}" ng-model="account.Name" class="form-control" ng-disabled="proposalStage || disableProjectPartnerDetailsOnConsortiaPage" />
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <label class="font-if">Department/Division<span class="ms-2 text-danger">*</span></label>
+                                                    <label class="font-if">Department/Division (Max. chars 255)<span class="ms-2 text-danger">*</span></label>
                                                     <!-- <input type="text" ng-focus="removeClass('dept',$index)" id="dept{{$index}}" ng-model="account.Contacts[0].Department" class="form-control" ng-disabled="proposalStage" /> -->
                                                     <input type="text" ng-focus="removeClass('dept',$index)" id="dept{{$index}}" ng-model="account.Contacts[0].Department" class="form-control" ng-disabled="proposalStage || disableProjectPartnerDetailsOnConsortiaPage" />
                                                 </div>  
@@ -539,15 +543,15 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-3">
-                                                    <label class="font-if">Project Partner (First Name)<span class="ms-2 text-danger">*</span></label>
+                                                    <label class="font-if">Project Partner (First Name) (Max. char 40)<span class="ms-2 text-danger">*</span></label>
                                                     <input type="text" ng-focus="removeClass('head',$index)" id="head{{$index}}" ng-model="account.Contacts[0].FirstName" class="form-control" ng-disabled="proposalStage" />
                                                 </div>
                                             <div class="col-md-3">
-                                                <label class="font-if">Project Partner (Last Name)<span class="ms-2 text-danger">*</span></label>
+                                                <label class="font-if">Project Partner (Last Name) (Max. char 80)<span class="ms-2 text-danger">*</span></label>
                                                 <input type="text" ng-focus="removeClass('head',$index)" id="head{{$index}}" ng-model="account.Contacts[0].LastName" class="form-control" ng-disabled="proposalStage" />
                                             </div> 
                                             <div class="col-md-4">                                                
-                                                <label class="font-if">Current Position/Designation<span class="ms-2 text-danger">*</span></label>
+                                                <label class="font-if">Current Position/Designation (Max. char 80)<span class="ms-2 text-danger">*</span></label>
                                                 <input type="text" ng-focus="removeClass('dept',$index)" id="dept{{$index}}" ng-model="account.Contacts[0].Designation__c" class="form-control" ng-disabled="proposalStage" />
                                             </div>
                                                                                       
@@ -573,7 +577,7 @@
                                                 <input type="text" ng-focus="removeClass('inst',$index)" id="inst{{$index}}" ng-model="account.Name" class="form-control" ng-disabled="proposalStage" />
                                             </div>
                                             <div class="col-md-4">
-                                                <label class="font-if">Department/Division<span class="ms-2 text-danger">*</span></label>
+                                                <label class="font-if">Department/Division (Max. char 80)<span class="ms-2 text-danger">*</span></label>
                                                 <input type="text" ng-focus="removeClass('dept',$index)" id="dept{{$index}}" ng-model="account.Contacts[0].Department" class="form-control" ng-disabled="proposalStage" />
                                             </div>
                                             
@@ -581,7 +585,7 @@
                                         <!-- Industry/Academia Details -->
                                         <div class="row ms-3">
                                             <div class="col-md-3">
-                                                <label class="font-if">HomePage URL<span class="ms-2 text-danger">*</span></label>
+                                                <label class="font-if">HomePage URL (Max. char 255)<span class="ms-2 text-danger">*</span></label>
                                                 <input type="text" ng-focus="removeClass('home',$index)" id="home{{$index}}" ng-model="account.Website" class="form-control" ng-disabled="proposalStage" />
                                             </div>
                                             <div class="col-md-3">

@@ -16,54 +16,126 @@ public withOut sharing class ReviewerPortal_Controller {
     public string reviewersIdd {get;set;}
     public String candidateId {get;set;}
 
-      //************************************** Getting Custom Setting Data ***********************************************
-@RemoteAction
-public static String updateReviewerReport(List<String> proposalIds) {
+    @RemoteAction
+    public static String updateReviewerStatuses(List<String> proposalIds) {
 
-    if(proposalIds == null || proposalIds.isEmpty()){
-        throw new AuraHandledException('No proposals selected.');
+        if (proposalIds == null || proposalIds.isEmpty()) {
+            return 'NO_PROPOSALS';
+        }
+        List<Application_Proposal__c> submitted = new List<Application_Proposal__c>();
+        submitted = [ SELECT Id, ReviewerReport_Submitted__c FROM Application_Proposal__c WHERE ReviewerReport_Submitted__c = true AND  Id NOT IN :proposalIds ];
+        for (Application_Proposal__c ap : submitted) {
+            ap.ReviewerReport_Submitted__c = false;
+        }
+        if (!submitted.isEmpty()) {
+            update submitted;
+        }
+        List<Application_Proposal__c> target = [ SELECT Id, ReviewerReport_Submitted__c FROM Application_Proposal__c WHERE Id IN :proposalIds ];
+        for (Application_Proposal__c ap : target) {
+            ap.ReviewerReport_Submitted__c = true;
+        }
+        if (!target.isEmpty()) {
+            update target;
+        }
+        Reviewer__c rev = [SELECT Id FROM Reviewer__c WHERE Name = 'Do Not DELETE'];
+        List<Attachment> atts = [ SELECT Id FROM Attachment WHERE ParentId = :rev.Id];
+        if (!atts.isEmpty()) {
+        delete atts;
+        }
+
+        return 'OK';
     }
 
-    List<Application_Proposal__c> submitted = [
-        SELECT Id, ReviewerReport_Submitted__c 
-        FROM Application_Proposal__c 
-        WHERE ReviewerReport_Submitted__c = true
-        AND Id NOT IN :proposalIds
-    ];
 
-    for(Application_Proposal__c ap : submitted){
-        ap.ReviewerReport_Submitted__c = false;
+    @RemoteAction
+    public static String generateReviewerReport() {
+        Reviewer__c reviewer = [
+            SELECT Id
+            FROM Reviewer__c
+            WHERE Name  = 'Do Not DELETE'
+            LIMIT 1
+        ];
+
+        String attachId = CongaHelperToolLightning1.generateReport1(reviewer.Id);
+
+        Attachment att = [
+            SELECT Body
+            FROM Attachment
+            WHERE Id = :attachId
+            LIMIT 1
+        ];
+        return EncodingUtil.base64Encode(att.Body);
     }
-    update submitted;
 
-    List<Application_Proposal__c> target = [
-        SELECT Id, ReviewerReport_Submitted__c 
-        FROM Application_Proposal__c 
-        WHERE Id IN :proposalIds
-    ];
-
-    for(Application_Proposal__c ap : target){
-        ap.ReviewerReport_Submitted__c = true;
+    @Future
+    public static void cleanupAttachment(String attachId) {
+        if (String.isNotBlank(attachId)) {
+            delete [SELECT Id FROM Attachment WHERE Id = :attachId];
+        }
     }
-    update target;
-
-    String pdfData = CongaHelperToolLightning1.generateReport1(proposalIds);
-
-    Attachment att = new Attachment(
-        Name = 'ReviewerReport.pdf',
-        Body = EncodingUtil.base64Decode(pdfData),
-        ParentId = proposalIds[0] 
-    );
-    insert att;
-
-    Map<String, String> result = new Map<String, String>();
-    result.put('base64Pdf', pdfData);
-    result.put('attachmentId', att.Id);
-
-    return JSON.serialize(result);
-}
 
 
+
+    // @RemoteAction
+    // public static String updateReviewerReport(List<String> proposalIds) {
+    //     system.debug('PropsalIds' +proposalIds);
+    //     if(proposalIds == null || proposalIds.isEmpty()){
+    //         System.debug('No proposals selected.');
+    //     }
+
+    //     List<Application_Proposal__c> submitted = new List<Application_Proposal__c>();
+    //     if (!proposalIds.isEmpty()) {
+    //         submitted = [ SELECT Id, ReviewerReport_Submitted__c  FROM Application_Proposal__c  WHERE ReviewerReport_Submitted__c = true AND Id NOT IN :proposalIds
+    //         ];
+    //     }
+
+    //     for(Application_Proposal__c ap : submitted){
+    //         ap.ReviewerReport_Submitted__c = false;
+    //     }
+    //     update submitted;
+    //     System.debug('submitted ===> ' + submitted);
+
+    //     List<Application_Proposal__c> target = [ SELECT Id, ReviewerReport_Submitted__c FROM Application_Proposal__c WHERE Id IN :proposalIds];
+    //     for(Application_Proposal__c ap : target){
+    //         ap.ReviewerReport_Submitted__c = true;
+    //     }
+    //     update target;
+    //     System.debug('updated checkbox ===> ' + target);
+
+    //     Reviewer__c reviewer = [SELECT Id FROM Reviewer__c WHERE Id = 'a0se2000004Q6gzAAC' LIMIT 1];
+    //     String attachId = CongaHelperToolLightning1.generateReport1('reviewer.Id');
+    //     System.debug('attachId ===> ' + attachId);
+    //     Attachment att = [ SELECT Body, ContentType FROM Attachment WHERE Id = :attachId LIMIT 1 ];
+    //    // return EncodingUtil.base64Encode(att.Body);
+    //     String pdf = EncodingUtil.base64Encode(att.Body);
+    //     delete att;
+    //     return pdf;
+    //     // return attachId;
+    //     // String reviewerId = 'a0se2000004Q6gzAAC';
+    //     // System.enqueueJob(new GenerateCongaReportQueueable(reviewerId));
+    //     // return 'Report generation started...';
+    // }
+
+
+//     public class GenerateCongaReportQueueable implements Queueable, Database.AllowsCallouts {
+//     private String reviewerId;
+
+//     public GenerateCongaReportQueueable(String reviewerId){
+//         this.reviewerId = reviewerId;
+//     }
+
+//     public void execute(QueueableContext context){
+//         try {
+//             String attachId = CongaHelperToolLightning1.generateReport1(reviewerId);
+//             Attachment att = [SELECT Body, ContentType FROM Attachment WHERE Id = :attachId LIMIT 1];
+//             String pdf = EncodingUtil.base64Encode(att.Body);
+//             delete att;  
+//             System.debug('PDF===> ' + pdf); 
+//         } catch(Exception e){
+//             System.debug('Error generating report: ' + e.getMessage());
+//         }
+//     }
+// }
     public ReviewerPortal_Controller() {
         list<Reviwer_Portal_Tabs__c> cdTabs = [select name,Tab_Label__c,id,Controller_Name__c,Display_Order__c from Reviwer_Portal_Tabs__c ORDER BY Display_Order__c];
         System.debug('cdTabs--'+cdTabs);

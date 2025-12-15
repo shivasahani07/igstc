@@ -1,21 +1,29 @@
 angular.module('cp_app').controller('coordinators_ctrl', function ($scope, $rootScope) {
     debugger;
 
-    // if (localStorage.getItem('proposalId')) {
-    //     $rootScope.proposalId = localStorage.getItem('proposalId');
-    //     $rootScope.proposalId = null;
-    //     console.log('Loaded proposalId from localStorage:', $rootScope.proposalId);
-    // }
     $rootScope.projectId;
     $scope.siteURL = siteURL;
     $scope.countrytype = countrytype;
-    $scope.allCoordinatorDetails = []; 
+    $scope.allCoordinatorDetails = [];
     $scope.signleCoordinatorDetails = {};
     $scope.disableAddButton = false;
     $scope.disableSubmit = false;
     $scope.listOfIds = [];
     $rootScope.proposalId;
     $rootScope.campaignId;
+    $rootScope.yearlyCallId;
+
+    // Get proposalId from LocalStorage
+    if (localStorage.getItem('proposalId')) {
+        $rootScope.proposalId = localStorage.getItem('proposalId');
+        console.log('Loaded proposalId from localStorage:', $rootScope.proposalId);
+    }
+
+    // Get yearlyCallId from LocalStorage
+    if (localStorage.getItem('yearlyCallId')) {
+        $rootScope.yearlyCallId = localStorage.getItem('yearlyCallId');
+        console.log('Loaded yearlyCallId from localStorage:', $rootScope.yearlyCallId);
+    }
 
     // $scope.checkEmail = function(email,contId){
     //     debugger;
@@ -121,6 +129,9 @@ angular.module('cp_app').controller('coordinators_ctrl', function ($scope, $root
                         }
                         if (result[i].BillingCity != undefined || result[i].BillingCity != '') {
                             $scope.allCoordinatorDetails[i].BillingCity = result[i].BillingCity ? result[i].BillingCity.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : result[i].BillingCity;
+                        }
+                        if (result[i].BillingState != undefined || result[i].BillingState != '') {
+                            $scope.allCoordinatorDetails[i].BillingState = result[i].BillingState ? result[i].BillingState.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : result[i].BillingState;
                         }
                     }
 
@@ -378,17 +389,19 @@ angular.module('cp_app').controller('coordinators_ctrl', function ($scope, $root
         }
 
         for (let i = 0; i < $scope.allCoordinatorDetails.length; i++) {
-            $scope.allCoordinatorDetails[i]['Shipping_State__c'] = $scope.allCoordinatorDetails[i]['BillingState'];
             delete ($scope.allCoordinatorDetails[i]['Contacts']);
             delete ($scope.allCoordinatorDetails[i]['stateList']);
             delete ($scope.allCoordinatorDetails[i]['BillingStreet1']);
             delete ($scope.allCoordinatorDetails[i]['BillingStreet2']);
+
+            $scope.allCoordinatorDetails[i]['Shipping_State__c'] = $scope.allCoordinatorDetails[i]['BillingState'];
+            $scope.allCoordinatorDetails[i].BillingState = $scope.allCoordinatorDetails[i].BillingState;
         }
 
         console.log('$scope.allCoordinatorDetails::' + $scope.allCoordinatorDetails);
         $scope.tempAccList = $scope.allCoordinatorDetails;
 
-        WorkshopController.insertCoordinatorsInformation2($scope.allCoordinatorDetails, $scope.contactList, $rootScope.proposalId, function (result, event) {
+        WorkshopController.insertCoordinatorsInformation2($scope.allCoordinatorDetails, $scope.contactList, $rootScope.proposalId, $rootScope.yearlyCallId, function (result, event) {
             console.log('*************RESULT************* : ', result);
             debugger
 
