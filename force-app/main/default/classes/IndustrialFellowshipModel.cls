@@ -1,8 +1,8 @@
 public class IndustrialFellowshipModel {
-    public List<Education_Details__c> getEduQualification(String loginHashCode){
+    public List<Education_Details__c> getEduQualification(String loginHashCode,String apaId){
         // List<Education_Details__c> lEduDet=
         return [SELECT Name,Degree__c,Start_Year__c,End_Year__c,CGPA__c,End_Date__c,Start_Date__c,Nature_of_PhD_Work__c,Nature_of_Thesis_Work__c,Institution_Name__c,Area_of_specialization__c,Percentage__c,Percentage_cgpa__c,
-                Thesis_Supervisor__c,Thesis_Type__c,Recordtype.Name,RecordTypeId,Title_Thesis__c FROM Education_Details__c where contact__r.Login_Hash_Code__c=:loginHashCode]; 
+                Thesis_Supervisor__c,Thesis_Type__c,Recordtype.Name,RecordTypeId,Title_Thesis__c FROM Education_Details__c WHERE contact__r.Login_Hash_Code__c=:loginHashCode AND Applicant_Proposal_Association__c=:apaId]; 
         // return lEduDet;
     }
     public Achievement__c getAchievementsDet(String loginHashCode){
@@ -10,9 +10,9 @@ public class IndustrialFellowshipModel {
         return [SELECT id,contact__c,Awards_Honours__c,List_of_Publications__c,List_of_Patents_filed__c,Book_Chapters__c,Any_other_achievements__c FROM Achievement__c where contact__r.Login_Hash_Code__c=:loginHashCode]; 
         // return lEduDet;
     }
-    public Contact getContactEmployement(String loginHashCode){
+    public Contact getContactEmployement(String loginHashCode,String apaId){
         return [SELECT Id,Name,Previous_industrial_internship__c,Availing_Fellowship__c,Fellowship_Details__c,Associated_with_IGSTC__c,Associated_Details__c,Abstract_of_Ongoing_Work__c,
-                (SELECT Id,Name,Organization_Name__c,current_employement__c,Position__c,Start_Date__c,End_Date__c,Nature_of_Job__c FROM Employment_Details__r)
+                (SELECT Id,Name,Organization_Name__c,current_employement__c,Position__c,Start_Date__c,End_Date__c,Nature_of_Job__c FROM Employment_Details__r WHERE Applicant_Proposal_Association__c=:apaId)
                 From Contact WHERE Login_Hash_Code__c=: loginHashCode Limit 1];
     }
    //***************OLD Method *****************//

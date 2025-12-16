@@ -18,10 +18,13 @@ angular.module('cp_app').controller('educQual_ctrl', function($scope,$rootScope)
         $rootScope.proposalId = localStorage.getItem('proposalId');
         console.log('Loaded proposalId from localStorage:', $rootScope.proposalId);
     }
-    
+    if (localStorage.getItem('apaId')) {
+        $rootScope.apaId = localStorage.getItem('apaId');
+        console.log('Loaded proposalId from localStorage:', $rootScope.apaId);
+    }
     
     $scope.getEduQualification=function(){
-        IndustrialFellowshipController.getEduQualification($rootScope.candidateId, function (result, event) {
+        IndustrialFellowshipController.getEduQualification($rootScope.candidateId,$rootScope.apaId, function (result, event) {
             debugger
             console.log(result);
             console.log(event);
@@ -399,7 +402,7 @@ angular.module('cp_app').controller('educQual_ctrl', function($scope,$rootScope)
         
         //$scope.dateList.push({GroupName:'mt',fromTo:'end',year:years,month:month,day:day});
         debugger;
-        IndustrialFellowshipController.saveEduDetailIF($rootScope.candidateId,$scope.objSendData,$scope.dateList, function (result, event) {
+        IndustrialFellowshipController.saveEduDetailIF($rootScope.candidateId,$scope.objSendData,$scope.dateList,$rootScope.apaId, function (result, event) {
             debugger
             console.log(result);
             console.log(event);

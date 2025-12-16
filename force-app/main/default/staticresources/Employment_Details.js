@@ -6,12 +6,15 @@ angular.module('cp_app').controller('emp_ctrl', function($scope,$rootScope) {
         $rootScope.proposalId = localStorage.getItem('proposalId');
         console.log('Loaded proposalId from localStorage:', $rootScope.proposalId);
     }
-
+	if (localStorage.getItem('apaId')) {
+        $rootScope.apaId = localStorage.getItem('apaId');
+        console.log('Loaded proposalId from localStorage:', $rootScope.apaId);
+    }
 
     $scope.getEmpDetails = function(){
         debugger;
         $scope.empDetails = [];
-        ApplicantPortal_Contoller.getEmpDetails($rootScope.candidateId, function (result, event) {
+        ApplicantPortal_Contoller.getEmpDetails($rootScope.candidateId,$rootScope.apaId, function (result, event) {
             debugger
             if (event.status) {
                 if(result != null){
@@ -107,7 +110,7 @@ $scope.insertEmploymentDetails = function(){
                 return;
             }
         }
-        ApplicantPortal_Contoller.insertEmploymentDetailsPECFAR($scope.empDetails, function (result, event) {
+        ApplicantPortal_Contoller.insertEmploymentDetailsPECFAR($scope.empDetails,$rootScope.apaId, function (result, event) {
             debugger
             if (event.status) {
                 swal({

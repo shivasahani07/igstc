@@ -876,7 +876,7 @@ return Proposal_Controller.insertParticipants(allParticipantDetails);
     } */
 
      @RemoteAction
-    public static String insertPairingDetails(List<Proposal_Controller.wrapperPairing> contactList,String campaignId,String yearlyCall){
+    public static Proposal_Controller.insertPairingWrapper insertPairingDetails(List<Proposal_Controller.wrapperPairing> contactList,String campaignId,String yearlyCall){
         return Proposal_Controller.insertPairingDetails(contactList,campaignId,yearlyCall);
     }
     
@@ -1032,13 +1032,13 @@ return Proposal_Controller.insertParticipants(allParticipantDetails);
         return 'Success';
     }
     @RemoteAction
-    public static List<Employment_Details__c> getEmpDetails(string hashcode){
-        return Proposal_Controller.getEmpDetails(hashcode);
+    public static List<Employment_Details__c> getEmpDetails(string hashcode, string apaId){
+        return Proposal_Controller.getEmpDetails(hashcode,apaId);
     }
     
-    @RemoteAction
-    public static string insertEmploymentDetailsPECFAR(List<Employment_Details__c> empDetails){
-        return Proposal_Controller.insertEmploymentDetailsPECFAR(empDetails);
+     @RemoteAction
+    public static string insertEmploymentDetailsPECFAR(List<Employment_Details__c> empDetails, string apaId){
+        return Proposal_Controller.insertEmploymentDetailsPECFAR(empDetails,apaId);
     }
     
     // @RemoteAction
@@ -1148,7 +1148,7 @@ return Proposal_Controller.insertParticipants(allParticipantDetails);
     
     // ================================== WORKSHOP METHOD ===================================== //
     @RemoteAction
-    public static String insertCoordinatorsInformation2(List<Account> accList,List<Contact> conList, String proposalId, String yearlyCallId){
+    public static Proposal_Controller.insertApplicationWrapper insertCoordinatorsInformation2(List<Account> accList,List<Contact> conList, String proposalId, String yearlyCallId){
         return Proposal_Controller.insertCoordinatorsInformation2(accList, conList, proposalId, yearlyCallId);
     }
     
@@ -1782,9 +1782,14 @@ return Proposal_Controller.insertParticipants(allParticipantDetails);
         Proposal_Controller.deleteEmploymentWorkshop(empId);
     }
     
+    // @RemoteAction
+    // public static string SaveWorkshopContactDetails(List<Contact> conDataList, List<Education_Details__c> eduDetails, List<Employment_Details__c> empDetails){
+    //     return Proposal_Controller.SaveWorkshopContactDetails(conDataList, eduDetails, empDetails);
+    // }
+
     @RemoteAction
-    public static string SaveWorkshopContactDetails(List<Contact> conDataList, List<Education_Details__c> eduDetails, List<Employment_Details__c> empDetails){
-        return Proposal_Controller.SaveWorkshopContactDetails(conDataList, eduDetails, empDetails);
+    public static string SaveWorkshopContactDetails(List<Contact> conDataList, List<Education_Details__c> eduDetails, List<Employment_Details__c> empDetails, String apaId){
+        return Proposal_Controller.SaveWorkshopContactDetails(conDataList, eduDetails, empDetails, apaId);
     }
     
     @RemoteAction
@@ -2082,6 +2087,7 @@ return Proposal_Controller.insertParticipants(allParticipantDetails);
         }
     }
     
+    /*
     @RemoteAction
     public static List<Contact> checkBulkEmail(List<string> email, List<Id> ids){
         try{
@@ -2091,6 +2097,43 @@ return Proposal_Controller.insertParticipants(allParticipantDetails);
             return null;
         }
     }
+    */
+    @RemoteAction
+    public static List<Contact> checkBulkEmail(String email) {
+        return [
+            SELECT Id, FirstName, LastName, Email, Phone, Department,
+                AccountId,
+                Account.Name,
+                Account.Homepage_URL__c,
+                Account.BillingStreet,
+                Account.BillingCity,
+                Account.BillingState,
+                Account.BillingCountry,
+                Account.BillingPostalCode
+            FROM Contact
+            WHERE Email = :email
+        ];
+    }
+
+
+    @RemoteAction
+    public static Contact checkEmailAndFetchContact(String email){
+        return [
+            SELECT Id, FirstName, LastName, Email, Phone, Department,
+                AccountId,
+                Account.Name,
+                Account.Homepage_URL__c,
+                Account.BillingStreet,
+                Account.BillingCity,
+                Account.BillingState,
+                Account.BillingCountry,
+                Account.BillingPostalCode
+            FROM Contact
+            WHERE Email = :email
+            LIMIT 1
+        ];
+    }
+
     
     @RemoteAction
     public static Account getHostSing(String projectId){
@@ -2306,8 +2349,8 @@ return Proposal_Controller.getCoordCVDetails(proposalid);
 */
     
     @RemoteAction
-    public static List<Contact> getCoordCVDetails(String hashcode){
-        return Proposal_Controller.getCoordCVDetails(hashcode);
+    public static List<Contact> getCoordCVDetails(String hashcode, String apaId, String proposalId){
+        return Proposal_Controller.getCoordCVDetails(hashcode, apaId, proposalId);
     }
     
     

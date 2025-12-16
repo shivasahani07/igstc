@@ -1,13 +1,21 @@
 angular.module('cp_app').controller('CV_Ctrl', function ($scope, $rootScope) {
     debugger;
 
+    $rootScope.proposalId;
+    $rootScope.apaId;
+    ;
     // Fetching the proposalId from Local Storage
     if (localStorage.getItem('proposalId')) {
         $rootScope.proposalId = localStorage.getItem('proposalId');
         console.log('Loaded proposalId from localStorage:', $rootScope.proposalId);
     }
 
-    $rootScope.proposalId;
+    // Fetching the APA Id from Local Storage
+    if (localStorage.getItem('apaId')) {
+        $rootScope.apaId = localStorage.getItem('apaId');
+        console.log('Loaded proposalId from localStorage:', $rootScope.apaId);
+    }
+
     $scope.siteURL = siteURL;
     $scope.AccountContactData = [];
     $scope.getDependentPicklistValues = function () {
@@ -242,7 +250,9 @@ angular.module('cp_app').controller('CV_Ctrl', function ($scope, $rootScope) {
     $scope.getCoordCVDetails = function () {
         debugger;
         // ApplicantPortal_Contoller.getCoordCVDetails($rootScope.projectId, function(result,event){ ----> Old Functionality
-        WorkshopController.getCoordCVDetails($rootScope.candidateId, function (result, event) {
+        WorkshopController.getCoordCVDetails($rootScope.candidateId, $rootScope.apaId, $rootScope.proposalId, function (result, event) {
+            // WorkshopController.getCoordCVDetails($rootScope.proposalId, function (result, event) {
+
             debugger;
             if (event.status) {
                 debugger;
@@ -694,7 +704,7 @@ angular.module('cp_app').controller('CV_Ctrl', function ($scope, $rootScope) {
         }
 
         // ApplicantPortal_Contoller.SaveWorkshopContactDetails($scope.allDetailList, $scope.educationDetails, $scope.employmentDetails, function (result, event) {
-        WorkshopController.SaveWorkshopContactDetails($scope.allDetailList, $scope.educationDetails, $scope.employmentDetails, function (result, event) {
+        WorkshopController.SaveWorkshopContactDetails($scope.allDetailList, $scope.educationDetails, $scope.employmentDetails, $rootScope.apaId, function (result, event) {
             debugger;
             if (event.status) {
                 debugger;

@@ -43,7 +43,13 @@ angular.module('cp_app').controller('Dashboard_iF_Ctlr', function($scope,$sce,$r
     // Fetching the yearlyCallId from Local Storage
     if (localStorage.getItem('yearlyCallId')) {
         $rootScope.yearlyCallId = localStorage.getItem('yearlyCallId');
-        console.log('Loaded proposalId from localStorage:', $rootScope.yearlyCallId);
+        console.log('Loaded yearlyCallId from localStorage:', $rootScope.yearlyCallId);
+    }
+
+    // Fetching the apaId from Local Storage
+    if (localStorage.getItem('apaId')) {
+        $rootScope.apaId = localStorage.getItem('apaId');
+        console.log('Loaded apaId from localStorage:', $rootScope.apaId);
     }
     
     // Method to validate If Yearly call condions added by Rukasar:
@@ -109,15 +115,8 @@ $scope.getActiveCampaignData = function() {
         console.log('Direct Test Result:', result);
         console.log('Direct Test Event:', event);
         
-        if (event.status && result != null && result.length > 0) {        
-                 
-             // Fetching the campaignId from Local Storage
-            if (localStorage.getItem('campaignId')) {
-                $rootScope.campaignId = localStorage.getItem('campaignId');
-                console.log('Loaded campaignId from localStorage:', $rootScope.campaignId);
-            }
+        if (event.status && result != null && result.length > 0) {                           
             
-      
             if (result) {
                 $scope.PIEF_age_limit = result[0].PIEF_Age_Limit__c;
                 $scope.PDIF_age_limit = result[0].PDIF_Age_Limit__c;
@@ -129,6 +128,11 @@ $scope.getActiveCampaignData = function() {
                 $scope.PDIF_phddate = result[0].PhD_Enroll_ment_Date_PDIF__c;
                 $scope.PDIF_phddate_onlydate = result[0].PhD_Enroll_ment_Date_PDIF__c;
                 $scope.PIEF_PhD_time = result[0].PIEF_PhD_time__c;
+
+                 $scope.endDate=new Date(result[0].Campaign_End_Date__c,);
+
+                //Set Campaign ID;
+               localStorage.setItem('campaignId', result[0].Campaign__c);
   
             } else {
                 console.error('Yearly Call relationship data not found');
@@ -159,9 +163,9 @@ $scope.getActiveCampaignData();
           $scope.objCampaign=result;
             
              //Set Campaign ID;
-            localStorage.setItem('campaignId', result.Id);
-            
-          $scope.endDate=new Date(result.EndDate);
+            //localStorage.setItem('campaignId', result.Id);            
+         // $scope.endDate=new Date(result.EndDate);
+
           $scope.getContactDet();          
           $scope.$apply();          
         }
@@ -519,7 +523,9 @@ $scope.getActiveCampaignData();
             if (event.status) {
                if(result!=null){
              // Saving the ProposalId in Local Storage
-				    localStorage.setItem('proposalId', result);
+				    localStorage.setItem('apaId', result.apa.Id);
+            localStorage.setItem('proposalId', result.proposalId);
+           
               
                    
                    

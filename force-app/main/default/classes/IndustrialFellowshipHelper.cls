@@ -47,7 +47,7 @@ Integer phdEnrollYear,Integer phdEnrollMonth,Integer phdEnrollDay,Integer phdAwa
 	*/
 
    
-   public String updateIndusrianFellowshipBasicDet(
+  /* public String updateIndusrianFellowshipBasicDet(
     String campaignId,
     String candidateId,
     Contact InstanceCon,
@@ -129,7 +129,107 @@ Integer phdEnrollYear,Integer phdEnrollMonth,Integer phdEnrollDay,Integer phdAwa
         system.debug('exception: ' + e.getMessage() + ' line no. ' + e.getLineNumber());
         return 'exception: ' + e.getMessage() + ' line no. ' + e.getLineNumber();
     }
-}   
+}  */
+
+
+ public static  insertApplicationWrapper updateIndusrianFellowshipBasicDet(
+    String campaignId,
+    String candidateId,
+    Contact InstanceCon,
+    Integer birthDay,
+    Integer birthMonth,
+    Integer birthYear,
+    Integer phdEnrollYear,
+    Integer phdEnrollMonth,
+    Integer phdEnrollDay,
+    Integer phdAwardYear,
+    Integer phdAwardMonth,
+    Integer phdAwardDay,
+    Integer phdThesisYear,
+    Integer phdThesisMonth,
+    Integer phdThesisDay,
+    Application_Proposal__c prop
+){
+    insertApplicationWrapper datawrapper = new insertApplicationWrapper();
+    try {
+        Date newBirthDate;
+        Date newPhdEnrollDate;
+        Date newAwardDate;
+        Date newThesisDate;
+
+        if(birthDay != 0){
+            newBirthDate = Date.newInstance(birthYear, birthMonth, birthDay);
+            InstanceCon.Birthdate = newBirthDate;
+        }
+
+        if(phdEnrollYear != 0){
+            newPhdEnrollDate = Date.newInstance(phdEnrollYear, phdEnrollMonth, phdEnrollDay);
+            InstanceCon.PhD_Enroll_Date__c = newPhdEnrollDate;
+        }
+
+        if(phdAwardYear != 0){
+            newAwardDate = Date.newInstance(phdAwardYear, phdAwardMonth, phdAwardDay);
+            InstanceCon.PhD_Awarded_Date__c = newAwardDate;
+        }
+
+        if(phdThesisYear != 0){
+            newThesisDate = Date.newInstance(phdThesisYear, phdThesisMonth, phdThesisDay);
+            InstanceCon.Thesis_Submission_Date__c = newThesisDate;
+        }
+
+
+        prop.RecordTypeId = Utility.getProposalRecordType('Industrial Fellowship');
+        prop.Campaign__c= campaignId;
+        upsert prop;
+
+        
+        InstanceCon.Login_Hash_Code__c = candidateId;
+        update InstanceCon;
+
+
+        
+        Applicant_Proposal_Association__c existingAPA = null;
+
+        List<Applicant_Proposal_Association__c> apaList = [
+            SELECT Id
+            FROM Applicant_Proposal_Association__c
+            WHERE Contact__c = :InstanceCon.Id
+            AND Proposals__c = :prop.Id
+            LIMIT 1
+        ];
+
+        if (!apaList.isEmpty()) {
+            existingAPA = apaList[0];
+        }
+
+        // If not found → create new junction object record
+        if (existingAPA == null) {
+            existingAPA = new Applicant_Proposal_Association__c();
+            existingAPA.Contact__c = InstanceCon.Id;
+            existingAPA.Proposals__c = prop.Id;
+            insert existingAPA;
+        }
+
+            // Populate wrapper with results
+            datawrapper.proposalId = prop.Id;
+            datawrapper.proposal = prop;
+            datawrapper.apa = existingAPA;
+            
+            return datawrapper;
+    } catch (Exception e) {
+        system.debug('exception: ' + e.getMessage() + ' line no. ' + e.getLineNumber());
+         throw new AuraHandledException('Error creating application: ' + e.getMessage());
+    }
+} 
+ public class insertApplicationWrapper {
+        public String proposalId { get; set; }
+        public Application_Proposal__c proposal { get; set; }
+        public Applicant_Proposal_Association__c apa { get; set; }
+        // Consider adding error fields if needed
+        // public Boolean isSuccess { get; set; }
+        // public String errorMessage { get; set; }
+    }
+ 
     
  
     
@@ -455,7 +555,7 @@ public String updatePersonalInfoIF(String ContactId,Contact InstanceCon,Integer 
         return 'ERROR';
     }
 }
-public String saveEduDetailIF(String loginHashCode,List<Education_Details__c> instanceEduDet,List<WrapperDate> dateList){
+public String saveEduDetailIF(String loginHashCode,List<Education_Details__c> instanceEduDet,List<WrapperDate> dateList,String apaId){
     try {
         system.debug('education detail :: '+instanceEduDet);
         Id eduId = Schema.SObjectType.Education_Details__c.getRecordTypeInfosByName().get('Education').getRecordTypeId();
@@ -495,9 +595,11 @@ public String saveEduDetailIF(String loginHashCode,List<Education_Details__c> in
         for(Education_Details__c lineItem:instanceEduDet){
             if(lineItem.Degree__c!=null){
                 lineItem.RecordTypeId=eduId;
+                lineItem.Applicant_Proposal_Association__c=apaId;
             }
             else{
                 lineItem.RecordTypeId=thesisId;
+                lineItem.Applicant_Proposal_Association__c=apaId;
                 if(lineItem.Thesis_Type__c=='Master Thesis'){
                     if(mtStartDateCheck==0){
                     lineItem.Start_Date__c=newMtStartDate;
@@ -545,7 +647,7 @@ public String upsertAchievements(String loginHashCode,Achievement__c instanceAch
     return 'ERROR';
     }
 }
-public String saveContactEmployement(String loginHashCode,Contact con,List<employmentWrapper> empList){
+public String saveContactEmployement(String loginHashCode,Contact con,List<employmentWrapper> empList,String apaId){
     try {
         update con;
         system.debug('size ---> '+empList.size());
@@ -561,6 +663,7 @@ public String saveContactEmployement(String loginHashCode,Contact con,List<emplo
             emRec.Contact__c = wrap.employmentDetails.Contact__c;
             emRec.Start_Date__c = wrap.employmentDetails.Start_Date__c;
             emRec.End_Date__c = wrap.employmentDetails.End_Date__c;
+            emRec.Applicant_Proposal_Association__c = apaId;
             if(wrap.employmentDetails.Id != null){
                 emRec.Id = wrap.employmentDetails.Id;
             }
@@ -669,7 +772,8 @@ public String saveFellowshipProposal(String loginHashCode,Application_Proposal__
         Integer day,
         String contactId,
         String recordTypeName,
-        String campaignId
+        String campaignId,
+        String yearlyCallId
     ) {
         Savepoint sp = Database.setSavepoint();
         
@@ -707,12 +811,13 @@ public String saveFellowshipProposal(String loginHashCode,Application_Proposal__
             List<Applicant_Proposal_Association__c> existingAssociations = [
                 SELECT Id, 
                        Proposals__c, 
+                       Yearly_Call__c,
                        Proposals__r.Id, 
                        Proposals__r.RecordTypeId,
                        Contact__c
                 FROM Applicant_Proposal_Association__c
                 WHERE Contact__c = :finalContactId
-                AND Proposals__r.RecordTypeId = :recordTypeId
+                AND Proposals__r.RecordTypeId = :recordTypeId AND Proposals__r.yearly_Call__c  =: yearlyCallId
                 LIMIT 1
             ];
             
@@ -732,6 +837,7 @@ public String saveFellowshipProposal(String loginHashCode,Application_Proposal__
             } else {
                 proposal = new Application_Proposal__c(
                     RecordTypeId = recordTypeId,
+                    yearly_Call__c=yearlyCallId,
                     Campaign__c = String.isNotBlank(campaignId) ? Id.valueOf(campaignId) : null
                 );
                 insert proposal;
@@ -758,6 +864,7 @@ public String saveFellowshipProposal(String loginHashCode,Application_Proposal__
             return 'Error: ' + e.getMessage() + ' (Line: ' + e.getLineNumber() + ')';
         }
     }
+
    
 
 

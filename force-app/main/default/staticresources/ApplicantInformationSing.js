@@ -4,11 +4,21 @@ $scope.ddStatus={};
 $rootScope.proposalId;
 $scope.baseURL = window.location.origin;
 
+
+
 // Fetching the proposalId from Local Storage
     //if (localStorage.getItem('proposalId')) {
         //$rootScope.proposalId = localStorage.getItem('proposalId');
       //  console.log('Loaded proposalId from localStorage:', $rootScope.proposalId);
     //}
+
+
+    // Fetching the yearlyCallId from Local Storage
+    if (localStorage.getItem('yearlyCallId')) {
+        $rootScope.yearlyCallId = localStorage.getItem('yearlyCallId');
+        console.log('Loaded proposalId from localStorage:', $rootScope.yearlyCallId);
+    }
+
 
 
 $scope.getDependentPicklistValues = function(){
@@ -442,13 +452,14 @@ debugger
         closeOnEsc: false
       });
       
-    IndustrialFellowshipController.saveApplicantPortalSingh($rootScope.candidateId,$scope.objContact,$scope.accountDet,birthYear,birthMonth,birthDay,$rootScope.contactId, 'SING', '701e10000011XxTAAU',  function (result, event) {
-        debugger;
-        	// Saving the ProposalId in Local Storage
+    IndustrialFellowshipController.saveApplicantPortalSingh($rootScope.candidateId,$scope.objContact,$scope.accountDet,birthYear,birthMonth,birthDay,$rootScope.contactId, 'SING', '701e10000011XxTAAU', $rootScope.yearlyCallId, function (result, event) {
+        debugger
+
+        // Saving the ProposalId in Local Storage
             localStorage.setItem('proposalId', result);
             $rootScope.proposalId = result; // Receiving the Proposal Id from the controller
-        
-        
+
+
             console.log(result);
             console.log(event);
             swal.close();

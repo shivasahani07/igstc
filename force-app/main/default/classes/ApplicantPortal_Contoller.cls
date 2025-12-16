@@ -130,6 +130,7 @@ public without sharing class ApplicantPortal_Contoller {
                 
             }
         }
+        
     }
 
     public class proposalWrap {
@@ -330,7 +331,7 @@ public without sharing class ApplicantPortal_Contoller {
             return 'Error creating new user: ' + e.getMessage();
         }
     }
-    
+    /*
     //campaign method for Pecfar added by rukasar:
 @RemoteAction
 public static List<Campaign> getActiveCampaign(string campaign_name) {
@@ -346,6 +347,23 @@ public static List<Campaign> getActiveCampaign(string campaign_name) {
         return null;
     }
 }
+*/
+     @RemoteAction
+ public static List<YealyCall__c> getActiveCampaign(String yearlyCallId) {
+     try {
+         List<YealyCall__c> yearlycallCampaigns = [SELECT Id, Name,Campaign__c,Pecfar_age_limit__c,Date_of_Birth_PECFAR__c FROM YealyCall__c WHERE Id = :yearlyCallId];
+       
+         if (!yearlycallCampaigns.isEmpty()) {
+            return yearlycallCampaigns;
+        }
+         return null;
+    } catch (Exception e) {
+         System.debug('Error: ' + e.getMessage());
+         return null;
+}
+ }
+    
+    
     
     // Campaign method for If added by rukasar:
 /* @RemoteAction
@@ -372,7 +390,7 @@ public static List<Campaign> getActiveCampaignIf(string campaign_name) {
  @RemoteAction
 public static List<YealyCall__c> getActiveCampaignIf(String yearlyCallId) {
     try {
-        List<YealyCall__c> yearlycalls = [SELECT Id, Name, PIEF_Age_Limit__c,PIEF_PhD_time__c,
+        List<YealyCall__c> yearlycalls = [SELECT Id, Name, Campaign__c,Years__c,PIEF_Age_Limit__c,Campaign_End_Date__c,PIEF_PhD_time__c,
                                     Date_of_Birth_PIEF__c,PhD_Enrollment_Date_PIEF__c,
                                     PDIF_Age_Limit__c,PDIF_PhD_time__c,
                                     Date_of_Birth_PDIF__c,PhD_Enroll_ment_Date_PDIF__c 
@@ -786,11 +804,13 @@ public static List<YealyCall__c> getActiveCampaignIf(String yearlyCallId) {
         return Proposal_Controller.finalSubmit(proposalDetails);
     }
     //************************************** Industraial Fellowship **********************************************************
+
     @RemoteAction
-    public static String updateIndusrianFellowshipBasicDet(String campaignId,String candidateId,Contact InstanceCon,Integer birthDay,Integer birthMonth,Integer birthYear,Integer phdEnrollYear,Integer phdEnrollMonth,Integer phdEnrollDay,Integer phdAwardYear,Integer phdAwardMonth,Integer phdAwardDay,Integer phdThesisYear,Integer phdThesisMonth,Integer phdThesisDay,Application_Proposal__c prop){
-        IndustrialFellowshipHelper instanceIFH=new IndustrialFellowshipHelper();
-        return instanceIFH.updateIndusrianFellowshipBasicDet(campaignId,candidateId,InstanceCon,birthDay,birthMonth,birthYear,phdEnrollYear,phdEnrollMonth,phdEnrollDay,phdAwardYear,phdAwardMonth,phdAwardDay,phdThesisYear,phdThesisMonth,phdThesisDay,prop);
+    public static IndustrialFellowshipHelper.insertApplicationWrapper updateIndusrianFellowshipBasicDet(String campaignId,String candidateId,Contact InstanceCon,Integer birthDay,Integer birthMonth,Integer birthYear,Integer phdEnrollYear,Integer phdEnrollMonth,Integer phdEnrollDay,Integer phdAwardYear,Integer phdAwardMonth,Integer phdAwardDay,Integer phdThesisYear,Integer phdThesisMonth,Integer phdThesisDay,Application_Proposal__c prop){
+       // IndustrialFellowshipHelper instanceIFH=new IndustrialFellowshipHelper();
+        return IndustrialFellowshipHelper.updateIndusrianFellowshipBasicDet(campaignId,candidateId,InstanceCon,birthDay,birthMonth,birthYear,phdEnrollYear,phdEnrollMonth,phdEnrollDay,phdAwardYear,phdAwardMonth,phdAwardDay,phdThesisYear,phdThesisMonth,phdThesisDay,prop);
     }
+
     @RemoteAction
     public static String updatePersonalInfoIF(String ContactId,Contact InstanceCon,Integer birthDay,Integer birthMonth,Integer birthYear,Integer pasExYear,Integer pasExMonth,Integer pasExDay){
         IndustrialFellowshipHelper instanceIFH=new IndustrialFellowshipHelper();
@@ -1004,7 +1024,7 @@ public static List<YealyCall__c> getActiveCampaignIf(String yearlyCallId) {
     }
     
     @RemoteAction
-    public static String insertPairingDetails(List<Proposal_Controller.wrapperPairing> contactList,String campaignId,String yearlyCall){
+    public static Proposal_Controller.insertPairingWrapper insertPairingDetails(List<Proposal_Controller.wrapperPairing> contactList,String campaignId,String yearlyCall){
         return Proposal_Controller.insertPairingDetails(contactList,campaignId,yearlyCall);
     }
     
@@ -1160,13 +1180,13 @@ public static List<YealyCall__c> getActiveCampaignIf(String yearlyCallId) {
         return 'Success';
     }
     @RemoteAction
-    public static List<Employment_Details__c> getEmpDetails(string hashcode){
-        return Proposal_Controller.getEmpDetails(hashcode);
+    public static List<Employment_Details__c> getEmpDetails(string hashcode, string apaId){
+        return Proposal_Controller.getEmpDetails(hashcode,apaId);
     }
     
     @RemoteAction
-    public static string insertEmploymentDetailsPECFAR(List<Employment_Details__c> empDetails){
-        return Proposal_Controller.insertEmploymentDetailsPECFAR(empDetails);
+    public static string insertEmploymentDetailsPECFAR(List<Employment_Details__c> empDetails, string apaId){
+        return Proposal_Controller.insertEmploymentDetailsPECFAR(empDetails,apaId);
     }
     
     // @RemoteAction
@@ -1276,7 +1296,7 @@ public static List<YealyCall__c> getActiveCampaignIf(String yearlyCallId) {
     }
     
     @RemoteAction
-    public static String insertCoordinatorsInformation2(List<Account> accList,List<Contact> conList, string proposalId, string yearlyCallId){
+    public static Proposal_Controller.insertApplicationWrapper insertCoordinatorsInformation2(List<Account> accList,List<Contact> conList, string proposalId, string yearlyCallId){
         return Proposal_Controller.insertCoordinatorsInformation2(accList, conList,proposalId, yearlyCallId);
     }
     
@@ -1906,9 +1926,14 @@ userDocc.Id = udId;
         Proposal_Controller.deleteEmploymentWorkshop(empId);
     }
     
+    // @RemoteAction
+    // public static string SaveWorkshopContactDetails(List<Contact> conDataList, List<Education_Details__c> eduDetails, List<Employment_Details__c> empDetails){
+    //     return Proposal_Controller.SaveWorkshopContactDetails(conDataList, eduDetails, empDetails);
+    // }
+
     @RemoteAction
-    public static string SaveWorkshopContactDetails(List<Contact> conDataList, List<Education_Details__c> eduDetails, List<Employment_Details__c> empDetails){
-        return Proposal_Controller.SaveWorkshopContactDetails(conDataList, eduDetails, empDetails);
+    public static string SaveWorkshopContactDetails(List<Contact> conDataList, List<Education_Details__c> eduDetails, List<Employment_Details__c> empDetails, String apaId){
+        return Proposal_Controller.SaveWorkshopContactDetails(conDataList, eduDetails, empDetails, apaId);
     }
     
     @RemoteAction
@@ -2277,14 +2302,31 @@ public static WrapperProposalDet getPECFARProposalDetails(string proposalId){
         }
     }
     
-    @RemoteAction
-    public static List<Contact> checkBulkEmail(List<string> email, List<Id> ids){
-        try{
-            List<Contact> refList = [SELECT Id,Name,Email FROM Contact WHERE Email IN: email AND Id NOT IN: ids];
-            return refList;
-        }catch(Exception e){
-            return null;
-        }
+    // @RemoteAction
+    // public static List<Contact> checkBulkEmail(List<string> email, List<Id> ids){
+    //     try{
+    //         List<Contact> refList = [SELECT Id,Name,Email FROM Contact WHERE Email IN: email AND Id NOT IN: ids];
+    //         return refList;
+    //     }catch(Exception e){
+    //         return null;
+    //     }
+    // }
+
+   @RemoteAction
+    public static List<Contact> checkBulkEmail(String email) {
+        return [
+            SELECT Id, FirstName, LastName, Email, Phone, Department,
+                AccountId,
+                Account.Name,
+                Account.Homepage_URL__c,
+                Account.BillingStreet,
+                Account.BillingCity,
+                Account.BillingState,
+                Account.BillingCountry,
+                Account.BillingPostalCode
+            FROM Contact
+            WHERE Email = :email
+        ];
     }
     
     @RemoteAction
@@ -2501,8 +2543,8 @@ public static String saveHostDetails(Account accRecord, Contact conRec, String p
     */
 
     @RemoteAction
-    public static List<Contact> getCoordCVDetails(String hashcode){
-        return Proposal_Controller.getCoordCVDetails(hashcode);
+    public static List<Contact> getCoordCVDetails(String hashcode, String apaId, String proposalId){
+        return Proposal_Controller.getCoordCVDetails(hashcode, apaId, proposalId);
     }
 
     

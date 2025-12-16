@@ -10,6 +10,7 @@ angular.module('cp_app').controller('coordinators_ctrl', function ($scope, $root
     $scope.disableSubmit = false;
     $scope.listOfIds = [];
     $rootScope.proposalId;
+    $rootScope.apaId;
     $rootScope.campaignId;
     $rootScope.yearlyCallId;
 
@@ -403,13 +404,18 @@ angular.module('cp_app').controller('coordinators_ctrl', function ($scope, $root
 
         WorkshopController.insertCoordinatorsInformation2($scope.allCoordinatorDetails, $scope.contactList, $rootScope.proposalId, $rootScope.yearlyCallId, function (result, event) {
             console.log('*************RESULT************* : ', result);
-            debugger
+            debugger;
 
-            // Saving the ProposalId in Local Storage
-            localStorage.setItem('proposalId', result);
+            // Saving the ProposalId & APA Id in Local Storage
+            if (result.proposalId) {
+                localStorage.setItem('proposalId', result.proposalId);
+                $rootScope.proposalId = result.proposalId;
+            }
 
-
-            $rootScope.proposalId = result; // Receiving the Proposal Id from the controller
+            if (result.apa && result.apa.Id) {
+                localStorage.setItem('apaId', result.apa.Id);
+                $rootScope.apaId = result.apa.Id;
+            }
 
             if (event.status) {
                 debugger;
@@ -428,6 +434,8 @@ angular.module('cp_app').controller('coordinators_ctrl', function ($scope, $root
         )
     }
 
+
+    /*
     $scope.checkEmail = function () {
         $scope.emailList = [];
         debugger;
@@ -448,6 +456,7 @@ angular.module('cp_app').controller('coordinators_ctrl', function ($scope, $root
                 }
             }
         }
+
         WorkshopController.checkBulkEmail($scope.emailList, $scope.listOfIds, function (result, event) {
             debugger;
             debugger;
@@ -462,8 +471,59 @@ angular.module('cp_app').controller('coordinators_ctrl', function ($scope, $root
                 $scope.$apply();
             }
         })
-
     }
+    */
+
+    $scope.onEmailChange = function (email, index) {
+
+        if (!email) return;
+
+        WorkshopController.checkBulkEmail(email, function (result, event) {
+
+            if (event.status && result && result.length > 0) {
+
+                var con = result[0];
+                var uiAcc = $scope.allCoordinatorDetails[index];
+                var uiCon = uiAcc.Contacts[0];
+
+                // ---------------- CONTACT ----------------
+                uiCon.Id = con.Id;
+                uiCon.FirstName = con.FirstName || '';
+                uiCon.LastName = con.LastName || '';
+                uiCon.Phone = con.Phone || '';
+                uiCon.Department = con.Department || '';
+                uiCon.Email = con.Email || '';
+                uiCon.AccountId = con.AccountId;
+
+                // ---------------- ACCOUNT ----------------
+                if (con.Account) {
+
+                    uiAcc.Id = con.AccountId;
+                    uiAcc.Name = con.Account.Name || '';
+                    uiAcc.Homepage_URL__c = con.Account.Homepage_URL__c || '';
+
+                    uiAcc.BillingCity = con.Account.BillingCity || '';
+                    uiAcc.BillingState = con.Account.BillingState || '';
+                    uiAcc.BillingCountry = con.Account.BillingCountry || '';
+                    uiAcc.BillingPostalCode = con.Account.BillingPostalCode || '';
+
+                    // UI expects Street1 & Street2
+                    if (con.Account.BillingStreet) {
+                        let parts = con.Account.BillingStreet.split(',');
+                        uiAcc.BillingStreet1 = parts[0] || '';
+                        uiAcc.BillingStreet2 = parts[1] || '';
+                    }
+                }
+
+                $scope.emailCheck = true;
+                $scope.$applyAsync();
+            }
+        });
+    };
+
+
+
+
 
     $scope.validurl = function (value) {
         if (value != undefined) {

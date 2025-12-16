@@ -109,6 +109,7 @@ app.controller('cp_dashboard_ctrl', function ($scope, $rootScope, $timeout, $win
 
     $rootScope.proposalId = '';
     $rootScope.yearlyCallId = '';
+    //$rootScope.apaId='';
 
     $rootScope.currencyPickList = currencyPickList;
     //  $rootScope.accList = accList;

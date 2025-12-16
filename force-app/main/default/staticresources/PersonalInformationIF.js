@@ -14,6 +14,12 @@ angular.module('cp_app').controller('PersonalInformationIF_Ctrl', function($scop
         $rootScope.proposalId = localStorage.getItem('proposalId');
         console.log('Loaded proposalId from localStorage:', $rootScope.proposalId);
     }
+
+    // Fetching the apaId from Local Storage
+    if (localStorage.getItem('apaId')) {
+        $rootScope.apaId = localStorage.getItem('apaId');
+        console.log('Loaded apaId from localStorage:', $rootScope.apaId);
+    }
     
     $scope.getDependentPicklistValues = function(){
       debugger;

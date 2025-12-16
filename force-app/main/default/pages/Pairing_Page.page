@@ -292,7 +292,12 @@
                                     </div>
                                 </div>
                                 
-                                <div class="row box-shadow-3 ms-1 me-2">                                        
+                                <div class="row box-shadow-3 ms-1 me-2">
+                                    <div class="col-md-12 mt-5">
+                                        <label class="font-if">
+                                            Email<span class="required-asterisk" style="color:red;">*</span></label>
+                                        <input type="text" class="form-control" ng-model="pairingDetails.Email" ng-focus="removeClass('txtIndEmail')" id="txtIndEmail" ng-disabled="proposalStage || primary" ng-change="checkEmail(pairingDetails.Email,pairingDetails.Id)" />
+                                    </div>
                                     <div class="col-md-12 mt-5">
                                         <label class="font-if">
                                             First Name<span class="required-asterisk" style="color:red;">*</span></label>
@@ -307,15 +312,6 @@
                                             Institution / Organization<span class="required-asterisk" style="color:red;">*</span></label>
                                         <input type="text" class="form-control" ng-focus="removeClass('txtIndOrg')" id="txtIndOrg" ng-model="pairingDetails.Account.Name" ng-disabled="proposalStage || primary" />
                                     </div>
-                                    
-                                    <div class="col-md-12 mt-5">
-                                        <label class="font-if">
-                                            Email<span class="required-asterisk" style="color:red;">*</span></label>
-                                        <input type="text" class="form-control" ng-model="pairingDetails.Email" ng-focus="removeClass('txtIndEmail')" id="txtIndEmail" ng-disabled="proposalStage || primary" ng-change="checkEmail(pairingDetails.Email,pairingDetails.Id)" />
-                                    </div>
-                                    
-                                    
-                                    
                                     <div class="col-md-12 mt-5 mb-5">
                                         <label class="font-if">Date of Birth
                                             <span class="required-asterisk" style="color:red;">*</span></label>
@@ -338,7 +334,12 @@
 <label class="color-theme ms-2">German Counter Part</label>
 </div> -->
                                 
-                                <div class="row box-shadow-3 ms-1 me-2">                                        
+                                <div class="row box-shadow-3 ms-1 me-2">     
+                                    <div class="col-md-12 mt-5">
+                                        <label class="font-if">
+                                            Email<span class="required-asterisk" style="color:red;">*</span></label>
+                                        <input type="text" class="form-control" ng-focus="removeClass('txtGerEmail')" id="txtGerEmail" ng-model="pairList.Email" ng-disabled="proposalStage" ng-change="checkEmail(pairList.Email,pairList.Id)" />
+                                    </div>
                                     <div class="col-md-12 mt-5">
                                         <label class="font-if">
                                             First Name<span class="required-asterisk" style="color:red;">*</span></label>
@@ -353,11 +354,7 @@
                                             Institution / Organization<span class="required-asterisk" style="color:red;">*</span></label>
                                         <input type="text" class="form-control" ng-focus="removeClass('txtGerOrg')" id="txtGerOrg" ng-model="pairList.Account.Name" ng-disabled="proposalStage" />
                                     </div>
-                                    <div class="col-md-12 mt-5">
-                                        <label class="font-if">
-                                            Email<span class="required-asterisk" style="color:red;">*</span></label>
-                                        <input type="text" class="form-control" ng-focus="removeClass('txtGerEmail')" id="txtGerEmail" ng-model="pairList.Email" ng-disabled="proposalStage" ng-change="checkEmail(pairList.Email,pairList.Id)" />
-                                    </div>
+                                    
                                     <div class="col-md-12 mt-5 mb-5">
                                         <label class="font-if">Date of Birth
                                             <span class="required-asterisk" style="color:red;">*</span></label>
@@ -377,7 +374,7 @@
                                     <i class="fa-solid fa-check me-2"></i>Back</button>
                             </div>
                         </div>
-                         
+                        
                         
                     </form>
                     

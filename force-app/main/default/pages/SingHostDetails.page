@@ -141,6 +141,10 @@
 
                         <div class="row mt-5 ms-3">
                             <div class="col-md-4">
+                                <label class="font-if">Email<span class="ms-2 text-danger">*</span></label>
+                                <input ng-focus="removeClass('email2')" id="email2" class="form-control" type="text" ng-model="contactDetails.Email" ng-disabled="proposalStage" ng-change="checkEmail(contactDetails.Email,contactDetails.Id)" />
+                            </div>
+                            <div class="col-md-4">
                                 <label class="font-if">First Name<span class="ms-2 text-danger">*</span></label>
                                 <input class="form-control" ng-focus="removeClass('fname')" id="fname" type="text" ng-model="contactDetails.FirstName" ng-disabled="proposalStage" />
                             </div>
@@ -148,19 +152,16 @@
                                 <label class="font-if">Last Name<span class="ms-2 text-danger">*</span></label>
                                 <input class="form-control" ng-focus="removeClass('lname')" id="lname" type="text" ng-model="contactDetails.LastName" ng-disabled="proposalStage" />
                             </div>
-                            <div class="col-md-4">
-                                <label class="font-if">Nationality<span class="text-danger">*</span></label>
-                                <select type="select" id="selectNatinality" ng-disabled="proposalStage" ng-focus="removeClass('selectNatinality')" class="form-control" ng-model="contactDetails.Nationality__c">
-                                    <option ng-selected="{{item==objContact.Nationality__c}}" ng-repeat="item in nationality" value="{{item}}">{{item}}</option>
-                                </select>
-                            </div>
+                            
                             
                         </div>
 
                         <div class="row mt-5 ms-3">
                             <div class="col-md-4">
-                                <label class="font-if">Email<span class="ms-2 text-danger">*</span></label>
-                                <input ng-focus="removeClass('email2')" id="email2" class="form-control" type="text" ng-model="contactDetails.Email" ng-disabled="proposalStage" ng-change="checkEmail(contactDetails.Email,contactDetails.Id)" />
+                                <label class="font-if">Nationality<span class="text-danger">*</span></label>
+                                <select type="select" id="selectNatinality" ng-disabled="proposalStage" ng-focus="removeClass('selectNatinality')" class="form-control" ng-model="contactDetails.Nationality__c">
+                                    <option ng-selected="{{item==objContact.Nationality__c}}" ng-repeat="item in nationality" value="{{item}}">{{item}}</option>
+                                </select>
                             </div>
                             <div class="col-md-4">
                                 <label class="font-if">Mobile<span class="ms-2 text-danger">*</span></label>

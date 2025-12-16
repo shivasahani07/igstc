@@ -10,13 +10,19 @@ angular.module('cp_app').controller('EmploymentDetails_Ctrl', function($scope,$r
         $rootScope.proposalId = localStorage.getItem('proposalId');
         console.log('Loaded proposalId from localStorage:', $rootScope.proposalId);
     }
+
+    // Fetching the apaId from Local Storage
+    if (localStorage.getItem('apaId')) {
+        $rootScope.apaId = localStorage.getItem('apaId');
+        console.log('Loaded apaId from localStorage:', $rootScope.apaId);
+    }
     
   $scope.objRtf=[{charCount:0,maxCharLimit:500,errorStatus:false}];
   $scope.available_followship=$rootScope.available_followship;
           $scope.associated_with_igstc=$rootScope.associated_with_igstc;
           $scope.nature_of_Job=$rootScope.nature_of_Job;
   $scope.getCotactDetailOnLoad=function(){
-      IndustrialFellowshipController.getContactEmployement($rootScope.candidateId, function (result, event) {
+      IndustrialFellowshipController.getContactEmployement($rootScope.candidateId,$rootScope.apaId, function (result, event) {
         console.log('data employment detail');  
         console.log(result);
           console.log(event);
@@ -145,7 +151,7 @@ angular.module('cp_app').controller('EmploymentDetails_Ctrl', function($scope,$r
         }
     }
       delete $scope.objContact.Employment_Details__r;
-      IndustrialFellowshipController.saveContactEmployement($rootScope.candidateId,$scope.objContact,$scope.empList, function (result, event) {
+      IndustrialFellowshipController.saveContactEmployement($rootScope.candidateId,$scope.objContact,$scope.empList,$rootScope.apaId, function (result, event) {
           debugger;
           console.log(result);
           console.log(event);

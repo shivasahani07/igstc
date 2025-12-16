@@ -637,7 +637,7 @@ angular.module('rp_app').controller('projects_ctrl', function ($scope, $sce, $ro
                 $scope.objContactPrimaryh = [];
                 $scope.objContactPrimaryhHost = [];
                 $scope.ProposalData = result.proposalData;
-                $scope.objContact = result.proposalData.Contacts__r;
+                $scope.objContact = result.contactsList;
                 // $scope.objContact=result.contactsList;
                 console.log("proposal data contact");
                 console.log($scope.objContact);
@@ -772,6 +772,7 @@ angular.module('rp_app').controller('projects_ctrl', function ($scope, $sce, $ro
     }
     // $scope.getProposalDetails();
     $scope.setReviewsList = function (mrFlag) {
+        debugger;
         if (mrFlag == 'draft') {
             $scope.myReviewsHeading = "Draft Reviews";
             $scope.myReviewsList = $scope.draftList;
@@ -832,7 +833,7 @@ angular.module('rp_app').controller('projects_ctrl', function ($scope, $sce, $ro
                 $scope.projectDetails(selectedReviewerMapId, $scope.getAllProposalFromReviewer[i], prop_stage, programme);
             }
         }
-        //$scope.getProposalDocuments(projectId);                   
+        $scope.getProposalDocuments(projectId);                   
     }
 
     $scope.projectDetails = function (selectedReviewerMapId, project, prop_stage, programme) {
@@ -1085,6 +1086,7 @@ angular.module('rp_app').controller('projects_ctrl', function ($scope, $sce, $ro
         link.click();
     }
     $scope.showDraft = function () {
+        debugger;
         $scope.flagDashboard = false;
         $scope.showDashboard = true;
         $scope.flag = true;
@@ -1104,6 +1106,7 @@ angular.module('rp_app').controller('projects_ctrl', function ($scope, $sce, $ro
         $scope.myReviews = false;
     }
     $scope.showPending = function () {
+        debugger;
         $scope.flagDashboard = false;
         $scope.flag = true;
         $scope.showDashboard = true;
@@ -1123,6 +1126,7 @@ angular.module('rp_app').controller('projects_ctrl', function ($scope, $sce, $ro
         $scope.myReviews = false;
     }
     $scope.showSubmitted = function () {
+        debugger;
         $scope.flagDashboard = false;
         $scope.flag = true;
         $scope.showDashboard = true;

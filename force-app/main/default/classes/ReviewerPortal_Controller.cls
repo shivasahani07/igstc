@@ -172,13 +172,30 @@ public withOut sharing class ReviewerPortal_Controller {
     @RemoteAction                                                                                                                                                                            
     public static List<Attachment> getProAttachment(String proId){
         System.debug('proId----'+proId);
+        set<id> parentIds = new set<id>();
+         list<User_Document__c> getUserDoc; 
+        list<Applicant_Proposal_Association__c> appProp =[select id,contact__c from Applicant_Proposal_Association__c where proposals__c=:proId];
+        for(Applicant_Proposal_Association__c app:appProp){
+            parentIds.add(app.Id);
+        }
+
+         getUserDoc = [select name,id,Status__c from User_Document__c where Applicant_Proposal_Association__c in :parentIds and Status__c='Uploaded'];
+            for(User_Document__c userDoc:getUserDoc){
+                parentIds.add(userDoc.Id);
+            }
+
         // list<Contact> listId =[select id from contact where proposals__c=:proId];
-        return [SELECT Id, ParentId , ContentType , Name FROM Attachment WHERE ParentId=:proId  ORDER BY LastModifiedDate DESC Limit 1];
+        return [SELECT Id, ParentId , ContentType , Name FROM Attachment WHERE ParentId IN:parentIds  ORDER BY LastModifiedDate DESC];
     }
     @RemoteAction
     public static list<UserDocumentWrapper> getContactUserDoc(String proId) {
         try{
-            list<Contact> parentId =[select id from contact where proposals__c=:proId];
+            set<id> contactIds = new set<id>();
+            list<Applicant_Proposal_Association__c> appProp =[select contact__c from Applicant_Proposal_Association__c where proposals__c=:proId];
+            for(Applicant_Proposal_Association__c app:appProp){
+                contactIds.add(app.contact__c);
+            }
+            list<Contact> parentId =[select id from contact where Id IN:contactIds];
             list<UserDocumentWrapper> udWrapperList = New List<UserDocumentWrapper>();
             map<string,ContentDocumentLink> userDocIdXcdLink = New map<string,ContentDocumentLink>();
             map<string,ContentDistribution> userDocIdXcDistrbtn = New map<string,ContentDistribution>();
@@ -189,10 +206,10 @@ public withOut sharing class ReviewerPortal_Controller {
             if(parentId.getSObjectType().getDescribe().getName() == 'Contact'){
                 getUserDoc = [select name,id,Status__c from User_Document__c where Contact__c in :parentId and Status__c='Uploaded'];
             }
+                getUserDoc = [select name,id,Status__c from User_Document__c where Applicant_Proposal_Association__c in :appProp and Status__c='Uploaded'];
+            
             // if(parentId.getSObjectType().getDescribe().getName() == 'Application_Proposal__c'){
-            //     getUserDoc = [select name,id,Status__c from User_Document__c where Proposals__c =:parentId];
-            // }
-            system.debug('getUserDoc----'+getUserDoc);
+            //     getUserDoc = [select name,id,Status__c from User_Document__c where Prop<|fim_middle|><|fim_middle|>
             set<string> userDocIdSet = New set<string>();
             for(User_Document__c userDoc:getUserDoc){
                 userDocIdSet.add(userDoc.id);
@@ -280,20 +297,37 @@ public withOut sharing class ReviewerPortal_Controller {
         // for(Contact acc:listContact){
         //     accountIds.add(acc.AccountId);
         // }
-        Application_Proposal__c appList = [SELECT Id,Sum_of_Reviewer_ratings__c,Name,Campaign__r.Name,Campaign__r.Yearly_Call__c,Proposed_Venue__c,Proposed_Date__c,Workshop_Finish_Date__c,Tentative_Start_Date__c,Tentative_End_Date__c,Title_Of__c,Title_In_German__c,Abstract_of_proposed_work__c,Work_plan__c,Background_Concept_Purpose__c,Basis_for_choosing_the_pairing_fellow__c,Tentative_plans_for_networking__c,Specific_Need_For_the_Bilateral_Event__c,Brief_Statement_of_Purpose__c,Proposed_area__c,Awarded_Amount__c,Proposal_Stages__c,Thematic_Topic__c,Equipment__c,Acronym__c,Summary__c,KeyWords__c,Criteria_For_Abandoning_The_Project__c,Current_State_Of_The_Art__c,Expected_Deliverables__c,Duration_In_Months_Max_36__c,Innovative_Aspects__c,Application_Date__c,Research_Scholars__c,Necessity_Of_Funding__c,Research_Approach_Objectives__c,Project_Description__c,Reasons_For_And_Benefits_Of_Cooperation__c,
-        (SELECT  Name,Host__c,Is_Primary__c,AccountName__c,Department,Email,MailingAddress,Industrial_Fellowship_Type__c,Birthdate,DATE_BIRTH_FORMULA__c,Planned_research_activities_of_the_visit__c,Expected_outcomes__c,Account_Country_Type__c,Basis_for_choosing_your_paired_member__c,Tentative_plans__c,Tentative_Start_Date__c,Tentative_End_Date__c FROM Contacts__r), (SELECT Name,Title__c,Duration_End_Month__c,Duration_Start_Month__c FROM Work_Package__r), 
-        (SELECT Id,ParentId,Name FROM Attachments order by createdDate DESC limit 1), (SELECT Name FROM Proposal_Thematic_Areas__r), Question_Template__c,        
-        (SELECT Id,Name,Stage__c,Maximum_Score__c,Total_Score__c FROM Reviewer_Mapping__r) FROM Application_Proposal__c WHERE id =: pid limit 1];        
+        set<id> contactIds=new set<id>();
+        Application_Proposal__c appList = [SELECT Id,Sum_of_Reviewer_ratings__c,Name,Campaign__r.Name,Campaign__r.Yearly_Call__c,Proposed_Venue__c,
+        Proposed_Date__c,Workshop_Finish_Date__c,Tentative_Start_Date__c,Tentative_End_Date__c,Title_Of__c,Title_In_German__c,
+        Abstract_of_proposed_work__c,Work_plan__c,Background_Concept_Purpose__c,Basis_for_choosing_the_pairing_fellow__c,Tentative_plans_for_networking__c,
+        Specific_Need_For_the_Bilateral_Event__c,Brief_Statement_of_Purpose__c,Proposed_area__c,Awarded_Amount__c,Proposal_Stages__c,Thematic_Topic__c,
+        Equipment__c,Acronym__c,Summary__c,KeyWords__c,Criteria_For_Abandoning_The_Project__c,Current_State_Of_The_Art__c,Expected_Deliverables__c,
+        Duration_In_Months_Max_36__c,Innovative_Aspects__c,Application_Date__c,Research_Scholars__c,Necessity_Of_Funding__c,Research_Approach_Objectives__c,
+        Project_Description__c,Reasons_For_And_Benefits_Of_Cooperation__c,
+        (SELECT Id,contact__c FROM Proposals__r) ,
+        (SELECT Name,Title__c,Duration_End_Month__c,Duration_Start_Month__c FROM Work_Package__r), 
+        (SELECT Id,ParentId,Name FROM Attachments order by createdDate DESC limit 1),
+        (SELECT Name FROM Proposal_Thematic_Areas__r), Question_Template__c,       
+        (SELECT Id,Name,Stage__c,Maximum_Score__c,Total_Score__c FROM Reviewer_Mapping__r) 
+        FROM Application_Proposal__c WHERE id =: pid limit 1];        
         // List<Account> accountList=[SELECT name,Academia__c,Industry__c,Website,BillingCountry,(select Budget__c,Duration__c,Funding_Agency__c,Starting_Date__c,Title__c from Existing_Grants__r),(select Asked_From_IGSTC__c,IGSTC_Contribution__c,Partner_Name__c,Own_Contribution__c,Total__c from Financial_Contribution__r),(SELECT Id,ParentId,Name FROM Attachments) from Account where Proposals__c=:pid and id not in:accountIds];
         List<Account> accountList=[SELECT name,Name_of_Mentor__c,Academia__c,Industry__c,Host__c,Is_Primary__c,Website,BillingCountry,(select Budget__c,Duration__c,Funding_Agency__c,Starting_Date__c,Title__c from Existing_Grants__r),(select Asked_From_IGSTC__c,IGSTC_Contribution__c,Partner_Name__c,Own_Contribution__c,Total__c from Financial_Contribution__r),(SELECT Id,ParentId,Name FROM Attachments) from Account where Proposals__c=:pid];
         List<Work_Package__c> workPackageList = [SELECT Id,TRL_Level__c,End_TRL_Level__c,WP_Sequence__c,Work_Package_Detail__c,Title__c,External_Id__c,Duration__c,Application__c,Account__c,Account__r.Name,(SELECT Id,Name,Account_Name__c,Account__c FROM Account_Mapping__r),
         (SELECT Id,Name From Accounts__r) From Work_Package__c WHERE Application__c =: pid];
+
+        list<Applicant_Proposal_Association__c> applicantProposalList=appList.proposals__r;
+        for(Applicant_Proposal_Association__c appProp:applicantProposalList){
+            contactIds.add(appProp.contact__c);
+        }
         
+        list<Contact> listContact=[select id,name,account.name,Account_Country_Type__c,Tentative_Start_Date__c,Tentative_End_Date__c,AccountId,(select id,name,Bank_IFSC_Code__c,Bank_Account_Number__c,Bank_Name__c,Bank_Address__c from Bank_Details__r),account.Name_of_Mentor__c,account.ACCOUNT_ADDRESS_FORMULA__c,account.Phone,account.Email__c,proposals__c,Is_Primary__c,Host__c,AccountName__c from contact where Id in:contactIds];
         // List<Existing_Grants__c> esingGrants=[select Budget__c,Duration__c,Account__r.Name,Funding_Agency__c,Starting_Date__c,Title__c from Existing_Grants__c where Application__c=:pid];
         WrapperProposalDetails instanceWrapper=new WrapperProposalDetails();
         instanceWrapper.accountsList=accountList;
         instanceWrapper.proposalData=appList;
         instanceWrapper.workPackagesList=workPackageList;
+        instanceWrapper.contactsList=listContact;
         // instanceWrapper.contactsList=listContact;
         // instanceWrapper.existingGrantsList=esingGrants;
         return instanceWrapper;
@@ -661,7 +695,8 @@ return 'success';
         public List<Account> accountsList;
         public List<Work_Package__c> workPackagesList;
         public List<Existing_Grants__c> existingGrantsList;
-        public List<contact> contactsList;
+        public List<Contact> contactsList;
+        public list<Applicant_Proposal_Association__c> applicantProposalList;
     }
     
     public static void dummyTest(){

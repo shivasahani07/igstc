@@ -3,14 +3,14 @@ public withOut sharing class IndustrialFellowshipController {
         
     }
     @RemoteAction
-    public static List<Education_Details__c> getEduQualification(String loginHashCode){
+    public static List<Education_Details__c> getEduQualification(String loginHashCode,String apaId){
         IndustrialFellowshipModel instanceIFM=new IndustrialFellowshipModel();
-        return instanceIFM.getEduQualification(loginHashCode);
+        return instanceIFM.getEduQualification(loginHashCode,apaId);
     }
     @RemoteAction
-    public static String saveEduDetailIF(String loginHashCode,List<Education_Details__c> instanceEduDet,List<IndustrialFellowshipHelper.WrapperDate> dateList){
+    public static String saveEduDetailIF(String loginHashCode,List<Education_Details__c> instanceEduDet,List<IndustrialFellowshipHelper.WrapperDate> dateList,String apaId){
         IndustrialFellowshipHelper instanceIFH=new IndustrialFellowshipHelper();
-        return instanceIFH.saveEduDetailIF(loginHashCode,instanceEduDet,dateList);
+        return instanceIFH.saveEduDetailIF(loginHashCode,instanceEduDet,dateList,apaId);
     }
     @RemoteAction
     public static Achievement__c getAchievementsDet(String loginHashCode){
@@ -23,14 +23,14 @@ public withOut sharing class IndustrialFellowshipController {
         return instanceIFH.upsertAchievements(loginHashCode,instanceAchiev,flag);
     }
     @RemoteAction
-    public static Contact getContactEmployement(String loginHashCode){
+    public static Contact getContactEmployement(String loginHashCode,String apaId){
         IndustrialFellowshipModel instanceIFM=new IndustrialFellowshipModel();
-        return instanceIFM.getContactEmployement(loginHashCode);
+        return instanceIFM.getContactEmployement(loginHashCode,apaId);
     }
     @RemoteAction
-    public static String saveContactEmployement(String loginHashCode,Contact con,List<IndustrialFellowshipHelper.employmentWrapper> emp){
+    public static String saveContactEmployement(String loginHashCode,Contact con,List<IndustrialFellowshipHelper.employmentWrapper> emp,String apaId){
         IndustrialFellowshipHelper instanceIFH=new IndustrialFellowshipHelper();
-        return instanceIFH.saveContactEmployement(loginHashCode,con,emp);
+        return instanceIFH.saveContactEmployement(loginHashCode,con,emp,apaId);
     }
     @RemoteAction
     public static Contact getContactDetailsFellowDet(String loginHashCode){
@@ -61,9 +61,9 @@ public withOut sharing class IndustrialFellowshipController {
     //     return instanceIFH.saveApplicantPortalSingh(loginHashCode,con,acc,year,month,day,contactId,recordTypeName);
     // }
     @RemoteAction
-public static String saveApplicantPortalSingh(String loginHashCode,Contact con,Account acc,Integer year,Integer month,Integer day, String contactId, String recordTypeName, String campaignId){
+public static String saveApplicantPortalSingh(String loginHashCode,Contact con,Account acc,Integer year,Integer month,Integer day, String contactId, String recordTypeName, String campaignId, String yearlyCallId){
     System.debug('IndustrialFellowshipController called');
-    return IndustrialFellowshipHelper.saveApplicantPortalSingh(loginHashCode,con,acc,year,month,day,contactId,recordTypeName,campaignId);
+    return IndustrialFellowshipHelper.saveApplicantPortalSingh(loginHashCode,con,acc,year,month,day,contactId,recordTypeName,campaignId, yearlyCallId );
 }
     @RemoteAction
     public static Contact getProposalDet(String loginHashCode){
@@ -314,9 +314,9 @@ public static String saveApplicantPortalSingh(String loginHashCode,Contact con,A
         return instanceIFH.UploadDocuments(attachmentBody,attachmentName,cvId,udId,docName,contactId,proposalId,createTask,taskSubject);
     }
     @RemoteAction
-    public static String updateIndusrianFellowshipBasicDet(String campaignId, String candidateId,Contact InstanceCon,Integer birthDay,Integer birthMonth,Integer birthYear,Integer phdEnrollYear,Integer phdEnrollMonth,Integer phdEnrollDay,Integer phdAwardYear,Integer phdAwardMonth,Integer phdAwardDay,Integer phdThesisYear,Integer phdThesisMonth,Integer phdThesisDay,Application_Proposal__c prop){
-        IndustrialFellowshipHelper instanceIFH=new IndustrialFellowshipHelper();
-        return instanceIFH.updateIndusrianFellowshipBasicDet(campaignId, candidateId,InstanceCon,birthDay,birthMonth,birthYear,phdEnrollYear,phdEnrollMonth,phdEnrollDay,phdAwardYear,phdAwardMonth,phdAwardDay,phdThesisYear,phdThesisMonth,phdThesisDay,prop);
+    public static IndustrialFellowshipHelper.insertApplicationWrapper updateIndusrianFellowshipBasicDet(String campaignId,String candidateId,Contact InstanceCon,Integer birthDay,Integer birthMonth,Integer birthYear,Integer phdEnrollYear,Integer phdEnrollMonth,Integer phdEnrollDay,Integer phdAwardYear,Integer phdAwardMonth,Integer phdAwardDay,Integer phdThesisYear,Integer phdThesisMonth,Integer phdThesisDay,Application_Proposal__c prop){
+       // IndustrialFellowshipHelper instanceIFH=new IndustrialFellowshipHelper();
+        return IndustrialFellowshipHelper.updateIndusrianFellowshipBasicDet(campaignId,candidateId,InstanceCon,birthDay,birthMonth,birthYear,phdEnrollYear,phdEnrollMonth,phdEnrollDay,phdAwardYear,phdAwardMonth,phdAwardDay,phdThesisYear,phdThesisMonth,phdThesisDay,prop);
     }
     @RemoteAction
     public static String reviewAppDocGen(string proID){

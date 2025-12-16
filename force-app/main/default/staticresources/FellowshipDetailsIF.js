@@ -15,6 +15,11 @@ angular.module('cp_app').controller('FellowshipDetailsIF_Ctrl', function($scope,
         $rootScope.proposalId = localStorage.getItem('proposalId');
         console.log('Loaded proposalId from localStorage:', $rootScope.proposalId);
     }
+    // Fetching the apaId from Local Storage
+    if (localStorage.getItem('apaId')) {
+        $rootScope.apaId = localStorage.getItem('apaId');
+        console.log('Loaded apaId from localStorage:', $rootScope.apaId);
+    }
     
 $scope.callRTF=function(){
   debugger
@@ -68,6 +73,7 @@ $scope.callRTF=function(){
             $scope.accDetails.stateList = $scope.germanStates;
         }
         $scope.$apply();
+      
 }
 
     // $scope.checkEmail = function(email,contId){

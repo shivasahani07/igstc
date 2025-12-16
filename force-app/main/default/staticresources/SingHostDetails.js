@@ -301,6 +301,7 @@ angular.module('cp_app').controller('SING', function($scope,$rootScope, fileRead
      $scope.objContact = {};
      $rootScope.projectId;
      $rootScope.proposalId;
+     $scope.singleState;
     //  $scope.hostDetails = [];
      debugger;
 
@@ -375,6 +376,9 @@ angular.module('cp_app').controller('SING', function($scope,$rootScope, fileRead
       )  
     }
 
+    $scope.getDependentPicklistValues();
+
+
     // $scope.assignProposalIdAsProjectId = function () {
     //     debugger;
     //     IndustrialFellowshipHelper.fetchProjectId($rootScope.candidateId, function (result, event) {
@@ -404,9 +408,6 @@ angular.module('cp_app').controller('SING', function($scope,$rootScope, fileRead
     
 
 
-
-
-    $scope.getDependentPicklistValues();
 
     $scope.onCountryChange = function(){
       debugger;
@@ -474,9 +475,9 @@ angular.module('cp_app').controller('SING', function($scope,$rootScope, fileRead
                 }
 
                 if($scope.hostDetails.BillingCountry == 'India'){
-                  $scope.hostDetails.stateList = $scope.indianStates;
+                  $scope.hostDetails.stateList = $scope.indianStates.$scope.singleState;
               }else if($scope.hostDetails.BillingCountry == 'Germany'){
-                  $scope.hostDetails.stateList = $scope.germanStates; 
+                  $scope.hostDetails.stateList = $scope.germanStates.$scope.singleState; 
               }
             }else{
                 $scope.hostDetails = {"Name":"","Email__c":""};
@@ -485,6 +486,7 @@ angular.module('cp_app').controller('SING', function($scope,$rootScope, fileRead
             $scope.$apply();
         })
      }
+    //  $scope.getHostSing();
 
 //     $scope.getHostSing = function () {
 //     debugger;
@@ -743,26 +745,66 @@ angular.module('cp_app').controller('SING', function($scope,$rootScope, fileRead
              }
          }
 
-         $scope.checkEmail = function(email,contId){
-            debugger;
-            $scope.emailCheck = false;
-            if(contId == undefined){
-              contId = "";
-            }
-            ApplicantPortal_Contoller.checkEmail(email,contId,function(result,event){
+      $scope.checkEmail = function(email,contId){
+        debugger;
+        $scope.emailCheck = false;
+        if(contId == undefined){
+          contId = "";
+        }
+        ApplicantPortal_Contoller.checkEmail(email,contId,function(result,event){
+          debugger;
+          if(event.status){
               debugger;
-              if(event.status){
-                debugger;
-                if(result.length > 0){
-                  $scope.emailCheck = true;
-                }else{
+              if (result && result.length > 0) {
+                  $scope.contactDetails = {
+                      FirstName: result[0].FirstName || '',
+                      LastName: result[0].LastName || '',
+                      Email: result[0].Email || '',
+                      Birthdate: result[0].Birthdate
+                ? new Date(Number(result[0].Birthdate))
+                : '',
+                      Nationality__c: result[0].Nationality__c || '',
+                      accBilling: result[0].Account_BillingCity__c || '',
+                      Designation__c: result[0].Designation__c || '',
+                      MobilePhone: result[0].MobilePhone || '',
+
+                      Campaign__c: $scope.campaigntype,
+                      Account:result[0].Account || ''
+                  };
+                  //$scope.emailCheck = true;
+              }    
+              if (result && result.length > 0) {
+                  $scope.hostDetails.stateList = [];
+                  if (result && result.length > 0 && result[0].Account && result[0].Account.BillingState) {
+                      $scope.hostDetails.stateList.push(result[0].Account.BillingState,"");
+                  }
+                  $scope.hostDetails = {
+                      Name: result[0].Institution__c || '',
+                      BillingStreet: result[0].Account.BillingStreet || '',
+                      BillingCity: result[0].Account.BillingCity || '', 
+                      BillingCountry: result[0].Account.BillingCountry || '',
+                      BillingState: result[0].Account.BillingState||'N/A',
+                      BillingPostalCode: result[0].Account.BillingPostalCode || '',
+                      Campaign__c: $scope.campaigntype,
+                      Account:result[0].Account || ''
+
+                  };
+
+                  $scope.onCountryChange();
+                  
+                  // if($scope.hostDetails.BillingCountry == 'India'){
+                  //     $scope.hostDetails.stateList = $scope.indianStates.find(r=>r==result[0].Account.BillingState);
+                  // }else if($scope.hostDetails.BillingCountry == 'Germany'){
+                  //     stateFromApex = $scope.germanStates.find(r=>r==result[0].Account.BillingState); 
+                  // }
+                }   
+              else{
                   $scope.emailCheck = false;
-                }
-                $scope.$apply();
-              }
-            })
-      
+            }
+            //$scope.$apply();
           }
+        })
+      }
     
           $scope.removeClass=function(controlid){
             $("#"+controlid+"").removeClass('border-theme');

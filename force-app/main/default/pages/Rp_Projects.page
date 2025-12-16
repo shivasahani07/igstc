@@ -530,7 +530,7 @@
                                             <td>{{rev.Proposals__r.Duration_In_Months_Max_36__c}}</td>
                                             <td>{{rev.Review_Due_Date__c}}</td> -->
                                             <!-- <th>{{rev.Proposals__r.Total_Amount__c}}</th> -->
-                                            <td><button class="btn btn-success w-100 background-theme" ng-click="enableProjectDetails(row.Id,rev.Proposals__r.Id,false,rev.Stage__c,rev.Proposals__r.Stage__c,rev.Proposals__r.Campaign__r.Name)"><i class="fa-solid fa-eye me-3"></i>Modify</button></td>
+                                            <td><button class="btn btn-success w-100 background-theme" ng-click="enableProjectDetails(rev.Id,rev.Proposals__r.Id,false,rev.Stage__c,rev.Proposals__r.Stage__c,rev.Proposals__r.Campaign__r.Name)"><i class="fa-solid fa-eye me-3"></i>Modify</button></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -597,7 +597,7 @@
                                             <td>{{rev.Proposals__r.Duration_In_Months_Max_36__c}}</td>
                                             <td>{{rev.Review_Due_Date__c}}</td> -->
                                             <!-- <th>{{rev.Proposals__r.Total_Amount__c}}</th> -->
-                                            <td><button class="btn btn-success w-100 background-theme" ng-click="enableProjectDetails(row.Id,rev.Proposals__r.Id,false,rev.Stage__c,rev.Proposals__r.Stage__c,rev.Proposals__r.Campaign__r.Name)"><i class="fa-solid fa-eye me-3"></i>Review</button></td>
+                                            <td><button class="btn btn-success w-100 background-theme" ng-click="enableProjectDetails(rev.Id,rev.Proposals__r.Id,false,rev.Stage__c,rev.Proposals__r.Stage__c,rev.Proposals__r.Campaign__r.Name)"><i class="fa-solid fa-eye me-3"></i>Review</button></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -718,7 +718,7 @@
                                             <td>{{rev.Proposals__r.Duration_In_Months_Max_36__c}}</td>
                                             <td>{{rev.Review_Due_Date__c}}</td> -->
                                             <!-- <th>{{rev.Proposals__r.Total_Amount__c}}</th> -->
-                                            <td><button class="btn btn-success w-100 background-theme" ng-click="enableProjectDetails(row.Id,rev.Proposals__r.Id,false,rev.Stage__c,rev.Proposals__r.Stage__c,rev.Proposals__r.Campaign__r.Name)"><i class="fa-solid fa-eye me-3"></i>View/Modify</button></td>
+                                            <td><button class="btn btn-success w-100 background-theme" ng-click="enableProjectDetails(rev.Id,rev.Proposals__r.Id,false,rev.Stage__c,rev.Proposals__r.Stage__c,rev.Proposals__r.Campaign__r.Name)"><i class="fa-solid fa-eye me-3"></i>View/Modify</button></td>
                                             </tr>
                                         </tbody>
                                     </table>

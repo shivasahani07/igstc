@@ -42,11 +42,23 @@ angular.module('cp_app').controller('pairing_ctrl', function($scope,$rootScope){
         ApplicantPortal_Contoller.checkEmail(email,contId,function(result,event){
           debugger;
           if(event.status){
-            debugger;
-            if(result.length > 0){getActiveCampaign
-              $scope.emailCheck = true;
-            }else{
-              $scope.emailCheck = false;
+              debugger;
+              if (result && result.length > 0) {
+                  $scope.pairList = {
+                      FirstName: result[0].FirstName || '',
+                      LastName: result[0].LastName || '',
+                      Email: result[0].Email || '',
+                      Birthdate: result[0].Birthdate
+                ? new Date(Number(result[0].Birthdate))
+                : '',
+                      MailingCountry: result[0].MailingCountry || '',
+                      Campaign__c: $scope.campaigntype,
+                      Account:result[0].Account || ''
+                  };
+                  //$scope.emailCheck = true;
+              }       
+              else{
+                  $scope.emailCheck = false;
             }
             $scope.$apply();
           }
@@ -77,20 +89,20 @@ angular.module('cp_app').controller('pairing_ctrl', function($scope,$rootScope){
    
     $scope.getActiveCampaignData = function() {
         debugger;
-        ApplicantPortal_Contoller.getActiveCampaign('PECFAR',function(result, event) {
+        ApplicantPortal_Contoller.getActiveCampaign($rootScope.yearlyCallId,function(result, event) {
             console.log('Direct Test Result:', result);
             console.log('Direct Test Event:', event);
            
             if (event.status && result != null) {
-                $scope.activeCampaign = result;
-                $scope.campaigntype = result[0].Id;
-                $rootScope.campaignId = result[0].Id;
-                $scope.yearlyCall=result[0].Yearly_Call__r.Id;
-                $scope.Pecfar_age_limit = result[0].Yearly_Call__r.Pecfar_age_limit__c;
-                $scope.Pecfar_DOB = result[0].Yearly_Call__r.Date_of_Birth_PECFAR__c;
+                $scope.activeCampaign = result[0].Campaign__c;
+                $scope.campaigntype = result[0].Campaign__c;
+                $rootScope.campaignId = result[0].Campaign__c;
+                $scope.yearlyCall=result[0].Id;
+                $scope.Pecfar_age_limit = result[0].Pecfar_age_limit__c;
+                $scope.Pecfar_DOB = result[0].Date_of_Birth_PECFAR__c;
                
                 console.log('Campaign Data Loaded:', {
-                    name: result.Name,
+                   // name: result.Name,
                     ageLimit: $scope.Pecfar_age_limit,
                     dobLimit: $scope.Pecfar_DOB
                 });
@@ -537,7 +549,8 @@ angular.module('cp_app').controller('pairing_ctrl', function($scope,$rootScope){
             if(event.status){
              debugger;
                 // Saving the ProposalId in Local Storage
-                localStorage.setItem('proposalId', result);
+                localStorage.setItem('proposalId', result.proposalId);
+                localStorage.setItem('apaId', result.apa.Id);
              swal({
                 title: "Pairing Details",
                 text: 'Pairing details have been successfully saved.',
@@ -614,7 +627,4 @@ angular.module('cp_app').controller('pairing_ctrl', function($scope,$rootScope){
      $scope.removeClass=function(controlid){
         $("#"+controlid+"").removeClass('border-theme');
       }
- 
- 
-   
 });
