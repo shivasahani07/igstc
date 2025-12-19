@@ -46,6 +46,8 @@ angular.module('cp_app').controller('Dashboard_iF_Ctlr', function($scope,$sce,$r
         console.log('Loaded yearlyCallId from localStorage:', $rootScope.yearlyCallId);
     }
 
+    localStorage.setItem('thesisSubmission','true');
+
     // Fetching the apaId from Local Storage
     if (localStorage.getItem('apaId')) {
         $rootScope.apaId = localStorage.getItem('apaId');
@@ -474,14 +476,14 @@ $scope.getActiveCampaignData();
         }
         }
 
-        for(var i=0;i<$scope.allDocs.length;i++){
-          if($scope.allDocs[i].userDocument.Name == 'proof of thesis submission'){
-              if($scope.allDocs[i].userDocument.Status__c != 'Uploaded'){
-                  swal('info','Please upload proof of thesis submission.','info');
-                  return;
-              }
-          }
-        }
+        // for(var i=0;i<$scope.allDocs.length;i++){
+        //   if($scope.allDocs[i].userDocument.Name == 'proof of thesis submission'){
+        //       if($scope.allDocs[i].userDocument.Status__c != 'Uploaded'){
+        //           swal('info','Please upload proof of thesis submission.','info');
+        //           return;
+        //       }
+        //   }
+        // }
       }
      
       }
@@ -687,14 +689,17 @@ $scope.getActiveCampaignData();
         }
     }    
     $scope.changeAward=function(){
+      debugger
           if($scope.objContact.Awarded_PhD__c=="Yes"){
             $scope.PhDDate=true;
             $scope.PhDThesis=false;
+            localStorage.setItem('thesisSubmission','false');
           }
           else
           {
             $scope.PhDDate=false;
             $scope.PhDThesis=true;
+            localStorage.setItem('thesisSubmission','true');
           }
     }
      $scope.redirectToApplicantPortal = function() {

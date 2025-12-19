@@ -670,6 +670,3 @@ app.controller('cp_dashboard_ctrl', function ($scope, $rootScope, $timeout, $win
 
 
 });
-
-
-

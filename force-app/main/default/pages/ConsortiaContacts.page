@@ -1,4 +1,5 @@
 <apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="IndustrialFellowshipController">
+    <c:Controllers />
     <html>
     <div ng-controller="ConsortiaContacts_Ctrl">
 
@@ -6,11 +7,11 @@
             <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
             <apex:stylesheet value="{!$Resource.timeLineCss}" />
             <script>
-                var userId = '{!$CurrentPage.parameters.id}';
+                var userId = '{!$CurrentPage.parameters.id}'; 
             </script>
         </head>
 
-        <body>
+        <body ng-app="cp_app">
 
             <div class="container mt-5">
                 <div class="row mx-5">
@@ -289,13 +290,28 @@
                                     <input ng-focus="removeClass2('FName')" id="FName" class="form-control" ng-model="allDetailList.FirstName" type="text" ng-disabled="proposalStage"
                                     />
                                 </div>
-                                <div class="col-md-4">
+                                <!-- <div class="col-md-4">
                                     <label class="font-if">Last Name (Max. char 80)
                                         <span class="text-danger ms-2">*</span>
                                     </label>
                                     <input ng-focus="removeClass2('LName')" id="LName" class="form-control" ng-model="allDetailList.LastName" type="text" ng-disabled="proposalStage"
                                     />
+                                </div> -->
+
+                                <div class="col-md-4">
+                                    <label class="font-if">
+                                        Last Name (Max. char 80)
+                                        <span class="text-danger ms-2">*</span>
+                                    </label>
+
+                                    <input type="text" id="LName" class="form-control" ng-model="allDetailList.LastName" ng-disabled="proposalStage" ng-focus="removeClass2('LName')"
+                                        ng-change="checkCharLimit(allDetailList, 'LastName', 80)" />
+
+                                    <small class="text-danger" ng-if="allDetailList._charLimitMap && allDetailList._charLimitMap.LastName">
+                                        Maximum 80 characters allowed
+                                    </small>
                                 </div>
+
                                 <div class="col-md-4">
                                     <label class="font-if">Email
                                         <span class="text-danger ms-2">*</span>
@@ -306,13 +322,30 @@
                             </div>
 
                             <div class="row mt-3">
-                                <div class="col-md-4">
+                                <!-- <div class="col-md-4">
                                     <label class="font-if">Actual Position (Max. char 80)
                                         <span class="text-danger ms-2">*</span>
                                     </label>
                                     <input ng-focus="removeClass2('position')" id="position" class="form-control" ng-model="allDetailList.Actual_Position__c"
                                         type="text" ng-disabled="proposalStage" />
+                                </div> -->
+
+                                <div class="col-md-4">
+                                    <label class="font-if">
+                                        Actual Position (Max. char 80)
+                                        <span class="text-danger ms-2">*</span>
+                                    </label>
+
+                                    <input type="text" id="position" class="form-control" ng-model="allDetailList.Actual_Position__c" ng-disabled="proposalStage"
+                                        ng-focus="removeClass2('position')" ng-change="checkCharLimit(allDetailList, 'Actual_Position__c', 80)"
+                                    />
+
+                                    <small class="text-danger" ng-if="allDetailList._charLimitMap &&
+                                            allDetailList._charLimitMap.Actual_Position__c">
+                                        Maximum 80 characters allowed
+                                    </small>
                                 </div>
+
 
                                 <div class="col-md-4">
                                     <label class="font-if">Street
@@ -406,24 +439,66 @@
                                                     <input ng-focus="removeClass('degree',$index)" id="degree{{$index}}" ng-model="row.Degree__c" ng-disabled="proposalStage"
                                                         class="form-control" type="text" />
                                                 </td>
-                                                <td>
+                                                <!-- <td>
                                                     <input type="text" ng-focus="removeClass('institution',$index)" id="institution{{$index}}" ng-model="row.Institution_Name__c"
                                                         class="form-control" ng-disabled="proposalStage" />
+                                                </td> -->
+                                                <td>
+                                                    <input type="text" id="institution{{$index}}" ng-model="row.Institution_Name__c" class="form-control" ng-disabled="proposalStage"
+                                                        ng-focus="removeClass('institution',$index)" ng-change="checkCharLimit(row, 'Institution_Name__c', 255)"
+                                                    />
+
+                                                    <small class="text-danger" ng-if="row._charLimitMap &&
+                                                            row._charLimitMap.Institution_Name__c">
+                                                        Maximum 255 characters allowed
+                                                    </small>
                                                 </td>
 
-                                                <td>
+
+                                                <!-- <td>
                                                     <input ng-focus="removeClass('specialization',$index)" id="specialization{{$index}}" ng-model="row.Area_of_specialization__c"
                                                         ng-disabled="proposalStage" class="form-control" type="text" />
+                                                </td> -->
+                                                <td>
+                                                    <input type="text" id="specialization{{$index}}" ng-model="row.Area_of_specialization__c" class="form-control" ng-disabled="proposalStage"
+                                                        ng-focus="removeClass('specialization',$index)" ng-change="checkCharLimit(row, 'Area_of_specialization__c', 255)"
+                                                    />
+
+                                                    <small class="text-danger" ng-if="row._charLimitMap &&
+                                                            row._charLimitMap.Area_of_specialization__c">
+                                                        Maximum 255 characters allowed
+                                                    </small>
                                                 </td>
 
-                                                <td>
+
+                                                <!-- <td>
                                                     <input type="text" ng-focus="removeClass('zipCode1',$index)" maxlength="100" ng-model="row.Start_Year__c" id="zipCode1{{$index}}"
                                                         class="form-control" ng-disabled="proposalStage" />
+                                                </td> -->
+                                                <td>
+                                                    <input type="text" id="zipCode1{{$index}}" ng-model="row.Start_Year__c" class="form-control" ng-disabled="proposalStage"
+                                                        ng-focus="removeClass('zipCode1',$index)" ng-change="checkCharLimit(row, 'Start_Year__c', 4)"
+                                                    />
+
+                                                    <small class="text-danger" ng-if="row._charLimitMap && row._charLimitMap.Start_Year__c">
+                                                        Maximum 4 characters allowed
+                                                    </small>
                                                 </td>
 
-                                                <td>
+
+                                                <!-- <td>
                                                     <input type="text" ng-focus="removeClass('zipCode2',$index)" maxlength="100" ng-model="row.End_Year__c" id="zipCode2{{$index}}"
                                                         class="form-control" ng-disabled="proposalStage" />
+                                                </td> -->
+
+                                                <td>
+                                                    <input type="text" id="zipCode2{{$index}}" ng-model="row.End_Year__c" class="form-control" ng-disabled="proposalStage" ng-focus="removeClass('zipCode2',$index)"
+                                                        ng-change="checkCharLimit(row, 'End_Year__c', 4)" />
+
+                                                    <small class="text-danger" ng-if="row._charLimitMap &&
+                                                                row._charLimitMap.End_Year__c">
+                                                        Maximum 4 characters allowed
+                                                    </small>
                                                 </td>
 
                                                 <td ng-show="!proposalStage" class="text-center">
@@ -458,10 +533,10 @@
                                                 <th class="pb-3 color-theme">Position (Max. char 255)
                                                     <span class="required-asterisk" style="color:red;">*</span>
                                                 </th>
-                                                <th class="pb-3 color-theme">Start Year (Max. char 255)
+                                                <th class="pb-3 color-theme">Start Year (Max. char 4) -
                                                     <span class="required-asterisk" style="color:red;">*</span>
                                                 </th>
-                                                <th class="pb-3 color-theme">End Year (Max. char 255)
+                                                <th class="pb-3 color-theme">End Year (Max. char 4) -
                                                     <span class="required-asterisk" style="color:red;">*</span>
                                                 </th>
                                                 <th ng-hide="proposalStage" class="text-center">
@@ -471,23 +546,66 @@
                                         </thead>
                                         <tbody>
                                             <tr ng-repeat="row in allDetailList.Employment_Details__r">
-                                                <td>
+                                                <!-- <td>
                                                     <input type="text" ng-focus="removeClass('org',$index)" id="org{{$index}}" ng-model="row.Organization_Name__c" class="form-control"
                                                         ng-disabled="proposalStage" />
-                                                </td>
+                                                </td> -->
                                                 <td>
+                                                    <input type="text" id="org{{$index}}" ng-model="row.Organization_Name__c" class="form-control" ng-disabled="proposalStage"
+                                                        ng-focus="removeClass('org',$index)" ng-change="checkCharLimit(row, 'Organization_Name__c', 255)"
+                                                    />
+
+                                                    <small class="text-danger" ng-if="row._charLimitMap && row._charLimitMap.Organization_Name__c">
+                                                        Maximum 255 characters allowed
+                                                    </small>
+                                                </td>
+
+                                                <!-- <td>
                                                     <input type="text" ng-focus="removeClass('position1',$index)" id="position1{{$index}}" ng-model="row.Position__c" class="form-control"
                                                         ng-disabled="proposalStage" />
-                                                </td>
+                                                </td> -->
+
                                                 <td>
+                                                    <input type="text" id="position1{{$index}}" ng-model="row.Position__c" class="form-control" ng-disabled="proposalStage" ng-focus="removeClass('position1',$index)"
+                                                        ng-change="checkCharLimit(row, 'Position__c', 255)" />
+
+                                                    <small class="text-danger" ng-if="row._charLimitMap && row._charLimitMap.Position__c">
+                                                        Maximum 255 characters allowed
+                                                    </small>
+                                                </td>
+
+                                                <!-- <td>
                                                     <input type="text" number="row.Start_Year__c" ng-focus="removeClass('zipCode11',$index)" ng-model="row.Start_Year__c" min="1000"
                                                         max="9999" maxlength="4" minlength="4" id="zipCode11{{$index}}" class="form-control"
                                                         ng-disabled="proposalStage" />
-                                                </td>
+                                                </td> -->
+
                                                 <td>
+                                                    <input type="text" id="zipCode11{{$index}}" ng-model="row.Start_Year__c" class="form-control" ng-disabled="proposalStage"
+                                                        ng-focus="removeClass('zipCode11',$index)" ng-change="checkCharLimit(row, 'Start_Year__c', 4)"
+                                                    />
+
+                                                    <small class="text-danger" ng-if="row._charLimitMap && row._charLimitMap.Start_Year__c">
+                                                        Maximum 4 characters allowed
+                                                    </small>
+                                                </td>
+
+                                                <!-- <td>
                                                     <input type="text" ng-focus="removeClass('zipCode22',$index)" ng-model="row.End_Year__c" id="zipCode22{{$index}}" class="form-control"
                                                         ng-disabled="proposalStage" />
+                                                </td> -->
+
+                                                <td>
+                                                    <input type="text" id="zipCode22{{$index}}" ng-model="row.End_Year__c" class="form-control" ng-disabled="proposalStage" ng-focus="removeClass('zipCode22',$index)"
+                                                        ng-change="checkCharLimit(row, 'End_Year__c', 4)" />
+
+                                                    <small class="text-danger" ng-if="row._charLimitMap && row._charLimitMap.End_Year__c">
+                                                        Maximum 4 characters allowed
+                                                    </small>
                                                 </td>
+
+
+
                                                 <td ng-show="!proposalStage" class="text-center">
                                                     <i class="fa-sharp fa-solid fa-circle-xmark fa-2x text-danger" ng-click="removeEmploymentRow($index)"></i>
                                                 </td>

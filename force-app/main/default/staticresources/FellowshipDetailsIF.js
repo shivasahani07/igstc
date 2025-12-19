@@ -99,7 +99,7 @@ $scope.callRTF=function(){
 
     $scope.getMentorHostDetails = function(){
       debugger;
-      ApplicantPortal_Contoller.getMentorHostDetails($rootScope.candidateId, function(result,event){
+      ApplicantPortal_Contoller.getMentorHostDetails($rootScope.candidateId,$rootScope.apaId, function(result,event){
         debugger;
         if(event.status && result){
           debugger;
@@ -137,6 +137,8 @@ $scope.callRTF=function(){
             }
         $scope.$apply();
         }
+        $scope.accDetails.BillingCountry = 'Germany';
+         $scope.$apply();
       },{escape: true}
       )
     }
@@ -232,7 +234,7 @@ $scope.callRTF=function(){
       delete ($scope.accDetails['stateList']);
 
 
-      ApplicantPortal_Contoller.saveMentorHostDetails($scope.accDetails,$rootScope.candidateId,$rootScope.proposalId, function(result,event){
+      ApplicantPortal_Contoller.saveMentorHostDetails($scope.accDetails,$rootScope.candidateId,$rootScope.proposalId,$rootScope.apaId, function(result,event){
           if(event.status){
               debugger;
               Swal.fire(

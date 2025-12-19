@@ -488,7 +488,7 @@
             </div> -->
                 <div class="row m-5" ng-if="!proposalStage">
                     <div class="col-md-12">
-                        <button class="blue-btn float-end" ng-click="checkEmail()" type="button">
+                        <button class="blue-btn float-end" ng-click="submitDetails()" type="button">
                             <i class="fa-solid fa-check me-2"></i>Save and Next</button>
                         <button class="btn btn-secondary float-end me-2" style="padding: 8px 20px !important;font-size: 16px !important;" ng-click="redirectPageURL('Home')"
                             type="button">

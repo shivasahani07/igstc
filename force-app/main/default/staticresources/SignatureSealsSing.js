@@ -20,7 +20,7 @@ angular.module('cp_app').controller('SignatureSealsSing_Ctrl', function($scope,$
         if (localStorage.getItem('proposalId')) {
             $rootScope.proposalId = localStorage.getItem('proposalId');
             console.log('Loaded proposalId from localStorage:', $rootScope.proposalId);
-            $rootScope.projectId = $rootScope.proposalId;
+            // $rootScope.projectId = $rootScope.proposalId;
         }
         
         
@@ -94,11 +94,33 @@ angular.module('cp_app').controller('SignatureSealsSing_Ctrl', function($scope,$
             $scope.redirectPageURL('ApplicantPortal');
             return;
         }
-        if(saveType=='d'){
-            swal('success','Your proposal has been saved as draft.','success');
-            $scope.redirectPageURL('ApplicantPortal');
+        // if(saveType=='d'){
+        //     swal('success','Your proposal has been saved as draft.','success');
+        //     $scope.redirectPageURL('ApplicantPortal');
+        //     return;
+        // }
+
+        if (saveType == 'd') {
+
+            ApplicantPortal_Contoller.updateProposalStage(
+                $rootScope.projectId,   // Proposal Id
+                function (result, event) {
+                    if (event.status) {
+                        swal('success','Your proposal has been saved as draft.','success');
+                        $scope.redirectPageURL('ApplicantPortal');
+                        $scope.$apply();
+                    } else {
+                        swal('error','Failed to save as draft','error');
+                    }
+                }
+            );
             return;
         }
+
+
+
+
+
         for(var i=0;i<$scope.allDocs.length;i++){
             if($scope.allDocs[i].userDocument.Name == 'Signature (date) of the applicant Upload in jpg/jpeg format with size between 30'){
                 if($scope.allDocs[i].userDocument.Status__c != 'Uploaded'){

@@ -13,6 +13,8 @@ angular.module('cp_app').controller('declarationplus2_ctrl', function($scope,$sc
     $scope.disableUploadButton = true;
     $scope.partnerInfoStage = false;
 
+    console.log('$rootScope.proposalStage on Declaration Page:', $rootScope.proposalStage);
+
     $scope.getDeclarationfields = function(){
         debugger;
         ApplicantPortal_Contoller.getDeclarationfields($rootScope.candidateId, function(result,event){
@@ -433,9 +435,10 @@ $scope.SubmitApplication=function(){
         // Build final HOME URL format dynamically
         let finalUrl = baseUrl;
         if (campaign) {
-            finalUrl += "&campaign=" + campaign;
+            // finalUrl += "&campaign=" + campaign;
         }
-        finalUrl += "#/Home";
+        // finalUrl += "#/Home";
+        finalUrl;
         link.href = finalUrl;
         link.click();
 

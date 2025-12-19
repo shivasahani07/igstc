@@ -223,7 +223,7 @@ angular.module('cp_app').controller('educQual_ctrl', function($scope,$rootScope)
                     return; 
                 }
                 
-                if($scope.eduList[i].Percentage__c==00){
+                if($scope.eduList[i].Percentage__c==0){
                     swal('info','Please enter Percentage more than 0.','info');
                     $("#txtPer"+i+"").addClass('border-theme');
                     return;  
@@ -237,7 +237,7 @@ angular.module('cp_app').controller('educQual_ctrl', function($scope,$rootScope)
                     return; 
                 }
                 
-                if($scope.eduList[i].CGPA__c==00 || $scope.eduList[i].CGPA__c == 0){
+                if($scope.eduList[i].CGPA__c==0){
                     swal('info','Please enter CGPA more than 0.','info');
                     $("#txtPer"+i+"").addClass('border-theme');
                     return;  
@@ -286,8 +286,7 @@ angular.module('cp_app').controller('educQual_ctrl', function($scope,$rootScope)
         var mjEndDate = null;
         if($scope.masterStartDate!=undefined && $scope.masterStartDate!=''){
             years = $scope.masterStartDate.getUTCFullYear();
-            //month = $scope.masterStartDate.getUTCMonth()+1;
-            month = $scope.startDateCheckPHD[i]?$scope.masterStartDate.getUTCMonth()+1:$scope.masterStartDate.getUTCMonth()+2;
+            month = $scope.masterStartDate.getUTCMonth()+1;
             day = $scope.masterStartDate.getDate();
             mjStartDate = moment([years, month, day]);
             $scope.dateList.push({GroupName:'phd',fromTo:'start',year:years,month:month,day:day});
@@ -310,7 +309,7 @@ angular.module('cp_app').controller('educQual_ctrl', function($scope,$rootScope)
         day=0;
         if($scope.StartDate!=undefined && $scope.StartDate!=''){
             years = $scope.StartDate.getUTCFullYear();
-            month = $scope.startDateCheckMaster[i]?$scope.StartDate.getUTCMonth()+1:$scope.StartDate.getUTCMonth()+2;
+            month = $scope.StartDate.getUTCMonth()+1;
             day = $scope.StartDate.getDate();
             $scope.dateList.push({GroupName:'mt',fromTo:'start',year:years,month:month,day:day});
         } 

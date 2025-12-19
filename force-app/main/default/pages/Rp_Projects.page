@@ -174,7 +174,7 @@
                 <div class="humburger-menu mt-5" id="header-toggle">
                     <!-- <i class='bx bx-menu'></i>  -->
                     <i class="fa-solid fa-bars fa-2x"></i>
-                    <span>Menu</span>
+                    <span style="margin-left:5px;">Menu</span>
                 </div>
                 <nav class="nav">
                         <div class="nav_list mt-5">

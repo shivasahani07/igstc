@@ -1062,13 +1062,13 @@ return Proposal_Controller.insertParticipants(allParticipantDetails);
     }
     
     @RemoteAction
-    public static Achievement__c getAchievements(string hashcode){
-        return Proposal_Controller.getAchievements(hashcode);
+    public static Achievement__c getAchievements(string hashcode,string apaId){
+        return Proposal_Controller.getAchievements(hashcode,apaId);
     }
     
     @RemoteAction
-    public static string updateAchievements(Achievement__c achievementList){
-        return Proposal_Controller.updateAchievements(achievementList);
+    public static string updateAchievements(Achievement__c achievementList,string apaId){
+        return Proposal_Controller.updateAchievements(achievementList,apaId);
     }
     
     @RemoteAction
@@ -1788,8 +1788,8 @@ return Proposal_Controller.insertParticipants(allParticipantDetails);
     // }
 
     @RemoteAction
-    public static string SaveWorkshopContactDetails(List<Contact> conDataList, List<Education_Details__c> eduDetails, List<Employment_Details__c> empDetails, String apaId){
-        return Proposal_Controller.SaveWorkshopContactDetails(conDataList, eduDetails, empDetails, apaId);
+    public static string SaveWorkshopContactDetails(List<Contact> conDataList, List<Education_Details__c> eduDetails, List<Employment_Details__c> empDetails, String apaId, String proposalId){
+        return Proposal_Controller.SaveWorkshopContactDetails(conDataList, eduDetails, empDetails, apaId, proposalId);
     }
     
     @RemoteAction
@@ -1850,16 +1850,20 @@ return Proposal_Controller.insertParticipants(allParticipantDetails);
         List<Achievement__c> achievements;
     }
     
+    // @RemoteAction
+    // public static Account getMentorHostDetails(string candidateId){
+    //     return Proposal_Controller.getMentorHostDetails(candidateId);
+    // }
     @RemoteAction
-    public static Account getMentorHostDetails(string candidateId){
-        return Proposal_Controller.getMentorHostDetails(candidateId);
+    public static Account getMentorHostDetails(string candidateId,string apaId){
+        return Proposal_Controller.getMentorHostDetails(candidateId,apaId);
     }
     
-    @RemoteAction
-    public static string saveMentorHostDetails(Account AccountRecord, string candidateId, string proposalID){
-        return Proposal_Controller.saveMentorHostDetails(AccountRecord, candidateId, proposalID);
+   @RemoteAction
+    public static string saveMentorHostDetails(Account AccountRecord, string candidateId, string proposalID,string apaId){
+        return Proposal_Controller.saveMentorHostDetails(AccountRecord, candidateId, proposalID,apaId);
     }
-    
+
     @RemoteAction
     public static List<References__c> checkReferenceEmail(List<string> email, List<Id> ids){
         return Proposal_Controller.checkReferenceEmail(email,ids);
@@ -2101,7 +2105,7 @@ return Proposal_Controller.insertParticipants(allParticipantDetails);
     @RemoteAction
     public static List<Contact> checkBulkEmail(String email) {
         return [
-            SELECT Id, FirstName, LastName, Email, Phone, Department,
+            SELECT Id, Salutation, FirstName, LastName, Email, Phone, Department,
                 AccountId,
                 Account.Name,
                 Account.Homepage_URL__c,

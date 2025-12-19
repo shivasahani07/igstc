@@ -433,9 +433,10 @@ $scope.redirectPageURL = function(pageName) {
         // Build final HOME URL format dynamically
         let finalUrl = baseUrl;
         if (campaign) {
-            finalUrl += "&campaign=" + campaign;
+         //   finalUrl += "&campaign=" + campaign;
         }
-        finalUrl += "#/Home";
+       // finalUrl += "#/Home";
+        finalUrl;
         link.href = finalUrl;
         link.click();
  

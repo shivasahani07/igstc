@@ -316,22 +316,22 @@
                                         <!-- <md-datepicker type="date" ng-disabled="proposalStage" name="txtBorderTheme" id="txtPhDSubmissionDat" ng-model="Thesis_Submission_Date__c" ng-keypress="validateDate('txtPhDSubmissionDat')" ng-change="validateDate('txtPhDSubmissionDat')" ng-keyup="validateDate('txtPhDSubmissionDat')" ng-focus="removeClass('txtPhDSubmissionDat')" class="form-control" md-current-view="year"></md-datepicker> -->
                                     </div>
                                     <div class="col-md-6" ng-show="objContact.Awarded_PhD__c == 'No'">
-                                        <label class="font-if color-theme">Upload document as proof of thesis submission </label>
-                                        <div class="col-md-9" style="padding-left: 0px !important; padding-right: 0px !important">
-                                        <div class="input-group input-group-lg">
-                                        <input type="file" accept=".pdf" ng-disabled="proposalStage" id="{{doc.userDocument.Name}}" class="form-control "/>
-                                            <span class="input-group-btn" ng-hide="proposalStage">
-                                            <button class="btn btn-success" ng-click="uploadFile(doc.userDocument.Name,doc.userDocument.Id,'')" type="button">Upload</button>
-                                            </span>
+                                                <!-- <label class="font-if color-theme">Upload document as proof of thesis submission </label>
+                                                <div class="col-md-9" style="padding-left: 0px !important; padding-right: 0px !important">
+                                                <div class="input-group input-group-lg">
+                                                <input type="file" accept=".pdf" ng-disabled="proposalStage" id="{{doc.userDocument.Name}}" class="form-control "/>
+                                                    <span class="input-group-btn" ng-hide="proposalStage">
+                                                    <button class="btn btn-success" ng-click="uploadFile(doc.userDocument.Name,doc.userDocument.Id,'')" type="button">Upload</button>
+                                                    </span>
+                                                </div>
                                         </div>
-                                </div>
 
-                                <!-- <div class="col-md-3 mt-4" ng-show="doc.userDocument.Status__c=='Uploaded'">
-                                    <a class="blue-btn float-end mt-4 py-3"  ng-click="filePreviewHandler(doc)">View</a>
-                                </div> -->
-                                <div class="col-md-3" ng-show="doc.userDocument.Status__c=='Uploaded'">
-                                    <a class="blue-btn float-end py-3" ng-click="filePreviewHandler(doc)">View</a>
-                                </div>
+                                        <!- <div class="col-md-3 mt-4" ng-show="doc.userDocument.Status__c=='Uploaded'">
+                                            <a class="blue-btn float-end mt-4 py-3"  ng-click="filePreviewHandler(doc)">View</a>
+                                        </div> ->
+                                        <div class="col-md-3" ng-show="doc.userDocument.Status__c=='Uploaded'">
+                                            <a class="blue-btn float-end py-3" ng-click="filePreviewHandler(doc)">View</a>
+                                        </div> -->
 
                                     </div>
                                 </div>

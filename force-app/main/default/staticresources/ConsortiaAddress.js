@@ -13,7 +13,7 @@ angular.module('cp_app').controller('address_ctrl', function ($scope, $sce, $roo
     }
           */
 
-    $scope.siteURL = siteURL;
+    $scope.siteURL = siteURL; 
     $scope.selectedFile;
     $scope.proposalStage = $scope.proposalStage ? true : ($scope.secondstage ? true : false);
 
@@ -382,12 +382,23 @@ angular.module('cp_app').controller('address_ctrl', function ($scope, $sce, $roo
         delete $scope.cleanedAddressDetails['Contacts'];
         delete $scope.cleanedAddressDetails['$$hashKey'];
         delete $scope.cleanedAddressDetails['stateList'];
+        delete $scope.cleanedAddressDetails._charLimitMap;
+
+        // ---------------- CLEAN CONTACT LIST ----------------
+        $scope.cleanedContactList = angular.copy($scope.contactList);
+
+        if ($scope.cleanedContactList && $scope.cleanedContactList.length > 0) {
+            for (let i = 0; i < $scope.cleanedContactList.length; i++) {
+                delete $scope.cleanedContactList[i]._charLimitMap;
+                delete $scope.cleanedContactList[i].$$hashKey;
+            }
+        }
 
         $("#btnSubmit").html('<i class="fa-solid fa-spinner fa-spin-pulse me-3"></i>Please wait...');
         debugger;
 
         // ApplicantPortal_Contoller.saveAddressDetails($scope.addressDetails, $scope.contactList, function (result, event) {
-        ApplicantPortal_Contoller.saveAddressDetails($scope.cleanedAddressDetails, $scope.contactList, function (result, event) {
+        ApplicantPortal_Contoller.saveAddressDetails($scope.cleanedAddressDetails, $scope.cleanedContactList, function (result, event) {
             debugger;
             $("#btnSubmit").html('<i class="fa-solid fa-check me-2"></i>Save and Next');
             if (event.status) {
@@ -425,4 +436,30 @@ angular.module('cp_app').controller('address_ctrl', function ($scope, $sce, $roo
     $scope.removeClass2 = function (controlid) {
         $("#" + controlid + "").removeClass('border-theme');
     }
+
+
+    $scope.checkCharLimit = function (obj, fieldName, limit) {
+
+        // SAFETY: if Contacts[0] not ready, stop
+        if (!obj) return;
+
+        // Initialize map once
+        if (!obj._charLimitMap) {
+            obj._charLimitMap = {};
+        }
+
+        var value = obj[fieldName];
+
+        if (!value) {
+            obj._charLimitMap[fieldName] = false;
+            return;
+        }
+
+        if (value.length > limit) {
+            obj[fieldName] = value.substring(0, limit);
+            obj._charLimitMap[fieldName] = true;
+        } else {
+            obj._charLimitMap[fieldName] = false;
+        }
+    };
 });

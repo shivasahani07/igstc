@@ -204,7 +204,7 @@
                     <span class="required-asterisk" style="color:red;">***&nbsp;&nbsp;<small class="label-rtf"><b>Max upto € 10000(For German Applicant) / INR 9.0 Lakh (For Indian Applicant)</b></small></span>
                 </div>
 
-            <div class="m-5" ng-if="!proposalsStage">
+            <div class="m-5" ng-if="!proposalStage">
                 <button class="blue-btn float-end" ng-click="saveExpenceLineitems()" type="button">
                     <i class="fa-solid fa-check me-2"></i>Save and Next</button>
                 <button class="blue-bordered-btn float-end me-2" ng-click="redirectPageURL('ProjectDetailsSing')" type="button">

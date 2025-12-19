@@ -475,10 +475,10 @@ angular.module('cp_app').controller('coordinators_ctrl', function ($scope, $root
     */
 
     $scope.onEmailChange = function (email, index) {
-
+        debugger;
         if (!email) return;
 
-        WorkshopController.checkBulkEmail(email, function (result, event) {
+        WorkshopController.checkBulkEmail2(email, function (result, event) {
 
             if (event.status && result && result.length > 0) {
 
@@ -487,6 +487,7 @@ angular.module('cp_app').controller('coordinators_ctrl', function ($scope, $root
                 var uiCon = uiAcc.Contacts[0];
 
                 // ---------------- CONTACT ----------------
+                uiCon.Salutation = con.Salutation;
                 uiCon.Id = con.Id;
                 uiCon.FirstName = con.FirstName || '';
                 uiCon.LastName = con.LastName || '';
@@ -516,6 +517,7 @@ angular.module('cp_app').controller('coordinators_ctrl', function ($scope, $root
                 }
 
                 $scope.emailCheck = true;
+
                 $scope.$applyAsync();
             }
         });

@@ -1338,7 +1338,30 @@ angular.module('cp_app').controller('Consortia_Ctrl', function ($scope, $rootSco
         $scope.cleanedPartnerList = angular.copy($scope.allPartners);
 
         for (let i = 0; i < $scope.cleanedPartnerList.length; i++) {
-            delete $scope.cleanedPartnerList[i]['Contacts'];
+
+            let acc = $scope.cleanedPartnerList[i];
+
+            // ---------------- REMOVE UI-ONLY PROPS FROM ACCOUNT ----------------
+            delete acc._charLimitMap;
+            delete acc.$$hashKey;
+
+            // ---------------- REMOVE UI-ONLY PROPS FROM CONTACT ----------------
+            if (acc.Contacts && acc.Contacts.length > 0) {
+                for (let j = 0; j < acc.Contacts.length; j++) {
+                    delete acc.Contacts[j]._charLimitMap;
+                    delete acc.Contacts[j].$$hashKey;
+                }
+            }
+
+            // ---------------- REMOVE NESTED CONTACTS IF NOT REQUIRED ----------------
+            delete acc['Contacts'];
+        }
+
+        if ($scope.contactList && $scope.contactList.length > 0) {
+            for (let i = 0; i < $scope.contactList.length; i++) {
+                delete $scope.contactList[i]._charLimitMap;
+                delete $scope.contactList[i].$$hashKey;
+            }
         }
 
         $("#btnPreview").html('<i class="fa-solid fa-spinner fa-spin-pulse me-3"></i>Please wait...');
@@ -1453,4 +1476,33 @@ angular.module('cp_app').controller('Consortia_Ctrl', function ($scope, $rootSco
         })
 
     }
+
+
+    $scope.checkCharLimit = function (obj, fieldName, limit) {
+
+        // SAFETY: if Contacts[0] not ready, stop
+        if (!obj) return;
+
+        // Initialize map once
+        if (!obj._charLimitMap) {
+            obj._charLimitMap = {};
+        }
+
+        var value = obj[fieldName];
+
+        if (!value) {
+            obj._charLimitMap[fieldName] = false;
+            return;
+        }
+
+        if (value.length > limit) {
+            obj[fieldName] = value.substring(0, limit);
+            obj._charLimitMap[fieldName] = true;
+        } else {
+            obj._charLimitMap[fieldName] = false;
+        }
+    };
+
+
+
 });

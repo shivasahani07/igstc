@@ -541,7 +541,7 @@
                         </label>
                         <div style="position:relative;">
                             <input type="{{showPassword ? 'text' : 'password'}}" class="form-input" ng-model="user.password" placeholder="Enter your Password"/>
-                            <i class="fa-solid" ng-class="showPassword ? 'fa-eye-slash' : 'fa-eye'" 
+                            <i class="fa-solid" ng-class="showPassword ? 'fa-eye': 'fa-eye-slash'" 
                                 ng-click="showPassword = !showPassword"
                                 style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; color:#4b0082;">
                             </i>
@@ -667,7 +667,7 @@
                    ng-keyup="validatePasswordCriteria()"
                    placeholder="Create your password"
                    id="psw"/>
-            <i class="fa-solid" ng-class="showPassword1 ? 'fa-eye-slash' : 'fa-eye'" 
+            <i class="fa-solid" ng-class="showPassword1 ? 'fa-eye':'fa-eye-slash' " 
                ng-click="showPassword1 = !showPassword1"
                style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; color:#4b0082;">
             </i>
@@ -951,7 +951,7 @@
                     }
                     if(!$scope.newUser.org) $scope.errors.org = "Organization is required.";
                     
-                    // Detailed password validation (matching your original logic)
+                    // Detailed password validation - check ALL conditions
                     if(!$scope.newUser.password) {
                         $scope.errors.password = "Please Enter your password";
                     } else {
@@ -959,19 +959,32 @@
   						  var upperCaseLetters = /[A-Z]/g;
                         var numbers = /[0-9]/g;
                         var specialChars = /[!@#$%^&*~=+'",.-_|{}]/g;
+                        var password = $scope.newUser.password;
+                        var errorMessages = [];
                         
-                        if(!$scope.newUser.password.match(lowerCaseLetters)) {
-                            $scope.errors.password = "Your password must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters.";
-                        } else if(!$scope.newUser.password.match(upperCaseLetters)) {
-                            $scope.errors.password = "Your password must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters.";
-                        } else if(!$scope.newUser.password.match(numbers)) {
-                            $scope.errors.password = "Your password must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters.";
-                        } else if(!$scope.newUser.password.match(specialChars)) {
-                            $scope.errors.password = "Your password must contain at least one number and one uppercase and lowercase letter, and at least 8 and maximum 15 characters.";
-                        } else if($scope.newUser.password.length < 8) {
-                            $scope.errors.password = "Password length should be atleast 8 chars.";
-                        } else if($scope.newUser.password.length > 15) {
-                            $scope.errors.password = "Password maxlength should be 15 characters.";
+                        // Check all conditions and collect errors
+                        if(password.length < 8) {
+                            errorMessages.push("at least 8 characters");
+                        }
+                        if(password.length > 15) {
+                            errorMessages.push("maximum 15 characters");
+                        }
+                        if(!password.match(lowerCaseLetters)) {
+                            errorMessages.push("one lowercase letter");
+                        }
+                        if(!password.match(upperCaseLetters)) {
+                            errorMessages.push("one uppercase letter");
+                        }
+                        if(!password.match(numbers)) {
+                            errorMessages.push("one number");
+                        }
+                        if(!password.match(specialChars)) {
+                            errorMessages.push("one special character (!@#$%^&*~=+'\",.-_|{})");
+                        }
+                        
+                        // Set error message if any validation failed
+                        if(errorMessages.length > 0) {
+                            $scope.errors.password = "Password must contain: " + errorMessages.join(", ") + ".";
                         }
                     }
                     

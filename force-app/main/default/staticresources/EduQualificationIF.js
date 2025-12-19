@@ -1,4 +1,4 @@
-angular.module('cp_app').controller('EduQualificationIF_Ctrl', function($scope,$rootScope) {
+angular.module('cp_app').controller('EduQualificationIF_Ctrl', function($scope,$sce,$rootScope) {
     $scope.objContact={};
     $scope.objEduDetails={};
     $scope.objMasterThesis={};
@@ -9,6 +9,10 @@ angular.module('cp_app').controller('EduQualificationIF_Ctrl', function($scope,$
     $rootScope.percentCGPA;
     debugger
     $scope.thesispick=$rootScope.natureOfThesisWork;
+
+    $scope.baseUrl = window.location.origin;
+    $scope.baseUrl = $scope.baseUrl + '/servlet/servlet.FileDownload?file=';
+    $scope.thesisSubmission=false;
     
     // Fetching the proposalId from Local Storage
     if (localStorage.getItem('proposalId')) {
@@ -21,6 +25,157 @@ angular.module('cp_app').controller('EduQualificationIF_Ctrl', function($scope,$
         $rootScope.apaId = localStorage.getItem('apaId');
         console.log('Loaded apaId from localStorage:', $rootScope.apaId);
     }
+
+    if(localStorage.getItem('thesisSubmission')=='true'){
+        $scope.thesisSubmission=true;
+    }else{
+        $scope.thesisSubmission=false;
+    }
+
+
+    $scope.getProjectdetils = function () {
+      debugger;
+      ApplicantPortal_Contoller.getContactUserDoc($rootScope.contactId,$rootScope.proposalId, function (result, event) {
+          debugger
+          console.log('result return onload :: ');
+          console.log(result);
+          if (event.status) {
+              $scope.allDocs = result;
+              for(var i=0;i<$scope.allDocs.length;i++){
+                  if($scope.allDocs[i].userDocument.Name == 'proof of thesis submission'){
+                      $scope.doc=$scope.allDocs[i];
+                  }
+              }
+              $scope.$apply();
+          }
+      }, {
+          escape: true
+      })
+    }
+    $scope.getProjectdetils();
+
+
+    
+
+     $scope.uploadFile = function (type, userDocId, fileId) {
+      debugger;
+      $scope.showSpinnereditProf = true;
+      var file;
+      var maxFileSize = 6000000; 
+      
+          file = document.getElementById(type).files[0];
+      console.log(file);
+      if (file != undefined) {
+        var maxFileSize = 6000000; 
+          if (file.size <= maxFileSize) {
+              
+              attachmentName = file.name;
+              const myArr = attachmentName.split(".");
+              /* if (myArr[1] != "pdf" && type != 'profilePic') {
+                  alert("Please upload in PDF format only");
+                  return;
+              } */
+              var fileReader = new FileReader();
+              fileReader.onloadend = function (e) {
+                  attachment = window.btoa(this.result);  //Base 64 encode the file before sending it
+                  positionIndex = 0;
+                  var maxStringSize = 6000000;
+                  fileSize = attachment.length;
+                  $scope.showSpinnereditProf = false;
+                  console.log("Total Attachment Length: " + fileSize);
+                  doneUploading = false;
+                  debugger;
+                  if (fileSize < maxStringSize) {
+                      $scope.uploadAttachment(type , userDocId, null);
+                  } else {
+                      alert("Base 64 Encoded file is too large.  Maximum size is " + maxStringSize + " your file is " + fileSize + ".");
+                  }
+      
+              }
+              fileReader.onerror = function (e) {
+                  alert("There was an error reading the file.  Please try again.");
+              }
+              fileReader.onabort = function (e) {
+                  alert("There was an error reading the file.  Please try again.");
+              }
+      
+              fileReader.readAsBinaryString(file);  //Read the body of the file
+      
+          } else {
+              alert("File must be under 4.3 MB in size.  Your file is too large.  Please try again.");
+              $scope.showSpinnereditProf = false;
+          }
+      } else {
+          alert("You must choose a file before trying to upload it");
+          $scope.showSpinnereditProf = false;
+      }
+      }
+
+    $scope.uploadAttachment = function (type, userDocId, fileId) {
+          debugger;
+          var attachmentBody = "";
+          var chunkSize = 750000;
+          // if (fileId == undefined) {
+          //     fileId = " ";
+          // }
+          if (fileSize <= positionIndex + chunkSize) {
+              debugger;
+              attachmentBody = attachment.substring(positionIndex);
+              doneUploading = true;
+          } else {
+              attachmentBody = attachment.substring(positionIndex, positionIndex + chunkSize);
+          }
+          console.log("Uploading " + attachmentBody.length + " chars of " + fileSize);
+          ApplicantPortal_Contoller.doCUploadAttachmentAa(
+              attachmentBody, attachmentName,fileId, userDocId, 
+              function (result, event) {
+                  console.log(result);
+                  if (event.type === 'exception') {
+                      console.log("exception");
+                      console.log(event);
+                  } else if (event.status) {
+                      if (doneUploading == true) {
+                        $scope.getProjectdetils();
+                          swal(
+                              'success',
+                              'Uploaded Successfully!',
+                              'success'
+                          )
+                          
+                          // $scope.disableSubmit = false;
+                              
+                          // }
+                          // $scope.getCandidateDetails();
+                          
+                        } else {
+                          debugger;
+                          positionIndex += chunkSize;
+                          $scope.uploadAttachment(type,userDocId,result);
+                        }
+                        $scope.showUplaodUserDoc = false;
+                      }
+              },
+          
+          
+              { buffer: true, escape: true, timeout: 120000 }
+          );
+          }
+$scope.selectedFile;
+    $scope.filePreviewHandler = function(fileContent){
+            debugger;
+            $scope.selectedFile = fileContent;
+        
+            // console.log('selectedFile---', $scope.selectedFile);
+            var jhj=$scope.selectedFile.userDocument.Attachments[0].Id;
+            // console.log(jhj);
+            $scope.filesrec = $sce.trustAsResourceUrl(window.location.origin +'/ApplicantDashboard/servlet/servlet.FileDownload?file='+$scope.selectedFile.userDocument.Attachments[0].Id);
+            $('#file_frame').attr('src', $scope.filesrec);
+            // console.log('filesrec : ',$scope.filesrec);
+            var myModal = new bootstrap.Modal(document.getElementById('filePreview'))        
+            myModal.show('slow') ;
+            $scope.$apply();
+        
+        }
     
     $scope.phdpick=$rootScope.natureOfPhDWork;
     $scope.getEduQualification=function(){

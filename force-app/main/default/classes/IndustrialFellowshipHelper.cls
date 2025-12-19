@@ -1212,7 +1212,9 @@ public String upsertConsortiaAccountDet(Account instanceAcc, String projectId){
     //  ****************ADDED By Harsh**************
     public String submitSingApp(String projectId, Integer year, Integer month, Integer day){
         try{
+           
             Applicant_Proposal_Association__c apaRec = [Select Id,Name, Contact__r.Declaration_Sign_Date__c, Proposals__c FROM Applicant_Proposal_Association__c Where Proposals__c =:projectId AND Contact__r.Is_Primary__c = true];
+
             if(year!=0){
                 Date newDate=Date.newInstance(year,month,day);
                 apaRec.Contact__r.Declaration_Sign_Date__c=newDate;

@@ -98,7 +98,7 @@ public class EmailFlowHelper {
                     System.debug('Error returned: ' + err.getStatusCode() );
                 }
             }
-            //DynamicCongaTempGeneration.GenerateCongaTemplatesUsingCS(recordIdVar,'IF Conga Url');
+            DynamicCongaTempGeneration.GenerateCongaTemplatesUsingCS(recordIdVar,'TWO PLUS TWO APP PORTAL');
         }
     }
  

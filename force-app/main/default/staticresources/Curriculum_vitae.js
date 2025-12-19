@@ -2,7 +2,7 @@ angular.module('cp_app').controller('CV_Ctrl', function ($scope, $rootScope) {
     debugger;
 
     $rootScope.proposalId;
-    $rootScope.apaId;
+    $rootScope.apaList;
     ;
     // Fetching the proposalId from Local Storage
     if (localStorage.getItem('proposalId')) {
@@ -13,7 +13,7 @@ angular.module('cp_app').controller('CV_Ctrl', function ($scope, $rootScope) {
     // Fetching the APA Id from Local Storage
     if (localStorage.getItem('apaId')) {
         $rootScope.apaId = localStorage.getItem('apaId');
-        console.log('Loaded proposalId from localStorage:', $rootScope.apaId);
+        console.log('Loaded apaId from localStorage:', $rootScope.apaId);
     }
 
     $scope.siteURL = siteURL;
@@ -704,7 +704,7 @@ angular.module('cp_app').controller('CV_Ctrl', function ($scope, $rootScope) {
         }
 
         // ApplicantPortal_Contoller.SaveWorkshopContactDetails($scope.allDetailList, $scope.educationDetails, $scope.employmentDetails, function (result, event) {
-        WorkshopController.SaveWorkshopContactDetails($scope.allDetailList, $scope.educationDetails, $scope.employmentDetails, $rootScope.apaId, function (result, event) {
+        WorkshopController.SaveWorkshopContactDetails($scope.allDetailList, $scope.educationDetails, $scope.employmentDetails, $rootScope.apaId, $rootScope.proposalId, function (result, event) {
             debugger;
             if (event.status) {
                 debugger;

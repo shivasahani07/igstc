@@ -11,7 +11,7 @@ angular.module('cp_app').controller('AchievementsIF_Ctrl', function($scope,$root
     
     $scope.getAchievements = function(){
         debugger;
-        ApplicantPortal_Contoller.getAchievements($rootScope.candidateId, function(result,event){
+        ApplicantPortal_Contoller.getAchievements($rootScope.candidateId,$rootScope.apaId, function(result,event){
             debugger;
             if(event.status && result){
                 $scope.achievementDetails = result;
@@ -51,7 +51,7 @@ angular.module('cp_app').controller('AchievementsIF_Ctrl', function($scope,$root
         // $scope.achievementDetailss = {"Awards_Honours__c":$scope.achievementDetails.Awards_Honours__c,"List_of_Publications__c":$scope.achievementDetails.List_of_Publications__c,
         // "List_of_Patents_filed__c":$scope.achievementDetails.List_of_Patents_filed__c,"Any_other_achievements__c":$scope.achievementDetails.Any_other_achievements__c,"Contact__c":$rootScope.contactId};
 
-        ApplicantPortal_Contoller.updateAchievements($scope.achievementDetails, function(result,event){
+        ApplicantPortal_Contoller.updateAchievements($scope.achievementDetails,$rootScope.apaId, function(result,event){
             if(event.status){
                 debugger;
                 Swal.fire(

@@ -108,6 +108,8 @@ public without sharing class ApplicantPortal_Contoller {
                     proposalWrap wrap = new proposalWrap();
                     wrap.Id = apa.Proposals__r.Id;
                     wrap.proposalStage = apa.Proposals__r.Proposal_Stages__c;
+                    secondStage = apa.Proposals__r.Stage__c;
+                    proposalStage= apa.Proposals__r.Proposal_Stages__c;
                     wrap.stage = apa.Proposals__r.Stage__c;
                     proposalWrapperList.add(wrap);
                 }
@@ -1210,13 +1212,14 @@ public static List<YealyCall__c> getActiveCampaignIf(String yearlyCallId) {
     }
     
     @RemoteAction
-    public static Achievement__c getAchievements(string hashcode){
-        return Proposal_Controller.getAchievements(hashcode);
+    public static Achievement__c getAchievements(string hashcode,string apaId){
+        return Proposal_Controller.getAchievements(hashcode,apaId);
     }
     
+    
     @RemoteAction
-    public static string updateAchievements(Achievement__c achievementList){
-        return Proposal_Controller.updateAchievements(achievementList);
+    public static string updateAchievements(Achievement__c achievementList,string apaId){
+        return Proposal_Controller.updateAchievements(achievementList,apaId);
     }
     
     @RemoteAction
@@ -1930,10 +1933,10 @@ userDocc.Id = udId;
     // public static string SaveWorkshopContactDetails(List<Contact> conDataList, List<Education_Details__c> eduDetails, List<Employment_Details__c> empDetails){
     //     return Proposal_Controller.SaveWorkshopContactDetails(conDataList, eduDetails, empDetails);
     // }
-
+    
     @RemoteAction
-    public static string SaveWorkshopContactDetails(List<Contact> conDataList, List<Education_Details__c> eduDetails, List<Employment_Details__c> empDetails, String apaId){
-        return Proposal_Controller.SaveWorkshopContactDetails(conDataList, eduDetails, empDetails, apaId);
+    public static string SaveWorkshopContactDetails(List<Contact> conDataList, List<Education_Details__c> eduDetails, List<Employment_Details__c> empDetails, String apaId, String proposalId){
+        return Proposal_Controller.SaveWorkshopContactDetails(conDataList, eduDetails, empDetails, apaId, proposalId);
     }
     
     @RemoteAction
@@ -2065,14 +2068,18 @@ public static WrapperProposalDet getPECFARProposalDetails(string proposalId){
         Application_Proposal__c proposal;
     }
     
+    // @RemoteAction
+    // public static Account getMentorHostDetails(string candidateId){
+    //     return Proposal_Controller.getMentorHostDetails(candidateId);
+    // }
     @RemoteAction
-    public static Account getMentorHostDetails(string candidateId){
-        return Proposal_Controller.getMentorHostDetails(candidateId);
+    public static Account getMentorHostDetails(string candidateId,string apaId){
+        return Proposal_Controller.getMentorHostDetails(candidateId,apaId);
     }
     
     @RemoteAction
-    public static string saveMentorHostDetails(Account AccountRecord, string candidateId, string proposalID){
-        return Proposal_Controller.saveMentorHostDetails(AccountRecord, candidateId, proposalID);
+    public static string saveMentorHostDetails(Account AccountRecord, string candidateId, string proposalID,string apaId){
+        return Proposal_Controller.saveMentorHostDetails(AccountRecord, candidateId, proposalID,apaId);
     }
     
     @RemoteAction
@@ -2302,18 +2309,18 @@ public static WrapperProposalDet getPECFARProposalDetails(string proposalId){
         }
     }
     
-    // @RemoteAction
-    // public static List<Contact> checkBulkEmail(List<string> email, List<Id> ids){
-    //     try{
-    //         List<Contact> refList = [SELECT Id,Name,Email FROM Contact WHERE Email IN: email AND Id NOT IN: ids];
-    //         return refList;
-    //     }catch(Exception e){
-    //         return null;
-    //     }
-    // }
+    @RemoteAction
+    public static List<Contact> checkBulkEmail(List<string> email, List<Id> ids){
+        try{
+            List<Contact> refList = [SELECT Id,Name,Email FROM Contact WHERE Email IN: email AND Id NOT IN: ids];
+            return refList;
+        }catch(Exception e){
+            return null;
+        }
+    }
 
    @RemoteAction
-    public static List<Contact> checkBulkEmail(String email) {
+    public static List<Contact> checkBulkEmail2(String email) {
         return [
             SELECT Id, FirstName, LastName, Email, Phone, Department,
                 AccountId,
@@ -2521,7 +2528,17 @@ public static String saveHostDetails(Account accRecord, Contact conRec, String p
     
     
     
-    
+    // Changing Proposal Stage = Draft
+
+@RemoteAction
+public static void updateProposalStage(Id proposalId) {
+    Application_Proposal__c p = new Application_Proposal__c(
+        Id = proposalId,
+        Proposal_Stages__c = 'Draft'
+    );
+    update p;
+}
+
     
     
     
