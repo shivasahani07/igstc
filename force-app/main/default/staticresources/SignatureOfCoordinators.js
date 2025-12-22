@@ -16,13 +16,58 @@ angular.module('cp_app').controller('sign_Ctrl', function ($scope, $sce, $rootSc
     $scope.signDate2;
     $rootScope.proposalId;
 
-    /*
+    // LATEST METHOD
+    // $scope.getProposalConsentCheckbox = function () {
+    //     debugger;
+    //     console.log(' ----------------- getProposalConsentCheckbox() --------------------- ');
+
+    //     WorkshopController.getConsentCheckbox($rootScope.proposalId, function (result, event) {
+    //         if (event.status) {
+
+    //             $scope.checkbox = result;
+
+    //             if (result.Contacts && Array.isArray(result.Contacts) && result.Contacts.length > 0) {
+
+    //                 for (var i = 0; i < result.Contacts.length; i++) {
+
+    //                     if (result.Contacts[i].Account.Country_Type === "India") {
+    //                         $scope.indianCo = result.Contacts[i].Id;
+    //                     }
+    //                     else if (result.Contacts[i].Account.Country_Type === "Germany") {
+    //                         $scope.germanCo = result.Contacts[i].Id;
+    //                     }
+    //                 }
+
+    //                 // First contact sign date
+    //                 if (result.Contacts[0].Declaration_Sign_Date) {
+    //                     $scope.signDate = new Date(result.Contacts[0].Declaration_Sign_Date);
+    //                 }
+
+    //                 // Second contact sign date
+    //                 if (result.Contacts.length > 1 && result.Contacts[1].Declaration_Sign_Date) {
+    //                     $scope.signDate2 = new Date(result.Contacts[1].Declaration_Sign_Date);
+    //                 }
+
+    //             } else {
+    //                 console.warn("⚠ No Contacts returned from Apex");
+    //                 result.Contacts = [];
+    //             }
+
+    //             $scope.$apply();
+    //         }
+    //     }, { escape: true });
+    // };
+
+    // $scope.getProposalConsentCheckbox();
+
+
     // NEW METHOD
+
     $scope.getProposalConsentCheckbox = function () {
         debugger;
         console.log(' ----------------- getProposalConsentCheckbox() --------------------- ');
 
-        
+
         // ApplicantPortal_Contoller.getConsentCheckbox($rootScope.candidateId, function (result, event) {
         WorkshopController.getConsentCheckbox($rootScope.proposalId, function (result, event) {
             if (event.status) {
@@ -36,16 +81,16 @@ angular.module('cp_app').controller('sign_Ctrl', function ($scope, $sce, $rootSc
                     console.log("Contacts available:", result.Contacts);
 
                     for (var i = 0; i < result.Contacts.length; i++) {
-                        if (result.Contacts[i].Account.Country_Type__c === "India") {
+                        if (result.Contacts[i].Account.Country_Type === "India") {
                             $scope.indianCo = result.Contacts[i].Id;
-                        } else if (result.Contacts[i].Account.Country_Type__c === "Germany") {
+                        } else if (result.Contacts[i].Account.Country_Type === "Germany") {
                             $scope.germanCo = result.Contacts[i].Id;
                         }
                     }
 
                     // Only if at least ONE contact exists:
                     if (result.Contacts[0].Declaration_Sign_Date__c) {
-                        $scope.signDate = new Date(result.Contacts[0].Declaration_Sign_Date__c);
+                        $scope.signDate = new Date(result.Contacts[0].Declaration_Sign_Date);
                     } else {
                         $scope.signDate = new Date($rootScope.signDate);
                     }
@@ -54,7 +99,7 @@ angular.module('cp_app').controller('sign_Ctrl', function ($scope, $sce, $rootSc
                     if (result.Contacts.length > 1 &&
                         result.Contacts[1].Declaration_Sign_Date__c) {
 
-                        $scope.signDate2 = new Date(result.Contacts[1].Declaration_Sign_Date__c);
+                        $scope.signDate2 = new Date(result.Contacts[1].Declaration_Sign_Date);
                     } else {
                         $scope.signDate2 = new Date($rootScope.signDate);
                     }
@@ -71,9 +116,9 @@ angular.module('cp_app').controller('sign_Ctrl', function ($scope, $sce, $rootSc
         )
     }
     $scope.getProposalConsentCheckbox();
-    }
-    */
 
+
+    /*
     // OLD METHOD
     // Keep a single definition of getProposalConsentCheckbox
     $scope.getProposalConsentCheckbox = function () {
@@ -111,6 +156,7 @@ angular.module('cp_app').controller('sign_Ctrl', function ($scope, $sce, $rootSc
         )
     }
     $scope.getProposalConsentCheckbox();
+    */
 
     $scope.getProjectdetils = function () {
         debugger;

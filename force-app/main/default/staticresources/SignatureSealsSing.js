@@ -85,12 +85,52 @@ angular.module('cp_app').controller('SignatureSealsSing_Ctrl', function($scope,$
         });    
     }
     $scope.getOnload();
-    $scope.redirectPageURL=function(URL){
-        var link=document.createElement("a");
-        link.id = 'someLink'; //give it an ID!
-        link.href='#/'+URL+'';
+    // $scope.redirectPageURL=function(URL){
+    //     var link=document.createElement("a");
+    //     link.id = 'someLink'; //give it an ID!
+    //     link.href='#/'+URL+'';
+    //     link.click();
+    // }
+
+
+    // Redirect to Home page-
+
+$scope.redirectPageURL = function(pageName) {
+    debugger;
+    var link = document.createElement("a");
+ 
+    let baseUrl = link.baseURI;
+    // Remove hash part ( #/something )
+    if (baseUrl.includes('#/')) {
+        baseUrl = baseUrl.split('#/')[0];
+    }
+    if (pageName === 'ApplicantPortal') {
+        // Get id and campaign from current URL dynamically
+        let urlParams = new URLSearchParams(window.location.search);
+        let id = urlParams.get("id") || "";
+        let campaign ='SING';
+        // Build final HOME URL format dynamically
+        let finalUrl = baseUrl;
+        if (campaign) {
+         //   finalUrl += "&campaign=" + campaign;
+        }
+       // finalUrl += "#/Home";
+        finalUrl;
+        link.href = finalUrl;
+        link.click();
+    } else {
+        // For other pages → keep same base + hash routing
+        link.href = baseUrl + "#/" + pageName;
         link.click();
     }
+};
+
+
+
+
+
+
+
     $scope.submitSingApp=function(saveType){
         if($rootScope.proposalStage){
             $scope.redirectPageURL('ApplicantPortal');
@@ -320,4 +360,5 @@ angular.module('cp_app').controller('SignatureSealsSing_Ctrl', function($scope,$
                     { buffer: true, escape: true, timeout: 120000 }
                        );
             }
+            
         });

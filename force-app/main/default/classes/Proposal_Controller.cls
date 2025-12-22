@@ -3770,7 +3770,7 @@ for(Expense_Line_Item__c exl : mapofExpenseHeadByLineItems.get(mapKey)){
         }   
     }
     
-    /*
+    
     // ------------ WRAPPER CLASS ------------- //
     public class ProposalWithContactsDTO {
         public String Id;
@@ -3789,10 +3789,61 @@ for(Expense_Line_Item__c exl : mapofExpenseHeadByLineItems.get(mapKey)){
     public class AccountDTO {
         public String Country_Type;
     }
-    
+
+    public static ProposalWithContactsDTO getConsentCheckbox(String proposalId) {
+
+        System.debug('------------- getConsentCheckbox(proposalId) ---------------');
+        System.debug('proposalId : ' + proposalId);
+
+        ProposalWithContactsDTO dto = new ProposalWithContactsDTO();
+
+        try {
+            Application_Proposal__c proposal = [
+                SELECT Id, Name, Privacy_Policy_Accepted__c
+                FROM Application_Proposal__c
+                WHERE Id = :proposalId
+                LIMIT 1
+            ];
+
+            dto.Id = proposal.Id;
+            dto.Name = proposal.Name;
+            dto.Privacy_Policy_Accepted = proposal.Privacy_Policy_Accepted__c;
+
+            List<Contact> contacts = [
+                SELECT Id,
+                    Declaration_Sign_Date__c,
+                    Account.Country_Type__c
+                FROM Contact
+                WHERE Id IN (
+                    SELECT Contact__c
+                    FROM Applicant_Proposal_Association__c
+                    WHERE Proposals__c = :proposalId
+                )
+            ];
+
+            for (Contact c : contacts) {
+                ContactDTO cDto = new ContactDTO();
+                cDto.Id = c.Id;
+                cDto.Declaration_Sign_Date = c.Declaration_Sign_Date__c;
+
+                AccountDTO accDto = new AccountDTO();
+                accDto.Country_Type = c.Account.Country_Type__c;
+
+                cDto.Account = accDto;
+                dto.Contacts.add(cDto);
+            }
+
+            return dto;
+
+        } catch (Exception e) {
+            System.debug('Error in getConsentCheckbox: ' + e.getMessage());
+            return dto;
+        }
+    }
+
     
     // NEW METHOD FOR WORKSHOP
-    
+    /*
     public static ProposalWithContactsDTO getConsentCheckbox(String hashcode) {
         
         System.debug('------------- getConsentCheckbox() ---------------');
@@ -3893,19 +3944,19 @@ for(Expense_Line_Item__c exl : mapofExpenseHeadByLineItems.get(mapKey)){
     
     // OLD CODE - CODE
 
-        public static Application_Proposal__c getConsentCheckbox(string proposalId){
-        Application_Proposal__c appDetails = new Application_Proposal__c();
-        try{
-        appDetails = [SELECT Id, Name, Privacy_Policy_Accepted__c,
-        (SELECT Id, Name, Account.Country_Type__c, Declaration_Sign_Date__c 
-        FROM Contacts__r) 
-        FROM Application_Proposal__c WHERE Id= :proposalId
-        ];
-        return appDetails;
-        }catch(Exception e){
-        return appDetails;
-        }
-        }
+        // public static Application_Proposal__c getConsentCheckbox(string proposalId){
+        // Application_Proposal__c appDetails = new Application_Proposal__c();
+        // try{
+        // appDetails = [SELECT Id, Name, Privacy_Policy_Accepted__c,
+        // (SELECT Id, Name, Account.Country_Type__c, Declaration_Sign_Date__c 
+        // FROM Contacts__r) 
+        // FROM Application_Proposal__c WHERE Id= :proposalId
+        // ];
+        // return appDetails;
+        // }catch(Exception e){
+        // return appDetails;
+        // }
+        // }
 
     
     // NEW METHOD - FOR WORKSHOP
