@@ -312,8 +312,8 @@
                                 max="36"
                                 id="txtDuration"
                                 ng-focus="removeClass2('txtDuration')" 
-                                ng-change="restrictDecimalVal()"
                                 />
+                                <!-- ng-change="restrictDecimalVal()" -->
 
                             <span class="text-danger"
                                 ng-show="formPrjDet.duration.$error.min || formPrjDet.duration.$error.max">

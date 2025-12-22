@@ -473,7 +473,8 @@ angular.module('cp_app').controller('ConsortiaContacts_Ctrl', function ($scope, 
                         "• Financial Contribution (Own)\n" +
                         "• Financial Contribution (IGSTC)",
                     icon: "success",
-                    buttons: true,
+                    button: "OK",
+                    // buttons: true,
                     dangerMode: false
                 }).then((willDelete) => {
                     if (willDelete) {

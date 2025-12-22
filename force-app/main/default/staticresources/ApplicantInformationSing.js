@@ -23,26 +23,26 @@ $rootScope.proposalStage;
 
 
     // Check proposal stage from server
-$scope.checkProposalStageFromServer = function() {
-    if($rootScope.proposalId) {
-        // Assuming you have a method to get proposal data
-        IndustrialFellowshipController.getProposalData($rootScope.proposalId, function(result, event) {
-            if(event.status && result != null) {
-                if(result.proposalStage != "Draft") {
-                    $scope.proposalStage = true;
-                    $rootScope.proposalStage = true;
-                    // localStorage.setItem('proposalStage', 'true');
-                } else {
-                    $scope.proposalStage = false;
-                    $rootScope.proposalStage = false;
-                    // localStorage.setItem('proposalStage', 'false');
-                }
-                $scope.$apply();
-            }
-        });
-    }
-};
-$scope.checkProposalStageFromServer();
+// $scope.checkProposalStageFromServer = function() {
+//     if($rootScope.proposalId) {
+//         // Assuming you have a method to get proposal data
+//         IndustrialFellowshipController.getProposalData($rootScope.proposalId, function(result, event) {
+//             if(event.status && result != null) {
+//                 if(result.proposalStage != "Draft") {
+//                     $scope.proposalStage = true;
+//                     $rootScope.proposalStage = true;
+//                     // localStorage.setItem('proposalStage', 'true');
+//                 } else {
+//                     $scope.proposalStage = false;
+//                     $rootScope.proposalStage = false;
+//                     // localStorage.setItem('proposalStage', 'false');
+//                 }
+//                 $scope.$apply();
+//             }
+//         });
+//     }
+// };
+// $scope.checkProposalStageFromServer();
 
 // Call on page load if proposalId exists in localStorage
 // if(localStorage.getItem('proposalId')) {

@@ -969,17 +969,16 @@ public static List<YealyCall__c> getActiveCampaignIf(String yearlyCallId) {
     }
     
     // NEW CODE - RETURNING CUSTOM TYPE
-    @RemoteAction
-    public static Proposal_Controller.ProposalWithContactsDTO getConsentCheckbox(string proposalId){
-        return Proposal_Controller.getConsentCheckbox(proposalId);
-    }
+    // @RemoteAction
+    // public static Proposal_Controller.ProposalWithContactsDTO getConsentCheckbox(string proposalId){
+    //     return Proposal_Controller.getConsentCheckbox(proposalId);
+    // }
 
     // OLD CODE - RETURNING Application_Proposal__c
-    /* 
     @RemoteAction
     public static Application_Proposal__c getConsentCheckbox(string proposalId){
         return Proposal_Controller.getConsentCheckbox(proposalId);
-    } */
+    }
    
     
     @RemoteAction

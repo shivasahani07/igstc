@@ -430,7 +430,8 @@ angular.module('cp_app').controller('address_ctrl', function ($scope, $sce, $roo
                         "• Employment Details\n" +
                         "• Patent / Publication Details",
                     icon: "success",
-                    buttons: true,
+                    button: "OK",
+                    // buttons: true,
                     dangerMode: false
                 }).then((willDelete) => {
                     if (willDelete) {

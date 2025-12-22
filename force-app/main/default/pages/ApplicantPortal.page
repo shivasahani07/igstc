@@ -158,6 +158,7 @@
             height: 100vh;
             display: flex;
             overflow: hidden;
+            padding-top: 60px;
         }
 
         /* Sidebar */
@@ -220,6 +221,103 @@
         .header span {
             font-weight: 500;
             color: #333;
+        }
+
+        /* Global Header - Fixed at top right corner */
+        .global-header {
+            position: fixed;
+            top: 0;
+            right: 0;
+            z-index: 1000;
+            background-color: #fff;
+            padding: 15px 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            min-width: 300px;
+        }
+
+        .global-header span {
+            font-weight: 500;
+            color: #333;
+            font-size: 15px;
+            white-space: nowrap;
+        }
+
+        .global-header i {
+            color: #4b0082;
+            font-size: 18px;
+        }
+        
+        .global-header-btn {
+            background-color: #4b0082;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: background-color 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .global-header-btn:hover {
+            background-color: #6e40aa;
+        }
+        
+        .global-header-btn i {
+            color: white;
+            font-size: 14px;
+        }
+        
+        .global-header-btn.logout-btn {
+            background-color: #d32f2f;
+        }
+        
+        .global-header-btn.logout-btn:hover {
+            background-color: #b71c1c;
+        }
+        
+        /* Responsive adjustments for global header */
+        @media(max-width: 768px) {
+            .global-header {
+                padding: 12px 15px;
+                min-width: auto;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+            
+            .global-header span {
+                font-size: 13px;
+            }
+            
+            .global-header i {
+                font-size: 16px;
+            }
+            
+            .global-header-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+        }
+
+        /* Adjust main content areas to account for global header */
+        .main-div {
+            padding-top: 0;
+        }
+
+        .main-content {
+            padding-top: 0;
+        }
+        
+        /* Adjust routed view container for global header */
+        div[ng-if="$root.isRoutedView"] {
+            padding-top: 0;
         }
 
         h2 {
@@ -560,6 +658,20 @@
             </div> -->
             <!-- <apex:includeScript value="{!$Resource.SlickJs}" />
     <apex:includeScript value="{!$Resource.CustomJs}" /> -->
+    <!-- Global Header - Visible on all pages -->
+    <div ng-if="!isLoading" class="global-header">
+        <i class="fa-solid fa-bell"></i>
+        <span>{{contactName || 'Loading...'}}</span>
+        <button class="global-header-btn" ng-click="navigateToHome()" title="Home">
+            <i class="fa-solid fa-home"></i>
+            <span style="color:whitesmoke">Home</span>
+        </button>
+        <button class="global-header-btn logout-btn" ng-click="logout()" title="Logout">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span style="color:whitesmoke">Logout</span>
+        </button>
+    </div>
+    
     <div ng-else="isLoading" class="main-div" ng-if="!$root.isRoutedView">
         <div class="sidebar-appPortal">
             <div class="logo">IGSTC</div>
@@ -585,9 +697,6 @@
             </div>
         </div>
         <div class="main-content">
-            <div class="header">
-                <span><i class="fa-solid fa-bell"></i>&nbsp;&nbsp;{{contactName}}</span>
-            </div>
              <!-- Added By Karthik -->
                 <div ng-if="yearList.length > 0" style="margin-bottom: 10px; margin-top: 10px;">
                     <label style="margin-right: 8px; font-weight: 500;">Year:</label>

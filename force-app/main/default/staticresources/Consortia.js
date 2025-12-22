@@ -1372,7 +1372,7 @@ angular.module('cp_app').controller('Consortia_Ctrl', function ($scope, $rootSco
             $scope.successmessage =
                 "Coordinators and Partner details have been saved successfully.\n\n" +
                 "Next Step:\n" +
-                "Please complete the Coordinator’s Personal and Address details on the next page.";
+                "* Please complete the Coordinator’s Personal and Address details on the next page.";
 
             if (isCoordinator == 'false') {
                 $scope.successmessage = "Partner details have been saved successfully.";
@@ -1389,7 +1389,8 @@ angular.module('cp_app').controller('Consortia_Ctrl', function ($scope, $rootSco
                     title: "Success",
                     text: $scope.successmessage,
                     icon: "success",
-                    buttons: true,
+                    button: "OK",
+                    //buttons: true,
                     dangerMode: false,
                 }).then((willDelete) => {
                     if (willDelete) {

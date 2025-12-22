@@ -430,17 +430,29 @@ app.controller('cp_dashboard_ctrl', function ($scope, $rootScope, $timeout, $win
     // }
 
     $scope.getContactName = function () {
-        // Skip if on a routed view that should not load dashboard functions
+        // Always load contact name for global header (visible on all pages)
+        // No need to skip - contactName should be available everywhere
+        debugger;
+        if(localStorage.getItem('applicantName')){
+            $rootScope.contactName = localStorage.getItem('applicantName');
+        }
+        console.log($rootScope.proposalStage + 'proposalStage');
+          // Skip if on a routed view that should not load dashboard functions
         if (shouldSkipDashboardFunctions()) {
             return;
         }
-        debugger;
-        console.log($rootScope.proposalStage + 'proposalStage');
+        // Use hashCode from localStorage (required by getContactName method)
+        const hashCode = localStorage.getItem('hashCode');
+        if (!hashCode) {
+            console.error('hashCode not found in localStorage, cannot fetch contact name');
+            return;
+        }
 
         //$scope.isLoading = true;
-        ApplicantPortal_Contoller.getContactName($scope.candidateId, function (result, event) {
+        ApplicantPortal_Contoller.getContactName(hashCode, function (result, event) {
             if (event.status && result != null) {
                 $rootScope.contactName = result;
+                localStorage.setItem('applicantName', result);
             }
         });
     }
@@ -726,6 +738,8 @@ app.controller('cp_dashboard_ctrl', function ($scope, $rootScope, $timeout, $win
             }
         } else {
             $rootScope.secondStage = false;
+            $rootScope.proposalStage = false;
+            localStorage.setItem('proposalId', '');
             localStorage.setItem('yearlyCallId', val.yearlyCallId);
         }
         $rootScope.campaignId = val.campaignId;
@@ -734,6 +748,15 @@ app.controller('cp_dashboard_ctrl', function ($scope, $rootScope, $timeout, $win
 
     $scope.showSection = function (menu) {
         $scope.selectedMenu = menu;
+    };
+    
+    // Navigate to home/dashboard - removes hash but keeps query params
+    $scope.navigateToHome = function() {
+        var baseUrl = window.location.origin + window.location.pathname;
+        if (window.location.search) {
+            baseUrl += window.location.search;
+        }
+        window.location.href = baseUrl;
     };
 
     $scope.logout = function () {

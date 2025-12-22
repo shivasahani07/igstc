@@ -13,7 +13,7 @@ public withOut sharing class IndustrialFellowshipController {
         return instanceIFH.saveEduDetailIF(loginHashCode,instanceEduDet,dateList,apaId);
     }
     @RemoteAction
-    public static Achievement__c getAchievementsDet(String loginHashCode){
+    public static Achievement__c getAchievementsDet(String loginHashCode){ 
         IndustrialFellowshipModel instanceIFM=new IndustrialFellowshipModel();
         return instanceIFM.getAchievementsDet(loginHashCode);
     }

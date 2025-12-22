@@ -650,7 +650,8 @@ angular.module('cp_app').controller('financialCtrl', function ($scope, $rootScop
                         "Next Step:\n" +
                         "Please upload the Project Proposal information.",
                     icon: "success",
-                    buttons: true,
+                    button: "OK",
+                    // buttons: true,
                     dangerMode: false
                 }).then((willDelete) => {
                     if (willDelete) {

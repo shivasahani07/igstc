@@ -814,16 +814,16 @@ return Proposal_Controller.insertParticipants(allParticipantDetails);
     }
     
     // NEW CODE - RETURNING CUSTOM TYPE
-    @RemoteAction
-    public static Proposal_Controller.ProposalWithContactsDTO getConsentCheckbox(String proposalId){
-        return Proposal_Controller.getConsentCheckbox(proposalId);
-    }
+    // @RemoteAction
+    // public static Proposal_Controller.ProposalWithContactsDTO getConsentCheckbox(String proposalId){
+    //     return Proposal_Controller.getConsentCheckbox(proposalId);
+    // }
     
     // OLD CODE - Re-using same method (RETURNING Application_Proposal__c)
-    /* @RemoteAction
+    @RemoteAction
     public static Application_Proposal__c getConsentCheckbox(string proposalId){
         return Proposal_Controller.getConsentCheckbox(proposalId);
-    } */
+    }
     
     
     @RemoteAction

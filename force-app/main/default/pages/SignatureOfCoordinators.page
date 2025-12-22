@@ -214,10 +214,12 @@
 
                                 <div class="col-md-6">
                                     <div style="margin-right: -100px;">
-                                        <!-- <label class="font-if">{{checkbox.Contacts__r[0].Name}} Signature<span class="text-danger ms-2">*</span></label> -->
-                                        <label class="font-if">{{checkbox.Contacts[0].Name}} Signature
+                                        <label class="font-if">{{checkbox.Contacts__r[0].Name}} Signature
                                             <span class="text-danger ms-2">*</span>
                                         </label>
+                                        <!--<label class="font-if">{{checkbox.Contacts[0].Name}} Signature
+                                            <span class="text-danger ms-2">*</span>
+                                        </label> -->
 
                                         <div class="input-group input-group-lg float-end">
                                             <input type="file" accept=".png,.jpg,.jpeg" ng-disabled="proposalStage" id="{{doc.userDocument.Name}}" class="form-control float-end"
@@ -240,12 +242,12 @@
 
                                 <div class="col-md-6">
                                     <div style="margin-right: -100px;">
-                                        <!-- <label class="font-if">{{checkbox.Contacts__r[1].Name}}
-                                            <span class="text-danger ms-2">*</span>
-                                        </label> -->
-                                        <label class="font-if">{{checkbox.Contacts[1].Name}} Signature
+                                        <label class="font-if">{{checkbox.Contacts__r[1].Name}}
                                             <span class="text-danger ms-2">*</span>
                                         </label>
+                                        <!--<label class="font-if">{{checkbox.Contacts[1].Name}} Signature
+                                            <span class="text-danger ms-2">*</span>
+                                        </label> -->
 
                                         <div class="input-group input-group-lg float-end">
                                             <input type="file" accept=".png,.jpg,.jpeg" ng-disabled="proposalStage" id="{{doc2.userDocument.Name}}" class="form-control float-end"

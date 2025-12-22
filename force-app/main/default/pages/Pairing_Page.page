@@ -12,9 +12,7 @@
                             <script>
                             var userId = '{!$CurrentPage.parameters.id}';
                 var siteURL = '{!$Site.OriginalUrl}';
-                </script>
-                
-                
+                </script>               
                 <style>
                     #more {display: none;}
                 </style>
@@ -55,7 +53,7 @@
                                     <li class="active pb-cursor">
                                         <a ng-click="redirectPageURL('Pairing_Page')">
                                             <div class="icon-circle">
-                                                <i class="fas fa-user-friends"></i>
+                                              <i class="fas fa-user-friends"></i>
                                             </div>
                                             <span>Pairing Details</span>
                                         </a>

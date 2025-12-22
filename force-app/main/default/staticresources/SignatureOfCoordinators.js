@@ -16,11 +16,13 @@ angular.module('cp_app').controller('sign_Ctrl', function ($scope, $sce, $rootSc
     $scope.signDate2;
     $rootScope.proposalId;
 
+    /*
     // NEW METHOD
     $scope.getProposalConsentCheckbox = function () {
         debugger;
         console.log(' ----------------- getProposalConsentCheckbox() --------------------- ');
 
+        
         // ApplicantPortal_Contoller.getConsentCheckbox($rootScope.candidateId, function (result, event) {
         WorkshopController.getConsentCheckbox($rootScope.proposalId, function (result, event) {
             if (event.status) {
@@ -69,45 +71,46 @@ angular.module('cp_app').controller('sign_Ctrl', function ($scope, $sce, $rootSc
         )
     }
     $scope.getProposalConsentCheckbox();
+    }
+    */
 
     // OLD METHOD
+    // Keep a single definition of getProposalConsentCheckbox
+    $scope.getProposalConsentCheckbox = function () {
+        debugger;
+        WorkshopController.getConsentCheckbox($rootScope.proposalId, function (result, event) {
+            if (event.status) {
+                debugger;
+                $scope.checkbox = result;
 
-    // $scope.getProposalConsentCheckbox = function () {
-    //     debugger;
-    //     // ApplicantPortal_Contoller.getConsentCheckbox($rootScope.candidateId, function (result, event) {
-    //     WorkshopController.getConsentCheckbox($rootScope.proposalId, function (result, event) {
-    //         if (event.status) {
-    //             debugger;
-    //             $scope.checkbox = result;
+                console.log('$scope.checkbox : ', $scope.checkbox);
+                console.log('result : ', result);
+                console.log('result.Contacts__r : ', result.Contacts__r)
 
-    //             console.log('$scope.checkbox : ', $scope.checkbox);
-    //             console.log('result : ', result);
-    //             console.log('result.Contacts__r : ', result.Contacts__r)
-
-    //             for (var i = 0; i < result.Contacts__r.length; i++) {
-    //                 if (result.Contacts__r[i].Account.Country_Type__c == "India") {
-    //                     $scope.indianCo = result.Contacts__r[i].Id;
-    //                 } else if (result.Contacts__r[i].Account.Country_Type__c == "Germany") {
-    //                     $scope.germanCo = result.Contacts__r[i].Id;
-    //                 }
-    //             }
-    //             if (result.Contacts__r[0].Declaration_Sign_Date__c != undefined) {
-    //                 $scope.signDate = new Date(result.Contacts__r[0].Declaration_Sign_Date__c);
-    //             } else {
-    //                 $scope.signDate = new Date($rootScope.signDate);
-    //             }
-    //             if (result.Contacts__r[1].Declaration_Sign_Date__c != undefined) {
-    //                 $scope.signDate2 = new Date(result.Contacts__r[1].Declaration_Sign_Date__c);
-    //             } else {
-    //                 $scope.signDate2 = new Date($rootScope.signDate);
-    //             }
-    //             $scope.$apply();
-    //         }
-    //     },
-    //         { escape: true }
-    //     )
-    // }
-    // $scope.getProposalConsentCheckbox();
+                for (var i = 0; i < result.Contacts__r.length; i++) {
+                    if (result.Contacts__r[i].Account.Country_Type__c == "India") {
+                        $scope.indianCo = result.Contacts__r[i].Id;
+                    } else if (result.Contacts__r[i].Account.Country_Type__c == "Germany") {
+                        $scope.germanCo = result.Contacts__r[i].Id;
+                    }
+                }
+                if (result.Contacts__r[0].Declaration_Sign_Date__c != undefined) {
+                    $scope.signDate = new Date(result.Contacts__r[0].Declaration_Sign_Date__c);
+                } else {
+                    $scope.signDate = new Date($rootScope.signDate);
+                }
+                if (result.Contacts__r[1].Declaration_Sign_Date__c != undefined) {
+                    $scope.signDate2 = new Date(result.Contacts__r[1].Declaration_Sign_Date__c);
+                } else {
+                    $scope.signDate2 = new Date($rootScope.signDate);
+                }
+                $scope.$apply();
+            }
+        },
+            { escape: true }
+        )
+    }
+    $scope.getProposalConsentCheckbox();
 
     $scope.getProjectdetils = function () {
         debugger;

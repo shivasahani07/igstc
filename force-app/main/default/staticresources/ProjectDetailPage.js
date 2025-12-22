@@ -170,10 +170,10 @@ angular.module('cp_app').controller('ProjectDetailCtrl', function ($scope, $root
         let val = $scope.applicantDetails.Duration_In_Months_Max_36__c;
 
         if (val > 36) {
-            $scope.applicantDetails.Duration_In_Months_Max_36__c = 36;
+            //$scope.applicantDetails.Duration_In_Months_Max_36__c = 36;
         }
         if (val < 24) {
-            $scope.applicantDetails.Duration_In_Months_Max_36__c = 24;
+            //$scope.applicantDetails.Duration_In_Months_Max_36__c = 24;
         }
     };
     // CKEDITOR.instances["config"].on('keyup', function() {
@@ -353,13 +353,16 @@ angular.module('cp_app').controller('ProjectDetailCtrl', function ($scope, $root
                 });
             }
             */
+
+            $scope.successmessage = "Basic Details have been saved successfully.\n\n" +
+                "Next Step:\n" +
+                "* Please add Coordinator details\n" +
+                "* Submit once all Project Partners are added";
+
             if (event.status && result != null) {
                 swal({
                     title: "Success",
-                    text: "Basic Details have been saved successfully.\n\n" +
-                        "Next Step:\n" +
-                        "• Please add Coordinator details\n" +
-                        "• Submit once all Project Partners are added",
+                    text: $scope.successmessage,
                     icon: "success",
                     button: "OK"
                     // buttons: {

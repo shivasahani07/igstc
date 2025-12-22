@@ -998,7 +998,7 @@ return conRec;
         system.debug('proposalId--->>>>>'+proposalId);
         list<Applicant_Proposal_Association__c> applicantAstnList = New list<Applicant_Proposal_Association__c>();
         if(proposalId != null){
-            applicantAstnList = [SELECT Id,Contact__c,Proposals__c,Contact__r.Account.Country_Type__c,Contact__r.Name,Contact__r.Account.BillingCountry,Contact__r.Account.Industry__c,Contact__r.Account.Academia__c,
+            applicantAstnList = [SELECT Id,Contact__c, Contact__r.Account_Type__c,Proposals__c,Contact__r.Account.Country_Type__c,Contact__r.Name,Contact__r.Account.BillingCountry,Contact__r.Account.Industry__c,Contact__r.Account.Academia__c,
                                  (SELECT Id,Asked_From_IGSTC__c,IGSTC_Contribution__c,Own_Contribution__c,Total__c,Country__c,Partner__c,Partner__r.AccountId FROM Financial_Contribution__r),
                                  Proposals__r.Total_Amount__c,Contact__r.Login_Hash_Code__c,Contact__r.Account.Name FROM Applicant_Proposal_Association__c WHERE Proposals__c =:proposalId];
             return applicantAstnList;
@@ -3770,6 +3770,7 @@ for(Expense_Line_Item__c exl : mapofExpenseHeadByLineItems.get(mapKey)){
         }   
     }
     
+    /*
     // ------------ WRAPPER CLASS ------------- //
     public class ProposalWithContactsDTO {
         public String Id;
@@ -3888,24 +3889,24 @@ for(Expense_Line_Item__c exl : mapofExpenseHeadByLineItems.get(mapKey)){
             return dto;
         }
     } 
-    
+    */
     
     // OLD CODE - CODE
-    /*
-public static Application_Proposal__c getConsentCheckbox(string proposalId){
-Application_Proposal__c appDetails = new Application_Proposal__c();
-try{
-appDetails = [SELECT Id, Name, Privacy_Policy_Accepted__c,
-(SELECT Id, Name, Account.Country_Type__c, Declaration_Sign_Date__c 
-FROM Contacts__r) 
-FROM Application_Proposal__c WHERE Id= :proposalId
-];
-return appDetails;
-}catch(Exception e){
-return appDetails;
-}
-}
-*/
+
+        public static Application_Proposal__c getConsentCheckbox(string proposalId){
+        Application_Proposal__c appDetails = new Application_Proposal__c();
+        try{
+        appDetails = [SELECT Id, Name, Privacy_Policy_Accepted__c,
+        (SELECT Id, Name, Account.Country_Type__c, Declaration_Sign_Date__c 
+        FROM Contacts__r) 
+        FROM Application_Proposal__c WHERE Id= :proposalId
+        ];
+        return appDetails;
+        }catch(Exception e){
+        return appDetails;
+        }
+        }
+
     
     // NEW METHOD - FOR WORKSHOP
     public static String saveAsDraftWorkshop(Application_Proposal__c proposalList, String projectId, Integer year, Integer month, Integer day){

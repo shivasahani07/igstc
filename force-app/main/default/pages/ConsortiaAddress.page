@@ -417,7 +417,7 @@
                             <input ng-focus="removeClass2('email')" id="email" type="email" ng-model="addressDetails.Contacts[0].Email" class="form-control" ng-disabled="true" />
                         </div>
                         <div class="col-md-4">
-                            <label class="font-if">Phone<span class="ms-2 text-danger">*</span></label>
+                            <label class="font-if">Phone (with Country Code)<span class="ms-2 text-danger">*</span></label>
                             <input ng-focus="removeClass2('phone')" id="phone" type="text" number="addressDetails.Phone" ng-model="addressDetails.Contacts[0].Phone" class="form-control" ng-disabled="proposalStage" />
                         </div>
                     </div>

@@ -502,7 +502,6 @@
                                 <input type="file" accept=".pdf" class="form-control" ng-disabled="uploadDisable || isUploading || doc.userDocument.Status__c=='Uploaded'"
                                     id="fileSignature" />
                                 <!-- <input type="file" accept=".pdf" class="form-control" ng-disabled="isUploading || doc.userDocument.Status__c=='Uploaded'" -->
-                                id="fileSignature" />
                                 <span class="input-group-btn pt-3" ng-hide="uploadDisable">
                                     <!-- <button class="btn btn-success mt-4 py-3" ng-click="uploadFile(doc.userDocument.Name,doc.userDocument.Id,'','1048576','1048576')"
 type="button" ng-disabled="isUploading"> -->

@@ -3,10 +3,17 @@ angular.module('cp_app').controller('AchievementsIF_Ctrl', function($scope,$root
     $scope.achievementDetails = {};
     $rootScope.proposalId;
 	
+    
     // Fetching the proposalId from Local Storage
     if (localStorage.getItem('proposalId')) {
         $rootScope.proposalId = localStorage.getItem('proposalId');
         console.log('Loaded proposalId from localStorage:', $rootScope.proposalId);
+    }
+    
+     // Fetching the apaId from Local Storage
+    if (localStorage.getItem('apaId')) {
+        $rootScope.apaId = localStorage.getItem('apaId');
+        console.log('Loaded apaId from localStorage:', $rootScope.apaId);
     }
     
     $scope.getAchievements = function(){

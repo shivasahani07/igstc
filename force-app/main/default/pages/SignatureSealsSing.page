@@ -232,7 +232,7 @@ compensation in lieu thereof.
                             <div class="row">
     
                                 <div class="col-md-7">
-                                    <div ng-hide="proposalStage" style="margin-right: -60px;">
+                                    <div  style="margin-right: -60px;">
                                         <label class="font-if">Signature (date) of the applicant file size between 30-50kb<span class="required-asterisk" style="color:red;">*</span></label>
                                         <div class="input-group input-group-lg float-end">
                                             <input type="file" accept=".jpg,.jpeg" ng-disabled="proposalStage" id="SignatureDoc" class="form-control "

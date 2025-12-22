@@ -612,7 +612,8 @@ angular.module('cp_app').controller('projectCtrl', function ($scope, $sce, $root
                     title: "Success",
                     text: messageText,
                     icon: "success",
-                    buttons: true,
+                    button: "OK",
+                    // buttons: true,
                     dangerMode: false,
                 }).then((willDelete) => {
                     if (willDelete) {

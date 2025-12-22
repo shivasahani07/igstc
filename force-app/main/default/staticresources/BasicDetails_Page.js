@@ -1,4 +1,4 @@
-angular.module('cp_app').controller('basicDetails_ctrl', function ($scope, $rootScope) {
+angular.module('cp_app').controller('basicDetails_ctrl', function ($scope, $sce, $rootScope) {
     debugger;
 
     // Fetching the proposalId from Local Storage
@@ -41,7 +41,7 @@ angular.module('cp_app').controller('basicDetails_ctrl', function ($scope, $root
     $scope.getApplicantProjectDetails = function () {
         // ApplicantPortal_Contoller.getBasicDetails($rootScope.candidateId, function (result, event) {
         // WorkshopController.getBasicDetails($rootScope.candidateId, function (result, event) {
-        WorkshopController.getBasicDetails($rootScope.proposalId, function (result, event) {
+            ApplicantPortal_Contoller.getBasicDetails($rootScope.proposalId, function (result, event) {
             if (event.status) {
                 debugger;
                 // if (result.Campaign__r?.Result_Announcement_Date__c != null) {
@@ -229,7 +229,7 @@ angular.module('cp_app').controller('basicDetails_ctrl', function ($scope, $root
         console.log('$rootScope.proposalId ', $rootScope.proposalId);
 
         //ApplicantPortal_Contoller.insertBasicDetails2($scope.applicantDetails, day, month, year, endday, endmonth, endyear, $rootScope.contactId, $rootScope.proposalId, 'Workshop', function (result, event) {
-        WorkshopController.insertBasicDetails2($scope.applicantDetails, day, month, year, endday, endmonth, endyear, $rootScope.contactId, $rootScope.proposalId, 'Workshop', function (result, event) {
+            ApplicantPortal_Contoller.insertBasicDetails2($scope.applicantDetails, day, month, year, endday, endmonth, endyear, $rootScope.contactId, $rootScope.proposalId, 'Workshop', function (result, event) {
             if (event.status && result != null) {
                 debugger;
                 Swal.fire(
