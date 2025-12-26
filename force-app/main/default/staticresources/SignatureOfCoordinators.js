@@ -60,6 +60,20 @@ angular.module('cp_app').controller('sign_Ctrl', function ($scope, $sce, $rootSc
 
     // $scope.getProposalConsentCheckbox();
 
+    function initConsentCheckbox() {
+        if (!$rootScope.proposalId) {
+            console.warn('proposalId not found');
+            return;
+        }
+
+        if (typeof Proposal_Controller !== 'undefined') {
+            $scope.getProposalConsentCheckbox();
+        } else {
+            setTimeout(initConsentCheckbox, 200);
+        }
+    }
+
+    initConsentCheckbox();
 
     // NEW METHOD
 

@@ -113,8 +113,7 @@ angular.module('cp_app').controller('pairing_ctrl', function($scope,$rootScope){
             }
         });
     };
-   
-   
+     
     // Function to validate age against campaign
     $scope.validateWithCampaign = function(birthdate, isPrimary) {
         debugger;
@@ -240,8 +239,7 @@ angular.module('cp_app').controller('pairing_ctrl', function($scope,$rootScope){
         $scope.conList = [];
         $scope.detailedList.push($scope.pairingDetails,$scope.pairList);
         console.log('detailedList :: '+$scope.detailedList);
-       
-           
+               
      /*  
     $scope.Pecfar_age_limit = $scope.pairingDetails.Proposals__r.yearly_Call__r.Pecfar_age_limit__c;
    $scope.Pecfar_DOB = new Date($scope.pairingDetails.Proposals__r.yearly_Call__r.Date_of_Birth_PECFAR__c);

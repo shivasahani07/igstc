@@ -12,7 +12,7 @@ public without sharing class WorkshopController {
     public string specialization  {get;set;}
     
     public string presentingWorkshop  {get;set;}
-    public string currencyType2  {get;set;}
+    public string currencyType2  {get;set;} 
     public string stage  {get;set;}
     public String ApplicantPortalSiteURL {get;set;}
     public string secondstage  {get;set;}

@@ -1,4 +1,5 @@
-<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="IndustrialFellowshipController">
+<!-- <apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="IndustrialFellowshipController"> -->
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="WorkshopController">
     <html>
     <div ng-controller="sign_Ctrl">
 

@@ -4,7 +4,7 @@ global without sharing  class DynamicCongaTempGeneration {
         String query='';
         String CongaQuery = '';
         String objectList = TempInfoRec.Object_Name__c;
-        String fieldName =TempInfoRec.Formula_Field_Name__c+', Id,Name,Stage__c ,RecordTypeId,yearly_Call__r.year__c,RecordType.Name,(Select Id, Firstname , Account.BillingCountry ,Lastname from contacts__r)';
+        String fieldName =TempInfoRec.Formula_Field_Name__c+', Id,Name,Stage__c ,RecordTypeId,yearly_Call__r.year__c,RecordType.Name';
         String condition='id=:recordID';
         query = 'SELECT '+ fieldName +' FROM ' + objectList + ' WHERE ' + condition;
         // query = 'SELECT '+ fieldName +' FROM ' + objectList;
@@ -13,18 +13,44 @@ global without sharing  class DynamicCongaTempGeneration {
         system.debug('queryData--'+queryData);
         
         //-------------------------------------------------------------------------
+        // Validate TemplateURLByName__c record exists
+        if(TempInfoRec == null){
+            system.debug('TemplateURLByName__c record not found for template: ' + TempName);
+            return;
+        }
+        
+        // Validate Application_Proposal__c record exists
+        if(queryData == null || queryData.isEmpty()){
+            system.debug('Application_Proposal__c record not found for ID: ' + recordID);
+            return;
+        }
+        
         Application_Proposal__c propRec = new Application_Proposal__c();
         propRec = queryData[0];
         system.debug('PropRecord ' + propRec);
         system.debug('TemaplateInfo ' + TempInfoRec.Formula_Field_Name__c);
+        
+        // Query contacts via Applicant_Proposal_Association__c junction object
+        List<Contact> contactList = [
+            SELECT Id, Firstname, Account.BillingCountry, Lastname 
+            FROM Contact 
+            WHERE Id IN (
+                SELECT Contact__c 
+                FROM Applicant_Proposal_Association__c 
+                WHERE Proposals__c = :recordID
+            )
+        ];
+        
+        if(contactList.isEmpty()){
+            system.debug('No contacts found through Applicant_Proposal_Association__c for proposal: ' + recordID);
+            return;
+        }
+        
         map<Id,List<Contact>> contactsByPropID = new map<Id,List<Contact>>();
-        List<Contact> conLIst = new List<Contact>();
-        conLIst.addAll(propRec.contacts__r);
-        contactsByPropID.put(propRec.Id ,conLIst);
+        contactsByPropID.put(propRec.Id, contactList);
         //-------------------------------------------------------------------------- 
         
         String exCategoriesCustomLable  = Label.docCategoriesToBeExcluded;
-        // String tempName = '';
         List<String> docCategoriesToBeExcluded =  exCategoriesCustomLable.split(',');
         SYSTEM.debug('docCategoriesToBeExcluded---'+docCategoriesToBeExcluded);
         system.debug('contactsByPropID'+contactsByPropID);
@@ -55,20 +81,30 @@ global without sharing  class DynamicCongaTempGeneration {
         }
         attIds = attIds.removeEnd(',');
         system.debug('Attachment Ids Are ' + attIds); 
-        system.debug('contactsByPropID.get(propRec.Id)[0]'+contactsByPropID.get(propRec.Id));
+        system.debug('contactsByPropID.get(propRec.Id)'+contactsByPropID.get(propRec.Id));
+        
+        // Get current contacts list for this proposal
+        List<Contact> currentContacts = contactsByPropID.get(propRec.Id);
+        if(currentContacts == null || currentContacts.isEmpty()){
+            system.debug('No contacts found in contactsByPropID for proposal: ' + propRec.Id);
+            return;
+        }
+        
+        String templateFileName = '';
+        
         if(propRec.RecordType.Name == 'Industrial Fellowship'){
             proposalRecordID=propRec.id;
             if(TempName == 'IF Award Letter PIEF'){
-                tempName = propRec.Name+'_IF_'+propRec.yearly_Call__r.year__c+'_'+contactsByPropID.get(propRec.Id)[0].Firstname +'_'+contactsByPropID.get(propRec.Id)[0].LastName + '_AwardLetter_PIEF';
+                templateFileName = propRec.Name+'_IF_'+propRec.yearly_Call__r.year__c+'_'+currentContacts[0].Firstname +'_'+currentContacts[0].LastName + '_AwardLetter_PIEF';
             }else if(TempName == 'IF Award Letter PDIF'){
-                tempName = propRec.Name+'_IF_'+propRec.yearly_Call__r.year__c+'_'+contactsByPropID.get(propRec.Id)[0].Firstname +'_'+contactsByPropID.get(propRec.Id)[0].LastName + '_AwardLetter_PDIF';
+                templateFileName = propRec.Name+'_IF_'+propRec.yearly_Call__r.year__c+'_'+currentContacts[0].Firstname +'_'+currentContacts[0].LastName + '_AwardLetter_PDIF';
             }else if(TempName == 'IF Decision Letter'){
-                tempName = propRec.Name+'_IF_'+propRec.yearly_Call__r.year__c+'_'+contactsByPropID.get(propRec.Id)[0].Firstname +'_'+contactsByPropID.get(propRec.Id)[0].LastName + '_IF_Decision_Letter';
+                templateFileName = propRec.Name+'_IF_'+propRec.yearly_Call__r.year__c+'_'+currentContacts[0].Firstname +'_'+currentContacts[0].LastName + '_IF_Decision_Letter';
             }else if(TempName == 'IF DECISOIN PIEF'){
-                tempName = propRec.Name+'_IF_'+propRec.yearly_Call__r.year__c+'_'+contactsByPropID.get(propRec.Id)[0].Firstname +'_'+contactsByPropID.get(propRec.Id)[0].LastName + '_IF_Decision_Letter_PIEF';
+                templateFileName = propRec.Name+'_IF_'+propRec.yearly_Call__r.year__c+'_'+currentContacts[0].Firstname +'_'+currentContacts[0].LastName + '_IF_Decision_Letter_PIEF';
             }
             else {
-                tempName = propRec.Name+'_IF_'+propRec.yearly_Call__r.year__c+'_'+contactsByPropID.get(propRec.Id)[0].Firstname +'_'+contactsByPropID.get(propRec.Id)[0].LastName;
+                templateFileName = propRec.Name+'_IF_'+propRec.yearly_Call__r.year__c+'_'+currentContacts[0].Firstname +'_'+currentContacts[0].LastName;
             }
             
             CongaQuery = (String)propRec.get(TempInfoRec.Formula_Field_Name__c);
@@ -76,24 +112,29 @@ global without sharing  class DynamicCongaTempGeneration {
             system.debug('IF CONGA'+CongaQuery);
         }else if(propRec.RecordType.Name == 'PECFAR'){
             proposalRecordID=propRec.id;
+            // Validate PECFAR requires at least 2 contacts
+            if(currentContacts.size() < 2){
+                system.debug('PECFAR requires at least 2 contacts, but only ' + currentContacts.size() + ' found for proposal: ' + propRec.Id);
+                return;
+            }
             //german and indian logic included
-            if(contactsByPropID.get(propRec.Id)[0].Account.BillingCountry == 'India'){
-                system.debug('propRec------'+contactsByPropID.get(propRec.Id)[0].Account.BillingCountry);
+            if(currentContacts[0].Account != null && currentContacts[0].Account.BillingCountry == 'India'){
+                system.debug('propRec------'+currentContacts[0].Account.BillingCountry);
                 if(TempName =='Pecfar Decision letter'){
-                    tempName = propRec.Name+'_PECFAR_'+propRec.yearly_Call__r.year__c+'_'+contactsByPropID.get(propRec.Id)[0].Firstname +'_'+contactsByPropID.get(propRec.Id)[1].Firstname + '_Pecfar_Decision_letter';
+                    templateFileName = propRec.Name+'_PECFAR_'+propRec.yearly_Call__r.year__c+'_'+currentContacts[0].Firstname +'_'+currentContacts[1].Firstname + '_Pecfar_Decision_letter';
                 }else if(TempName =='Pecfar Award less then two'){
-                    tempName = propRec.Name+'_PECFAR_'+propRec.yearly_Call__r.year__c+'_'+contactsByPropID.get(propRec.Id)[0].Firstname +'_'+contactsByPropID.get(propRec.Id)[1].Firstname + '_Pecfar_award_less_than_two';
+                    templateFileName = propRec.Name+'_PECFAR_'+propRec.yearly_Call__r.year__c+'_'+currentContacts[0].Firstname +'_'+currentContacts[1].Firstname + '_Pecfar_award_less_than_two';
                 }else{
-                    tempName = propRec.Name+'_PECFAR_'+propRec.yearly_Call__r.year__c+'_'+contactsByPropID.get(propRec.Id)[0].Firstname +'_'+contactsByPropID.get(propRec.Id)[1].Firstname;
+                    templateFileName = propRec.Name+'_PECFAR_'+propRec.yearly_Call__r.year__c+'_'+currentContacts[0].Firstname +'_'+currentContacts[1].Firstname;
                 }
             }
             else{
                 if(TempName =='Pecfar Decision letter'){
-                    tempName = propRec.Name+'_PECFAR_'+propRec.yearly_Call__r.year__c+'_'+contactsByPropID.get(propRec.Id)[1].Firstname +'_'+contactsByPropID.get(propRec.Id)[0].Firstname + '_Pecfar_Decision_letter';
+                    templateFileName = propRec.Name+'_PECFAR_'+propRec.yearly_Call__r.year__c+'_'+currentContacts[1].Firstname +'_'+currentContacts[0].Firstname + '_Pecfar_Decision_letter';
                 }else if(TempName =='Pecfar Award less then two'){
-                    tempName = propRec.Name+'_PECFAR_'+propRec.yearly_Call__r.year__c+'_'+contactsByPropID.get(propRec.Id)[0].Firstname +'_'+contactsByPropID.get(propRec.Id)[1].Firstname + '_Pecfar_award_less_than_two';
+                    templateFileName = propRec.Name+'_PECFAR_'+propRec.yearly_Call__r.year__c+'_'+currentContacts[0].Firstname +'_'+currentContacts[1].Firstname + '_Pecfar_award_less_than_two';
                 }else {
-                    tempName = propRec.Name+'_PECFAR_'+propRec.yearly_Call__r.year__c+'_'+contactsByPropID.get(propRec.Id)[1].Firstname +'_'+contactsByPropID.get(propRec.Id)[0].Firstname ;
+                    templateFileName = propRec.Name+'_PECFAR_'+propRec.yearly_Call__r.year__c+'_'+currentContacts[1].Firstname +'_'+currentContacts[0].Firstname ;
                     
                 }
             }
@@ -106,9 +147,9 @@ global without sharing  class DynamicCongaTempGeneration {
         }else if(propRec.RecordType.Name == 'WISER'){
             proposalRecordID=propRec.id;
             if(TempName == 'Wiser Draft Letter'){
-                tempName = propRec.Name+'_WISER_'+propRec.yearly_Call__r.year__c+'_'+contactsByPropID.get(propRec.Id)[0].Firstname +'_'+contactsByPropID.get(propRec.Id)[0].LastName + '_WISER_Award_Letter';
+                templateFileName = propRec.Name+'_WISER_'+propRec.yearly_Call__r.year__c+'_'+currentContacts[0].Firstname +'_'+currentContacts[0].LastName + '_WISER_Award_Letter';
             }else{
-                tempName = propRec.Name+'_WISER_'+propRec.yearly_Call__r.year__c+'_'+contactsByPropID.get(propRec.Id)[0].Firstname +'_'+contactsByPropID.get(propRec.Id)[0].LastName;
+                templateFileName = propRec.Name+'_WISER_'+propRec.yearly_Call__r.year__c+'_'+currentContacts[0].Firstname +'_'+currentContacts[0].LastName;
             }
             CongaQuery = (String)propRec.get(TempInfoRec.Formula_Field_Name__c);
             CongaQuery = CongaQuery.replace('AttachmentId=00P1y000003a34i','AttachmentId='+attIds );
@@ -116,10 +157,10 @@ global without sharing  class DynamicCongaTempGeneration {
         }else if(propRec.RecordType.Name == 'SING'){
             proposalRecordID=propRec.id;
             if(TempName == 'Sing Award Letter'){
-                tempName = propRec.Name+'_SING_'+propRec.yearly_Call__r.year__c+'_'+contactsByPropID.get(propRec.Id)[0].Firstname +'_'+contactsByPropID.get(propRec.Id)[0].LastName + '_SING_Award_Letter';
+                templateFileName = propRec.Name+'_SING_'+propRec.yearly_Call__r.year__c+'_'+currentContacts[0].Firstname +'_'+currentContacts[0].LastName + '_SING_Award_Letter';
             }
             else{
-                tempName = propRec.Name+'_SING_'+propRec.yearly_Call__r.year__c+'_'+contactsByPropID.get(propRec.Id)[0].Firstname +'_'+contactsByPropID.get(propRec.Id)[0].LastName;
+                templateFileName = propRec.Name+'_SING_'+propRec.yearly_Call__r.year__c+'_'+currentContacts[0].Firstname +'_'+currentContacts[0].LastName;
             }
             system.debug('Attachment Ids Are ' + attIds); 
             CongaQuery = (String)propRec.get(TempInfoRec.Formula_Field_Name__c);
@@ -128,13 +169,13 @@ global without sharing  class DynamicCongaTempGeneration {
         }else if(propRec.RecordType.Name == 'Workshop'){
             proposalRecordID=propRec.id;
             if(TempName == 'workshop indian sanction'){
-                tempName = propRec.Name+'_WORKSHOP_'+propRec.yearly_Call__r.year__c+'_'+contactsByPropID.get(propRec.Id)[0].Firstname +'_'+contactsByPropID.get(propRec.Id)[0].LastName + '_workshopIndian_sanction';
+                templateFileName = propRec.Name+'_WORKSHOP_'+propRec.yearly_Call__r.year__c+'_'+currentContacts[0].Firstname +'_'+currentContacts[0].LastName + '_workshopIndian_sanction';
             }
             else if(TempName == 'workshop german sanction'){
-                tempName = propRec.Name+'_WORKSHOP_'+propRec.yearly_Call__r.year__c+'_'+contactsByPropID.get(propRec.Id)[0].Firstname +'_'+contactsByPropID.get(propRec.Id)[0].LastName + '_workshopGerman_sanction';
+                templateFileName = propRec.Name+'_WORKSHOP_'+propRec.yearly_Call__r.year__c+'_'+currentContacts[0].Firstname +'_'+currentContacts[0].LastName + '_workshopGerman_sanction';
             }
             else{
-                tempName = propRec.Name+'_WORKSHOP_'+propRec.yearly_Call__r.year__c+'_'+contactsByPropID.get(propRec.Id)[0].Firstname +'_'+contactsByPropID.get(propRec.Id)[0].LastName;
+                templateFileName = propRec.Name+'_WORKSHOP_'+propRec.yearly_Call__r.year__c+'_'+currentContacts[0].Firstname +'_'+currentContacts[0].LastName;
             }
             system.debug('Attachment Ids Are ' + attIds); 
             CongaQuery = (String)propRec.get(TempInfoRec.Formula_Field_Name__c);
@@ -149,8 +190,8 @@ global without sharing  class DynamicCongaTempGeneration {
             }else{
                 proposalRec=null;
             }
-			//tempName = DynamcName+propRec.Name+contactsByPropID.get(propRec.Id)[0].Firstname +'_'+contactsByPropID.get(propRec.Id)[0].LastName+propRec.Stage__c;
-			tempName = 'Application_IGSTC_2+2_Call_'+propRec.yearly_Call__r.year__c+'_'+propRec.Name;
+			//templateFileName = DynamcName+propRec.Name+contactsByPropID.get(propRec.Id)[0].Firstname +'_'+contactsByPropID.get(propRec.Id)[0].LastName+propRec.Stage__c;
+			templateFileName = 'Application_IGSTC_2+2_Call_'+propRec.yearly_Call__r.year__c+'_'+propRec.Name;
             system.debug('Attachment Ids Are ' + attIds);
             CongaQuery = proposalRec!=null & propRec.Stage__c =='2nd Stage' ? (String)propRec.get(TempInfoRec.Formula_Field_Name__c)+proposalRec.TWO_PLUS_TWO_Query_1__c : (String)propRec.get(TempInfoRec.Formula_Field_Name__c);
             CongaQuery = CongaQuery.replace('AttachmentId=00P1y000003a34i','AttachmentId='+attIds );
@@ -160,15 +201,15 @@ global without sharing  class DynamicCongaTempGeneration {
             //added by Shiva !!!!!
             proposalRecordID=propRec.id;
             string DynamcName =TempInfoRec.Formula_Field_Name__c+'_';
-            tempName = DynamcName+propRec.Name+contactsByPropID.get(propRec.Id)[0].Firstname +'_'+contactsByPropID.get(propRec.Id)[0].LastName;
+            templateFileName = DynamcName+propRec.Name+currentContacts[0].Firstname +'_'+currentContacts[0].LastName;
             system.debug('Attachment Ids Are ' + attIds);
             CongaQuery = (String)propRec.get(TempInfoRec.Formula_Field_Name__c);
             CongaQuery = CongaQuery.replace('AttachmentId=00P1y000003a34i','AttachmentId='+attIds );
             system.debug('SING CONGA'+CongaQuery);
         }
-        system.debug('tempName-----'+tempName);
+        system.debug('templateFileName-----'+templateFileName);
         system.debug('proposalRecordID-----'+proposalRecordID);
-        generateCongaTemplate(CongaQuery,tempName,proposalRecordID);	
+        generateCongaTemplate(CongaQuery,templateFileName,proposalRecordID);	
     }
     
     //This is asynchronous method which will be used to generate template for the proided URL.

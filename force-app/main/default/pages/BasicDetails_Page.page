@@ -1,4 +1,6 @@
-<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="ApplicantPortal_Contoller">
+<!-- <apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="ApplicantPortal_Contoller"> -->
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="WorkshopController">
+
     <html>
         <div ng-controller="basicDetails_ctrl">
             <head>

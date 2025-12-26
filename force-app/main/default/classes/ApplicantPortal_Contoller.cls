@@ -13,7 +13,7 @@ public without sharing class ApplicantPortal_Contoller {
     
     public string presentingWorkshop  {get;set;}
     public string currencyType2  {get;set;}
-    public string stage  {get;set;}
+    public string stage  {get;set;} 
     public String ApplicantPortalSiteURL {get;set;}
     public string secondStage  {get;set;}
     public string emailVerified  {get;set;}

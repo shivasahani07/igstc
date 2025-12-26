@@ -16,12 +16,52 @@ angular.module('cp_app').controller('ReviewAndSubmitIF_Ctrl', function ($scope, 
         fileSize = 0,
         doneUploading = false;
     debugger
-    $scope.redirectPageURL = function (URL) {
-        var link = document.createElement("a");
-        link.id = 'someLink'; //give it an ID!
-        link.href = '#/' + URL + '';
+    // $scope.redirectPageURL = function (URL) {
+    //     var link = document.createElement("a");
+    //     link.id = 'someLink'; //give it an ID!
+    //     link.href = '#/' + URL + '';
+    //     link.click();
+    // }
+    $scope.redirectPageURL = function(pageName) {
+    debugger;
+    var link = document.createElement("a");
+
+    let baseUrl = link.baseURI;
+    // Remove hash part ( #/something )
+    if (baseUrl.includes('#/')) {
+        baseUrl = baseUrl.split('#/')[0];
+    }
+    if (pageName === 'Home') {
+        // Get id and campaign from current URL dynamically
+        let urlParams = new URLSearchParams(window.location.search);
+        let id = urlParams.get("id") || "";
+        let campaign ='Industrial Fellowships';
+        // Build final HOME URL format dynamically
+        let finalUrl = baseUrl;
+        if (campaign) {
+         //   finalUrl += "&campaign=" + campaign;
+        }
+       // finalUrl += "#/Home";
+        finalUrl;
+        // link.href = finalUrl;
+        // link.click();
+        
+         // 1️⃣ Redirect to Home
+        window.location.replace(finalUrl);
+
+        // 2️⃣ Refresh AFTER redirect
+        setTimeout(function () {
+            window.location.reload();
+        }, 100);
+ 
+    } else {
+        // For other pages → keep same base + hash routing
+        link.href = baseUrl + "#/" + pageName;
         link.click();
     }
+};
+
+    
     
      // Fetching the proposalId from Local Storage
     if (localStorage.getItem('proposalId')) {
@@ -200,13 +240,14 @@ angular.module('cp_app').controller('ReviewAndSubmitIF_Ctrl', function ($scope, 
                         dangerMode: false,
                     }).then((willDelete) => {
                         if (willDelete) {
-                            // $scope.redirectPageURL('Home');
-                            $scope.redirectPageURL = function (URL) {
-                                var link = document.createElement("a");
-                                link.id = 'someLink'; //give it an ID!
-                                link.href = '#/' + URL + '';
-                                link.click();
-                            }
+                            $scope.redirectPageURL('Home');                            
+                            // $scope.redirectPageURL = function (URL) {
+                            //     var link = document.createElement("a");
+                            //     link.id = 'someLink'; //give it an ID!
+                            //     link.href = '#/' + URL + '';
+                            //     link.click();
+                                
+                            // }
                         } else {
                             return;
                         }
@@ -223,13 +264,13 @@ angular.module('cp_app').controller('ReviewAndSubmitIF_Ctrl', function ($scope, 
                         dangerMode: false,
                     }).then((willDelete) => {
                         if (willDelete) {
-                            // $scope.redirectPageURL('Home');
-                            $scope.redirectPageURL = function (URL) {
-                                var link = document.createElement("a");
-                                link.id = 'someLink'; //give it an ID!
-                                link.href = '#/' + URL + '';
-                                link.click();
-                            }
+                             $scope.redirectPageURL('Home');                          
+                            // $scope.redirectPageURL = function (URL) {
+                            //     var link = document.createElement("a");
+                            //     link.id = 'someLink'; //give it an ID!
+                            //     link.href = '#/' + URL + '';
+                            //     link.click();
+                            // }
                         } else {
                             return;
                         }
@@ -242,6 +283,8 @@ angular.module('cp_app').controller('ReviewAndSubmitIF_Ctrl', function ($scope, 
             }
         });
     }
+
+     
     $scope.uploadFile = function (type, userDocId, fileId, fileSizeFun) {
         debugger;
         maxFileSize = fileSizeFun;

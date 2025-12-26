@@ -25,7 +25,9 @@ angular.module('cp_app').controller('coordinators_ctrl', function ($scope, $root
         $rootScope.yearlyCallId = localStorage.getItem('yearlyCallId');
         console.log('Loaded yearlyCallId from localStorage:', $rootScope.yearlyCallId);
     }
-
+ $scope.redirectToApplicantPortal = function() {
+    window.location.href = 'https://indo-germansciencetechnologycentre--newdevutil.sandbox.my.salesforce-sites.com/ApplicantDashboard/ApplicantPortal?id=' + $rootScope.candidateId;
+}
     // $scope.checkEmail = function(email,contId){
     //     debugger;
     //     $scope.emailCheck = false;

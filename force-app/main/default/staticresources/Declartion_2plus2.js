@@ -286,11 +286,25 @@ angular.module('cp_app').controller('declarationplus2_ctrl', function ($scope, $
                                 $rootScope.proposalStage = true;
                                 CKEDITOR.config.readOnly = true;
                                 $scope.$apply();
-                                Swal.fire(
+
+                                // Swal.fire(
+                                //     'Success',
+                                //     'Your application has been Submitted successfully.',
+                                //     'success'
+                                // );
+
+                                swal(
                                     'Success',
                                     'Your application has been Submitted successfully.',
                                     'success'
-                                );
+                                ).then(function () {
+
+                                    setTimeout(function () {
+                                        $scope.redirectPageURL('Home');
+                                        $scope.$apply();
+                                    }, 1500);
+
+                                });
                             }
                             else {
 
@@ -355,12 +369,27 @@ angular.module('cp_app').controller('declarationplus2_ctrl', function ($scope, $
         ApplicantPortal_Contoller.upsertSign($scope.decDetails, year, month, day, function (result, event) {
             if (event.status) {
                 debugger;
-                Swal.fire(
+                // Swal.fire(
+                //     'Success',
+                //     'Your data has been saved successfully.',
+                //     'success'
+                // );
+
+                swal(
                     'Success',
                     'Your data has been saved successfully.',
                     'success'
-                );
-                $scope.redirectPageURL('Home');
+                ).then(function () {
+
+                    setTimeout(function () {
+                        $scope.redirectPageURL('Home');
+                        $scope.$apply();
+                    }, 1500);
+
+                });
+
+
+                // $scope.redirectPageURL('Home');
                 $scope.decDetails = result;
                 $scope.$apply();
             }

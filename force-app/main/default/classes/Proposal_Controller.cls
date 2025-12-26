@@ -1,7 +1,5 @@
 public withOut sharing class Proposal_Controller {
     
-    
-    
     /* public string thematicAreaList {get;set;}
 public string duration  {get;set;}
 public String ApplicantPortalSiteURL {get;set;}
@@ -4071,11 +4069,11 @@ return e.getMessage() + e.getLineNumber();
 } */
     
     // NEW METHOD - FOR WORKSHOP
-    // NEW METHOD - FOR WORKSHOP using hashcode
     public static String upsertCheckbox(Application_Proposal__c proposalList, String hashcode, Integer year, Integer month, Integer day){
         try{
             System.debug(' --------------- upsertCheckbox() ------------------- ');
             
+            /*
             Contact userContact = [
                 SELECT Id, Name, Declaration_Sign_Date__c, Login_Hash_Code__c 
                 FROM Contact 
@@ -4098,8 +4096,9 @@ return e.getMessage() + e.getLineNumber();
             if (apa == null || apa.Proposals__c == null) {
                 return 'Error: No proposal found for this contact';
             }
-            
-            Id proposalId = apa.Proposals__c;
+            */
+
+            Id proposalId = proposalList.Id;
             System.debug('proposalId : ' + proposalId);
             
             List<Contact> contactList = [
@@ -4144,7 +4143,7 @@ return e.getMessage() + e.getLineNumber();
             // upsert proposalToUpdate;
             
             
-            // proposalDetails.Stage__c = '1st Stage';
+            proposalList.Stage__c = '1st Stage';
             proposalList.Proposal_Stages__c = 'Draft';
             proposalList.Submitted__c = true;
             
@@ -4156,6 +4155,92 @@ return e.getMessage() + e.getLineNumber();
             return e.getMessage() + e.getLineNumber();
         }
     } 
+
+    // NEW METHOD - FOR WORKSHOP using hashcode
+    // public static String upsertCheckbox(Application_Proposal__c proposalList, String hashcode, Integer year, Integer month, Integer day){
+    //     try{
+    //         System.debug(' --------------- upsertCheckbox() ------------------- ');
+            
+    //         Contact userContact = [
+    //             SELECT Id, Name, Declaration_Sign_Date__c, Login_Hash_Code__c 
+    //             FROM Contact 
+    //             WHERE Login_Hash_Code__c = :hashcode
+    //         ];
+    //         System.debug('userContact : ' + userContact);
+            
+    //         if (userContact == null) {
+    //             return 'Error: Invalid hashcode (contact not found)';
+    //         }
+            
+    //         Applicant_Proposal_Association__c apa = [
+    //             SELECT Id, Contact__c, Proposals__c
+    //             FROM Applicant_Proposal_Association__c
+    //             WHERE Contact__c = :userContact.Id
+    //             LIMIT 1
+    //         ];
+    //         System.debug('apa : ' + apa);
+            
+    //         if (apa == null || apa.Proposals__c == null) {
+    //             return 'Error: No proposal found for this contact';
+    //         }
+            
+    //         Id proposalId = apa.Proposals__c;
+    //         System.debug('proposalId : ' + proposalId);
+            
+    //         List<Contact> contactList = [
+    //             SELECT Id, Name, Declaration_Sign_Date__c
+    //             FROM Contact
+    //             WHERE Id IN (
+    //                 SELECT Contact__c
+    //                 FROM Applicant_Proposal_Association__c
+    //                 WHERE Proposals__c = :proposalId
+    //             )
+    //         ];
+    //         System.debug('contactList Size : ' + contactList.size());
+    //         System.debug('contactList : ' + contactList);
+            
+    //         if(! contactList.isEmpty()){
+    //             for(Contact con : contactList){
+    //                 if(year == 0 && month == 0 && day == 0){
+                        
+    //                 }else{
+    //                     Date newDate = Date.newInstance(year,month,day);
+    //                     con.Declaration_Sign_Date__c = newDate;
+    //                 }
+    //             }
+    //         }
+    //         update contactList;
+    //         System.debug('contactList UPDATED SUCCESSFULLY !!');
+            
+    //         // Best Practice to query the records, else it will update the unpassed fields as null
+            
+    //         // Application_Proposal__c proposalToUpdate = [
+    //         //     SELECT Id 
+    //         //     FROM Application_Proposal__c
+    //         //     WHERE Id = :proposalId
+    //         //     LIMIT 1
+    //         // ];
+    //         // proposalToUpdate.Proposal_Stages__c = 'Draft';
+    //         // proposalToUpdate.Submitted__c = true;
+            
+    //         // // Apply user-updated fields
+    //         // proposalToUpdate.putAll(proposalList);
+            
+    //         // upsert proposalToUpdate;
+            
+            
+    //         proposalDetails.Stage__c = '1st Stage';
+    //         proposalList.Proposal_Stages__c = 'Draft';
+    //         proposalList.Submitted__c = true;
+            
+    //         upsert proposalList;
+    //         System.debug('proposalList UPDATED SUCCESSFULLY !!');
+            
+    //         return 'success';
+    //     }catch(Exception e){
+    //         return e.getMessage() + e.getLineNumber();
+    //     }
+    // } 
     
     
     // OLD METHOD

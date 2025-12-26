@@ -228,6 +228,12 @@ angular.module('cp_app').controller('Consortia_Ctrl', function ($scope, $rootSco
             { buffer: true, escape: true, timeout: 120000 }
         );
     }
+
+    
+
+
+
+
     // $scope.checkEmail = function(email,contId){
     //     debugger;
     //     $scope.emailCheck = false;
@@ -456,6 +462,7 @@ angular.module('cp_app').controller('Consortia_Ctrl', function ($scope, $rootSco
     //     $("#acedmiaDetails"+index+"").hide();
     //     $("#basicDetailsId"+index+"").show();
     // }
+
     $scope.industryAcademiaCoordinator = function (industryType, index) {
         //$scope.arrySaveStatus[index].status=false;
         debugger
@@ -465,9 +472,47 @@ angular.module('cp_app').controller('Consortia_Ctrl', function ($scope, $rootSco
         } else {
             $scope.CoordinatorDetails[index].Industry__c = true;
             $scope.CoordinatorDetails[index].Academia__c = false;
+
         }
         $scope.$apply();
     }
+
+    /*
+     $scope.industryAcademiaCoordinator = function (industryType, index) {
+         debugger;
+ 
+         var coordinator = $scope.CoordinatorDetails[index];
+ 
+         if (industryType === "academia") {
+ 
+             coordinator.Industry__c = false;
+             coordinator.Academia__c = true;
+ 
+             //CLEAR ALL CHAR LIMIT ERRORS (Account level)
+             if (coordinator._charLimitMap) {
+                 delete coordinator._charLimitMap;
+             }
+ 
+             //CLEAR CONTACT LEVEL ERRORS
+             if (coordinator.Contacts && coordinator.Contacts.length > 0) {
+                 coordinator.Contacts.forEach(function (con) {
+                     if (con._charLimitMap) {
+                         delete con._charLimitMap;
+                     }
+                 });
+             }
+         } else {
+             coordinator.Industry__c = true;
+             coordinator.Academia__c = false;
+         }
+ 
+         //Ensure digest (safe even if already in cycle)
+         if (!$scope.$$phase) {
+             $scope.$apply();
+         }
+     };
+     */
+
     $scope.industryAcademia = function (industryType, index) {
         $scope.arrySaveStatus[index].status = false;
         debugger
@@ -480,6 +525,45 @@ angular.module('cp_app').controller('Consortia_Ctrl', function ($scope, $rootSco
         }
         $scope.$apply();
     }
+
+    // $scope.industryAcademia = function (industryType, index) {
+    //     debugger;
+
+    //     $scope.arrySaveStatus[index].status = false;
+
+    //     var acc = $scope.allCoordinatorDetails[index];
+
+    //     if (industryType === "academia") {
+
+    //         acc.Industry__c = false;
+    //         acc.Academia__c = true;
+
+    //         //CLEAR ACCOUNT LEVEL ERRORS
+    //         if (acc._charLimitMap) {
+    //             delete acc._charLimitMap;
+    //         }
+
+    //         //CLEAR CONTACT LEVEL ERRORS
+    //         if (acc.Contacts && acc.Contacts.length > 0) {
+    //             acc.Contacts.forEach(function (con) {
+    //                 if (con._charLimitMap) {
+    //                     delete con._charLimitMap;
+    //                 }
+    //             });
+    //         }
+
+    //     } else {
+
+    //         acc.Industry__c = true;
+    //         acc.Academia__c = false;
+    //     }
+
+    //     // Safe digest
+    //     if (!$scope.$$phase) {
+    //         $scope.$apply();
+    //     }
+    // };
+
 
     // $scope.getPatnerDetails = function () {
     //     debugger;
@@ -559,6 +643,7 @@ angular.module('cp_app').controller('Consortia_Ctrl', function ($scope, $rootSco
     //         escape: true
     //     })
     // }
+
     $scope.addAccount = function () {
         debugger;
         if ($scope.allCoordinatorDetails.length > 5) {
@@ -1161,6 +1246,11 @@ angular.module('cp_app').controller('Consortia_Ctrl', function ($scope, $rootSco
 
         for (i = 0; i < $scope.allPartners.length; i++) {
 
+            if ($scope.allPartners[i].Website.length > 255) {
+                swal("Info !", "Website cannot exceed 255 characters.");
+                return;
+            }
+
             // $scope.allPartners[i].Contacts[0].Proposals__c = $rootScope.projectId;
             if ($scope.allPartners[i].Id == undefined || $scope.allPartners.Id == "") {
                 $scope.allPartners[i].Contacts[0].AccountId = $scope.allPartners[i].Name;
@@ -1233,6 +1323,30 @@ angular.module('cp_app').controller('Consortia_Ctrl', function ($scope, $rootSco
                         // $("#dept"+j+"").addClass('border-theme');
                         return;
                     }
+
+                    // ===================== EXTRA VALIDATIONS START ===================== //
+                    // if ($scope.allPartners[i].Industry__c === true) {
+                    if ($scope.allPartners[i].Contacts[j].FirstName.length > 40) {
+                        swal("Info !", "Project Partner First Name cannot exceed 40 characters.");
+                        return;
+                    }
+
+                    if ($scope.allPartners[i].Contacts[j].LastName.length > 80) {
+                        swal("Info !", "Project Partner Last Name cannot exceed 80 characters.");
+                        return;
+                    }
+
+                    if ($scope.allPartners[i].Contacts[j].Designation__c.length > 80) {
+                        swal("Info !", "Designation cannot exceed 80 characters.");
+                        return;
+                    }
+
+                    if ($scope.allPartners[i].Contacts[j].Department.length > 80) {
+                        swal("Info !", "Department cannot exceed 80 characters.");
+                        return;
+                    }
+                    // }
+                    // ===================== EXTRA VALIDATIONS END ===================== //
 
                     if ($scope.allPartners[i].Contacts[j].Email == undefined || $scope.allPartners[i].Contacts[j].Email == "") {
                         swal("info", "Please Enter Email.");
@@ -1485,31 +1599,226 @@ angular.module('cp_app').controller('Consortia_Ctrl', function ($scope, $rootSco
     }
 
 
+    // $scope.checkCharLimit = function (obj, fieldName, limit) {
+    //     // SAFETY
+    //     debugger
+    //     if (!obj) return;
+
+    //     // ✅ APPLY VALIDATION ONLY IF INDUSTRY IS SELECTED
+    //     if (!obj.Industry__c) return;
+
+    //     // ✅ Initialize map once
+    //     if (!obj._charLimitMap) {
+    //         obj._charLimitMap = {};
+    //     }
+
+    //     var value;
+    //     var setter;
+
+    //     // 🔹 Case 1: Field exists on Account
+    //     if (obj.hasOwnProperty(fieldName)) {
+    //         value = obj[fieldName];
+    //         setter = function (newValue) {
+    //             obj[fieldName] = newValue;
+    //         };
+
+    //         // 🔹 Case 2: Field exists on first Contact
+    //     } else if (
+    //         obj.Contacts &&
+    //         obj.Contacts.length > 0 &&
+    //         obj.Contacts[0].hasOwnProperty(fieldName)
+    //     ) {
+    //         value = obj.Contacts[0][fieldName];
+    //         setter = function (newValue) {
+    //             obj.Contacts[0][fieldName] = newValue;
+    //         };
+
+    //         // 🔹 Field not found anywhere
+    //     } else {
+    //         obj._charLimitMap[fieldName] = false;
+    //         return;
+    //     }
+
+    //     // 🔹 Empty value
+    //     if (!value) {
+    //         obj._charLimitMap[fieldName] = false;
+    //         return;
+    //     }
+
+    //     // 🔹 Enforce character limit
+    //     if (value.length > limit) {
+    //         setter(value.substring(0, limit));
+    //         obj._charLimitMap[fieldName] = true;
+    //     } else {
+    //         obj._charLimitMap[fieldName] = false;
+    //     }
+    // };
+
+    /*
     $scope.checkCharLimit = function (obj, fieldName, limit) {
+        debugger;
 
-        // SAFETY: if Contacts[0] not ready, stop
         if (!obj) return;
+        if (!obj.Industry__c) return;
 
-        // Initialize map once
-        if (!obj._charLimitMap) {
-            obj._charLimitMap = {};
+        var targetObj;   // where error flag should live
+        var value;
+        var setter;
+
+        // 🔹 Case 1: Account field
+        if (obj.hasOwnProperty(fieldName)) {
+            targetObj = obj;
+
+            value = obj[fieldName];
+            setter = function (newValue) {
+                obj[fieldName] = newValue;
+            };
+
+            // 🔹 Case 2: Contact field
+        } else if (
+            obj.Contacts &&
+            obj.Contacts.length > 0 &&
+            obj.Contacts[0].hasOwnProperty(fieldName)
+        ) {
+            targetObj = obj.Contacts[0];
+
+            value = obj.Contacts[0][fieldName];
+            setter = function (newValue) {
+                obj.Contacts[0][fieldName] = newValue;
+            };
+
+        } else {
+            return;
         }
 
-        var value = obj[fieldName];
+        // ✅ Init map on correct object
+        if (!targetObj._charLimitMap) {
+            targetObj._charLimitMap = {};
+        }
+
+        // 🔹 Empty value
+        if (!value) {
+            targetObj._charLimitMap[fieldName] = false;
+            return;
+        }
+
+        // 🔹 Enforce limit
+        if (value.length > limit) {
+            //setter(value.substring(0, limit));
+            targetObj._charLimitMap[fieldName] = true;
+        } else {
+            targetObj._charLimitMap[fieldName] = false;
+        }
+    };
+    */
+
+    $scope.checkCharLimit = function (obj, fieldName, limit) {
+
+        if (!obj) return;
+
+        // CLEAR ERROR WHEN ACADEMIA IS SELECTED
+        // if (!obj.Industry__c) {
+        //     // Clear Account-level errors
+        //     if (obj._charLimitMap) {
+        //         obj._charLimitMap[fieldName] = false;
+        //     }
+
+        //     // Clear Contact-level errors
+        //     if (obj.Contacts && obj.Contacts.length > 0) {
+        //         if (obj.Contacts[0]._charLimitMap) {
+        //             obj.Contacts[0]._charLimitMap[fieldName] = false;
+        //         }
+        //     }
+        //     return;
+        // }
+
+        var targetObj;
+        var value;
+        var setter;
+
+        // 🔹 Account field
+        if (obj.hasOwnProperty(fieldName)) {
+            targetObj = obj;
+            value = obj[fieldName];
+            setter = function (newValue) {
+                obj[fieldName] = newValue;
+            };
+
+            // 🔹 Contact field
+        } else if (
+            obj.Contacts &&
+            obj.Contacts.length > 0 &&
+            obj.Contacts[0].hasOwnProperty(fieldName)
+        ) {
+            targetObj = obj.Contacts[0];
+            value = obj.Contacts[0][fieldName];
+            setter = function (newValue) {
+                obj.Contacts[0][fieldName] = newValue;
+            };
+
+        } else {
+            return;
+        }
+
+        // Init map
+        if (!targetObj._charLimitMap) {
+            targetObj._charLimitMap = {};
+        }
 
         if (!value) {
-            obj._charLimitMap[fieldName] = false;
+            targetObj._charLimitMap[fieldName] = false;
             return;
         }
 
         if (value.length > limit) {
-            obj[fieldName] = value.substring(0, limit);
-            obj._charLimitMap[fieldName] = true;
+            //setter(value.substring(0, limit));
+            targetObj._charLimitMap[fieldName] = true;
         } else {
-            obj._charLimitMap[fieldName] = false;
+            targetObj._charLimitMap[fieldName] = false;
         }
     };
 
+//Postal code validation
+$scope.postalMaxLength = 6;
 
+$scope.checkPostalCodeValidation = function(country, postalCode) {
+    console.log('Validation called:', country, postalCode);
+    debugger;
+    // Set maxlength
+    if (country === 'Germany') {
+        $scope.postalMaxLength = 5;
+    } else if (country === 'India') {
+        $scope.postalMaxLength = 6;
+    } else {
+        $scope.postalMaxLength = 10;
+    }
+    
+    // Truncate if too long
+    if (postalCode.length > $scope.postalMaxLength) {
+        $scope.account.BillingPostalCode = postalCode.substring(0, $scope.postalMaxLength);
+        $scope.account._charLimitMap.BillingPostalCode = true;
+        return;
+    }
+    
+    // Validation - error only on invalid complete codes
+    var isValid = true;
+    
+    if (country === 'Germany' && postalCode.length === 5) {
+        isValid = /^[0-9]{5}$/.test(postalCode);
+    } else if (country === 'India' && postalCode.length === 6) {
+        isValid = /^[0-9]{6}$/.test(postalCode);
+    }
+    
+    $scope.account._charLimitMap.BillingPostalCode = !isValid;
+};
+
+// Watch country change
+$scope.$watch('account.BillingCountry', function(newCountry) {
+    if (newCountry) {
+        $scope.postalMaxLength = (newCountry === 'Germany') ? 5 : (newCountry === 'India') ? 6 : 10;
+        $scope.account.BillingPostalCode = '';
+        $scope.account._charLimitMap.BillingPostalCode = false;
+    }
+});
 
 });

@@ -310,7 +310,7 @@
                                 />
                             </div>
                             <div class="col-md-4">
-                                <label class="font-if">Homepage</label>
+                                <label class="font-if">Homepage (url)</label>
                                 <!-- <input type="url" ng-disabled="proposalStage" class="form-control" name="txtUrl" ng-required="true" ng-keypress="validateUrl()" ng-change="validateUrl()" ng-keyup="validateUrl()" ng-model="objContact.Homepage_URL__c" /> -->
                                 <input type="text" ng-disabled="proposalStage" class="form-control" ng-required="true" ng-model="objContact.Homepage_URL__c"/>
                                 <!-- <span ng-if="!formPrjDet.txtUrl.$valid" class="text-danger">Please enter a valid url</span> -->

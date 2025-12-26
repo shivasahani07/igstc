@@ -47,7 +47,17 @@
                                 <div class="progress-success w-100"></div>
                             </div>
                             <ul>
+                                
                                 <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Applicant Project Details</span>
+                                    </a>
+                                </li>
+
+                                <li class="pb-cursor">
                                     <a ng-click="redirectPageURL('WiserApplicationPage')">
                                         <div class="icon-circle">
                                             <i class="fas fa-user-alt"></i>
@@ -56,20 +66,12 @@
                                     </a>
                                 </li>
                                 
-                                <li class="active pb-cursor">
+                                <li class="pb-cursor">
                                     <a ng-click="redirectPageURL('HostInfoApplicationPage')">
                                         <div class="icon-circle">
                                             <i class="fas fa-file-invoice"></i>
                                         </div>
                                         <span>Pair Details</span>
-                                    </a>
-                                </li>
-                                <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
-                                        <div class="icon-circle">
-                                            <i class="fa fa-home"></i>
-                                        </div>
-                                        <span>Applicant Project Details</span>
                                     </a>
                                 </li>
                                 <li class="active pb-cursor">
@@ -95,7 +97,17 @@
                                 <div class="progress-success wp-3"></div>
                             </div>
                             <ul>
-                                <li class="active">
+                                
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Applicant Project Details</span>
+                                    </a>
+                                </li>
+
+                                <li>
                                     <a>
                                         <div class="icon-circle">
                                             <i class="fas fa-user-alt"></i>
@@ -103,20 +115,12 @@
                                         <span>Applicant Details</span>
                                     </a>
                                 </li>
-                                <li class="active">
+                                <li>
                                     <a>
                                         <div class="icon-circle">
                                             <i class="fas fa-file-invoice"></i>
                                         </div>
                                         <span>Pair Details</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a>
-                                        <div class="icon-circle">
-                                            <i class="fa fa-home"></i>
-                                        </div>
-                                        <span>Applicant Project Details</span>
                                     </a>
                                 </li>
                                 <li>

@@ -93,6 +93,58 @@ public with sharing class CongaHelperToolLightning {
         return sessionId;//userinfo.getSessionId();//sessionId;
     }
     
+    public static String getSessionId2(String username, String password) {
+    String sessionId;
+        string loginDomain;
+    loginDomain = System.Url.getOrgDomainUrl().toExternalForm();
+    try {
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint(loginDomain + '/services/Soap/u/60.0');
+        //request.setEndpoint('https://test.salesforce.com/services/Soap/u/60.0');
+        request.setMethod('POST');
+        request.setHeader('Content-Type', 'text/xml;charset=UTF-8');
+        request.setHeader('SOAPAction', '""');
+
+        request.setBody(
+            '<?xml version="1.0" encoding="utf-8"?>' +
+            '<env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" ' +
+            'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
+            'xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">' +
+            '<env:Body>' +
+            '<login xmlns="urn:partner.soap.sforce.com">' +
+            '<username>' + username + '</username>' +
+            '<password>' + password + '</password>' +
+            '</login>' +
+            '</env:Body>' +
+            '</env:Envelope>'
+        );
+
+        HttpResponse res = new Http().send(request);
+        System.debug('SOAP Response: ' + res.getBody());
+
+        Dom.Document doc = res.getBodyDocument();
+        Dom.XmlNode resultElmt =
+            doc.getRootElement()
+               .getChildElement('Body','http://schemas.xmlsoap.org/soap/envelope/')
+               .getChildElement('loginResponse','urn:partner.soap.sforce.com')
+               .getChildElement('result','urn:partner.soap.sforce.com');
+
+        sessionId =
+            resultElmt.getChildElement('sessionId','urn:partner.soap.sforce.com')
+                      .getText();
+
+        System.debug('SESSION ID => ' + sessionId);
+
+    } catch (Exception e) {
+        System.debug('ERROR => ' + e.getMessage() + ' @ line ' + e.getLineNumber());
+    }
+
+    return sessionId;
+}
+
+    
+    
+    
     /* 
 public static String getSessionId(String username, String password){
         String loginDomain;
