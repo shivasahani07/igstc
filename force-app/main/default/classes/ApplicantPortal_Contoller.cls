@@ -94,6 +94,7 @@ public without sharing class ApplicantPortal_Contoller {
         system.debug('candidateId---'+candidateId);
         if(!string.isBlank(candidateId)){
             List<contact> applicantDetails = [SELECT Id,Email,Status__c,account.Is_Coordinator__c,name,Account.Id,Proposals__c,Proposals__r.Campaign__r.Name,Email_Verified__c,Is_Primary__c,Campaign__c,Login_Hash_Code__c,(SELECT Id, Proposals__r.Id, Proposals__r.Stage__c, Proposals__r.Proposal_Stages__c FROM Applicant_Proposal_Associations__r) FROM contact WHERE Login_hash_code__c =:candidateId];
+            System.debug('---------- applicantDetails : ' + applicantDetails);
             for(Contact conRec : applicantDetails){
                 emailVerified = String.valueOf(conRec.Email_Verified__c);
             }
@@ -106,11 +107,15 @@ public without sharing class ApplicantPortal_Contoller {
             if(!applicantDetails[0].Applicant_Proposal_Associations__r.isEmpty()){
                 for(Applicant_Proposal_Association__c apa : applicantDetails[0].Applicant_Proposal_Associations__r) {
                     proposalWrap wrap = new proposalWrap();
+                    wrap.apaId = apa.Id;
                     wrap.Id = apa.Proposals__r.Id;
                     wrap.proposalStage = apa.Proposals__r.Proposal_Stages__c;
-                    secondStage = apa.Proposals__r.Stage__c=='2nd Stage' ?'true':'false';
+                    // secondStage = apa.Proposals__r.Stage__c=='2nd Stage' ?'true':'false';
+                    // System.debug('secondStage : -------- ' + secondStage);
                     proposalStage= apa.Proposals__r.Proposal_Stages__c;
+                    System.debug('Stage = ' + proposalStage);
                     wrap.stage = apa.Proposals__r.Stage__c;
+                    wrap.secondStage = (apa.Proposals__r.Stage__c == '2nd Stage');
                     proposalWrapperList.add(wrap);
                 }
             }
@@ -139,6 +144,8 @@ public without sharing class ApplicantPortal_Contoller {
         public String Id {get; set;}
         public String stage {get; set;}
         public String proposalStage {get; set;}
+        public Boolean secondStage {get;set;}
+        public String apaId {get;set;}
     }
     
     public static String generateRandomString(){

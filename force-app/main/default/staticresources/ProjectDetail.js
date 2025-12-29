@@ -7,6 +7,12 @@ angular.module('cp_app').controller('projectCtrl', function ($scope, $sce, $root
         console.log('Loaded proposalId from localStorage:', $rootScope.proposalId);
     }
 
+    // Fetching the APA Id from Local Storage
+    if (localStorage.getItem('apaId')) {
+        $rootScope.apaId = localStorage.getItem('apaId');
+        console.log('Loaded apaId from localStorage:', $rootScope.apaId);
+    }
+
     $scope.config = {};
     $scope.config.toolbarGroups = [
         { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
@@ -29,7 +35,9 @@ angular.module('cp_app').controller('projectCtrl', function ($scope, $sce, $root
     $scope.siteURL = siteURL;
     $scope.proposalDetails = {};
     $scope.disable = false;
-    $scope.uploadDisable = proposalStage == "Draft" && isCoordinator == "true" ? false : true;  //need to check 
+    // $scope.uploadDisable = proposalStage == "Draft" && isCoordinator == "true" ? false : true;  //need to check 
+    $scope.uploadDisable = proposalStage == "Draft" && isCoordinator == "true" ? true : false;  //need to check 
+
 
 
     $scope.uploadProgress = 0;
@@ -44,8 +52,18 @@ angular.module('cp_app').controller('projectCtrl', function ($scope, $sce, $root
     // }
     $rootScope.secondStage;
     $scope.secondStage;
+
     console.log('second stage=>' + $rootScope.secondStage);
     console.log(' scope second stage=>' + $scope.secondStage);
+
+    // $scope.pWrapper = JSON.parse(window.proposalWrapperList);
+    // console.log('typeOf($scope.pWrapper) : ', typeof ($scope.pWrapper));
+    // console.log('$scope.pWrapper : ', $scope.pWrapper);
+
+    // $scope.parsedPWrapper = JSON.parse($scope.pWrapper);
+    // console.log('typeOf($scope.parsedPWrapper) ', typeof ($scope.parsedPWrapper));
+    // console.log($scope.parsedPWrapper);
+
     $scope.objRtf = [{ charCount: 0, maxCharLimit: 0, errorStatus: false }];
     $scope.objRtf.push({ charCount: 0, maxCharLimit: 0, errorStatus: false });
     $scope.objRtf.push({ charCount: 0, maxCharLimit: 0, errorStatus: false });
@@ -101,6 +119,7 @@ angular.module('cp_app').controller('projectCtrl', function ($scope, $sce, $root
         )
     }
     $scope.getProjectdetils();
+
     $scope.getDocsDet = function () {
         debugger;
         $scope.selectedFile = '';
@@ -136,6 +155,142 @@ angular.module('cp_app').controller('projectCtrl', function ($scope, $sce, $root
 
     }
     $scope.getDocsDet();
+    /*
+    $scope.getDocsDet = function () {
+        debugger;
+        $scope.selectedFile = '';
+        $('#file_frame').attr('src', '');
+        // ApplicantPortal_Contoller.getAllProposalDoc($rootScope.projectId, function (result, event) {
+        ApplicantPortal_Contoller.getAllProposalDoc($rootScope.proposalId, function (result, event) {
+            debugger
+            console.log('onload doc:: ');
+            console.log(result);
+            if (event.status) {
+                $scope.allDocs = result;
+                var uploadCount = 0;
+                for (var i = 0; i < $scope.allDocs.length; i++) {
+                    debugger;
+                    if ($scope.allDocs[i].userDocument.Name == 'Project Details') {
+                        $scope.doc = $scope.allDocs[i];
+                        if ($scope.doc.userDocument.Attachments && $scope.doc.userDocument.Attachments[0]) {
+                            let fileId = $scope.doc.userDocument.Attachments[0].Id;
+                            //$scope.previewFileLink = $scope.siteURL + `servlet/servlet.FileDownload?file=${fileId}`;
+                            $scope.previewFileLink = `/ApplicantDashboard/servlet/servlet.FileDownload?file=${fileId}`;
+                        }
+                    }
+                    if ($scope.allDocs[i].userDocument.Name == 'Sample Document') {
+                        $scope.sampleDoc = $scope.allDocs[i].userDocument;
+                    }
+                }
+                $scope.$applyAsync();
+            }
+
+        }, {
+            escape: true
+        })
+
+    }
+    $scope.getDocsDet();
+    */
+
+
+    /*
+    $scope.getDocsDet = function () {
+        debugger;
+
+        $scope.selectedFile = '';
+        $scope.doc = null;
+        $scope.sampleDoc = null;
+        $scope.previewFileLink = '';
+        $('#file_frame').attr('src', '');
+
+        ApplicantPortal_Contoller.getAllProposalDoc(
+            $rootScope.proposalId,
+            function (result, event) {
+
+                debugger;
+                console.log('onload doc:: ', result);
+
+                $scope.selectedProposal = null;
+                debugger;
+                if ($scope.pWrapper && $rootScope.apaId) {
+
+                    for (var i = 0; i < $scope.pWrapper.length; i++) {
+
+                        var wrap = $scope.pWrapper[i];
+
+                        if (wrap.apaId === $rootScope.apaId) {
+
+                            $scope.selectedProposal = wrap;
+                            break;
+                        }
+                    }
+                }
+
+                if ($scope.selectedProposal) {
+                    debugger;
+                    $rootScope.secondStage = $scope.selectedProposal.secondStage;
+                    $scope.stage = $scope.selectedProposal.stage;
+                    $scope.proposalStage = $scope.selectedProposal.proposalStage;
+
+                    console.log('Selected APA:', $scope.selectedProposal);
+                    console.log('Second Stage:', $rootScope.secondStage);
+                } else {
+                    console.warn('No matching APA found for apaId:', $rootScope.apaId);
+                }
+
+                if (event.status && result) {
+
+                    $scope.allDocs = result;
+
+                    // Decide expected document name based on stage
+                    var expectedDocName = $rootScope.secondStage
+                        ? 'Project Details - Stage 2'
+                        : 'Project Details - Stage 1';
+
+                    for (var i = 0; i < $scope.allDocs.length; i++) {
+
+                        var currentDoc = $scope.allDocs[i].userDocument;
+
+                        // Pick stage-specific Project Details document
+                        if (currentDoc.Name === expectedDocName) {
+
+                            $scope.doc = $scope.allDocs[i];
+
+                            if (
+                                currentDoc.Attachments &&
+                                currentDoc.Attachments.length > 0
+                            ) {
+                                let fileId = currentDoc.Attachments[0].Id;
+                                $scope.previewFileLink =
+                                    `/ApplicantDashboard/servlet/servlet.FileDownload?file=${fileId}`;
+                            }
+                        }
+
+                        // Sample document (always collect)
+                        if (currentDoc.Name === 'Sample Document') {
+                            $scope.sampleDoc = currentDoc;
+                        }
+                    }
+
+                    // Safety check
+                    if (!$scope.doc) {
+                        console.warn(
+                            'No Project Details document found for stage:',
+                            $rootScope.secondStage ? 'Stage 2' : 'Stage 1'
+                        );
+                    }
+
+                    $scope.$applyAsync();
+                }
+            },
+            { escape: true }
+        );
+    };
+
+    $scope.getDocsDet();
+    */
+
     $scope.filePreviewHandler = function (fileContent) {
         debugger;
         $scope.selectedFile = fileContent;

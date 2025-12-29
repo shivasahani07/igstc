@@ -321,6 +321,30 @@ angular.module('cp_app').controller('address_ctrl', function ($scope, $sce, $roo
             return;
         }
 
+        // ------------- POSTAL CODE VALIDATION ------------------ //
+        debugger;
+        var country = $scope.addressDetails.BillingCountry;
+        var postalCode = $scope.addressDetails.BillingPostalCode;
+
+        // Allow digits only for validation
+        postalCode = postalCode.replace(/[^0-9]/g, '');
+
+        if (country === 'India' && postalCode.length !== 6) {
+            swal(
+                "Info!",
+                "Postal Code for India must be exactly 6 digits."
+            );
+            return;
+        }
+
+        if (country === 'Germany' && postalCode.length !== 5) {
+            swal(
+                "Info!",
+                "Postal Code for Germany must be exactly 5 digits."
+            );
+            return;
+        }
+
 
         if ($scope.addressDetails.Industry__c == true) {
             if ($scope.addressDetails.Year_Of_Establishment__c == undefined || $scope.addressDetails.Year_Of_Establishment__c == "") {
@@ -481,6 +505,96 @@ angular.module('cp_app').controller('address_ctrl', function ($scope, $sce, $roo
             obj._charLimitMap[fieldName] = true;
         } else {
             obj._charLimitMap[fieldName] = false;
+        }
+    };
+
+    $scope.checkCharLimit = function (obj, fieldName, limit) {
+        debugger;
+
+        if (!obj) return;
+
+        var targetObj;
+        var value;
+
+        // 🔹 Account field
+        if (obj.hasOwnProperty(fieldName)) {
+            targetObj = obj;
+            value = obj[fieldName];
+
+        }
+        // 🔹 Contact field
+        else if (
+            obj.Contacts &&
+            obj.Contacts.length > 0 &&
+            obj.Contacts[0].hasOwnProperty(fieldName)
+        ) {
+            targetObj = obj.Contacts[0];
+            value = obj.Contacts[0][fieldName];
+
+        } else {
+            return;
+        }
+
+        // Init error map
+        targetObj._charLimitMap = targetObj._charLimitMap || {};
+
+        if (!value) {
+            targetObj._charLimitMap[fieldName] = false;
+            return;
+        }
+
+        /* =====================================================
+           SPECIAL CASE: POSTAL / ZIP CODE
+           ===================================================== */
+        if (fieldName === 'BillingPostalCode') {
+
+            var country = obj.BillingCountry;
+            var cleanedValue = value.replace(/[^0-9]/g, '');
+
+            var maxLength;
+            var regex;
+
+            if (country === 'India') {
+                maxLength = 6;
+                regex = /^[0-9]{6}$/;
+            }
+            else if (country === 'Germany') {
+                maxLength = 5;
+                regex = /^[0-9]{5}$/;
+            }
+            else {
+                maxLength = limit; // fallback
+            }
+
+            // Length check
+            if (cleanedValue.length > maxLength) {
+                targetObj._charLimitMap[fieldName] = true;
+                console.log('❌ Postal code length exceeded for', country);
+                return;
+            }
+
+            // Pattern check (only when full length entered)
+            if (cleanedValue.length === maxLength) {
+                if (regex && !regex.test(cleanedValue)) {
+                    targetObj._charLimitMap[fieldName] = true;
+                    console.log('❌ Invalid Postal Code for', country);
+                    return;
+                }
+            }
+
+            targetObj._charLimitMap[fieldName] = false;
+            console.log('✅ Valid Postal Code for', country);
+            return;
+        }
+
+        /* =====================================================
+            DEFAULT CHAR LIMIT LOGIC (Website, Department, etc.)
+           ===================================================== */
+
+        if (value.length > limit) {
+            targetObj._charLimitMap[fieldName] = true;
+        } else {
+            targetObj._charLimitMap[fieldName] = false;
         }
     };
 });

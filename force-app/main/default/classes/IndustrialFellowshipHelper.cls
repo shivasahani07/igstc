@@ -384,26 +384,100 @@ Integer phdEnrollYear,Integer phdEnrollMonth,Integer phdEnrollDay,Integer phdAwa
 
 //changed by Karthik KE
 // Upsert Method for WiserApplicationPage
-public String insertApplicantDetails(contact conRec, Account accDet, integer birthYear, integer birthMonth, integer birthDay, String proposalId,) {
+public String insertApplicantDetails(contact conRec, Account accDet, integer birthYear, integer birthMonth, integer birthDay, String campaignId) {
     try {
         upsert accDet;
         
         List<Applicant_Proposal_Association__c> associations = [
             SELECT Id, Proposals__c 
             FROM Applicant_Proposal_Association__c
-            WHERE Contact__c = :conRec.Id AND Proposals__c = :proposalId
+            WHERE Contact__c = :conRec.Id
             LIMIT 1
         ];
 
         Applicant_Proposal_Association__c association;
         if (associations.isEmpty()) {
-            association = new Applicant_Proposal_Association__c(Contact__c = conRec.Id,proposals__c=proposalId);
+            association = null;
         } else {
             association = associations[0];
         }
 
+        Application_Proposal__c app;
 
-        return 'Success';
+        // Fetch WISER record type Id once
+        Id wiserRecordTypeId = Utility.getProposalRecordType('WISER');
+        
+        if (association == null) {
+            association = new Applicant_Proposal_Association__c(Contact__c = conRec.Id);
+            insert association;
+
+            app = new Application_Proposal__c();
+            if (!String.isEmpty(campaignId)) {
+                app.Campaign__c = campaignId;
+            }
+            app.RecordTypeId = wiserRecordTypeId;
+            app.Proposal_Stages__c = 'Draft';
+            insert app;
+
+            association.Proposals__c = app.Id;
+            update association;
+
+            
+
+            if (!String.isEmpty(conRec.AccountId)) {
+                Account acc = new Account(Id = conRec.AccountId);
+                update acc;
+            }
+        } else {
+            Boolean createNewProposal = false;
+            if (association.Proposals__c == null) {
+                createNewProposal = true;
+            } else {
+                // Query existing Proposal record to check RecordTypeId
+                Application_Proposal__c existingProposal = [
+                    SELECT Id, RecordTypeId 
+                    FROM Application_Proposal__c 
+                    WHERE Id = :association.Proposals__c
+                    LIMIT 1
+                ];
+
+                if (existingProposal.RecordTypeId != wiserRecordTypeId) {
+                    createNewProposal = true;
+                } else {
+                    conRec.Proposals__c = association.Proposals__c;
+                }
+            }
+
+            if (createNewProposal) {
+                app = new Application_Proposal__c();
+                if (!String.isEmpty(campaignId)) {
+                    app.Campaign__c = campaignId;
+                }
+                app.RecordTypeId = wiserRecordTypeId;
+                app.Proposal_Stages__c = 'Draft';
+                insert app;
+
+                association.Proposals__c = app.Id;
+                update association;
+
+                
+
+                if (!String.isEmpty(conRec.AccountId)) {
+                    Account acc = new Account(Id = conRec.AccountId);
+                    update acc;
+                }
+            }
+        }
+
+        conRec.MailingState = conRec.State__c;
+
+        if (birthYear != 0) {
+            conRec.Birthdate = Date.newInstance(birthYear, birthMonth, birthDay);
+        }
+
+        upsert conRec;
+
+        return conRec.Proposals__c;
 
     } catch (Exception e) {
         return e.getMessage() + ' Line: ' + e.getLineNumber();

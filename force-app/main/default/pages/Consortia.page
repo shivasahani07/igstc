@@ -964,6 +964,7 @@
                                                     ng-disabled="proposalStage" />
                                             </div>
 
+                                            <!--
                                             <div class="col-md-3">
                                                 <div ng-show="isCoordinator=='true'">
                                                     <label class="font-if">Country<span
@@ -981,6 +982,31 @@
                                                             class="ms-2 text-danger">*</span></label>
                                                     <select class="form-control" aria-label="Default select example"
                                                         ng-change="setSaveStatus(account.BillingCountry)"
+                                                        ng-focus="removeClass('country',$index)" id="country{{$index}}"
+                                                        ng-model="account.BillingCountry" required="true"
+                                                        ng-disabled="true">
+                                                        <option ng-repeat="staff in countrytype">{{staff}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            -->
+                                            <div class="col-md-3">
+                                                <div ng-show="isCoordinator=='true'">
+                                                    <label class="font-if">Country<span
+                                                            class="ms-2 text-danger">*</span></label>
+                                                    <select class="form-control" aria-label="Default select example"
+                                                        ng-change="setSaveStatus(account)"
+                                                        ng-focus="removeClass('country',$index)" id="country{{$index}}"
+                                                        ng-model="account.BillingCountry" required="true"
+                                                        ng-disabled="proposalStage">
+                                                        <option ng-repeat="staff in countrytype">{{staff}}</option>
+                                                    </select>
+                                                </div>
+                                                <div ng-show="isCoordinator=='false'">
+                                                    <label class="font-if">Country<span
+                                                            class="ms-2 text-danger">*</span></label>
+                                                    <select class="form-control" aria-label="Default select example"
+                                                        ng-change="setSaveStatus(account)"
                                                         ng-focus="removeClass('country',$index)" id="country{{$index}}"
                                                         ng-model="account.BillingCountry" required="true"
                                                         ng-disabled="true">
@@ -1025,21 +1051,26 @@
            ng-model="account.BillingPostalCode" 
            class="form-control"
            ng-disabled="proposalStage || disableProjectPartnerDetailsOnConsortiaPage"
-           ng-change="checkPostalCodeValidation(account.BillingCountry, account.BillingPostalCode)"
-           maxlength="{{postalMaxLength}}"
+           ng-change="checkCharLimit(account, 'BillingPostalCode', 6)" 
+           maxlength="6"
            />
-    
+           <!-- ng-change="checkPostalCodeValidation(account)" -->
+        
+           <small class="text-danger"
+                ng-if="account._charLimitMap.BillingPostalCode">
+                Invalid Postal / Zip Code
+            </small>
     <!-- Germany: 5 digits validation error -->
-    <small class="text-danger" 
+    <!-- <small class="text-danger" 
            ng-if="account._charLimitMap && account._charLimitMap.BillingPostalCode && account.BillingCountry === 'Germany'">
         Germany postal code must be exactly 5 digits
-    </small>
+    </small> -->
     
     <!-- India: 6 digits validation error -->
-    <small class="text-danger" 
+    <!-- <small class="text-danger" 
            ng-if="account._charLimitMap && account._charLimitMap.BillingPostalCode && account.BillingCountry === 'India'">
         India postal code must be exactly 6 digits
-    </small>
+    </small> -->
 </div>
                                         </div>
                                     </div>

@@ -13,6 +13,13 @@
         <script>
             debugger;
             var userId = '{!$CurrentPage.parameters.id}';
+            var proposalStage = '{!JSENCODE(proposalStage)}';
+            var isCoordinator = '{!isCoordinator}';
+
+            window.secondStage = {!JSENCODE(secondStage)};
+            window.proposalStage = '{!JSENCODE(proposalStage)}';
+            window.isCoordinator = {!isCoordinator};
+            window.proposalWrapperList = {!proposalWrapperList};
         </script>
     </head>
     <div ng-controller="projectCtrl">

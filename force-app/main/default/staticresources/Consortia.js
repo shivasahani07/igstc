@@ -229,7 +229,7 @@ angular.module('cp_app').controller('Consortia_Ctrl', function ($scope, $rootSco
         );
     }
 
-    
+
 
 
 
@@ -1096,6 +1096,8 @@ angular.module('cp_app').controller('Consortia_Ctrl', function ($scope, $rootSco
     //             debugger
     //             $scope.arrySaveStatus[index].status=false;
     //           }
+
+    /*
     $scope.setSaveStatus = function (country) {
         debugger
         if (country == "India") {
@@ -1104,6 +1106,53 @@ angular.module('cp_app').controller('Consortia_Ctrl', function ($scope, $rootSco
             $scope.stateList = $scope.germanStates;
         }
     }
+    */
+
+    $scope.setSaveStatus = function (account) {
+        debugger;
+
+        if (!account) return;
+
+        // ---------------- STATE LIST ----------------
+        if (account.BillingCountry === "India") {
+            $scope.stateList = $scope.indianStates;
+        } else if (account.BillingCountry === "Germany") {
+            $scope.stateList = $scope.germanStates;
+        }
+
+        // ---------------- POSTAL CODE RE-VALIDATION ----------------
+        if (account.BillingPostalCode) {
+
+            var postalLength = account.BillingPostalCode.length;
+
+            // INDIA → must be exactly 6 digits
+            if (account.BillingCountry === 'India' && postalLength < 6) {
+                account._charLimitMap.BillingPostalCode = true;
+                console.log('❌ India postal code must be 6 digits');
+                return;
+            }
+
+            // Re-run validation for new country
+            $scope.checkCharLimit(account, 'BillingPostalCode', 6);
+
+            // OPTIONAL: If postal is now invalid, clear error
+            if (
+                account._charLimitMap &&
+                account._charLimitMap.BillingPostalCode
+            ) {
+                console.log('❌ Postal code invalid after country change');
+            } else {
+                console.log('✅ Postal code valid after country change');
+            }
+        } else {
+            // No postal code → clear any stale error
+            if (account._charLimitMap) {
+                account._charLimitMap.BillingPostalCode = false;
+            }
+        }
+    };
+
+
     var inputQuantity = [];
     $(function () {
         $(".zipcode-number").on("keyup", function (e) {
@@ -1292,6 +1341,29 @@ angular.module('cp_app').controller('Consortia_Ctrl', function ($scope, $rootSco
                 }
                 if ($scope.allPartners[i].BillingPostalCode == undefined || $scope.allPartners[i].BillingPostalCode == "") {
                     swal("info", "Please Enter Postal/Zip Code for Coordinator.");
+                    return;
+                }
+
+                // ------------- POSTAL CODE VALIDATION ------------------ //
+                var country = $scope.allPartners[i].BillingCountry;
+                var postalCode = $scope.allPartners[i].BillingPostalCode;
+
+                // Allow digits only for validation
+                postalCode = postalCode.replace(/[^0-9]/g, '');
+
+                if (country === 'India' && postalCode.length !== 6) {
+                    swal(
+                        "Info!",
+                        "Postal Code for India must be exactly 6 digits."
+                    );
+                    return;
+                }
+
+                if (country === 'Germany' && postalCode.length !== 5) {
+                    swal(
+                        "Info!",
+                        "Postal Code for Germany must be exactly 5 digits."
+                    );
                     return;
                 }
             }
@@ -1599,119 +1671,98 @@ angular.module('cp_app').controller('Consortia_Ctrl', function ($scope, $rootSco
     }
 
 
-    // $scope.checkCharLimit = function (obj, fieldName, limit) {
-    //     // SAFETY
-    //     debugger
-    //     if (!obj) return;
-
-    //     // ✅ APPLY VALIDATION ONLY IF INDUSTRY IS SELECTED
-    //     if (!obj.Industry__c) return;
-
-    //     // ✅ Initialize map once
-    //     if (!obj._charLimitMap) {
-    //         obj._charLimitMap = {};
-    //     }
-
-    //     var value;
-    //     var setter;
-
-    //     // 🔹 Case 1: Field exists on Account
-    //     if (obj.hasOwnProperty(fieldName)) {
-    //         value = obj[fieldName];
-    //         setter = function (newValue) {
-    //             obj[fieldName] = newValue;
-    //         };
-
-    //         // 🔹 Case 2: Field exists on first Contact
-    //     } else if (
-    //         obj.Contacts &&
-    //         obj.Contacts.length > 0 &&
-    //         obj.Contacts[0].hasOwnProperty(fieldName)
-    //     ) {
-    //         value = obj.Contacts[0][fieldName];
-    //         setter = function (newValue) {
-    //             obj.Contacts[0][fieldName] = newValue;
-    //         };
-
-    //         // 🔹 Field not found anywhere
-    //     } else {
-    //         obj._charLimitMap[fieldName] = false;
-    //         return;
-    //     }
-
-    //     // 🔹 Empty value
-    //     if (!value) {
-    //         obj._charLimitMap[fieldName] = false;
-    //         return;
-    //     }
-
-    //     // 🔹 Enforce character limit
-    //     if (value.length > limit) {
-    //         setter(value.substring(0, limit));
-    //         obj._charLimitMap[fieldName] = true;
-    //     } else {
-    //         obj._charLimitMap[fieldName] = false;
-    //     }
-    // };
-
-    /*
     $scope.checkCharLimit = function (obj, fieldName, limit) {
         debugger;
 
         if (!obj) return;
-        if (!obj.Industry__c) return;
 
-        var targetObj;   // where error flag should live
+        var targetObj;
         var value;
-        var setter;
 
-        // 🔹 Case 1: Account field
+        // 🔹 Account field
         if (obj.hasOwnProperty(fieldName)) {
             targetObj = obj;
-
             value = obj[fieldName];
-            setter = function (newValue) {
-                obj[fieldName] = newValue;
-            };
 
-            // 🔹 Case 2: Contact field
-        } else if (
+        }
+        // 🔹 Contact field
+        else if (
             obj.Contacts &&
             obj.Contacts.length > 0 &&
             obj.Contacts[0].hasOwnProperty(fieldName)
         ) {
             targetObj = obj.Contacts[0];
-
             value = obj.Contacts[0][fieldName];
-            setter = function (newValue) {
-                obj.Contacts[0][fieldName] = newValue;
-            };
 
         } else {
             return;
         }
 
-        // ✅ Init map on correct object
-        if (!targetObj._charLimitMap) {
-            targetObj._charLimitMap = {};
-        }
+        // Init error map
+        targetObj._charLimitMap = targetObj._charLimitMap || {};
 
-        // 🔹 Empty value
         if (!value) {
             targetObj._charLimitMap[fieldName] = false;
             return;
         }
 
-        // 🔹 Enforce limit
+        /* =====================================================
+           SPECIAL CASE: POSTAL / ZIP CODE
+           ===================================================== */
+        if (fieldName === 'BillingPostalCode') {
+
+            var country = obj.BillingCountry;
+            var cleanedValue = value.replace(/[^0-9]/g, '');
+
+            var maxLength;
+            var regex;
+
+            if (country === 'India') {
+                maxLength = 6;
+                regex = /^[0-9]{6}$/;
+            }
+            else if (country === 'Germany') {
+                maxLength = 5;
+                regex = /^[0-9]{5}$/;
+            }
+            else {
+                maxLength = limit; // fallback
+            }
+
+            // Length check
+            if (cleanedValue.length > maxLength) {
+                targetObj._charLimitMap[fieldName] = true;
+                console.log('❌ Postal code length exceeded for', country);
+                return;
+            }
+
+            // Pattern check (only when full length entered)
+            if (cleanedValue.length === maxLength) {
+                if (regex && !regex.test(cleanedValue)) {
+                    targetObj._charLimitMap[fieldName] = true;
+                    console.log('❌ Invalid Postal Code for', country);
+                    return;
+                }
+            }
+
+            targetObj._charLimitMap[fieldName] = false;
+            console.log('✅ Valid Postal Code for', country);
+            return;
+        }
+
+        /* =====================================================
+            DEFAULT CHAR LIMIT LOGIC (Website, Department, etc.)
+           ===================================================== */
+
         if (value.length > limit) {
-            //setter(value.substring(0, limit));
             targetObj._charLimitMap[fieldName] = true;
         } else {
             targetObj._charLimitMap[fieldName] = false;
         }
     };
-    */
 
+
+    /*
     $scope.checkCharLimit = function (obj, fieldName, limit) {
 
         if (!obj) return;
@@ -1777,48 +1828,63 @@ angular.module('cp_app').controller('Consortia_Ctrl', function ($scope, $rootSco
             targetObj._charLimitMap[fieldName] = false;
         }
     };
+    */
+    /*
+     $scope.getPostalMaxLength = function (country) {
+ 
+         if (country === 'India') {
+             return 6;
+         }
+         else if (country === 'Germany') {
+             return 5;
+         }
+ 
+         // Default for other countries
+         return 10;
+     };
+     */
+    /*
+     $scope.checkPostalCodeValidation = function (account) {
+         debugger;
+         console.log('----- XECUTING checkPostalCodeValidation ---------');
+ 
+         if (!account || !account.BillingPostalCode) {
+             return;
+         }
+ 
+ 
+ 
+         var country = account.BillingCountry;
+         var postalCode = account.BillingPostalCode;
+ 
+         account.BillingPostalCode = null;
+ 
+         // Allow digits only (local variable)
+         var cleanedPostalCode = postalCode.replace(/[^0-9]/g, '');
+ 
+         // Max 6 digits
+         if (cleanedPostalCode.length > 6) {
+             cleanedPostalCode = cleanedPostalCode.substring(0, 6);
+         }
+ 
+         // ---------------- VALIDATION ----------------
+ 
+         if (country === 'India') {
+             if (/^[0-9]{6}$/.test(cleanedPostalCode)) {
+                 console.log('✅ Valid India Postal Code:', cleanedPostalCode);
+             } else {
+                 console.log('❌ Invalid India Postal Code:', cleanedPostalCode);
+             }
+         }
+         else if (country === 'Germany') {
+             if (/^[0-9]{5}$/.test(cleanedPostalCode)) {
+                 console.log('✅ Valid Germany Postal Code:', cleanedPostalCode);
+             } else {
+                 console.log('❌ Invalid Germany Postal Code:', cleanedPostalCode);
+             }
+         }
+     };
+     */
 
-//Postal code validation
-$scope.postalMaxLength = 6;
-
-$scope.checkPostalCodeValidation = function(country, postalCode) {
-    console.log('Validation called:', country, postalCode);
-    debugger;
-    // Set maxlength
-    if (country === 'Germany') {
-        $scope.postalMaxLength = 5;
-    } else if (country === 'India') {
-        $scope.postalMaxLength = 6;
-    } else {
-        $scope.postalMaxLength = 10;
-    }
-    
-    // Truncate if too long
-    if (postalCode.length > $scope.postalMaxLength) {
-        $scope.account.BillingPostalCode = postalCode.substring(0, $scope.postalMaxLength);
-        $scope.account._charLimitMap.BillingPostalCode = true;
-        return;
-    }
-    
-    // Validation - error only on invalid complete codes
-    var isValid = true;
-    
-    if (country === 'Germany' && postalCode.length === 5) {
-        isValid = /^[0-9]{5}$/.test(postalCode);
-    } else if (country === 'India' && postalCode.length === 6) {
-        isValid = /^[0-9]{6}$/.test(postalCode);
-    }
-    
-    $scope.account._charLimitMap.BillingPostalCode = !isValid;
-};
-
-// Watch country change
-$scope.$watch('account.BillingCountry', function(newCountry) {
-    if (newCountry) {
-        $scope.postalMaxLength = (newCountry === 'Germany') ? 5 : (newCountry === 'India') ? 6 : 10;
-        $scope.account.BillingPostalCode = '';
-        $scope.account._charLimitMap.BillingPostalCode = false;
-    }
-});
 
 });

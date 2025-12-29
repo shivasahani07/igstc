@@ -749,8 +749,22 @@
     
                             <div class="col-md-6">
                                 <label class="font-if">Postal/Zip Code<span class="ms-2 text-danger">*</span></label>
-                                <input ng-focus="removeClass2('IPcode')" id="IPcode" type="text" ng-model="addressDetails.BillingPostalCode" class="form-control" ng-disabled="proposalStage" />
+                                <input 
+                                    ng-focus="removeClass2('IPcode')" 
+                                    id="IPcode" 
+                                    type="text" 
+                                    ng-model="addressDetails.BillingPostalCode" 
+                                    class="form-control" 
+                                    ng-disabled="proposalStage" 
+                                    ng-change="checkCharLimit(addressDetails, 'BillingPostalCode', 6)" 
+                                    maxlength="6"/>
                             </div>
+
+                            <small class="text-danger"
+                                ng-if="account._charLimitMap.BillingPostalCode">
+                                Invalid Postal / Zip Code
+                            </small>
+
                         </div>
     
                         <div class="row mt-5 mb-5">

@@ -94,12 +94,19 @@ public without sharing class WorkshopController {
             //     proposalStage = proposal.Proposal_Stages__c;
             // }
             proposalWrapperList = new List<proposalWrap>();
+
             if(!applicantDetails[0].Applicant_Proposal_Associations__r.isEmpty()){
                 for(Applicant_Proposal_Association__c apa : applicantDetails[0].Applicant_Proposal_Associations__r) {
                     proposalWrap wrap = new proposalWrap();
+                    wrap.apaId = apa.Id;
                     wrap.Id = apa.Proposals__r.Id;
                     wrap.proposalStage = apa.Proposals__r.Proposal_Stages__c;
+                    // secondStage = apa.Proposals__r.Stage__c=='2nd Stage' ?'true':'false';
+                    // System.debug('secondStage : -------- ' + secondStage);
+                    proposalStage= apa.Proposals__r.Proposal_Stages__c;
+                    System.debug('Stage = ' + proposalStage);
                     wrap.stage = apa.Proposals__r.Stage__c;
+                    wrap.secondStage = (apa.Proposals__r.Stage__c == '2nd Stage');
                     proposalWrapperList.add(wrap);
                 }
             }
@@ -127,6 +134,8 @@ public without sharing class WorkshopController {
         public String Id {get; set;}
         public String stage {get; set;}
         public String proposalStage {get; set;}
+        public Boolean secondStage {get;set;}
+        public String apaId {get;set;}
     }
     
     public static String generateRandomString(){
@@ -776,14 +785,20 @@ return Proposal_Controller.insertParticipants(allParticipantDetails);
     
     //************************************** Project Details in Wiser **********************************************************
     @RemoteAction
-    public static Application_Proposal__c getApplicantDetailsWiser(String applicantHashCode){
-        return Proposal_Controller.getApplicantDetailsWiser(applicantHashCode);
+    public static Application_Proposal__c getApplicantDetailsWiser(String applicantHashCode,String proposalId){
+        return Proposal_Controller.getApplicantDetailsWiser(applicantHashCode, proposalId);
     }
     
-    @RemoteAction
-    public static String insertApplicationWiser(Application_Proposal__c applicantDetails,  String conId, String recordType){
+    // @RemoteAction
+    // public static String insertApplicationWiser(Application_Proposal__c applicantDetails,  String conId, String recordType){
+    //     return Proposal_Controller.insertApplicationWiser(applicantDetails, conId, recordType);
+    // }
+
+     @RemoteAction
+    public static Proposal_Controller.insertApplicationWrapper insertApplicationWiser(Application_Proposal__c applicantDetails,  String conId, String recordType){
         return Proposal_Controller.insertApplicationWiser(applicantDetails, conId, recordType);
     }
+    
     @RemoteAction
     public static String LogoutApplicant(String loginHasgCode){
         return Proposal_Controller.LogoutApplicant(loginHasgCode);

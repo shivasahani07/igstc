@@ -37,6 +37,142 @@ angular.module('cp_app').controller('ExpenseDeclaration', function ($scope, $roo
     $scope.financeDetails = {};
     $rootScope.apaId = '';
 
+    $scope.getApplicantDeetails = function () {
+        ApplicantPortal_Contoller.getProjectDetailsDetails($rootScope.proposalId, function (result, event) {
+            if (event.status) {
+                debugger;
+                console.log(result);
+                debugger;
+                for (var i = 0; i < result.length; i++) {
+                    if (result[i].Financial_Contribution__r != undefined) {
+                        if (result[i].Financial_Contribution__r[0].Total__c == 'NaN' || result[i].Financial_Contribution__r[0].Total__c == '' || result[i].Financial_Contribution__r[0].Total__c == undefined) {
+                            result[i].Financial_Contribution__r[0].Total__c = 0;
+                        }
+                        if (result[i].Financial_Contribution__r[0].Own_Contribution__c == 'NaN' || result[i].Financial_Contribution__r[0].Own_Contribution__c == '' || result[i].Financial_Contribution__r[0].Own_Contribution__c == undefined) {
+                            result[i].Financial_Contribution__r[0].Own_Contribution__c = 0;
+                        }
+                        if (result[i].Financial_Contribution__r[0].IGSTC_Contribution__c == 'NaN' || result[i].Financial_Contribution__r[0].IGSTC_Contribution__c == '' || result[i].Financial_Contribution__r[0].IGSTC_Contribution__c == undefined) {
+                            result[i].Financial_Contribution__r[0].IGSTC_Contribution__c = 0;
+                        }
+                    }
+                    else {
+                        result[i].Financial_Contribution__r = [];
+                        result[i].Financial_Contribution__r.push({ Applicant_Proposal_Association__c: result[i].Id, Total__c: 0, Own_Contribution__c: 0, IGSTC_Contribution__c: 0, Asked_From_IGSTC__c: 0 });
+                    }
+                }
+                $scope.applicantDetails = result;
+                if ($rootScope.isPrimaryContact == "true") {
+                    $scope.input = result;
+                }
+                $scope.indianIndus = 0;
+                $scope.indianAcademia = 0;
+                $scope.germanIndus = 0;
+                $scope.germanAcademia = 0;
+
+                $scope.financialOverViewList = $scope.financialOverViewList || [];
+                $scope.input = $scope.input || [];
+
+                for (var i = 0; i < $scope.applicantDetails.length; i++) {
+                    if ($rootScope.isPrimaryContact == "false") {
+                        statusLoginHas = 0;
+                        if ($scope.applicantDetails[i].Contact__r && $scope.applicantDetails[i].Contact__r.Login_Hash_Code__c == $rootScope.candidateId) {
+                            $scope.input.push($scope.applicantDetails[i]);
+                            statusLoginHas = 1;
+                        }
+                        // if ($scope.applicantDetails[i].Contacts != undefined){
+                        // for (j = 0; j < $scope.applicantDetails[i].Contacts.length; j++) {
+                        //     if ($scope.applicantDetails[i].Contacts[j].Login_Hash_Code__c == $rootScope.userId) {
+                        //         $scope.input.push($scope.applicantDetails[i]);
+                        //         statusLoginHas=1;
+                        //     }
+                        //  }
+                        // }
+                        if (statusLoginHas == 0) {
+                            $scope.financialOverViewList.push($scope.applicantDetails[i]);
+                        }
+                    }
+                    console.log("financial contribution");
+                    console.log($scope.input);
+
+                    if ($scope.applicantDetails[i].Financial_Contribution__r != undefined) {
+                        for (var j = 0; j < $scope.applicantDetails[i].Financial_Contribution__r.length; j++) {
+                            if ($scope.applicantDetails[i].Contact__r.Account.BillingCountry == "India" && $scope.applicantDetails[i].Contact__r.Account.Industry__c == true) {
+                                $scope.indianIndus = Number($scope.indianIndus) + Number($scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c);
+                                //$scope.OwnContr=Number($scope.OwnContr)+Number($scope.applicantDetails[i].Financial_Contribution__r[j].Own_Contribution__c);                    
+                            } else if ($scope.applicantDetails[i].Contact__r.Account.BillingCountry == "India" && $scope.applicantDetails[i].Contact__r.Account.Academia__c == true) {
+                                $scope.indianAcademia = Number($scope.indianAcademia) + Number($scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c);
+                            } else if ($scope.applicantDetails[i].Contact__r.Account.BillingCountry == "Germany" && $scope.applicantDetails[i].Contact__r.Account.Industry__c == true) {
+                                $scope.germanIndus = Number($scope.germanIndus) + Number($scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c);
+                            } else {
+                                $scope.germanAcademia = Number($scope.germanAcademia) + Number($scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c);
+                            }
+
+                            $scope.TotalIndianContribution = Number($scope.indianIndus) + Number($scope.indianAcademia);
+                            $scope.TotalGermanContribution = Number($scope.germanIndus) + Number($scope.germanAcademia);
+                            // $scope.TotalContriIndianIndustry=$scope.OwnContr;   
+                            $scope.TotalContriIndianIndustry = $scope.indianIndus;
+                            $scope.TotalContriIndianAcademia = $scope.indianAcademia;
+                            $scope.TotalContriGermanIndustry = $scope.germanIndus;
+                            $scope.TotalContriGermanAcademia = $scope.germanAcademia;
+                        }
+                    }
+                    //         if($scope.applicantDetails[i].Financial_Contribution__r != undefined){
+                    //             for(var j=0;j<$scope.applicantDetails[i].Financial_Contribution__r.length;j++){
+                    //                 if($scope.applicantDetails[i].BillingCountry == "India" && $scope.applicantDetails[i].Industry__c == true){
+                    //                     $scope.indianIndus = $scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c ;
+                    //                 }else if($scope.applicantDetails[i].BillingCountry == "India" && $scope.applicantDetails[i].Academia__c == true){
+                    //                     $scope.indianAcademia = $scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c ;
+                    //                 }else if($scope.applicantDetails[i].BillingCountry == "Germany" && $scope.applicantDetails[i].Industry__c == true){
+                    //                     $scope.germanIndus = $scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c ;
+                    //                 }else{
+                    //                     $scope.germanAcademia = $scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c ;
+                    //                 }
+
+                    //                 $scope.TotalIndianContribution = Number($scope.indianIndus) + Number($scope.indianAcademia);
+                    //                 $scope.TotalGermanContribution = Number($scope.germanIndus) + Number($scope.germanAcademia);
+                    //     }
+                    // }
+                    //     if($scope.applicantDetails[i].Financial_Contribution__r != undefined){
+                    //         for(var j=0;j<$scope.applicantDetails[i].Financial_Contribution__r.length;j++){
+                    //         if($scope.applicantDetails[i].Financial_Contribution__r[j].Country__c == 'India' && $scope.applicantDetails[i].Financial_Contribution__r[j].Account_Type__c == 'Industry'){
+                    //             $scope.indianIndus = $scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c ;
+                    //         }
+                    //         if($scope.applicantDetails[i].Financial_Contribution__r[j].Country__c == 'India' && $scope.applicantDetails[i].Financial_Contribution__r[j].Account_Type__c == 'Academia'){
+                    //             $scope.indianAcademia = $scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c ;
+                    //         }
+                    //         if($scope.applicantDetails[i].Financial_Contribution__r[j].Country__c == 'Germany' && $scope.applicantDetails[i].Financial_Contribution__r[j].Account_Type__c == 'Industry'){
+                    //             $scope.germanIndus = $scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c ;
+                    //         }
+                    //         if($scope.applicantDetails[i].Financial_Contribution__r[j].Country__c == 'Germany' && $scope.applicantDetails[i].Financial_Contribution__r[j].Account_Type__c == 'Academia'){
+                    //             $scope.germanAcademia = $scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c ;
+                    //         }
+                    //     }
+                    // }
+                }
+
+                for (let i = 0; i < $scope.input.length; i++) {
+                    var financialOverview = { "Name": $scope.input[i].Contact__r.Name, "Applicant_Proposal_Association__c": $scope.input[i].Id, "Own_Contribution__c": " ", "IGSTC_Contribution__c": "" };
+                    if ($scope.input[i].Financial_Contribution__r == undefined) {
+                        var financeDet = [{ "Name": $scope.input[i].Contact__r.Name, "Applicant_Proposal_Association__c": $scope.input[i].Id, "Own_Contribution__c": " ", "IGSTC_Contribution__c": "" }];
+                        $scope.input[i].Financial_Contribution__r = financeDet;
+                    }
+                }
+                $scope.$apply();
+            }
+        },
+            { escape: true }
+        )
+    }
+
+    // $scope.totalAmount = 0;
+    // $scope.changeHandler = function(){
+    //     debugger;
+    //     $scope.totalAmount = $scope.input[0].Financial_Contribution__r[0].IGSTC_Contribution__c+$scope.input[0].Financial_Contribution__r[0].Own_Contribution__c;
+    //     console.log('$scope.input',$scope.input);
+    //     console.log('InputBaski',$scope.totalAmount);
+    // }
+    $scope.getApplicantDeetails();
+
     $scope.getExpenseRecords = function () {
         debugger;
         ApplicantPortal_Contoller.getExpenseRecords($rootScope.proposalId, $rootScope.contactId, function (result, event) {
