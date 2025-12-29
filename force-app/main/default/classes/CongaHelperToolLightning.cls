@@ -35,8 +35,10 @@ public with sharing class CongaHelperToolLightning {
         req.setEndpoint(url);
         req.setTimeout(120000);
         // Send the request, and return a response
-        system.debug('request is'+req);
+        system.debug('request is'+req); 
         HttpResponse res = h.send(req);
+        integer StatusCode= res.getStatusCode();
+        System.debug('getStatusCode is '+StatusCode);
         system.debug('body is '+ res.getBody());
         return res.getBody();
     }

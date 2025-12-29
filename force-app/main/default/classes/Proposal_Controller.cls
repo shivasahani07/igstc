@@ -2805,28 +2805,43 @@ return e.getMessage() + e.getLineNumber();
     
     ///************************************** Project Details In Wiser **********************************************************
     
-    public static Application_Proposal__c getApplicantDetailsWiser(string applicantHashCode){
+    public static Application_Proposal__c getApplicantDetailsWiser(string applicantHashCode ,String proposalId){
         
         contact conRec = [select name,id,Proposals__c from contact where Login_Hash_Code__c =:applicantHashCode limit 1];
-        system.debug('applicantHashCode' +applicantHashCode);
         Application_Proposal__c proposalRecord;
-        if(!string.isBlank(conRec.Proposals__c)){
-            proposalRecord = [SELECT id,Name,Title_Of__c,Duration_In_Months_Max_36__c,KeyWords__c,Abstract_of_proposed_work__c,Broad_area_of_research__c,Project_Description__c FROM Application_Proposal__c WHERE Id=: conRec.Proposals__c];
-            system.debug('proposalRecord----'+proposalRecord);
-            return proposalRecord;
+        if(!String.isBlank(proposalId)){
+            proposalRecord = [SELECT id,Name,Title_Of__c,Duration_In_Months_Max_36__c,KeyWords__c,Abstract_of_proposed_work__c,Broad_area_of_research__c,Project_Description__c FROM Application_Proposal__c WHERE Id=: proposalId];
         }else{
-            return proposalRecord;  
-        }     
+
+        }
+        return proposalRecord;
     }
     
-    public static String insertApplicationWiser(Application_Proposal__c applicantDetails, String conId, String recordType){
+    public static insertApplicationWrapper insertApplicationWiser(Application_Proposal__c applicantDetails, String conId, String recordType){
+        insertApplicationWrapper datawrapper = new insertApplicationWrapper();
         try{
+            string recordTypeId = Utility.getProposalRecordType(recordType);
+            applicantDetails.RecordTypeId = recordTypeId;
+            list<Applicant_Proposal_Association__c> apaList = new list<Applicant_Proposal_Association__c>();
             upsert applicantDetails;
-            return applicantDetails.Id;
+             apaList = [SELECT Proposals__c, Contact__c FROM Applicant_Proposal_Association__c WHERE Contact__c = :conId AND Proposals__c = :applicantDetails.Id LIMIT 1];
+            if(apaList.isEmpty()){
+                Applicant_Proposal_Association__c apa = new Applicant_Proposal_Association__c();
+                apa.Contact__c = conId;
+                apa.Proposals__c = applicantDetails.Id;
+                apa.Is_Coordinator__c = true;
+                insert apa;
+                apaList.add(apa);
+            }   
+            datawrapper.apa = apaList[0];
+            datawrapper.proposal = applicantDetails;
+            datawrapper.proposalId = applicantDetails.Id;
+            return datawrapper;
         }catch(Exception e){
-            return 'Exception';
+            return new insertApplicationWrapper();
         }
     }
+
     
     //************************************** UPDATE WORK PACKAGE DETAILS **********************************************************
     

@@ -931,12 +931,12 @@ public static List<YealyCall__c> getActiveCampaignIf(String yearlyCallId) {
     
     //************************************** Project Details in Wiser **********************************************************
     @RemoteAction
-    public static Application_Proposal__c getApplicantDetailsWiser(String applicantHashCode){
-        return Proposal_Controller.getApplicantDetailsWiser(applicantHashCode);
+    public static Application_Proposal__c getApplicantDetailsWiser(String applicantHashCode,String proposalId){
+        return Proposal_Controller.getApplicantDetailsWiser(applicantHashCode, proposalId);
     }
     
     @RemoteAction
-    public static String insertApplicationWiser(Application_Proposal__c applicantDetails,  String conId, String recordType){
+    public static Proposal_Controller.insertApplicationWrapper insertApplicationWiser(Application_Proposal__c applicantDetails,  String conId, String recordType){
         return Proposal_Controller.insertApplicationWiser(applicantDetails, conId, recordType);
     }
     @RemoteAction

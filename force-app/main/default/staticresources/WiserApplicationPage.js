@@ -33,6 +33,7 @@ $scope.objContact.stateList={};
 $scope.$on("fileProgress", function(e, progress) {
     $scope.progress = progress.loaded / progress.total;
   });
+  
 
   $scope.getDependentPicklistValues = function(){
     debugger;    
@@ -54,6 +55,10 @@ $scope.$on("fileProgress", function(e, progress) {
         }
     }
     )  
+}
+
+if(localStorage.getItem('proposalId')){
+    $rootScope.proposalId = localStorage.getItem('proposalId'); 
 }
 $scope.getDependentPicklistValues();
 
@@ -358,7 +363,7 @@ $scope.getProjectdetils = function () {
     }
 
     $scope.accDet = $scope.objContact.Account;
-    IndustrialFellowshipController.saveApplicantPortalWiser($scope.objContact,$scope.accDet,birthYear,birthMonth,birthDay,$rootScope.campaignId, function(result, event){
+    IndustrialFellowshipController.saveApplicantPortalWiser($scope.objContact,$scope.accDet,birthYear,birthMonth,birthDay, $rootScope.proposalId, function(result, event){
         debugger;
         if (event.status && result !=null) {
             $rootScope.projectId = result;

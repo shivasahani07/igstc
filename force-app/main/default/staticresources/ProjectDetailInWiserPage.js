@@ -50,6 +50,12 @@ $scope.filePreviewHandler = function(fileContent){
     var jhj=$scope.selectedFile.userDocument.Attachments[0].Id;
     console.log(jhj);
 
+    if(localStorage.getItem('proposalId')){
+        $rootScope.proposalId=localStorage.getItem('proposalId');
+        $scope.applicantDetails.Id=localStorage.getItem('proposalId');
+        
+    }
+
     $scope.filesrec = $sce.trustAsResourceUrl(window.location.origin +'/ApplicantDashboard/servlet/servlet.FileDownload?file='+$scope.selectedFile.userDocument.Attachments[0].Id);
     $('#file_frame').attr('src', $scope.filesrec);
 
@@ -247,7 +253,7 @@ $scope.filePreviewHandler = function(fileContent){
      $scope.getApplicantDetailsWiser = function () {
         
 
-          ApplicantPortal_Contoller.getApplicantDetailsWiser($rootScope.candidateId, function (result, event) {
+          ApplicantPortal_Contoller.getApplicantDetailsWiser($rootScope.candidateId, $rootScope.proposalId, function (result, event) {
                if (event.status) {
                     debugger;
                     if(result != null){
@@ -292,10 +298,10 @@ $scope.filePreviewHandler = function(fileContent){
 
      $scope.saveApplication = function () {
 
-      if(! $scope.isPdfUploded){
-        swal('info','Please upload the PDF file.','info'); 
-      }
-      else {
+      // if(! $scope.isPdfUploded){
+      //   swal('info','Please upload the PDF file.','info'); 
+      // }
+      // else {
           $scope.applicantDetails.Campaign__c = $rootScope.campaignId;
           debugger;
 
@@ -388,11 +394,16 @@ $scope.filePreviewHandler = function(fileContent){
           } else {
                $scope.applicantDetails.Proposal_Stages__c = 'Submitted';
           }
-
+          if(localStorage.getItem('yearlyCallId')){
+            $scope.applicantDetails.yearly_Call__c=localStorage.getItem('yearlyCallId');
+          }
+          
           ApplicantPortal_Contoller.insertApplicationWiser($scope.applicantDetails, $rootScope.contactId,'WISER', function (result, event) {
 
             if(event.status && result != null){
-                $rootScope.projectId = result;
+                $rootScope.projectId = result.proposalId;
+                localStorage.setItem('proposalId', result.proposalId);
+                localStorage.setItem('apaId', result.apa.Id);
                     console.log(result);                    
                 swal({
                      title: "SUCCESS",
@@ -400,7 +411,7 @@ $scope.filePreviewHandler = function(fileContent){
                      icon: "success",
                      button: "ok!",
                 })  
-                $scope.redirectPageURL('FinancialOverview_wiser');                  
+                $scope.redirectPageURL('WiserApplicationPage');                  
               
            } else{
                 swal({
@@ -429,7 +440,7 @@ $scope.filePreviewHandler = function(fileContent){
             //    }
 
           });
-        }
+        
      };
 
      $scope.getApplicantDetailsWiser();

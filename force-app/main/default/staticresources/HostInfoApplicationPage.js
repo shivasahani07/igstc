@@ -479,7 +479,7 @@ angular.module('cp_app').controller('HostInfoApplication_Ctrl', function($scope,
                          icon: "success",
                          button: "ok!",
                     })  
-                    $scope.redirectPageURL('ProjectDetailsInWiserPage');                  
+                    $scope.redirectPageURL('FinancialOverview_wiser');                  
                   //  window.location.replace(window.location.origin+'/ApplicantDashboard/ApplicantPortal?id='+$rootScope.userId+'#/HostProjectDetails');
                     // window.location.replace(window.location.origin+'/ApplicantDashboard/ApplicantPortal?id='+$rootScope.userId+'#/FinancialOverview_wiser');
                   
