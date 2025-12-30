@@ -16,10 +16,14 @@
             var proposalStage = '{!JSENCODE(proposalStage)}';
             var isCoordinator = '{!isCoordinator}';
 
-            window.secondStage = {!JSENCODE(secondStage)};
-            window.proposalStage = '{!JSENCODE(proposalStage)}';
-            window.isCoordinator = {!isCoordinator};
-            window.proposalWrapperList = {!proposalWrapperList};
+            // window.secondStage = {!JSENCODE(secondStage)};
+            // window.proposalStage = '{!JSENCODE(proposalStage)}';
+            // window.isCoordinator = {!isCoordinator};
+            // window.proposalWrapperList = {!proposalWrapperList};
+            // var proposalWrapperListJSON = {!JSENCODE(proposalWrapperListJSON)};
+            // console.log('proposalWrapperListJSON on VFFF : ' + proposalWrapperListJSON);
+
+            var proposalWrapperList = JSON.parse('{!JSENCODE(proposalWrapperListJSON)}');
         </script>
     </head>
     <div ng-controller="projectCtrl">
@@ -501,19 +505,37 @@
                 
                         </div> -->
                     <div class="row mt-5">
+                        <p ng-show="stage === '1st Stage'">1st stage</p>
+                        <p ng-show="stage === '2nd Stage'">2nd stage</p>
+
                         <div class="col-md-6">
                             <div class="input-group ms-4">
+
                                 <label class="font-if">Upload Project Proposal
                                     <span class="ms-2 text-danger">*</span>
                                 </label>
-                                <input type="file" accept=".pdf" class="form-control" ng-disabled="uploadDisable || isUploading || doc.userDocument.Status__c=='Uploaded'"
+
+                                <!-- <input type="file" accept=".pdf" class="form-control" ng-disabled="uploadDisable || isUploading || doc.userDocument.Status__c=='Uploaded'"
+                                    id="fileSignature" /> -->
+
+                                <input type="file" accept=".pdf" class="form-control" ng-disabled="uploadDisable || isUploading || (doc.userDocument.Status__c=='Uploaded' && currentProposalStage == 'Submitted')"
                                     id="fileSignature" />
+
+                                <!-- <input type="file" accept=".pdf" class="form-control" ng-disabled="uploadDisable" id="fileSignature" /> -->
                                 <!-- <input type="file" accept=".pdf" class="form-control" ng-disabled="isUploading || doc.userDocument.Status__c=='Uploaded'" -->
                                 <span class="input-group-btn pt-3" ng-hide="uploadDisable">
                                     <!-- <button class="btn btn-success mt-4 py-3" ng-click="uploadFile(doc.userDocument.Name,doc.userDocument.Id,'','1048576','1048576')"
 type="button" ng-disabled="isUploading"> -->
-                                    <button class="btn btn-success mt-4 py-3" ng-click="uploadFile(doc.userDocument.Name, doc.userDocument.Id, '')" type="button"
+                                    <!-- <button class="btn btn-success mt-4 py-3" ng-click="uploadFile(doc.userDocument.Name, doc.userDocument.Id, '')" type="button"
                                         ng-disabled="isUploading || doc.userDocument.Status__c=='Uploaded'">
+                                        <span ng-if="!isUploading">Upload</span>
+                                        <span ng-if="isUploading">
+                                            <i class="fa fa-spinner fa-spin"></i> Uploading...
+                                        </span>
+                                    </button> -->
+
+                                    <button class="btn btn-success mt-4 py-3" ng-click="uploadFile(doc.userDocument.Name, doc.userDocument.Id, '')" type="button"
+                                        ng-disabled="isUploading || (doc.userDocument.Status__c=='Uploaded' && currentProposalStage == 'Submitted')">
                                         <span ng-if="!isUploading">Upload</span>
                                         <span ng-if="isUploading">
                                             <i class="fa fa-spinner fa-spin"></i> Uploading...

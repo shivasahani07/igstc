@@ -28,7 +28,7 @@
                                         <div class="icon-circle">
                                             <i class="fa-regular fa-user"></i>
                                         </div>
-                                        <span>Personal Information 123</span>
+                                        <span>Personal Information</span>
                                     </a>
                                 </li>
                                 <li class="active pb-cursor">
@@ -83,7 +83,7 @@
                                         <div class="icon-circle">
                                             <i class="fa-regular fa-user"></i>
                                         </div>
-                                        <span>Personal Information 456</span>
+                                        <span>Personal Information</span>
                                     </a>
                                 </li>
                                 <li class="active">

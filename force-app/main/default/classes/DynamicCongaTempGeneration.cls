@@ -1,5 +1,7 @@
 global without sharing  class DynamicCongaTempGeneration {
     global Static void GenerateCongaTemplatesUsingCS(String recordID, String TempName){
+        system.debug('TempName----------' +TempName);
+        system.debug('recordID----------' +recordID);
         TemplateURLByName__c TempInfoRec=[select id,name,Object_Name__c,Formula_Field_Name__c from TemplateURLByName__c where Name =:TempName];
         String query='';
         String CongaQuery = '';
@@ -142,7 +144,7 @@ global without sharing  class DynamicCongaTempGeneration {
             CongaQuery = (String)propRec.get(TempInfoRec.Formula_Field_Name__c);
             system.debug('');
             CongaQuery = CongaQuery.replace('AttachmentId=00P1y000003a34i','AttachmentId='+attIds );
-            system.debug('PECFAR CONGA'+CongaQuery);
+            system.debug('PECFAR CONGA'+CongaQuery); 
             
         }else if(propRec.RecordType.Name == 'WISER'){
             proposalRecordID=propRec.id;

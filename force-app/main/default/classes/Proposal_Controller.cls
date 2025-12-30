@@ -4518,7 +4518,32 @@ return null;
         
         return conList;
     }
-    
+
+
+    //***********************************NEW METHOD ADDED BY KARTHIK for pairing page
+     public static List<Contact> getPairingDetailsinWiser(String hashcode, String proposalId){
+        // Get the contact by hashcode
+        Contact conRec = [SELECT Id, FirstName, LastName, Email, AccountId, Account.Name,MailingCountry, Is_Primary__c, Birthdate FROM Contact WHERE Login_Hash_Code__c = :hashcode  LIMIT 1];
+        
+        // Query if contact has any junction records
+        List<Applicant_Proposal_Association__c> associations = [SELECT Id,Proposals__c FROM Applicant_Proposal_Association__c WHERE Contact__c = :conRec.Id And Proposals__c=:proposalId LIMIT 1];
+        
+        List<Contact> conList;
+        if (!associations.isEmpty()) {
+            // Existing proposal from junction
+            //Id proposalId = associations[0].Proposals__c;
+            
+            // Query contacts linked via junction for that proposal
+            conList = [SELECT Id, FirstName, LastName, Email, AccountId, Account.Name, MailingCountry, Is_Primary__c, Birthdate 
+                       FROM Contact WHERE Id IN (SELECT Contact__c FROM Applicant_Proposal_Association__c WHERE Proposals__c = :proposalId)];
+        } else {       
+            // Return only the single contact just linked newly
+            conList = new List<Contact>{conRec};
+                }
+        
+        return conList;
+    }
+    ////********************************************************** */
     
     /*  public static List<Contact> getPairingDetails(string hashcode, string campaignId){
 Contact conRec = [SELECT Id,FirstName,LastName,Email,AccountId,Proposals__r.Yearly_Call__r.Pecfar_age_limit__c,Proposals__r.Yearly_Call__r.Date_of_Birth_PECFAR__c,Account.Name,Account.Proposals__c,MailingCountry,Is_Primary__c,Birthdate,Proposals__c,Proposals__r.Campaign__r.Result_Announcement_Date__c FROM Contact WHERE Login_Hash_Code__c=: hashcode];
@@ -4880,6 +4905,186 @@ public class insertPairingWrapper {
     public Application_Proposal__c proposal { get; set; }
     public Applicant_Proposal_Association__c apa { get; set; }
 }
+
+
+
+
+
+//////**********************************New Method Added By Karthik For Pairing Page
+
+
+public static insertPairingWrapperinWiser insertPairingDetailsinWiser(List<wrapperPairing> contactList, String campaignId, String yearlyCall) {
+    insertPairingWrapperinWiser dataWrapper = new insertPairingWrapperinWiser();
+    
+    try {
+        system.debug('size ---> ' + contactList.size());
+        
+        // Step 1: Upsert Accounts
+        List<Account> accList = new List<Account>();
+        for(wrapperPairing wrapp : contactList) {
+            Account acc = new Account();
+            acc.Name = wrapp.companyNmae;
+            if(wrapp.accId != null) {
+                acc.Id = wrapp.accId;
+            }
+            accList.add(acc);
+             System.debug('$#accList=====>'+accList);
+        }
+        upsert accList;
+        
+        Map<String, Id> accNameXaccId = new Map<String, Id>();
+        for(Account accountSingle : accList) {
+            accNameXaccId.put(accountSingle.Name, accountSingle.Id);
+        }
+        
+        // Step 2: Prepare and process Contacts
+        List<Contact> contList = new List<Contact>();
+        System.debug('$#contList=====>'+contList);
+        for(wrapperPairing wrapp : contactList) {
+            Contact con = new Contact();
+            con.FirstName = wrapp.cont.FirstName;
+            con.LastName = wrapp.cont.LastName;
+            con.Email = wrapp.cont.Email;
+            con.MailingCountry = wrapp.cont.MailingCountry;
+            con.AccountId = accNameXaccId.get(wrapp.companyNmae);
+            
+            if(wrapp.birthyear != null && wrapp.birthyear != 0) {
+                con.Birthdate = Date.newInstance(wrapp.birthyear, wrapp.birthmonth, wrapp.birthday);
+            }
+            
+            if(wrapp.cont.Id != null) {
+                con.Id = wrapp.cont.Id;
+            }
+            contList.add(con);
+        }
+        
+        List<Contact> newContacts = new List<Contact>();
+        List<Contact> existingContacts = new List<Contact>();
+        System.debug('$#newContacts=====>'+newContacts);
+        System.debug('$#newContacts=====>'+existingContacts);
+        for(Contact c : contList) {
+            if(c.Id == null) {
+                newContacts.add(c);
+            } else {
+                existingContacts.add(c);
+            }
+        }
+        
+        if(!newContacts.isEmpty()) {
+            insert newContacts;
+        }
+        if(!existingContacts.isEmpty()) {
+            update existingContacts;
+        }
+        
+        // Collect all final contact Ids
+        Set<Id> contactIds = new Set<Id>();
+        for(Contact c : newContacts) {
+            contactIds.add(c.Id);
+            
+        }
+        for(Contact c : existingContacts) {
+            contactIds.add(c.Id);
+        }
+        
+        // Step 3: Handle Proposal (PEC FAR logic)
+        Id wiserRtTd = Utility.getProposalRecordType('WISER');
+        Application_Proposal__c singleProposal;
+        
+        List<Application_Proposal__c> existingProposalsViaJunction = new List<Application_Proposal__c>();
+        if(!contactIds.isEmpty()) {
+            system.debug('size contactIds---> '+contactIds);
+            existingProposalsViaJunction = [
+                SELECT Id, Campaign__c, RecordTypeId
+                FROM Application_Proposal__c
+                WHERE Id IN (
+                    SELECT Proposals__c 
+                    FROM Applicant_Proposal_Association__c 
+                    WHERE Contact__c IN :contactIds
+                )
+                AND Campaign__c = :campaignId
+                AND RecordTypeId = :wiserRtTd
+                LIMIT 1
+            ];
+        }
+        
+        if(!existingProposalsViaJunction.isEmpty()) {
+            singleProposal = existingProposalsViaJunction[0];
+            system.debug('Found existing proposal via junction: ' + singleProposal.Id);
+        } else {
+            singleProposal = new Application_Proposal__c();
+            singleProposal.RecordTypeId = wiserRtTd;
+            singleProposal.Campaign__c = campaignId;
+            singleProposal.yearly_Call__c = yearlyCall;
+            singleProposal.Proposal_Stages__c = 'Draft';
+            insert singleProposal;
+            system.debug('Created new proposal: ' + singleProposal.Id);
+        }
+        
+       
+        
+    Applicant_Proposal_Association__c association;
+    List<Applicant_Proposal_Association__c> assocToInsert = new List<Applicant_Proposal_Association__c>();
+
+    if (!contactIds.isEmpty()) {
+
+        // Fetch existing associations for all contacts for this proposal
+        Map<Id, Applicant_Proposal_Association__c> existingAssocMap = new Map<Id, Applicant_Proposal_Association__c>();
+
+        for (Applicant_Proposal_Association__c apa : [
+            SELECT Id, Contact__c, Proposals__c
+            FROM Applicant_Proposal_Association__c
+            WHERE Contact__c IN :contactIds
+            AND Proposals__c = :singleProposal.Id
+        ]) {
+            existingAssocMap.put(apa.Contact__c, apa);
+        }
+
+        // Create associations only if not already present
+        for (Id conId : contactIds) {
+            if (!existingAssocMap.containsKey(conId)) {
+                assocToInsert.add(new Applicant_Proposal_Association__c(
+                    Contact__c = conId,
+                    Proposals__c = singleProposal.Id
+                ));
+            }
+        }
+
+        // Insert missing associations
+        if (!assocToInsert.isEmpty()) {
+            insert assocToInsert;
+            System.debug('Created associations count: ' + assocToInsert.size());
+        }
+
+        // Maintain reference-style single association (first available)
+        if (!existingAssocMap.isEmpty()) {
+            association = existingAssocMap.values()[0];
+        } else if (!assocToInsert.isEmpty()) {
+            association = assocToInsert[0];
+        }
+    }
+        
+        // Populate wrapper with results (EXACT reference pattern)
+        dataWrapper.proposalId = singleProposal.Id;
+        dataWrapper.proposal = singleProposal;
+        dataWrapper.apa = association;        
+        return dataWrapper;
+        
+    } catch (Exception e) {
+        // Log the error properly
+        System.debug('Error in insertPairingDetails at line ' + e.getLineNumber() + ': ' + e.getMessage());
+        System.debug('Stack trace: ' + e.getStackTraceString());
+        
+        throw new AuraHandledException('Error inserting pairing details: ' + e.getMessage());
+    }
+}
+
+public class insertPairingWrapperinWiser {
+    public String proposalId { get; set; }
+    public Application_Proposal__c proposal { get; set; }
+    public Applicant_Proposal_Association__c apa { get; set; }
+}
+/////*********************************New method Added By Karthik  for pairing page*****************/
 
  
     public class wrapperPairing {

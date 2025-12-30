@@ -50,12 +50,6 @@ $scope.filePreviewHandler = function(fileContent){
     var jhj=$scope.selectedFile.userDocument.Attachments[0].Id;
     console.log(jhj);
 
-    if(localStorage.getItem('proposalId')){
-        $rootScope.proposalId=localStorage.getItem('proposalId');
-        $scope.applicantDetails.Id=localStorage.getItem('proposalId');
-        
-    }
-
     $scope.filesrec = $sce.trustAsResourceUrl(window.location.origin +'/ApplicantDashboard/servlet/servlet.FileDownload?file='+$scope.selectedFile.userDocument.Attachments[0].Id);
     $('#file_frame').attr('src', $scope.filesrec);
 
@@ -250,10 +244,337 @@ $scope.filePreviewHandler = function(fileContent){
       }
 
 
+       //**********************New methods by karthik for pairing page************************************//
+
+     debugger;
+    $scope.siteURL = siteURL;
+    $rootScope.campaignId;
+    $scope.pairList = {"Account":{"Name":""}};
+    $scope.country1 ;
+    $scope.country2 ;
+    $scope.pairingDetails = {"Account":{"Name":""}};
+    $scope.mydate = new Date('2013', '10', '28');
+
+    $scope.birthDatepresent = [];
+
+     // Fetching the proposalId from Local Storage
+    if (localStorage.getItem('proposalId')) {
+        $rootScope.proposalId = localStorage.getItem('proposalId');
+        console.log('Loaded proposalId from localStorage:', $rootScope.proposalId);
+    }
+   
+    // Fetching the yearlyCallId from Local Storage
+    if (localStorage.getItem('yearlyCallId')) {
+        $rootScope.yearlyCallId = localStorage.getItem('yearlyCallId');
+        console.log('Loaded yearlyCallId from localStorage:', $rootScope.yearlyCallId);
+    }
+
+    $scope.getActiveCampaignData = function() {
+        debugger;
+        ApplicantPortal_Contoller.getActiveCampaign($rootScope.yearlyCallId,function(result, event) {
+          debugger
+            console.log('Direct Test Result:', result);
+            console.log('Direct Test Event:', event);
+           
+            if (event.status && result != null) {
+                $rootScope.campaignId = result[0].Campaign__c;
+                localStorage.setItem('campaignId', result[0].Campaign__c);                             
+                $scope.$apply();
+            } else {
+                console.warn('No active campaign found or error occurred');
+            }
+        });
+    };
+    $scope.getActiveCampaignData();
+
+     // Fetching the campaignId from Local Storage
+    if (localStorage.getItem('campaignId')) {
+        $rootScope.campaignId = localStorage.getItem('campaignId');
+        console.log('Loaded campaignId from localStorage:', $rootScope.campaignId);
+    }
+
+
+     $scope.getPairingDetailsinWiser = function () {
+        debugger;
+        $scope.pairingDetails = [];
+        if($rootScope.campaignId == undefined){
+            $rootScope.campaignId = "";  
+        }
+        ApplicantPortal_Contoller.getPairingDetailsinWiser($rootScope.candidateId,$rootScope.proposalId,function (result, event) {
+          debugger;
+            if (event.status) {
+                if(result != null){
+                    for(var i=0;i<result.length;i++){
+                        if(result[i].Birthdate!=null || result[i].Birthdate != undefined){
+                            $scope.birthDatepresent[i] = true;
+                            result[i].Birthdate = new Date(result[i].Birthdate);
+                        }else{
+                            $scope.birthDatepresent[i] = false;
+                        }
+ 
+                        if(result[i].Account != undefined){
+                            if(result[i].FirstName != undefined || result[i].FirstName != ''){
+                                result[i].FirstName = result[i].FirstName ? result[i].FirstName.replace(/&amp;/g,'&').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&amp;','&') : result[i].FirstName;  
+                            }
+                            if(result[i].LastName != undefined || result[i].LastName != ''){
+                                result[i].LastName = result[i].LastName ? result[i].LastName.replace(/&amp;/g,'&').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&amp;','&') : result[i].LastName;  
+                            }
+                            if(result[i].Account.Name != undefined || result[i].Account.Name != ''){
+                                result[i].Account.Name = result[i].Account.Name ? result[i].Account.Name.replace(/&amp;/g,'&').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&amp;','&') : result[i].Account.Name;  
+                            }
+                        }
+                    }                  
+                   
+                }
+                debugger;            
+ 
+                if (result == null || result.length == 0) {
+                    $scope.pairingDetails.push({
+                        "FirstName": " ",
+                        "LastName": " ",
+                        "Email": " ",
+                        "Birthdate":"",
+                        "MailingCountry":"",
+                       // "Campaign__c":$scope.campaigntype
+                    });
+                }else{
+                    for(var i=0;i<result.length;i++){
+                        if(result[i].Is_Primary__c == true){
+                            $scope.pairingDetails = result[i];
+                            if($scope.pairingDetails.MailingCountry == "India"){
+                                $scope.pairList.MailingCountry = "Germany";
+                                $scope.country2 = "German";
+                                $scope.country1 = "Indian";
+                            }else{
+                                $scope.pairList.MailingCountry = "India";
+                                $scope.country2 = "Indian";
+                                $scope.country1 = "German";
+                            }
+                        }else if(result[i].Is_Primary__c == false){
+                            $scope.pairList = result[i];
+                            if($scope.pairList.MailingCountry == "Germany"){
+                                $scope.pairingDetails.MailingCountry = "India";
+                                $scope.country1 = "Indian";
+                                $scope.country2 = "German";
+                            }else{
+                                $scope.pairingDetails.MailingCountry = "Germany";
+                                $scope.country1 = "German";
+                                $scope.country2 = "Indian";
+                            }
+                        }
+                    }
+                }
+                $scope.$apply();                    
+                       
+            }
+        }, {
+            escape: true
+        })
+    }   
+    $scope.getPairingDetailsinWiser();
+
+
+    $scope.insertPairingDetailsinWiser = function(){
+        debugger;        
+        $scope.detailedList = [];
+        $scope.conList = [];
+        $scope.detailedList.push($scope.pairingDetails,$scope.pairList);
+        console.log('detailedList :: '+$scope.detailedList);            
+            debugger;            
+ 
+                      if($scope.pairingDetails != undefined){
+
+                        if($scope.pairingDetails.FirstName == undefined || $scope.pairingDetails.FirstName == ""){
+                            swal("info", "Please Enter First Name.");
+                            $("#txtIndFN").addClass('border-theme');
+                              return;
+                        }
+           
+                        if($scope.pairingDetails.LastName == undefined || $scope.pairingDetails.LastName == ""){
+                            swal("info", "Please Enter Last Name.");
+                            $("#txtIndLN").addClass('border-theme');
+                              return;
+                        }
+           
+                        if($scope.pairingDetails.Email == undefined || $scope.pairingDetails.Email == ""){
+                            swal("info", "Please Enter Email.");
+                            $("#txtIndEmail").addClass('border-theme');
+                              return;
+                        }else{
+                            if($scope.valid($scope.pairingDetails.Email)){
+                                swal(
+                                    'info',
+                                    'Check Your Registered Email.',
+                                    'info'
+                                )
+                                $("#txtIndEmail").addClass('border-theme');
+                                return;
+                            }
+                        }
+           
+                            if($scope.pairingDetails.Account == undefined || $scope.pairingDetails.Account == ""){
+                                      swal("info", "Please Enter Institution / Organization Name.");
+                                      $("#txtIndOrg").addClass('border-theme');
+                                        return;
+                            }
+                           
+                            if($scope.pairingDetails.Account != undefined){
+                                if($scope.pairingDetails.Account.Name == undefined){
+                                    swal("info", "Please Enter Institution / Organization Name.");
+                                    $("#txtIndOrg").addClass('border-theme');
+                                      return;
+                                }
+                           }
+           
+                        if($scope.pairingDetails.Birthdate == undefined || $scope.pairingDetails.Birthdate == ""){
+                            swal("info", "Please Enter BirthDate.");
+                            $("#txtIndBD").addClass('border-theme');
+                              return;
+                        }                       
+                     }
+                       
+                  
+ 
+                        if($scope.pairList != undefined){
+                            if($scope.pairList.FirstName == undefined || $scope.pairList.FirstName == ""){
+                                swal("info", "Please Enter First Name.");
+                                $("#txtGerFN").addClass('border-theme');
+                                  return;
+                            }
+               
+                            if($scope.pairList.LastName == undefined || $scope.pairList.LastName == ""){
+                                swal("info", "Please Enter Last Name.");
+                                $("#txtGerLn").addClass('border-theme');
+                                  return;
+                            }
+               
+                            if($scope.pairList.Email == undefined || $scope.pairList.Email == ""){
+                                swal("info", "Please Enter Email.");
+                                $("#txtGerEmail").addClass('border-theme');
+                                  return;
+                            }else{
+                                if($scope.valid($scope.pairList.Email)){
+                                    swal(
+                                        'info',
+                                        'Check Your Registered Email.',
+                                        'info'
+                                    )
+                                    $("#txtGerEmail").addClass('border-theme');
+                                    return;
+                                }
+                            }
+               
+                                if($scope.pairList.Account == undefined || $scope.pairList.Account == ""){
+                                          swal("info", "Please Enter Institution / Organization Name.");
+                                          $("#txtGerOrg").addClass('border-theme');
+                                            return;
+                                }
+                               
+                                if($scope.pairList.Account != undefined){
+                                    if($scope.pairList.Account.Name == undefined){
+                                        swal("info", "Please Enter Institution / Organization Name.");
+                                        $("#txtGerOrg").addClass('border-theme');
+                                          return;
+                                    }
+                          }
+               
+                            if($scope.pairList.Birthdate == undefined || $scope.pairList.Birthdate == ""){
+                                swal("info", "Please Enter BirthDate.");
+                                $("#txtGerBD").addClass('border-theme');
+                                  return;
+                            }
+   
+                           
+ 
+            for(let i=0; i<$scope.detailedList.length; i++){
+                    delete ($scope.detailedList[i]['$$hashKey']);
+                    var pairingObj = {"companyNmae":$scope.detailedList[i].Account.Name,"proposal":$rootScope.projectId,"accId":$scope.detailedList[i].AccountId,"birthyear":0,"birthmonth":0,"birthday":0,cont:{
+                        "FirstName":$scope.detailedList[i].FirstName,"LastName":$scope.detailedList[i].LastName,"Id":$scope.detailedList[i].Id,"Email":$scope.detailedList[i].Email,"Campaign__c":$scope.campaigntype,"MailingCountry":$scope.detailedList[i].MailingCountry,AccountId:$scope.detailedList[i].AccountId,"Proposals__c":$rootScope.projectId
+                    }};
+                    pairingObj.companyNmae = $scope.detailedList[i].Account.Name;
+ 
+                    if($scope.detailedList[i].Birthdate == undefined || $scope.detailedList[i].Birthdate == ''){
+                        delete ($scope.detailedList[i].Birthdate);
+                    }else if($scope.detailedList[i].Birthdate != undefined || $scope.detailedList[i].Birthdate != ""){
+                        pairingObj.birthyear = $scope.detailedList[i].Birthdate.getUTCFullYear();
+                        //pairingObj.birthmonth = $scope.detailedList[i].Birthdate.getUTCMonth()+1;
+                        pairingObj.birthmonth = $scope.birthDatepresent[i]?$scope.detailedList[i].Birthdate.getUTCMonth()+1:$scope.detailedList[i].Birthdate.getUTCMonth()+2;
+                        pairingObj.birthday = $scope.detailedList[i].Birthdate.getDate();
+          
+                    }
+                    $scope.conList.push(pairingObj);
+       
+                }
+ 
+                for(var i=0;i<$scope.detailedList.length;i++){
+                    delete ($scope.detailedList[i].Birthdate);
+                }  
+     
+          ApplicantPortal_Contoller.insertPairingDetailsinWiser($scope.conList,$rootScope.campaignId,$rootScope.yearlyCallId, function(result, event){
+            if(event.status){
+             debugger;
+                // Saving the ProposalId in Local Storage
+                localStorage.setItem('proposalId', result.proposalId);
+                localStorage.setItem('apaId', result.apa.Id);
+             swal({
+                title: "Pairing Details",
+                text: 'Pairing details have been successfully saved.',
+                icon: "success",
+                button: "ok!",
+              }).then((value) => {
+                $scope.getPairingDetailsinWiser();
+                  $scope.redirectPageURL('WiserApplicationPage');
+                  });
+            //  Swal.fire(
+            //      'Success',
+            //      'Pairing detail has been saved successfully.',
+            //      'success'
+            //  );
+            // $scope.redirectPageURL('WiserApplicationPage');
+            $scope.$apply();  
+         }
+         else
+              {
+                swal({
+                  title: "Pairing Details",
+                  text: "Exception!",
+                  icon: "error",
+                  button: "ok!",
+                });
+              }
+        },
+        {escape:true}
+        )
+    }
+}
+
+     $scope.redirectToApplicantPortal = function() {
+          window.location.href = 'https://indo-germansciencetechnologycentre--newdevutil.sandbox.my.salesforce-sites.com/ApplicantDashboard/ApplicantPortal?id=%27 + $rootScope.candidateId'
+      };
+
+        $scope.valid = function(value){
+        if(value!=undefined){
+             var x=value;
+             var atpos = x.indexOf("@");
+             var dotpos = x.lastIndexOf(".");
+            if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length) {
+               
+                return true;
+            }
+            return false;
+         }
+     }
+
+
+
+    ////////////****************************New methods by karthik for pairing page*************************** */
+
+
+
      $scope.getApplicantDetailsWiser = function () {
         
 
-          ApplicantPortal_Contoller.getApplicantDetailsWiser($rootScope.candidateId, $rootScope.proposalId, function (result, event) {
+          ApplicantPortal_Contoller.getApplicantDetailsWiser($rootScope.candidateId, function (result, event) {
                if (event.status) {
                     debugger;
                     if(result != null){
@@ -298,10 +619,10 @@ $scope.filePreviewHandler = function(fileContent){
 
      $scope.saveApplication = function () {
 
-      // if(! $scope.isPdfUploded){
-      //   swal('info','Please upload the PDF file.','info'); 
-      // }
-      // else {
+      if(! $scope.isPdfUploded){
+        swal('info','Please upload the PDF file.','info'); 
+      }
+      else {
           $scope.applicantDetails.Campaign__c = $rootScope.campaignId;
           debugger;
 
@@ -394,16 +715,11 @@ $scope.filePreviewHandler = function(fileContent){
           } else {
                $scope.applicantDetails.Proposal_Stages__c = 'Submitted';
           }
-          if(localStorage.getItem('yearlyCallId')){
-            $scope.applicantDetails.yearly_Call__c=localStorage.getItem('yearlyCallId');
-          }
-          
+
           ApplicantPortal_Contoller.insertApplicationWiser($scope.applicantDetails, $rootScope.contactId,'WISER', function (result, event) {
 
             if(event.status && result != null){
-                $rootScope.projectId = result.proposalId;
-                localStorage.setItem('proposalId', result.proposalId);
-                localStorage.setItem('apaId', result.apa.Id);
+                $rootScope.projectId = result;
                     console.log(result);                    
                 swal({
                      title: "SUCCESS",
@@ -411,7 +727,7 @@ $scope.filePreviewHandler = function(fileContent){
                      icon: "success",
                      button: "ok!",
                 })  
-                $scope.redirectPageURL('WiserApplicationPage');                  
+                $scope.redirectPageURL('FinancialOverview_wiser');                  
               
            } else{
                 swal({
@@ -440,7 +756,7 @@ $scope.filePreviewHandler = function(fileContent){
             //    }
 
           });
-        
+        }
      };
 
      $scope.getApplicantDetailsWiser();
