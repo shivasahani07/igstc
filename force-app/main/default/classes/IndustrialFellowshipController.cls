@@ -267,8 +267,8 @@ public static String saveApplicantPortalSingh(String loginHashCode,Contact con,A
         return instanceIFM.getWorkshopDocUpload(loginHashCode);
     }
     @RemoteAction
-    public static Account getProposalAccounts(String ProposalId){
-        return IndustrialFellowshipHelper.getProposalAccounts(ProposalId);
+    public static IndustrialFellowshipHelper.ProposalAccountWrapper getProposalAccounts(String ProposalId, String loginHashCode ){
+        return IndustrialFellowshipHelper.getProposalAccounts(ProposalId, loginHashCode);
     }
 
     @RemoteAction

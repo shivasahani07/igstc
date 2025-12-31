@@ -14,18 +14,22 @@ angular.module('cp_app').controller('financialWiser_Ctrl', function($scope, $roo
      $scope.Showyear2=false;
      $scope.Showyear3=false;
      $scope.durationMonths=0;
+     $rootScope.candidateId
+
+     console.log('$rootScope.candidateId ===>>' + $rootScope.candidateId);
 
      $scope.getAccounts = function(){
-        IndustrialFellowshipController.getProposalAccounts($rootScope.proposalId,function(result,event){
+        debugger;
+        IndustrialFellowshipController.getProposalAccounts($rootScope.proposalId, $rootScope.candidateId, function(result,event){
             console.log('onload :: =>');
             console.log(result);
             if (event.status && result != null) {
                 debugger;
-                if(result.Name != undefined || result.Name != ""){
-                    result.Name = result.Name ? result.Name.replace(/&amp;/g,'&').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('lt;','<').replaceAll('&gt;','>').replaceAll('gt;','>').replaceAll('&amp;','&').replaceAll('amp;','&').replaceAll('&quot;','\'') : result.Name;
+                if(result.accountDetail.Name != undefined || result.accountDetail.Name != ""){
+                    result.accountDetail.Name = result.accountDetail.Name ? result.accountDetail.Name.replace(/&amp;/g,'&').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('lt;','<').replaceAll('&gt;','>').replaceAll('gt;','>').replaceAll('&amp;','&').replaceAll('amp;','&').replaceAll('&quot;','\'') : result.accountDetail.Name;
                 }                
-                $scope.accDetails = result;
-                $scope.durationMonths=result.Proposals__r.Duration_In_Months_Max_36__c;
+                $scope.accDetails = result.accountDetail;
+                $scope.durationMonths=result.durationInMonths;
                 if($scope.durationMonths>12 && $scope.durationMonths<25){
                     $scope.Showyear2=true;
                 }else if($scope.durationMonths>24){
@@ -80,6 +84,7 @@ angular.module('cp_app').controller('financialWiser_Ctrl', function($scope, $roo
      }  
      
      $scope.createExpenceHead = function(){
+        debugger;
         if($scope.accDetails.Contacts[0].MailingCountry == "India"){
             var allExpencehead = [{
                 'Account__c': $scope.accDetails.Id,
@@ -148,7 +153,7 @@ angular.module('cp_app').controller('financialWiser_Ctrl', function($scope, $roo
                 $scope.Expense_Line_Items__r = result;
                 $scope.expenseList = result;
                 $scope.$apply();
-            }
+            } 
         },
         {escape: true}
         )
@@ -339,6 +344,7 @@ $scope.saveExpenceLineitems = function(){
         $scope.totalSum = $scope.year1Germany+$scope.year2Germany+$scope.year3Germany;
     }
 
+    debugger;
     IndustrialFellowshipController.saveExpenceLineItemWISER($scope.expLineItem,$scope.totalSum,function(result,event){
         if(event.status && result != null){
                 console.log(result);                    

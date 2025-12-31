@@ -538,8 +538,17 @@ angular.module('cp_app').controller('sign_Ctrl', function ($scope, $sce, $rootSc
                     'Success',
                     'Your proposal have been submitted successfully.',
                     'success'
-                );
-                $scope.redirectPageURL('Home');
+                ).then(function () {
+
+                    setTimeout(function () {
+                        $scope.redirectPageURL();
+                        $scope.$apply();
+                    }, 500);
+
+                });
+                // $scope.redirectPageURL('Home');
+
+
                 $scope.checkbox = result;
                 $scope.$apply();
             }
@@ -572,9 +581,17 @@ angular.module('cp_app').controller('sign_Ctrl', function ($scope, $sce, $rootSc
                     'Success',
                     'Your proposal has been saved as Draft.',
                     'success'
-                );
+                ).then(function () {
+
+                    setTimeout(function () {
+                        $scope.redirectPageURL();
+                        $scope.$apply();
+                    }, 500);
+
+                });
                 // swal("Draft", "Your proposal has been saved as Draft.","");
-                $scope.redirectPageURL('Home');
+                // $scope.redirectPageURL('Home');
+
                 $scope.checkbox = result;
                 $scope.$apply();
             }
@@ -589,5 +606,12 @@ angular.module('cp_app').controller('sign_Ctrl', function ($scope, $sce, $rootSc
         link.id = 'someLink'; //give it an ID!
         link.href = "#/" + pageName;
         link.click();
-    }
+    };
+
+    $scope.redirectPageURL = function () {
+        window.location.href =
+            window.location.origin +
+            window.location.pathname +
+            window.location.search;
+    };
 });

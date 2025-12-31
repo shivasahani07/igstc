@@ -15,6 +15,24 @@ $scope.redirectPageURL=function(URL){
     link.click();
 }
 
+
+ $scope.getDataFromLocalStorage = function(){
+        debugger;
+        if(localStorage.getItem('candidateId')){
+            $rootScope.candidateId = localStorage.getItem('candidateId');
+        }
+        if(localStorage.getItem('apaId')){
+            $rootScope.apaId = localStorage.getItem('apaId');
+            $scope.apaId = $rootScope.apaId;
+        }
+        if(localStorage.getItem('proposalId')){
+            $rootScope.proposalId = localStorage.getItem('proposalId');
+            $scope.proposalId = $rootScope.proposalId;
+        }
+    }
+
+    $scope.getDataFromLocalStorage();
+
 $scope.selectedFile;
 
 $scope.filePreviewHandler = function(fileContent){
@@ -40,7 +58,7 @@ $scope.getProjectdetils = function () {
     debugger;
     $scope.selectedFile = '';
     $('#file_frame').attr('src', '');
-    ApplicantPortal_Contoller.getContactUserDoc($rootScope.contactId, function (result, event) {
+    ApplicantPortal_Contoller.getContactUserDoc($rootScope.contactId, $rootScope.proposalId, function (result, event) {
         debugger
         console.log('result return onload :: ');
         console.log(result);

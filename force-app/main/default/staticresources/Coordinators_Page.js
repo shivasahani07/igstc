@@ -25,9 +25,9 @@ angular.module('cp_app').controller('coordinators_ctrl', function ($scope, $root
         $rootScope.yearlyCallId = localStorage.getItem('yearlyCallId');
         console.log('Loaded yearlyCallId from localStorage:', $rootScope.yearlyCallId);
     }
- $scope.redirectToApplicantPortal = function() {
-    window.location.href = 'https://indo-germansciencetechnologycentre--newdevutil.sandbox.my.salesforce-sites.com/ApplicantDashboard/ApplicantPortal?id=' + $rootScope.candidateId;
-}
+    $scope.redirectToApplicantPortal = function () {
+        window.location.href = 'https://indo-germansciencetechnologycentre--newdevutil.sandbox.my.salesforce-sites.com/ApplicantDashboard/ApplicantPortal?id=' + $rootScope.candidateId;
+    }
     // $scope.checkEmail = function(email,contId){
     //     debugger;
     //     $scope.emailCheck = false;
@@ -133,7 +133,7 @@ angular.module('cp_app').controller('coordinators_ctrl', function ($scope, $root
                         if (result[i].BillingCity != undefined || result[i].BillingCity != '') {
                             $scope.allCoordinatorDetails[i].BillingCity = result[i].BillingCity ? result[i].BillingCity.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : result[i].BillingCity;
                         }
-                        if (result[i].BillingState != undefined || result[i].BillingState != '') {
+                        if (result[i].BillingState != undefined && result[i].BillingState != '') {
                             $scope.allCoordinatorDetails[i].BillingState = result[i].BillingState ? result[i].BillingState.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : result[i].BillingState;
                         }
                     }
@@ -396,6 +396,7 @@ angular.module('cp_app').controller('coordinators_ctrl', function ($scope, $root
             delete ($scope.allCoordinatorDetails[i]['stateList']);
             delete ($scope.allCoordinatorDetails[i]['BillingStreet1']);
             delete ($scope.allCoordinatorDetails[i]['BillingStreet2']);
+            // delete ($scope.allCoordinatorDetails[i]['Shipping_State__c']);
 
             $scope.allCoordinatorDetails[i]['Shipping_State__c'] = $scope.allCoordinatorDetails[i]['BillingState'];
             $scope.allCoordinatorDetails[i].BillingState = $scope.allCoordinatorDetails[i].BillingState;
@@ -404,7 +405,38 @@ angular.module('cp_app').controller('coordinators_ctrl', function ($scope, $root
         console.log('$scope.allCoordinatorDetails::' + $scope.allCoordinatorDetails);
         $scope.tempAccList = $scope.allCoordinatorDetails;
 
-        WorkshopController.insertCoordinatorsInformation2($scope.allCoordinatorDetails, $scope.contactList, $rootScope.proposalId, $rootScope.yearlyCallId, function (result, event) {
+        let accPayload = [];
+
+        angular.forEach($scope.allCoordinatorDetails, function (uiAcc) {
+            accPayload.push({
+                Id: uiAcc.Id,
+                Name: uiAcc.Name,
+                BillingCountry: uiAcc.BillingCountry,
+                BillingCity: uiAcc.BillingCity,
+                BillingStreet: uiAcc.BillingStreet,
+                BillingPostalCode: uiAcc.BillingPostalCode,
+                BillingState:
+                    (uiAcc.BillingState && uiAcc.BillingState !== 'null')
+                        ? uiAcc.BillingState
+                        : null,
+                Shipping_State__c: uiAcc.Shipping_State__c,
+                Homepage_URL__c: uiAcc.Homepage_URL__c,
+                RecordTypeId: uiAcc.RecordTypeId,
+                Academia__c: uiAcc.Academia__c === true,
+                Industry__c: uiAcc.Industry__c === true
+            });
+        });
+
+        // WorkshopController.insertCoordinatorsInformation2(
+        //     accPayload,
+        //     $scope.contactList,
+        //     $rootScope.proposalId,
+        //     $rootScope.yearlyCallId,
+        //     callback
+        // );
+
+
+        WorkshopController.insertCoordinatorsInformation2(accPayload, $scope.contactList, $rootScope.proposalId, $rootScope.yearlyCallId, function (result, event) {
             console.log('*************RESULT************* : ', result);
             debugger;
 

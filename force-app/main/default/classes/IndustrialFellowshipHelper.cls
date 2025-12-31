@@ -1713,10 +1713,48 @@ public String upsertConsortiaAccountDet(Account instanceAcc, String projectId){
             }
        }
 
-       public static Account getProposalAccounts(String ProposalId){
-        List<Account> acc=[SELECT id,name,Country_Type__c,proposals__r.Duration_In_Months_Max_36__c,(SELECT Id,Name,MailingCountry FROM Contacts) from Account where proposals__c=:ProposalId limit 1];
-        return acc[0];
-    } 
+    //    ***********************************************************************************************************************
+            // Changed by Harsh Gupta on 28-09-2020
+    //    public static Account getProposalAccounts(String ProposalId){
+    //     List<Account> acc=[SELECT id,name,Country_Type__c,proposals__r.Duration_In_Months_Max_36__c,(SELECT Id,Name,MailingCountry FROM Contacts) from Account where proposals__c=:ProposalId limit 1];
+    //     return acc[0];
+    // } 
+
+    public static ProposalAccountWrapper getProposalAccounts(String ProposalId, String loginHashCode){
+    
+        Applicant_Proposal_Association__c apa = [
+            SELECT Id, Name, Proposals__r.Duration_In_Months_Max_36__c, Contact__c, Contact__r.AccountId  
+            FROM Applicant_Proposal_Association__c 
+            WHERE Proposals__c = :ProposalId 
+            AND Contact__r.Login_Hash_Code__c = :loginHashCode 
+            LIMIT 1
+        ];
+
+        List<Account> acc = [
+            SELECT Id, Name, Country_Type__c, 
+                (SELECT Id, Name, MailingCountry FROM Contacts) 
+            FROM Account 
+            WHERE Id = :apa.Contact__r.AccountId
+        ];
+        
+        return new ProposalAccountWrapper(acc[0], apa.Proposals__r.Duration_In_Months_Max_36__c);
+    }
+    
+    public class ProposalAccountWrapper {
+        @AuraEnabled
+        public Account accountDetail { get; set; }
+        
+        @AuraEnabled
+        public Decimal durationInMonths { get; set; }
+        
+        public ProposalAccountWrapper(Account acc, Decimal duration) {
+            this.accountDetail = acc;
+            this.durationInMonths = duration;
+        }
+    }
+
+// **********************************************************************************************************************************************
+
     public static String LogoutApplicant(String loginHasgCode){
         try{
             contact conRec = [select name,id,Proposals__c from contact where Login_Hash_Code__c =:loginHasgCode limit 1];

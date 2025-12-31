@@ -1,121 +1,241 @@
 <apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="IndustrialFellowshipController">
-<html>
-<div ng-controller="HostProjectDetailInWiserCtrl">
-     <head>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <html>
+    <div ng-controller="HostProjectDetailInWiserCtrl">
+
+        <head>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
             <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-          <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.5.16/textAngular.css" crossorigin="anonymous"
-          />
-          <script>
-              var userId = '{!$CurrentPage.parameters.id}';
-          </script>
-         
-      </head>
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.5.16/textAngular.css" crossorigin="anonymous"
+            />
+            <script>
+                var userId = '{!$CurrentPage.parameters.id}';
+            </script>
 
-      <body>
+        </head>
 
-        <div class="container mt-5">
-            <div class="row mx-5">
-                <div class="col-md-12">
-                    <div class="tab-link" ng-show="proposalStage">
-                        <div class="progress">
-                            <div class="progress-success w-100"></div>
+        <body>
+            <div class="container mt-5">
+                ************ for testing ***************
+                <div class="row mx-5">
+                    <div class="col-md-12">
+
+                        <div class="tab-link" ng-show="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+
+                            <ul>
+                                <!-- Pair Project Details -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('HostProjectDetails')">
+                                        <div class="icon-circle">
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Pair Project Details</span>
+                                    </a>
+                                </li>
+
+                                <!-- Pair Details -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('HostInfoApplicationPage')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Host Details</span>
+                                    </a>
+                                </li>
+
+                                <!-- Applicant Details -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('WiserApplicationPage')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Applicant Details</span>
+                                    </a>
+                                </li>
+
+                                <!-- Financial Details -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('FinancialOverview_wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <span>Financial Overview</span>
+                                    </a>
+                                </li>
+
+                                <!-- Not Confirmed Yet -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Applicant Project Details</span>
+                                    </a>
+                                </li>
+
+                            </ul>
                         </div>
-                        <ul>
-                            <li class="active pb-cursor">
-                                <a ng-click="redirectPageURL('WiserApplicationPage')">
-                                    <div class="icon-circle">
-                                        <i class="fas fa-user-alt"></i>
-                                    </div>
-                                    <span>Applicant Details</span>
-                                </a>
-                            </li>
-                            
-                            <li class="active pb-cursor">
-                                <a ng-click="redirectPageURL('HostInfoApplicationPage')">
-                                    <div class="icon-circle">
-                                        <i class="fas fa-file-invoice"></i>
-                                    </div>
-                                    <span>Host Details</span>
-                                </a>
-                            </li>
-                            <li class="active pb-cursor">
-                                <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
-                                    <div class="icon-circle">
-                                        <i class="fa fa-home"></i>
-                                    </div>
-                                    <span>Applicant Project Details</span>
-                                </a>
-                            </li>
-                            <li class="active pb-cursor">
-                                <a ng-click="redirectPageURL('FinancialOverview_wiser')">
-                                    <div class="icon-circle">
-                                        <i class="fas fa-chart-line"></i>
-                                    </div>
-                                    <span>Financial Overview</span>
-                                </a>
-                            </li>
-                            <li class="active pb-cursor">
-                                <a ng-click="redirectPageURL('HostProjectDetails')">
-                                    <div class="icon-circle">
-                                        <i class="far fa-address-card"></i>
-                                    </div>
-                                    <span>Pair Project Details</span>
-                                </a>
-                            </li>   
-                        </ul>
-                    </div>
-                    <div class="tab-link" ng-hide="proposalStage">
-                        <div class="progress">
-                            <div class="progress-success w-100"></div>
+
+                        <div class="tab-link" ng-hide="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Pair Project Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Host Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Applicant Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <span>Financial Overview</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Applicant Project Details</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
-                        <ul>
-                            <li class="active">
-                                <a>
-                                    <div class="icon-circle">
-                                        <i class="fas fa-user-alt"></i>
-                                    </div>
-                                    <span>Applicant Details</span>
-                                </a>
-                            </li>
-                            <li class="active">
-                                <a>
-                                    <div class="icon-circle">
-                                        <i class="fas fa-file-invoice"></i>
-                                    </div>
-                                    <span>Pair Details</span>
-                                </a>
-                            </li>
-                            <li class="active">
-                                <a>
-                                    <div class="icon-circle">
-                                        <i class="fa fa-home"></i>
-                                    </div>
-                                    <span>Applicant Project Details</span>
-                                </a>
-                            </li>
-                            <li class="active">
-                                <a>
-                                    <div class="icon-circle">
-                                        <i class="fas fa-chart-line"></i>
-                                    </div>
-                                    <span>Financial Overview</span>
-                                </a>
-                            </li>
-                            <li class="active">
-                                <a>
-                                    <div class="icon-circle">
-                                        <i class="far fa-address-card"></i>
-                                    </div>
-                                    <span>Pair Project Details</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+
                     </div>
                 </div>
+
+                <!-- OLD CODE COMMENTED -->
+                <!--
+                <div class="row mx-5">
+                    <div class="col-md-12">
+
+                        <div class="tab-link" ng-show="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('WiserApplicationPage')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Applicant Details</span>
+                                    </a>
+                                </li>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('HostInfoApplicationPage')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Host Details</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Applicant Project Details</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('FinancialOverview_wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <span>Financial Overview</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('HostProjectDetails')">
+                                        <div class="icon-circle">
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Pair Project Details</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="tab-link" ng-hide="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Applicant Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Pair Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Applicant Project Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <span>Financial Overview</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Pair Project Details</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+                -->
 
                 <div class="row mx-5">
                     <div class="col-md-12">
@@ -132,7 +252,7 @@
                                         <span>References</span>
                                     </a>
                                 </li>
-                                
+
                                 <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('ExistingGrantWISER')">
                                         <div class="icon-circle">
@@ -180,7 +300,7 @@
                                         <span>References</span>
                                     </a>
                                 </li>
-                                
+
                                 <li>
                                     <a>
                                         <div class="icon-circle">
@@ -215,73 +335,83 @@
                                 </li>
                             </ul>
                         </div>
-                        </div>
                     </div>
-
-                    <div class="row mt-5 mx-5">
-                        <div class="col-md-12 alert bg-color-list" role="alert">
-                            <ul class="font-if"> 
-                              <li><i class="fa-solid fa-circle text-success me-3"></i>Pair project details pertain to the project with which the applicant will engage in collaboration. This provides brief about collaborating partner’s proposed project and the complementary objectives.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-            <div class="row mt-3 mx-5">
-                <div class="col-md-12">
-                    <label class="font-if color-theme">Title</label>
-                    <span class="required-asterisk" style="color:red;">*</span>
-                    <textarea rows="3" maxlength="255" ng-focus="removeClass('txtTitle')" id="txtTitle" ng-model="objContact.Host_Project_Title__c" type="text" class="form-control" ng-disabled="proposalStage" /> 
                 </div>
 
-                <!-- <div class="col-md-12 mt-5">
+                <div class="row mt-5 mx-5">
+                    <div class="col-md-12 alert bg-color-list" role="alert">
+                        <ul class="font-if">
+                            <li>
+                                <i class="fa-solid fa-circle text-success me-3"></i>Pair project details pertain to the project with which the applicant will engage in collaboration.
+                                This provides brief about collaborating partner’s proposed project and the complementary
+                                objectives.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row mt-3 mx-5">
+                    <div class="col-md-12">
+                        <label class="font-if color-theme">Title</label>
+                        <span class="required-asterisk" style="color:red;">*</span>
+                        <textarea rows="3" maxlength="255" ng-focus="removeClass('txtTitle')" id="txtTitle" ng-model="objContact.Host_Project_Title__c"
+                            type="text" class="form-control" ng-disabled="proposalStage" />
+                    </div>
+
+                    <!-- <div class="col-md-12 mt-5">
                     <label class="font-if color-theme">Funding source</label>
                     <span class="required-asterisk" style="color:red;">*</span>
                     <textarea rows="3" maxlength="255" ng-focus="removeClass('txtFunding')" id="txtFunding" ng-model="objContact.Host_Funding_Source__c" type="text" class="form-control" ng-disabled="proposalStage" />
                 </div> -->
-                <!-- <div class="col-md-6">
+                    <!-- <div class="col-md-6">
                     <label class="font-if color-theme">Abstract(max 300 words)</label>
                     <ng-ckeditor ng-model="objContact.Host_Abstract_Of_Project__c" ng-config="config"></ng-ckeditor>
                 </div> -->
-            </div>
+                </div>
 
-            <!-- <div class="row mt-5 mx-5">
+                <!-- <div class="row mt-5 mx-5">
                 <div class="col-md-6">
                     <label class="font-if color-theme">Start date</label>
                     <span class="required-asterisk" style="color:red;">*</span> -->
-                    <!-- <md-datepicker ng-focus="removeClass('startDate')" id="startDate" ng-model="objContact.Actual_Application_Start_Date__c" type="date" class="form-control" ng-disabled="proposalStage" md-current-view="year"></md-datepicker> -->
-                    <!-- <input ng-focus="removeClass('startDate')" id="startDate" ng-model="objContact.Actual_Application_Start_Date__c" type="date" class="form-control" ng-disabled="proposalStage" />
+                <!-- <md-datepicker ng-focus="removeClass('startDate')" id="startDate" ng-model="objContact.Actual_Application_Start_Date__c" type="date" class="form-control" ng-disabled="proposalStage" md-current-view="year"></md-datepicker> -->
+                <!-- <input ng-focus="removeClass('startDate')" id="startDate" ng-model="objContact.Actual_Application_Start_Date__c" type="date" class="form-control" ng-disabled="proposalStage" />
                 </div>
                 <div class="col-md-6">
                     <label class="font-if color-theme">End date</label>
                     <span class="required-asterisk" style="color:red;">*</span> -->
-                    <!-- <md-datepicker ng-focus="removeClass('endDate')" id="endDate" ng-model="objContact.Actual_Application_End_Date__c" type="date" class="form-control" ng-disabled="proposalStage" md-current-view="year"></md-datepicker> -->
-                    <!-- <input ng-focus="removeClass('endDate')" id="endDate" ng-model="objContact.Actual_Application_End_Date__c" type="date" class="form-control" ng-disabled="proposalStage" />
+                <!-- <md-datepicker ng-focus="removeClass('endDate')" id="endDate" ng-model="objContact.Actual_Application_End_Date__c" type="date" class="form-control" ng-disabled="proposalStage" md-current-view="year"></md-datepicker> -->
+                <!-- <input ng-focus="removeClass('endDate')" id="endDate" ng-model="objContact.Actual_Application_End_Date__c" type="date" class="form-control" ng-disabled="proposalStage" />
                 </div>
             </div> -->
 
-            <div class="row mt-5 mx-5">
-                <div class="col-md-12 mt-3">
-                    <label class="font-if color-theme">Abstract(max 700 characters without space)</label>
-                    <span class="required-asterisk" style="color:red;">*</span><br/>
-                <small class="label-rtf"><b>To use RTF more efficiently, make sure you write your content in word document first and then copy paste here</b></small>
-                    <ng-ckeditor name="ckEditor2" maxlength="600" ng-change="readCharacter(objContact.Host_Abstract_Of_Project__c,0)" ng-model="objContact.Host_Abstract_Of_Project__c" ng-config="config"></ng-ckeditor>
-                    <span>Total characters : {{objRtf[0].charCount}}</span>
-                    <span class="text-danger" ng-if="objRtf[0].errorStatus">maximum character limit is 700</span>
+                <div class="row mt-5 mx-5">
+                    <div class="col-md-12 mt-3">
+                        <label class="font-if color-theme">Abstract(max 700 characters without space)</label>
+                        <span class="required-asterisk" style="color:red;">*</span>
+                        <br/>
+                        <small class="label-rtf">
+                            <b>To use RTF more efficiently, make sure you write your content in word document first and then
+                                copy paste here</b>
+                        </small>
+                        <ng-ckeditor name="ckEditor2" maxlength="600" ng-change="readCharacter(objContact.Host_Abstract_Of_Project__c,0)" ng-model="objContact.Host_Abstract_Of_Project__c"
+                            ng-config="config"></ng-ckeditor>
+                        <span>Total characters : {{objRtf[0].charCount}}</span>
+                        <span class="text-danger" ng-if="objRtf[0].errorStatus">maximum character limit is 700</span>
+                    </div>
+
                 </div>
-                
-            </div>
-               
-            <div class="row m-5" ng-if="!proposalStage">
-                <div class="col-md-12">
-                    <button class="blue-btn float-end" ng-click="saveApplicationPortalHostInformation()" type="button">
-                        <i class="fa-solid fa-check me-2"></i>Save and Next</button>
-                    <button class="blue-bordered-btn float-end me-2" ng-click="previousPage()" type="button">
-                        <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+
+                <div class="row m-5" ng-if="!proposalStage">
+                    <div class="col-md-12">
+                        <button class="blue-btn float-end" ng-click="saveApplicationPortalHostInformation()" type="button">
+                            <i class="fa-solid fa-check me-2"></i>Save and Next</button>
+                        <button class="blue-bordered-btn float-end me-2" ng-click="previousPage()" type="button">
+                            <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+                    </div>
                 </div>
             </div>
-        </div>
-        
-          <!-- <div class="container px-4" >
+
+            <!-- <div class="container px-4" >
             
               <div class="card h-100 m-5">
 
@@ -338,9 +468,10 @@
             </div>
 
           </div> -->
-          <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-      </body>
+            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        </body>
 
-</div>
-</html>
+    </div>
+
+    </html>
 </apex:page>

@@ -2019,9 +2019,10 @@ userDocc.Id = udId;
         return Proposal_Controller.createHostContact(conID,projectid);
     }
     
+   
     @RemoteAction
-    public static Contact getCVDetailsForWiserApplicant(string candidateId){
-        return Proposal_Controller.getCVDetailsForWiserApplicant(candidateId);
+    public static Contact getCVDetailsForWiserApplicant(string candidateId,String apaId){
+        return Proposal_Controller.getCVDetailsForWiserApplicant(candidateId, apaId);
     }
  /*   
     @RemoteAction

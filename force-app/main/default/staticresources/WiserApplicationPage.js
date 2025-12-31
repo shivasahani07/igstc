@@ -13,6 +13,7 @@ $scope.indiaCode=true;
 $scope.baseURL = window.location.origin;
 $scope.genderFemale=['Female','Other'];
   $scope.objContact = {
+    "Salutation":"",
     "FirstName": " ",
     "LastName": " ",
     "Email": " ",
@@ -126,6 +127,9 @@ $scope.getProjectdetils = function () {
                     delete  $scope.objContact.Attachments;
                 }
 
+                if(result.Salutation != undefined || result.Salutation != ''){
+                  $scope.objContact.Salutation = $scope.objContact.Salutation ? $scope.objContact.Salutation.replace(/&amp;/g,'&').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&amp;','&') : $scope.objContact.Salutation;  
+                }
                 if(result.FirstName != undefined || result.FirstName != ''){
                   $scope.objContact.FirstName = $scope.objContact.FirstName ? $scope.objContact.FirstName.replace(/&amp;/g,'&').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&amp;','&') : $scope.objContact.FirstName;  
                 }

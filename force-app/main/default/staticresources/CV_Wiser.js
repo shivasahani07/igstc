@@ -7,9 +7,27 @@ angular.module('cp_app').controller('cv_wiser', function($scope,$rootScope) {
     $scope.objRtf.push({charCount:0,maxCharLimit:0,errorStatus:false});
     $scope.objRtf.push({charCount:0,maxCharLimit:0,errorStatus:false});
 
+    
+    $scope.getDataFromLocalStorage = function(){
+        debugger;
+        if(localStorage.getItem('candidateId')){
+            $rootScope.candidateId = localStorage.getItem('candidateId');
+        }
+        if(localStorage.getItem('apaId')){
+            $rootScope.apaId = localStorage.getItem('apaId');
+            $scope.apaId = $rootScope.apaId;
+        }
+        if(localStorage.getItem('proposalId')){
+            $rootScope.proposalId = localStorage.getItem('proposalId');
+            $scope.proposalId = $rootScope.proposalId;
+        }
+    }
+
+    $scope.getDataFromLocalStorage();
+
     $scope.getCVDetailsForWiserApplicant = function(){
         debugger;
-        ApplicantPortal_Contoller.getCVDetailsForWiserApplicant($rootScope.candidateId, function(result,event){
+        ApplicantPortal_Contoller.getCVDetailsForWiserApplicant($rootScope.candidateId, $rootScope.apaId, function(result,event){
             debugger;
             if(event.status && result){
                 debugger;
@@ -34,6 +52,7 @@ angular.module('cp_app').controller('cv_wiser', function($scope,$rootScope) {
                 }
                 if($scope.contactData.Education_Details__r == undefined){
                     var rec = {
+                        'Applicant_Proposal_Association__c': $scope.apaId,
                         'Institution_Name__c':'',
                         'Contact__c': $scope.contactData.Id
                     };
@@ -42,6 +61,7 @@ angular.module('cp_app').controller('cv_wiser', function($scope,$rootScope) {
                     $scope.contactData.Education_Details__r.push(rec);
                 }else{
                     for(var i=0;i<$scope.contactData.Education_Details__r.length;i++){
+                          $scope.contactData.Employment_Details__r[i].Applicant_Proposal_Association__c = $scope.apaId;
                         if($scope.contactData.Education_Details__r[i].Degree__c != undefined || $scope.contactData.Education_Details__r[i].Degree__c != ""){
                             $scope.contactData.Education_Details__r[i].Degree__c = $scope.contactData.Education_Details__r[i].Degree__c ? $scope.contactData.Education_Details__r[i].Degree__c.replace(/&amp;/g,'&').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('lt;','<').replaceAll('&gt;','>').replaceAll('gt;','>').replaceAll('&amp;','&').replaceAll('amp;','&').replaceAll('&quot;','\'') : $scope.contactData.Education_Details__r[i].Degree__c;
                         }
@@ -55,6 +75,7 @@ angular.module('cp_app').controller('cv_wiser', function($scope,$rootScope) {
                 }
                 if($scope.contactData.Employment_Details__r == undefined){
                     var emprec = {
+                        'Applicant_Proposal_Association__c': $scope.apaId,
                         "Organization_Name__c":"",
                         "Contact__c": $scope.contactData.Id
                     };
@@ -63,6 +84,7 @@ angular.module('cp_app').controller('cv_wiser', function($scope,$rootScope) {
                     $scope.contactData.Employment_Details__r.push(emprec);
                 }else{
                     for(var i=0;i<$scope.contactData.Employment_Details__r.length;i++){
+                        $scope.contactData.Employment_Details__r[i].Applicant_Proposal_Association__c = $scope.apaId;
                         if($scope.contactData.Employment_Details__r[i].Organization_Name__c != undefined || $scope.contactData.Employment_Details__r[i].Organization_Name__c != ""){
                             $scope.contactData.Employment_Details__r[i].Organization_Name__c = $scope.contactData.Employment_Details__r[i].Organization_Name__c ? $scope.contactData.Employment_Details__r[i].Organization_Name__c.replace(/&amp;/g,'&').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('lt;','<').replaceAll('&gt;','>').replaceAll('gt;','>').replaceAll('&amp;','&').replaceAll('amp;','&').replaceAll('&quot;','\'') : $scope.contactData.Employment_Details__r[i].Organization_Name__c;
                         }
