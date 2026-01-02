@@ -8,8 +8,47 @@ angular.module('cp_app').controller('WISERgrant_ctrl', function($scope,$rootScop
     var statusLoginHas=0;
     $scope.pickListCurrency=$rootScope.currencyPickList;
 
+
+    
+$scope.getDataFromLocalStorage = function(){
+    debugger;
+    if(localStorage.getItem('candidateId')){
+        $rootScope.candidateId = localStorage.getItem('candidateId');
+    }
+    if(localStorage.getItem('apaId')){
+        $rootScope.apaId = localStorage.getItem('apaId');
+        $scope.apaId = $rootScope.apaId;
+    }
+    if(localStorage.getItem('proposalId')){
+        $rootScope.proposalId = localStorage.getItem('proposalId');
+        $scope.proposalId = $rootScope.proposalId;
+    }
+}
+
+$scope.getDataFromLocalStorage();
+
+/**
+ * Fetches proposal stage from Apex on page load
+ */
+$scope.getProposalStage = function(){
+    debugger;
+    if($rootScope.apaId && $rootScope.proposalId){
+        ApplicantPortal_Contoller.getProposalStageUsingProposalId($rootScope.proposalId, $rootScope.apaId, function(result, event){
+            debugger;
+            if(event.status && result){
+                $scope.proposalStage = (result.proposalStage != 'Draft' && result.proposalStage != null && result.proposalStage != undefined);
+                $rootScope.proposalStage = $scope.proposalStage;
+                $scope.$apply();
+            }
+        }, { escape: true });
+    }
+}
+
+$scope.getProposalStage();
+
+
     $scope.getApplicantDetails = function(){
-     ApplicantPortal_Contoller.getApplicantDetailsForGrantWISER($rootScope.contactId, function (result, event){
+     ApplicantPortal_Contoller.getApplicantDetailsForGrantWISER($rootScope.contactId,$rootScope.apaId, function (result, event){
             if(event.status) {
                 debugger;
                 $scope.applicantDetails = result;

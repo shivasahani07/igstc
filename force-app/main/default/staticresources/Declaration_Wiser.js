@@ -5,8 +5,52 @@ angular.module('cp_app').controller('declarationwiser_ctrl', function($scope,$sc
     $scope.decDetails = {};
     $scope.SignDate=new Date($rootScope.signDate);
     $scope.disableUploadButton = true;
+    $scope.proposalStage = false;
+    
+    var maxStringSize = 6000000;
+    var chunkSize = 750000;
 
-    $scope.getDeclarationfields = function(){
+    $scope.getDataFromLocalStorage = function(){
+        debugger;
+        if(localStorage.getItem('candidateId')){
+            $rootScope.candidateId = localStorage.getItem('candidateId');
+        }
+        if(localStorage.getItem('apaId')){
+            $rootScope.apaId = localStorage.getItem('apaId');
+            $scope.apaId = $rootScope.apaId;
+        }
+        if(localStorage.getItem('proposalId')){
+            $rootScope.proposalId = localStorage.getItem('proposalId');
+            $scope.proposalId = $rootScope.proposalId;
+        }
+        if(localStorage.getItem('contactId')){
+            $rootScope.contactId = localStorage.getItem('contactId');
+            $scope.contactId = $rootScope.contactId;
+        }
+    }
+
+    $scope.getDataFromLocalStorage();
+
+    /**
+     * Fetches proposal stage from Apex on page load
+     */
+    $scope.getProposalStage = function(){
+        debugger;
+        if($rootScope.apaId && $rootScope.proposalId){
+            ApplicantPortal_Contoller.getProposalStageUsingProposalId($rootScope.proposalId, $rootScope.apaId, function(result, event){
+                debugger;
+                if(event.status && result){
+                    $scope.proposalStage = (result.proposalStage != 'Draft' && result.proposalStage != null && result.proposalStage != undefined);
+                    $rootScope.proposalStage = $scope.proposalStage;
+                    $scope.$apply();
+                }
+            }, { escape: true });
+        }
+    }
+
+    $scope.getProposalStage();
+
+    $scope.getDeclarationfields =function(){
         debugger;
         ApplicantPortal_Contoller.getDeclarationfields($rootScope.userId, function(result,event){
             debugger;
@@ -47,10 +91,16 @@ $scope.filePreviewHandler = function(fileContent){
         debugger;
         $scope.selectedFile = '';
         $('#file_frame').attr('src', '');
-        ApplicantPortal_Contoller.getContactUserDoc($rootScope.contactId, function (result, event) {
+        console.log('Calling getContactUserDoc with contactId:', $rootScope.contactId, 'proposalId:', $rootScope.proposalId);
+        if(!$rootScope.contactId || !$rootScope.proposalId){
+            console.log('Missing contactId or proposalId');
+            return;
+        }
+        ApplicantPortal_Contoller.getContactUserDoc($rootScope.contactId, $rootScope.proposalId, function (result, event) {
             debugger
             console.log('result return onload :: ');
             console.log(result);
+            console.log('event:', event);
             if (event.status) {
                 $scope.allDocs = result;
                 for(var i=0;i<$scope.allDocs.length;i++){
@@ -59,6 +109,8 @@ $scope.filePreviewHandler = function(fileContent){
                     }
                 }
                 $scope.$apply();
+            } else {
+                console.log('Error in getContactUserDoc:', event.message);
             }
         }, {
             escape: true

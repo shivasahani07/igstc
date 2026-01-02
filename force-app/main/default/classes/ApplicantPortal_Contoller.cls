@@ -2139,7 +2139,7 @@ public static WrapperProposalDet getPECFARProposalDetails(string proposalId){
     }
     
     @RemoteAction
-    public static List<Account> getApplicantDetailsForGrantWISER(string applicantHashCode){
+    public static List<Account> getApplicantDetailsForGrantWISER(string applicantHashCode,String apaId){
         contact conRec = [select name,id,Proposals__c,AccountId,Account.Name from contact where Id =:applicantHashCode limit 1];
         System.debug('conRec-----'+conRec);
         list<Account> applicantList = New list<Account>();
@@ -2187,7 +2187,7 @@ public static WrapperProposalDet getPECFARProposalDetails(string proposalId){
             // }
             // system.debug('applicationList::'+applicationList);
             // upsert applicationList;
-            upsert existingGrantList;
+            upsert  ;
             return 'SUCCESS';
             
         }catch(Exception e){

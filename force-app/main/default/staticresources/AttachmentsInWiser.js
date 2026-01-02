@@ -5,33 +5,54 @@ angular.module('cp_app').controller('attachmentWiser_ctrl', function($scope,$sce
     $scope.allDocs={};
     $scope.doc={};
     $scope.allSixDoc={};
-
+    $scope.proposalStage = false;
     
+    var maxStringSize = 6000000;
+    var chunkSize = 750000;
+
 debugger;
 $scope.redirectPageURL=function(URL){
     var link=document.createElement("a");
-    link.id = 'someLink'; //give it an ID!
+    link.id = 'someLink';
     link.href='#/'+URL+'';
     link.click();
 }
 
-
- $scope.getDataFromLocalStorage = function(){
-        debugger;
-        if(localStorage.getItem('candidateId')){
-            $rootScope.candidateId = localStorage.getItem('candidateId');
-        }
-        if(localStorage.getItem('apaId')){
-            $rootScope.apaId = localStorage.getItem('apaId');
-            $scope.apaId = $rootScope.apaId;
-        }
-        if(localStorage.getItem('proposalId')){
-            $rootScope.proposalId = localStorage.getItem('proposalId');
-            $scope.proposalId = $rootScope.proposalId;
-        }
+$scope.getDataFromLocalStorage = function(){
+    debugger;
+    if(localStorage.getItem('candidateId')){
+        $rootScope.candidateId = localStorage.getItem('candidateId');
     }
+    if(localStorage.getItem('apaId')){
+        $rootScope.apaId = localStorage.getItem('apaId');
+        $scope.apaId = $rootScope.apaId;
+    }
+    if(localStorage.getItem('proposalId')){
+        $rootScope.proposalId = localStorage.getItem('proposalId');
+        $scope.proposalId = $rootScope.proposalId;
+    }
+}
 
-    $scope.getDataFromLocalStorage();
+$scope.getDataFromLocalStorage();
+
+/**
+ * Fetches proposal stage from Apex on page load
+ */
+$scope.getProposalStage = function(){
+    debugger;
+    if($rootScope.apaId && $rootScope.proposalId){
+        ApplicantPortal_Contoller.getProposalStageUsingProposalId($rootScope.proposalId, $rootScope.apaId, function(result, event){
+            debugger;
+            if(event.status && result){
+                $scope.proposalStage = (result.proposalStage != 'Draft' && result.proposalStage != null && result.proposalStage != undefined);
+                $rootScope.proposalStage = $scope.proposalStage;
+                $scope.$apply();
+            }
+        }, { escape: true });
+    }
+}
+
+$scope.getProposalStage();
 
 $scope.selectedFile;
 
@@ -114,10 +135,10 @@ $scope.uploadFile = function (type, userDocId, fileId,maxSize,minFileSize) {
     maxFileSize=maxSize;
     if (file != undefined) {
         if (file.size <= maxFileSize) {
-            // if(file.size<minFileSize){
-            //     alert("Your file is too small. Please try again.");
-            //     return;
-            // }
+            if(file.size<minFileSize){
+                // alert("Your file is too small. Please try again.");
+                // return;
+            }
             attachmentName = file.name;
             const myArr = attachmentName.split(".");
             var fileReader = new FileReader();
