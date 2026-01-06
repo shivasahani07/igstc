@@ -6670,7 +6670,7 @@ return null;
         
         try{
             Contact conRec = [SELECT Id,Planned_research_activities_of_the_visit__c,Expected_outcomes__c,Basis_for_choosing_your_paired_member__c,Tentative_plans__c,Tentative_Start_Date__c,Tentative_End_Date__c, Title_Of_Project__c,
-                              Availing_Fellowship__c,Associated_with_IGSTC__c,Give_Fellowship_Details__c,Give_Associated_Details__c,(SELECT Id,Proposals__r.Id,Proposals__r.Campaign__r.Result_Announcement_Date__c,Proposals__r.Campaign__r.Yearly_Call__r.Pecfar_Information_Text__c
+                              Availing_Fellowship__c,Associated_with_IGSTC__c,Give_Fellowship_Details__c,Give_Associated_Details__c,(SELECT Id,Proposals__r.Id,Proposals__r.yearly_Call__r.Result_Announcement_Date__c,Proposals__r.yearly_Call__r.Pecfar_Information_Text__c
                                                                                                                                      FROM Applicant_Proposal_Associations__r WHERE Proposals__r.RecordType_Name__c='PECFAR' LIMIT 1) FROM Contact WHERE Login_Hash_Code__c =: applicantHashCode];
             
             return conRec;

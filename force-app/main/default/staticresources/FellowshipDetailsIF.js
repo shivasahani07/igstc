@@ -6,6 +6,7 @@ angular.module('cp_app').controller('FellowshipDetailsIF_Ctrl', function($scope,
     // $scope.objIndFell={};
     $scope.accDetails = {};
     $rootScope.proposalId;
+    $rootScope.IFcountry;
     $scope.siteURL = siteURL;
     $scope.objRtf=[{charCount:0,maxCharLimit:250,errorStatus:false}];
     $scope.accountDetails = {}
@@ -19,6 +20,11 @@ angular.module('cp_app').controller('FellowshipDetailsIF_Ctrl', function($scope,
     if (localStorage.getItem('apaId')) {
         $rootScope.apaId = localStorage.getItem('apaId');
         console.log('Loaded apaId from localStorage:', $rootScope.apaId);
+    }
+
+    if (localStorage.getItem('IFcountry')) {
+        $rootScope.IFcountry = localStorage.getItem('IFcountry');
+        console.log('Loaded IFcountry from localStorage:', $rootScope.IFcountry);
     }
     
 $scope.callRTF=function(){
@@ -114,6 +120,7 @@ $scope.callRTF=function(){
           }
           if(result.BillingCountry != undefined || result.BillingCountry != ""){
             result.BillingCountry = result.BillingCountry ? result.BillingCountry.replace(/&amp;/g,'&').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('lt;','<').replaceAll('&gt;','>').replaceAll('gt;','>').replaceAll('&amp;','&').replaceAll('amp;','&').replaceAll('&quot;','\'') : result.BillingCountry;
+            
           }
           if(result.BillingState != undefined || result.BillingState != ""){
             result.BillingState = result.BillingState ? result.BillingState.replace(/&amp;/g,'&').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('lt;','<').replaceAll('&gt;','>').replaceAll('gt;','>').replaceAll('&amp;','&').replaceAll('amp;','&').replaceAll('&quot;','\'') : result.BillingState;
@@ -128,7 +135,7 @@ $scope.callRTF=function(){
             result.Organisation_Posrt__c = result.Organisation_Posrt__c ? result.Organisation_Posrt__c.replace(/&amp;/g,'&').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('lt;','<').replaceAll('&gt;','>').replaceAll('gt;','>').replaceAll('&amp;','&').replaceAll('amp;','&').replaceAll('&quot;','\'') : result.Organisation_Posrt__c;
           }
           $scope.accDetails = result;
-          $scope.accDetails.BillingCountry = 'Germany';
+          //$scope.accDetails.BillingCountry = 'Germany';
 
             if($scope.accDetails.BillingCountry == 'India'){
                 $scope.accDetails.stateList = $scope.indianStates;
@@ -137,7 +144,13 @@ $scope.callRTF=function(){
             }
         $scope.$apply();
         }
-        $scope.accDetails.BillingCountry = 'Germany';
+       // $scope.accDetails.BillingCountry = 'Germany';
+       if( $rootScope.IFcountry=='India'){
+            $scope.accDetails.BillingCountry = 'Germany';
+          }
+          else{
+            $scope.accDetails.BillingCountry = 'India';
+          }
          $scope.$apply();
       },{escape: true}
       )

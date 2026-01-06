@@ -925,26 +925,203 @@ public string saveApplicantPortalWiser(String loginHashCode, Contact con){
         }
    }
 
+    public static String insertHostProjectDetails(Application_Proposal__c hostDetails, String proposalId, String candidateId, String yearlyCallId, Integer sDate, Integer sMonth, Integer sYear, Integer eDate, Integer eMonth, Integer eYear){
+        if(!String.isBlank(proposalId)){
+ 
+                Application_Proposal__c proposalRec = [
+                    SELECT Id, Host_Abstract_Of_Project__c, Host_Project_Title__c, Host_Funding_Source__c, 
+                    Actual_Application_End_Date__c, Broad_area_of_research__c
+                    FROM Application_Proposal__c
+                    WHERE Id = :proposalId
+                    LIMIT 1
+                ];
 
-   public static String insertHostProjectDetails(Application_Proposal__c hostDetails, integer sDate, integer sMonth, integer sYear, integer eDate, integer eMonth, integer eYear){
-    system.debug('hostDetails ::'+hostDetails);
-    system.debug('sDate ::'+sDate);
-    if(sDate == 0 && sMonth == 0 && sYear == 0){
+                proposalRec.Host_Project_Title__c = hostDetails.Host_Project_Title__c;
+                proposalRec.Host_Abstract_Of_Project__c = hostDetails.Host_Abstract_Of_Project__c;
+                proposalRec.Broad_area_of_research__c = hostDetails.Broad_area_of_research__c;
 
-    }else{
-        hostDetails.Actual_Application_Start_Date__c = Date.newInstance(sYear,sMonth,sDate);
+                upsert proposalRec;
+                return 'SUCCESS';
+        }
+        return 'proposalId doesen\'t exists';
     }
+   // ------------------------------------- WISER METHOD TO CREATE PROPOSAL ----------------------------------------- //
+   /*
+    public static IndustrialFellowshipHelper.ProposalAndAPAWrapper insertHostProjectDetails(Application_Proposal__c hostDetails, String proposalId, String candidateId, String yearlyCallId, Integer sDate, Integer sMonth, Integer sYear, Integer eDate, Integer eMonth, Integer eYear){
+        try {
+            System.debug(' ================= IndustrialFellowshipHelper.insertHostProjectDetails() ================== ');
 
-    if(eDate == 0 && eMonth == 0 && eYear == 0){
+            System.debug('hostDetails :: ' + hostDetails);
+            System.debug('sDate :: ' + sDate);
 
-    }else{
-        hostDetails.Actual_Application_End_Date__c = Date.newInstance(eYear,eMonth,eDate);
+            List<Contact> conList = [
+                SELECT Id, Login_Hash_Code__c
+                FROM Contact
+                WHERE Login_Hash_Code__c = :candidateId
+            ];
+
+            Set<Id> conIds = new Set<Id>();
+            for(Contact conRecord : conList){
+                conRecord.Proposals__c = null;
+                conIds.add(conRecord.Id);
+            }
+
+            Applicant_Proposal_Association__c primaryAPA;
+            Application_Proposal__c proposalRec;
+            ProposalAndAPAWrapper datawrapper = new ProposalAndAPAWrapper();
+
+            // =================================================
+            // CASE 1: PROPOSAL EXISTS
+            // =================================================
+            if(!String.isBlank(proposalId)){
+ 
+                proposalRec = [
+                    SELECT Id, Host_Abstract_Of_Project__c, Host_Project_Title__c, Host_Funding_Source__c, 
+                    Actual_Application_End_Date__c, Broad_area_of_research__c
+                    FROM Application_Proposal__c
+                    WHERE Id = :proposalId
+                    LIMIT 1
+                ];
+
+                proposalRec.Host_Project_Title__c = hostDetails.Host_Project_Title__c;
+                proposalRec.Host_Abstract_Of_Project__c = hostDetails.Host_Abstract_Of_Project__c;
+                proposalRec.Broad_area_of_research__c = hostDetails.Broad_area_of_research__c;
+
+                upsert proposalRec;
+ 
+                // Find Primary APA
+                for(Applicant_Proposal_Association__c apa : [
+                    SELECT Id, Contact__c, Contact__r.Is_Primary__c
+                    FROM Applicant_Proposal_Association__c
+                    WHERE Proposals__c = :proposalId
+                    AND Contact__c IN :conIds
+                ]){
+                    if(apa.Contact__r.Is_Primary__c == true){
+                        primaryAPA = apa;
+                        break;
+                    }
+                }
+            }
+            // =================================================
+            // CASE 2: PROPOSAL DOES NOT EXIST
+            // =================================================
+            else{
+ 
+                String workshopRecordTypeId = Schema.SObjectType.Application_Proposal__c
+                    .getRecordTypeInfosByName()
+                    .get('WISER')
+                    .getRecordTypeId();
+ 
+                Campaign camp = [
+                    SELECT Id
+                    FROM Campaign
+                    WHERE Name = 'WISER'
+                    LIMIT 1
+                ];
+
+                // if(sDate == 0 && sMonth == 0 && sYear == 0){
+
+                // }else{
+                //     proposalRec.Actual_Application_Start_Date__c = Date.newInstance(sYear,sMonth,sDate);
+                // }
+
+                // if(eDate == 0 && eMonth == 0 && eYear == 0){
+
+                // }else{
+                //     proposalRec.Actual_Application_End_Date__c = Date.newInstance(eYear,eMonth,eDate);
+                // }
+ 
+                proposalRec = new Application_Proposal__c(
+                    Title_Of__c = 'WISER',
+                    RecordTypeId = workshopRecordTypeId,
+                    Campaign__c = camp.Id,
+                    yearly_Call__c = yearlyCallId,
+                    Host_Abstract_Of_Project__c = hostDetails.Host_Abstract_Of_Project__c,
+                    Host_Project_Title__c = hostDetails.Host_Project_Title__c
+                    //Actual_Application_Start_Date__c = Date.newInstance(sYear,sMonth,sDate)
+                );
+                upsert proposalRec;
+ 
+                List<Applicant_Proposal_Association__c> apaList = new List<Applicant_Proposal_Association__c>();
+                for(Contact c : conList){
+                    apaList.add(new Applicant_Proposal_Association__c(
+                        Contact__c = c.Id,
+                        Proposals__c = proposalRec.Id
+                    ));
+                }
+                insert apaList;
+ 
+                // Find Primary APA
+                for(Applicant_Proposal_Association__c apa : [
+                    SELECT Id, Contact__r.Is_Primary__c
+                    FROM Applicant_Proposal_Association__c
+                    WHERE Proposals__c = :proposalRec.Id
+                ]){
+                    if(apa.Contact__r.Is_Primary__c == true){
+                        primaryAPA = apa;
+                        break;
+                    }
+                }
+            }
+ 
+            // ---------------- WRAPPER RESPONSE ----------------
+            datawrapper.proposalId = proposalRec.Id;
+            datawrapper.proposal   = proposalRec;
+            datawrapper.apa        = primaryAPA;
+ 
+            return datawrapper;
+ 
+        } catch(Exception e){
+            System.debug('Line Number : ' + e.getLineNumber() + ' Error Message : ' +  e.getMessage());
+            throw new AuraHandledException(
+                e.getMessage() + ' @ line ' + e.getLineNumber()
+            );
+        }
+
+    
+        // if(sDate == 0 && sMonth == 0 && sYear == 0){
+
+        // }else{
+        //     hostDetails.Actual_Application_Start_Date__c = Date.newInstance(sYear,sMonth,sDate);
+        // }
+
+        // if(eDate == 0 && eMonth == 0 && eYear == 0){
+
+        // }else{
+        //     hostDetails.Actual_Application_End_Date__c = Date.newInstance(eYear,eMonth,eDate);
+        // }
+        // system.debug('@@@ ::'+hostDetails);
+        // upsert hostDetails;
+        // return 'SUCCESS';
+    }  
+
+    public class ProposalAndAPAWrapper {
+        public String proposalId { get; set; }
+        public Application_Proposal__c proposal { get; set; }
+        public Applicant_Proposal_Association__c apa { get; set; }
     }
-    system.debug('@@@ ::'+hostDetails);
-    upsert hostDetails;
-    return 'SUCCESS';
+    */
 
-}
+
+/*    public static String insertHostProjectDetails(Application_Proposal__c hostDetails, integer sDate, integer sMonth, integer sYear, integer eDate, integer eMonth, integer eYear){
+        system.debug('hostDetails ::'+hostDetails);
+        system.debug('sDate ::'+sDate);
+        if(sDate == 0 && sMonth == 0 && sYear == 0){
+
+        }else{
+            hostDetails.Actual_Application_Start_Date__c = Date.newInstance(sYear,sMonth,sDate);
+        }
+
+        if(eDate == 0 && eMonth == 0 && eYear == 0){
+
+        }else{
+            hostDetails.Actual_Application_End_Date__c = Date.newInstance(eYear,eMonth,eDate);
+        }
+        system.debug('@@@ ::'+hostDetails);
+        upsert hostDetails;
+        return 'SUCCESS';
+
+    } */
 
 //consortia start
 public String upsertConsortiaAccountDet(Account instanceAcc, String projectId){

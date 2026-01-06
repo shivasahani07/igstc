@@ -11,7 +11,7 @@ public without sharing class WorkshopController {
     // public string degree  {get;set;}
     public string specialization  {get;set;}
      
-    public string presentingWorkshop  {get;set;}
+    public string presentingWorkshop  {get;set;} 
     public string currencyType2  {get;set;} 
     public string stage  {get;set;}
     public String ApplicantPortalSiteURL {get;set;}
@@ -1838,8 +1838,8 @@ return Proposal_Controller.insertParticipants(allParticipantDetails);
     }
     
     @RemoteAction
-    public static Contact getCVDetailsForWiserApplicant(string candidateId){
-        return Proposal_Controller.getCVDetailsForWiserApplicant(candidateId);
+    public static Contact getCVDetailsForWiserApplicant(string candidateId,String apaId){
+        return Proposal_Controller.getCVDetailsForWiserApplicant(candidateId, apaId);
     }
     @RemoteAction
     public static WrapperProposalDet getPECFARProposalDetails(string ProposalId){

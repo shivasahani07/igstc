@@ -68,10 +68,18 @@
         <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular-sanitize.min.js'></script>
         <script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.1.2/textAngular.min.js'></script>
         <script src="{!$Resource.datetimepicker}"></script>
+
+
         <c:Controllers />
         <!-- Load ApplicantPortal.js after Angular is loaded via Controllers component -->
         <apex:includeScript value="{!$Resource.ApplicantPortal}" />
         <style> 
+<link
+  href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&amp;family=Work+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap"
+  rel="stylesheet"
+/>
+
+        
         
 /* body {
     background: #F5F5F5;
@@ -153,7 +161,8 @@
 
         body {
             margin: 0;
-            font-family: 'Segoe UI', sans-serif;
+            /* font-family: 'Segoe UI', sans-serif; */
+            font-family: "Nunito Sans", sans-serif;
             background-color: #f6f6fb;
             height: 100vh;
             display: flex;
@@ -209,6 +218,7 @@
             padding: 30px;
             overflow-y: auto;
             scrollbar-width: none;
+            background-color: #F9F9FB;
         }
 
         .header {
@@ -230,7 +240,7 @@
             right: 0;
             z-index: 1000;
             background-color: #fff;
-            padding: 15px 30px;
+            padding: 11px 30px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             display: flex;
             align-items: center;
@@ -321,9 +331,11 @@
         }
 
         h2 {
-            color: #4b0082;
+            color: #4F1BA3;
             margin-top: 20px;
-            font-size: 22px;
+            font-size: 24px;
+            font-weight: 700;
+
         }
 
         .card-grid {
@@ -335,44 +347,85 @@
 
         .program-card {
             background: white;
-            border-radius: 10px;
+            border-radius: 24px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
             width: calc(33.33% - 13.33px);
-            padding: 20px;
+            padding: 16px;
             display: flex;
             flex-direction: column;
+        }
+
+        .program-card-center{
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .program-head{
+            width: 100%;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
         }
 
         .program-icon {
             font-size: 20px;
             color: white;
             background-color: #4b0082;
-            width: 38px;
-            height: 38px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 10px;
+            /* margin-bottom: 10px; */
         }
 
         .program-title {
-            font-weight: 600;
-            color: #333;
-            font-size: 16px;
-            margin-bottom: 5px;
+            font-weight: 700;
+            color: Black;
+            font-size: 24px;
+            /* margin-bottom: 5px; */
+            margin-left: 16px;
+        }
+
+        .program-title2{
+            text-align: center;
+            margin: 12px 0;
         }
 
         .program-deadline {
-            font-size: 13px;
+            font-size: 16px;
             color: #d32f2f;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
-        .program-desc {
-            font-size: 14px;
-            color: #555;
-            margin-bottom: 15px;
+        .program-deadline2{
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .program-desc,  .program-proposal{
+            font-size: 12px;
+            font-weight: 600;
+
+            color: Black;
+            margin-bottom: 8px;
+        }
+
+        .program-desc{
+            margin-bottom: 16px;
+            text-indent: -12px;
+            margin-left: 24px;
+        }
+
+        .fa-id-card{
+            color: #155DFC;
+            margin-right: 8px;
+        }
+
+        .fa-file-text{
+            color: #9747FF;
+            margin-right: 7px;
         }
 
         .btn-container {
@@ -390,12 +443,29 @@
             background-color: white;
             color: #4b0082;
             transition: 0.3s;
+            
         }
 
         .btn:hover {
             background-color: #4b0082;
             color: white;
         }
+
+        .apply-btn{
+            background-color: #4F1BA3;
+            color: white;
+            transition: .2s opacity;
+            /* max-width: 106px; */
+        }
+
+        .know-btn, .apply-btn{
+            width: 106px;
+        }
+
+        .apply-btn:hover{
+            opacity: .9;
+        }
+
         .btn[disabled],
         .btn.ng-disabled {
             opacity: 0.5;
@@ -699,7 +769,10 @@
         <div class="main-content">
              <!-- Added By Karthik -->
                 <div ng-if="yearList.length > 0" style="margin-bottom: 10px; margin-top: 10px;">
-                    <label style="margin-right: 8px; font-weight: 500;">Year:</label>
+                    <label style="margin-right: 8px; font-weight: 700; color: #4F1BA3; font-size: 24px;">
+  Call Year:
+</label>
+
                     <select ng-model="selectedYear"
                         ng-options="y.Id as y.Name for y in yearList"
                         ng-change="onYearChange(selectedYear)"
@@ -712,20 +785,23 @@
                 <h2 ng-if="appliedPrograms.length > 0">In Progress</h2>
                 <div class="card-grid">
                     <div class="program-card" ng-repeat="p in appliedPrograms">
-                        <div class="program-icon">
-                            <i class="{{p.icon}}"></i>
+                        <div class="program-head">
+                            <div class="program-icon">
+                               <i class="{{p.icon}}"></i>
+                           </div>
+                            <div class="program-title">{{p.name}}</div>
                         </div>
-                        <div class="program-title">{{p.name}}</div>
-                        <div class="program-title">{{p.PropName}}</div>
-                        <div class="program-deadline">Application Deadline: {{p.deadline}}</div>
-                        <div class="program-desc">{{p.desc}}</div>
+
+                        <div class="program-deadline">Application Deadline: {{p.deadline}}</div>  
+                        <div class="program-proposal"><i class="fa fa-id-card" aria-hidden="true"></i><span class="program-proposal-text">Proposal No: </span>{{p.PropName}}</div>
+                        <div class="program-desc"><i class="fa fa-file-text" aria-hidden="true"></i><span class="program-desc-text"> Title: </span>{{p.desc}}</div>
                         <div class="btn-container">
-                            <div class="btn" ng-click="redirectToForm(p)">View</div>
+                            <div class="btn" ng-click="redirectToForm(p)">Edit</div>
                             <!-- <div class="btn">Know More</div> -->
                         </div>
                     </div>
                 </div>
-                <h2 ng-if="allPrograms.length > 0">Call Year</h2>
+                <h2 ng-if="allPrograms.length > 0">Programs Offered By IGSTC in year</h2>
                 <!-- Added By Karthik -->
                 <!-- <div ng-if="yearList.length > 0" style="margin-bottom: 10px;">
                     <label style="margin-right: 8px;">Year:</label>
@@ -741,26 +817,26 @@
                 </div> -->
 
                 <div class="card-grid">
-                    <div class="program-card" ng-repeat="p in allPrograms">
-                        <div class="program-icon">
+                    <div class="program-card program-card-center" ng-repeat="p in allPrograms">
+                        <div class="program-icon"> 
                             <i class="{{p.icon}}"></i>
                         </div>
-                        <div class="program-title">{{p.name}}</div>
+                        <div class="program-title program-title2">{{p.name}}</div>
                         <!-- <div class="program-title">{{p.yearlyCallId}}</div> -->
                         <!-- <div class="program-title">{{p.yearlyCall}}</div> -->
-                        <div class="program-deadline">Application Deadline: {{p.deadline}}</div>
-                        <div class="program-desc">{{p.desc}}</div>
+                        <div class="program-deadline program-deadline2">Application Deadline: <br/> {{p.deadline}}</div>
+                        <!-- <div class="program-desc">{{p.desc}}</div> -->
                         <!-- <div class="btn-container">
                             <div class="btn" ng-click="redirectToForm(p)">Apply</div>
                             <div class="btn">Know More</div>
                         </div> -->
                         <div class="btn-container">
-                            <div class="btn"
+                            <div class="btn apply-btn"
                                 ng-click="!p.isExpired && redirectToForm(p)"
                                 ng-disabled="p.isExpired">
                                 Apply
                             </div>
-                            <div class="btn">Know More</div>
+                            <div class="btn know-btn">Know More</div>
                         </div>
 
 

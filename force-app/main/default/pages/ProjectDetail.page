@@ -561,12 +561,516 @@ type="button" ng-disabled="isUploading"> -->
                         </div>
                     </div>
 
-                    <div class="row my-5" ng-if="!proposalStage">
-                        <div class="col-md-12">
-                            <button class="blue-btn float-end" id="btnSubmit" ng-click="saveDetails()" type="button">
-                                <i class="fa-solid fa-check me-2"></i>Save and Next</button>
-                            <button class="btn btn-secondary float-end me-2" style="padding: 8px 20px !important;font-size: 16px !important;" ng-click="redirectPageURL('Financial_Overview')"
-                                type="button">Previous</button>
+
+                    <!-- ###################### NEW FIELDS ADDED HERE - FOR STAGE 1 ###################### -->
+                    <div class="mb-4" ng-show="stage === '1st Stage'">
+                        <div class=" card h-100 m-5 ">
+                            <div class="card-header ">
+                                <h2 class="p-3 ">
+                                    <b>Project Details - Stage 1</b>
+                                </h2>
+                            </div>
+                            <div class="col-md-12 mt-5 ">
+                                <label class="pb-3 color-theme ">
+                                    <b>Main objectives of the research approach (max. chars 3000)
+                                        <span class="required-asterisk text-danger ">*</span>
+                                    </b>
+                                </label>
+                                <div>
+                                    <small class="label-rtf ">
+                                        <b>To use below RTF box more efficiently, make sure you write your content in word document
+                                            first and then copy paste here
+                                            <br/> Please use Calibri pt 11 throughout the document, pt 9 for citations. Do NOT
+                                            change margins.
+                                        </b>
+                                    </small>
+                                </div>
+                                <div id="panelsStayOpen-collapseOne " class="accordion-collapse collapse show
+                        " aria-labelledby="panelsStayOpen-headingOne ">
+                                    <ng-ckeditor ng-model="proposalFieldsDetails.Research_Approach_Objectives__c
+                        " ng-change="readCharacter(proposalFieldsDetails.Research_Approach_Objectives__c,0, 3000) " name="ckSummary2 "
+                                        id="ckSummary " ng-config="config " maxlength="3000 "></ng-ckeditor>
+                                    <span>Total characters : {{objRtf[0].charCount}}</span>
+                                    <span class="text-danger " ng-if="objRtf[0].errorStatus ">maximum character limit is 3000</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mt-5 ">
+                                <label class="pb-3 color-theme ">
+                                    <b>Current state of the art in the field (max. chars 3000)
+                                        <span class="required-asterisk text-danger ">*</span>
+                                    </b>
+                                </label>
+                                <div>
+                                    <small class="label-rtf ">
+                                        <b>To use below RTF box more efficiently, make sure you write your content in word document
+                                            first and then copy paste here
+                                            <br/> Please use Calibri pt 11 throughout the document, pt 9 for citations. Do NOT
+                                            change margins.
+                                        </b>
+                                    </small>
+                                </div>
+                                <div id="panelsStayOpen-collapseOne " class="accordion-collapse collapse show
+                        " aria-labelledby="panelsStayOpen-headingOne ">
+                                    <ng-ckeditor ng-model="proposalFieldsDetails.Current_State_Of_The_Art__c
+                        " ng-change="readCharacter(proposalFieldsDetails.Current_State_Of_The_Art__c,1, 3000) " name="ckSummary2 "
+                                        id="ckSummary " ng-config="config " maxlength="3000 "></ng-ckeditor>
+                                    <span>Total characters : {{objRtf[1].charCount}}</span>
+                                    <span class="text-danger " ng-if="objRtf[1].errorStatus ">maximum character limit is 3000</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mt-5 ">
+                                <label class="pb-3 color-theme ">
+                                    <b>Project description including work packages/work distribution amongst partners. Comment
+                                        on starting TRL and expected TRL at end of the project (max. chars 12000)
+                                        <span class="required-asterisk text-danger ">*</span>
+                                    </b>
+                                </label>
+                                <div>
+                                    <small class="label-rtf ">
+                                        <b>To use below RTF box more efficiently, make sure you write your content in word document
+                                            first and then copy paste here
+                                            <br/> Please use Calibri pt 11 throughout the document, pt 9 for citations. Do NOT
+                                            change margins.
+                                        </b>
+                                    </small>
+                                </div>
+                                <div id="panelsStayOpen-collapseOne " class="accordion-collapse collapse show
+                        " aria-labelledby="panelsStayOpen-headingOne ">
+                                    <ng-ckeditor ng-model="proposalFieldsDetails.Project_Description__c " ng-change="readCharacter(proposalFieldsDetails.Project_Description__c,2,
+                        12000) " name="ckSummary2 " id="ckSummary " ng-config="config " maxlength="12000 "></ng-ckeditor>
+                                    <span>Total characters : {{objRtf[2].charCount}}</span>
+                                    <span class="text-danger " ng-if="objRtf[2].errorStatus ">maximum character limit is 12000</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mt-5 ">
+                                <label class="pb-3 color-theme ">
+                                    <b>Expected deliverables as bullet points (max. chars 3000)
+                                        <span class="required-asterisk text-danger ">*</span>
+                                    </b>
+                                </label>
+                                <div>
+                                    <small class="label-rtf ">
+                                        <b>To use below RTF box more efficiently, make sure you write your content in word document
+                                            first and then copy paste here
+                                            <br/> Please use Calibri pt 11 throughout the document, pt 9 for citations. Do NOT
+                                            change margins.
+                                        </b>
+                                    </small>
+                                </div>
+                                <div id="panelsStayOpen-collapseOne " class="accordion-collapse collapse show
+                        " aria-labelledby="panelsStayOpen-headingOne ">
+                                    <ng-ckeditor ng-model="proposalFieldsDetails.Expected_Deliverables__c " ng-change="readCharacter(proposalFieldsDetails.Expected_Deliverables__c,3,
+                        3000) " name="ckSummary2 " id="ckSummary " ng-config="config " maxlength="3000 "></ng-ckeditor>
+                                    <span>Total characters : {{objRtf[3].charCount}}</span>
+                                    <span class="text-danger " ng-if="objRtf[3].errorStatus ">maximum character limit is 3000</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mt-5 ">
+                                <label class="pb-3 color-theme ">
+                                    <b>Reasons for and benefits of cooperation - including previous collaboration with the partner
+                                        country (max. chars 6000)
+                                        <span class="required-asterisk text-danger ">*</span>
+                                    </b>
+                                </label>
+                                <div>
+                                    <small class="label-rtf ">
+                                        <b>To use below RTF box more efficiently, make sure you write your content in word document
+                                            first and then copy paste here
+                                            <br/> Please use Calibri pt 11 throughout the document, pt 9 for citations. Do NOT
+                                            change margins.
+                                        </b>
+                                    </small>
+                                </div>
+                                <div id="panelsStayOpen-collapseOne " class="accordion-collapse collapse show
+                        " aria-labelledby="panelsStayOpen-headingOne ">
+                                    <ng-ckeditor ng-model="proposalFieldsDetails.Reasons_For_And_Benefits_Of_Cooperation__c
+                        " ng-change="readCharacter(proposalFieldsDetails.Reasons_For_And_Benefits_Of_Cooperation__c,4, 6000) "
+                                        name="ckSummary2 " id="ckSummary " ng-config="config " maxlength="6000 "></ng-ckeditor>
+                                    <span>Total characters : {{objRtf[4].charCount}}</span>
+                                    <span class="text-danger " ng-if="objRtf[4].errorStatus ">maximum character limit is 6000</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mt-5 ">
+                                <label class="pb-3 color-theme ">
+                                    <b>Equipment (if equipment to be purchased, please justify briefly the need) (max. chars
+                                        3000)
+                                        <span class="required-asterisk text-danger ">*</span>
+                                    </b>
+                                </label>
+                                <div>
+                                    <small class="label-rtf ">
+                                        <b>To use below RTF box more efficiently, make sure you write your content in word document
+                                            first and then copy paste here
+                                            <br/> Please use Calibri pt 11 throughout the document, pt 9 for citations. Do NOT
+                                            change margins.
+                                        </b>
+                                    </small>
+                                </div>
+                                <div id="panelsStayOpen-collapseOne " class="accordion-collapse coll-apse show
+                        " aria-labelledby="panelsStayOpen-headingOne ">
+                                    <ng-ckeditor ng-model="proposalFieldsDetails.Equipment__c " ng-change="readCharacter(proposalFieldsDetails.Equipment__c,5,
+                        3000) " name="ckSummary2 " id="ckSummary " ng-config="config " maxlength="3000 "></ng-ckeditor>
+                                    <span>Total characters : {{objRtf[5].charCount}}</span>
+                                    <span class="text-danger " ng-if="objRtf[5].errorStatus ">maximum character limit is 3000</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mt-5 ">
+                                <label class="pb-3 color-theme ">
+                                    <b>Brief profile of each partner institution with emphasis on research activities (max.
+                                        chars 3000)
+                                        <span class="required-asterisk text-danger ">*</span>
+                                    </b>
+                                </label>
+                                <div>
+                                    <small class="label-rtf ">
+                                        <b>To use below RTF box more efficiently, make sure you write your content in word document
+                                            first and then copy paste here
+                                            <br/> Please use Calibri pt 11 throughout the document, pt 9 for citations. Do NOT
+                                            change margins.
+                                        </b>
+                                    </small>
+                                </div>
+                                <div id="panelsStayOpen-collapseOne " class="accordion-collapse collapse show
+                        " aria-labelledby="panelsStayOpen-headingOne ">
+                                    <ng-ckeditor ng-model="proposalFieldsDetails.Brief_Statement_of_Purpose__c
+                        " ng-change="readCharacter(proposalFieldsDetails.Brief_Statement_of_Purpose__c,6, 3000) " name="ckSummary2 "
+                                        id="ckSummary " ng-config="config " maxlength="3000 "></ng-ckeditor>
+                                    <span>Total characters : {{objRtf[6].charCount}}</span>
+                                    <span class="text-danger " ng-if="objRtf[6].errorStatus ">maximum character limit is 3000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ###################### NEW FIELDS ADDED HERE - FOR STAGE 2 ###################### -->
+                    <div class="mb-4" ng-show="stage === '2nd Stage'">
+                        <div class="card h-100 m-5 ">
+                            <div class="card-header ">
+                                <h2 class="p-3 ">
+                                    <b>Project Details - Stage 2</b>
+                                </h2>
+                            </div>
+
+                            <div class="col-md-12 mt-5 ">
+                                <label class="pb-3 color-theme ">
+                                    <b>Main objectives of the research approach (max. chars 4000)
+                                        <span class="required-asterisk text-danger ">*</span>
+                                    </b>
+                                </label>
+                                <div>
+                                    <small class="label-rtf ">
+                                        <b>To use below RTF box more efficiently, make sure you write your content in word document
+                                            first and then copy paste here
+                                            <br/> Please use Calibri pt 11 throughout the document, pt 9 for citations. Do NOT
+                                            change margins.
+                                        </b>
+                                    </small>
+                                </div>
+                                <div id="panelsStayOpen-collapseOne " class="accordion-collapse collapse show
+                        " aria-labelledby="panelsStayOpen-headingOne ">
+                                    <ng-ckeditor ng-model="proposalFieldsDetails.Main_Objective_Research_Approach_S2__c
+                        " ng-change="readCharacter(proposalFieldsDetails.Main_Objective_Research_Approach_S2__c,0, 4000) "
+                                        name="ckSummary2 " id="ckSummary " ng-config="config " maxlength="4000 "></ng-ckeditor>
+                                    <span>Total characters : {{objRtf[0].charCount}}</span>
+                                    <span class="text-danger " ng-if="objRtf[0].errorStatus ">maximum character limit is 4000</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mt-5 ">
+                                <label class="pb-3 color-theme ">
+                                    <b>Current state of the art in the field (max. chars 6000)
+                                        <span class="required-asterisk text-danger ">*</span>
+                                    </b>
+                                </label>
+                                <div>
+                                    <small class="label-rtf ">
+                                        <b>To use below RTF box more efficiently, make sure you write your content in word document
+                                            first and then copy paste here
+                                            <br/> Please use Calibri pt 11 throughout the document, pt 9 for citations. Do NOT
+                                            change margins.
+                                        </b>
+                                    </small>
+                                </div>
+                                <div id="panelsStayOpen-collapseOne " class="accordion-collapse collapse show
+                        " aria-labelledby="panelsStayOpen-headingOne ">
+                                    <ng-ckeditor ng-model="proposalFieldsDetails.Current_State_Of_The_Art_Stage_2__c
+                        " ng-change="readCharacter(proposalFieldsDetails.Current_State_Of_The_Art_Stage_2__c,1, 6000) "
+                                        name="ckSummary2 " id="ckSummary " ng-config="config " maxlength="6000 "></ng-ckeditor>
+                                    <span>Total characters : {{objRtf[1].charCount}}</span>
+                                    <span class="text-danger " ng-if="objRtf[1].errorStatus ">maximum character limit is 6000</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mt-5 ">
+                                <label class="pb-3 color-theme ">
+                                    <b>Detailed project description (max. chars 20000)
+                                        <span class="required-asterisk text-danger ">*</span>
+                                    </b>
+                                    <i>(Work packages indicating the involvement of the partners in each work package/ indicate
+                                        the WP Leader using bold letters)
+                                    </i>
+                                </label>
+                                <div>
+                                    <small class="label-rtf ">
+                                        <b>To use below RTF box more efficiently, make sure you write your content in word document
+                                            first and then copy paste here
+                                            <br/> Please use Calibri pt 11 throughout the document, pt 9 for citations. Do NOT
+                                            change margins.
+                                        </b>
+                                    </small>
+                                </div>
+                                <div id="panelsStayOpen-collapseOne " class="accordion-collapse collapse show
+                        " aria-labelledby="panelsStayOpen-headingOne ">
+                                    <ng-ckeditor ng-model="proposalFieldsDetails.Project_Description_Stage_2__c
+                        " ng-change="readCharacter(proposalFieldsDetails.Project_Description_Stage_2__c,2, 20000) " name="ckSummary2 "
+                                        id="ckSummary " ng-config="config " maxlength="20000 "></ng-ckeditor>
+                                    <span>Total characters : {{objRtf[2].charCount}}</span>
+                                    <span class="text-danger " ng-if="objRtf[2].errorStatus ">maximum character limit is 20000</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mt-5 ">
+                                <label class="pb-3 color-theme ">
+                                    <b>Risk assessment &amp; mitigation strategy and Criteria for abandoning the project (max.
+                                        chars 3000)
+                                        <span class="required-asterisk text-danger ">*</span>
+                                    </b>
+                                    <i>
+                                        (please comment on any technical, financial, regulatory and/or operational risks that might occur so that a continuation
+                                        of the project would make no sense)
+                                    </i>
+                                </label>
+                                <div>
+                                    <small class="label-rtf ">
+                                        <b>To use below RTF box more efficiently, make sure you write your content in word document
+                                            first and then copy paste here
+                                            <br/> Please use Calibri pt 11 throughout the document, pt 9 for citations. Do NOT
+                                            change margins.
+                                        </b>
+                                    </small>
+                                </div>
+                                <div id="panelsStayOpen-collapseOne " class="accordion-collapse collapse show
+                        " aria-labelledby="panelsStayOpen-headingOne ">
+                                    <ng-ckeditor ng-model="proposalFieldsDetails.Risk_Assessment_And_Migration_Strategy__c
+                        " ng-change="readCharacter(proposalFieldsDetails.Risk_Assessment_And_Migration_Strategy__c,3, 3000) "
+                                        name="ckSummary2 " id="ckSummary " ng-config="config " maxlength="3000 "></ng-ckeditor>
+                                    <span>Total characters : {{objRtf[3].charCount}}</span>
+                                    <span class="text-danger " ng-if="objRtf[3].errorStatus ">maximum character limit is 3000</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mt-5 ">
+                                <label class="pb-3 color-theme ">
+                                    <b>Reasons for and benefits of cooperation for each partner (max. chars 3000)
+                                        <span class="required-asterisk text-danger ">*</span>
+                                    </b>
+                                    <i>
+                                        (incl. previous collaboration with the partner country, potential applicability)
+                                    </i>
+                                </label>
+                                <div>
+                                    <small class="label-rtf ">
+                                        <b>To use below RTF box more efficiently, make sure you write your content in word document
+                                            first and then copy paste here
+                                            <br/> Please use Calibri pt 11 throughout the document, pt 9 for citations. Do NOT
+                                            change margins.
+                                        </b>
+                                    </small>
+                                </div>
+                                <div id="panelsStayOpen-collapseOne " class="accordion-collapse collapse show
+                        " aria-labelledby="panelsStayOpen-headingOne ">
+                                    <ng-ckeditor ng-model="proposalFieldsDetails.Reasons_For_And_Benefits_Of_Corp_Stage2__c
+                        " ng-change="readCharacter(proposalFieldsDetails.Reasons_For_And_Benefits_Of_Corp_Stage2__c,4, 3000) "
+                                        name="ckSummary2 " id="ckSummary " ng-config="config " maxlength="3000 "></ng-ckeditor>
+                                    <span>Total characters : {{objRtf[4].charCount}}</span>
+                                    <span class="text-danger " ng-if="objRtf[4].errorStatus ">maximum character limit is 3000</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mt-5 ">
+                                <label class="pb-3 color-theme ">
+                                    <b>Innovative aspects / IP and future potential utilization plan (max. chars 10000)
+                                        <span class="required-asterisk text-danger ">*</span>
+                                    </b>
+                                    <i>
+                                        (please mention any possible conflict of IP issues that might be relevant for the project / please describe precisely where
+                                        the innovation is and the gap you intend to close in respect to existing solutions
+                                        /give a reasonable time horizon within the utilization plan)
+                                    </i>
+                                </label>
+                                <div>
+                                    <small class="label-rtf ">
+                                        <b>To use below RTF box more efficiently, make sure you write your content in word document
+                                            first and then copy paste here
+                                            <br/> Please use Calibri pt 11 throughout the document, pt 9 for citations. Do NOT
+                                            change margins.
+                                        </b>
+                                    </small>
+                                </div>
+                                <div id="panelsStayOpen-collapseOne " class="accordion-collapse collapse show
+                        " aria-labelledby="panelsStayOpen-headingOne ">
+                                    <ng-ckeditor ng-model="proposalFieldsDetails.Innovative_Aspects__c " ng-change="readCharacter(proposalFieldsDetails.Innovative_Aspects__c,5,
+                        10000) " name="ckSummary2 " id="ckSummary " ng-config="config " maxlength="10000 "></ng-ckeditor>
+                                    <span>Total characters : {{objRtf[5].charCount}}</span>
+                                    <span class="text-danger " ng-if="objRtf[5].errorStatus ">maximum character limit is 10000</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mt-5 ">
+                                <label class="pb-3 color-theme ">
+                                    <b>Market assessment of proposed technology/product (max. chars 12000)
+                                        <span class="required-asterisk text-danger ">*</span>
+                                    </b>
+                                    <i>
+                                        (it may include brief survey on similar existing technologies/product, competitiveness, demand-supply, challenges/drawbacks
+                                        and proposed cost-benefit analysis)
+                                    </i>
+                                </label>
+                                <div>
+                                    <small class="label-rtf ">
+                                        <b>To use below RTF box more efficiently, make sure you write your content in word document
+                                            first and then copy paste here
+                                            <br/> Please use Calibri pt 11 throughout the document, pt 9 for citations. Do NOT
+                                            change margins.
+                                        </b>
+                                    </small>
+                                </div>
+                                <div id="panelsStayOpen-collapseOne " class="accordion-collapse collapse show
+                        " aria-labelledby="panelsStayOpen-headingOne ">
+                                    <ng-ckeditor ng-model="proposalFieldsDetails.Market_Assessment_Of_Proposed_Tech__c
+                        " ng-change="readCharacter(proposalFieldsDetails.Market_Assessment_Of_Proposed_Tech__c,6, 12000) "
+                                        name="ckSummary2 " id="ckSummary " ng-config="config " maxlength="12000 "></ng-ckeditor>
+                                    <span>Total characters : {{objRtf[6].charCount}}</span>
+                                    <span class="text-danger " ng-if="objRtf[6].errorStatus ">maximum character limit is 12000</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mt-5 ">
+                                <label class="pb-3 color-theme ">
+                                    <b>Future commercialization plan and expected timeline (max. chars 12000)
+                                        <span class="required-asterisk text-danger ">*</span>
+                                    </b>
+                                </label>
+                                <div>
+                                    <small class="label-rtf ">
+                                        <b>To use below RTF box more efficiently, make sure you write your content in word document
+                                            first and then copy paste here
+                                            <br/> Please use Calibri pt 11 throughout the document, pt 9 for citations. Do NOT
+                                            change margins.
+                                        </b>
+                                    </small>
+                                </div>
+                                <div id="panelsStayOpen-collapseOne " class="accordion-collapse collapse show
+                        " aria-labelledby="panelsStayOpen-headingOne ">
+                                    <ng-ckeditor ng-model="proposalFieldsDetails.Future_Commercialization_Plan__c
+                        " ng-change="readCharacter(proposalFieldsDetails.Future_Commercialization_Plan__c,7, 12000) " name="ckSummary2 "
+                                        id="ckSummary " ng-config="config " maxlength="12000 "></ng-ckeditor>
+                                    <span>Total characters : {{objRtf[7].charCount}}</span>
+                                    <span class="text-danger " ng-if="objRtf[7].errorStatus ">maximum character limit is 12000</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mt-5 ">
+                                <label class="pb-3 color-theme ">
+                                    <b>Data Management and Sharing Protocols (max. chars 5000)
+                                        <span class="required-asterisk text-danger ">*</span>
+                                    </b>
+                                    <i>
+                                        (Please mention how project data will be generated, stored, standardized, shared among partners, and protected, ensuring
+                                        compliance with national/international data policies.)
+                                    </i>
+                                </label>
+                                <div>
+                                    <small class="label-rtf ">
+                                        <b>To use below RTF box more efficiently, make sure you write your content in word document
+                                            first and then copy paste here
+                                            <br/> Please use Calibri pt 11 throughout the document, pt 9 for citations. Do NOT
+                                            change margins.
+                                        </b>
+                                    </small>
+                                </div>
+                                <div id="panelsStayOpen-collapseOne " class="accordion-collapse collapse show
+                        " aria-labelledby="panelsStayOpen-headingOne ">
+                                    <ng-ckeditor ng-model="proposalFieldsDetails.Data_Management_And_Sharing_Protocols__c
+                        " ng-change="readCharacter(proposalFieldsDetails.Data_Management_And_Sharing_Protocols__c,8, 5000) "
+                                        name="ckSummary2 " id="ckSummary " ng-config="config " maxlength="5000 "></ng-ckeditor>
+                                    <span>Total characters : {{objRtf[8].charCount}}</span>
+                                    <span class="text-danger " ng-if="objRtf[8].errorStatus ">maximum character limit is 5000</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mt-5 ">
+                                <label class="pb-3 color-theme ">
+                                    <b>Involvement of young scientists / research scholars (max. chars 3000)
+                                        <span class="required-asterisk text-danger ">*</span>
+                                    </b>
+                                    <i>
+                                        (what kind of responsibilities will be transferred to young scientist)
+                                    </i>
+                                </label>
+                                <div>
+                                    <small class="label-rtf ">
+                                        <b>To use below RTF box more efficiently, make sure you write your content in word document
+                                            first and then copy paste here
+                                            <br/> Please use Calibri pt 11 throughout the document, pt 9 for citations. Do NOT
+                                            change margins.
+                                        </b>
+                                    </small>
+                                </div>
+                                <div id="panelsStayOpen-collapseOne " class="accordion-collapse collapse show
+                        " aria-labelledby="panelsStayOpen-headingOne ">
+                                    <ng-ckeditor ng-model="proposalFieldsDetails.Involvement_Of_Young_Scientists__c
+                        " ng-change="readCharacter(proposalFieldsDetails.Involvement_Of_Young_Scientists__c,9, 3000) " name="ckSummary2 "
+                                        id="ckSummary " ng-config="config " maxlength="3000 "></ng-ckeditor>
+                                    <span>Total characters : {{objRtf[9].charCount}}</span>
+                                    <span class="text-danger " ng-if="objRtf[9].errorStatus ">maximum character limit is 3000</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mt-5 ">
+                                <label class="pb-3 color-theme ">
+                                    <b>Necessity of funding (max. chars 3000)
+                                        <span class="required-asterisk text-danger ">*</span>
+                                    </b>
+                                    <i>
+                                        (describe the need for funding. Especially industrial partners should comment on the percentage of funding needed.)
+                                    </i>
+                                </label>
+                                <div>
+                                    <small class="label-rtf ">
+                                        <b>To use below RTF box more efficiently, make sure you write your content in word document
+                                            first and then copy paste here
+                                            <br/> Please use Calibri pt 11 throughout the document, pt 9 for citations. Do NOT
+                                            change margins.
+                                        </b>
+                                    </small>
+                                </div>
+                                <div id="panelsStayOpen-collapseOne " class="accordion-collapse collapse show
+                        " aria-labelledby="panelsStayOpen-headingOne ">
+                                    <ng-ckeditor ng-model="proposalFieldsDetails.Necessity_Of_Funding__c " ng-change="readCharacter(proposalFieldsDetails.Necessity_Of_Funding__c,10,
+                        3000) " name="ckSummary2 " id="ckSummary " ng-config="config " maxlength="3000 "></ng-ckeditor>
+                                    <span>Total characters : {{objRtf[10].charCount}}</span>
+                                    <span class="text-danger " ng-if="objRtf[10].errorStatus ">maximum character limit is 3000</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="row my-5 mt-5" ng-if="!proposalStage ">
+                        <div class="col-md-12 ">
+                            <button class="blue-btn float-end " id="btnSubmit " ng-click="saveDetails() " type="button ">
+                                <i class="fa-solid fa-check me-2 "></i>Save and Next</button>
+                            <button class="btn btn-secondary float-end me-2 " style="padding: 8px 20px !important;font-size:
+                        16px !important; " ng-click="redirectPageURL( 'Financial_Overview') " type="button ">Previous</button>
                         </div>
                     </div>
                 </div>
@@ -574,266 +1078,306 @@ type="button" ng-disabled="isUploading"> -->
             <!-- </div> -->
 
 
-            <!-- <div class="container px-4">
-                <div class="card mt-5 mx-5">
-                    <div class="card-header">
-                        <h2 class="p-3">
+            <!-- <div class="container px-4 ">
+                <div class="card mt-5 mx-5 ">
+                    <div class="card-header ">
+                        <h2 class="p-3 ">
                             <b>Project Details</b>
                         </h2>
                     </div>
                 </div>
             </div>
-            <div class="container px-4">
-                <div class="card m-5">
-                    <div class="accordion" id="accordionPanelsStayOpenExample">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
-                                    aria-controls="panelsStayOpen-collapseOne">
+            <div class="container px-4 ">
+                <div class="card m-5 ">
+                    <div class="accordion " id="accordionPanelsStayOpenExample ">
+                        <div class="accordion-item ">
+                            <h2 class="accordion-header " id="panelsStayOpen-headingOne ">
+                                <button class="accordion-button " type="button " data-bs-toggle="collapse
+                        " data-bs-target="#panelsStayOpen-collapseOne " aria-expanded="true "
+                                    aria-controls="panelsStayOpen-collapseOne ">
                                     <h4>Main objectives of the research approach - as bullet points</h4>
-                                    <span class="required-asterisk" style="color:red;">*</span>
+                                    <span class="required-asterisk " style="color:red; ">*</span>
                                 </button>
                             </h2>
-                            <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
-                                <div class="accordion-body">
-                                    <ng-ckeditor ng-model="proposalDetails.Research_Approach_Objectives__c" ng-config="config" required="true" ng-required="proposalDetails.Research_Approach_Objectives__c"></ng-ckeditor>
+                            <div id="panelsStayOpen-collapseOne " class="accordion-collapse collapse show
+                        " aria-labelledby="panelsStayOpen-headingOne ">
+                                <div class="accordion-body ">
+                                    <ng-ckeditor ng-model="proposalDetails.Research_Approach_Objectives__c
+                        " ng-config="config " required="true " ng-required="proposalDetails.Research_Approach_Objectives__c "></ng-ckeditor>
                                 </div>
                             </div>
                         </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo"
-                                    aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                        <div class="accordion-item ">
+                            <h2 class="accordion-header " id="panelsStayOpen-headingTwo ">
+                                <button class="accordion-button collapsed " type="button " data-bs-toggle="collapse
+                        " data-bs-target="#panelsStayOpen-collapseTwo "
+                                    aria-expanded="false " aria-controls="panelsStayOpen-collapseTwo ">
                                     <h4>Current state of the art in the field</h4>
-                                    <span class="required-asterisk" style="color:red;">*</span>
+                                    <span class="required-asterisk " style="color:red; ">*</span>
                                 </button>
                             </h2>
-                            <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
-                                <div class="accordion-body">
-                                    <ng-ckeditor ng-model="proposalDetails.Current_State_Of_The_Art__c" ng-config="config" required="true" ng-required="proposalDetails.Current_State_Of_The_Art__c"></ng-ckeditor>
+                            <div id="panelsStayOpen-collapseTwo " class="accordion-collapse collapse
+                        " aria-labelledby="panelsStayOpen-headingTwo ">
+                                <div class="accordion-body ">
+                                    <ng-ckeditor ng-model="proposalDetails.Current_State_Of_The_Art__c " ng-config="config
+                        " required="true " ng-required="proposalDetails.Current_State_Of_The_Art__c "></ng-ckeditor>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="panelsStayOpen-headingThree">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree"
-                                    aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+                        <div class="accordion-item ">
+                            <h2 class="accordion-header " id="panelsStayOpen-headingThree ">
+                                <button class="accordion-button collapsed " type="button " data-bs-toggle="collapse
+                        " data-bs-target="#panelsStayOpen-collapseThree "
+                                    aria-expanded="false " aria-controls="panelsStayOpen-collapseThree ">
                                     <h4>Project description including work packages/work distribution amongst partners</h4>
-                                    <span class="required-asterisk" style="color:red;">*</span>
+                                    <span class="required-asterisk " style="color:red; ">*</span>
                                 </button>
                             </h2>
-                            <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingThree">
-                                <div class="accordion-body">
-                                    <ng-ckeditor ng-model="proposalDetails.Project_Description__c" ng-config="config" required="true" ng-required="proposalDetails.Project_Description__c"></ng-ckeditor>
+                            <div id="panelsStayOpen-collapseThree " class="accordion-collapse collapse
+                        " aria-labelledby="panelsStayOpen-headingThree ">
+                                <div class="accordion-body ">
+                                    <ng-ckeditor ng-model="proposalDetails.Project_Description__c " ng-config="config
+                        " required="true " ng-required="proposalDetails.Project_Description__c "></ng-ckeditor>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="panelsStayOpen-headingFour">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseFour"
-                                    aria-expanded="false" aria-controls="panelsStayOpen-collapseFour">
+                        <div class="accordion-item ">
+                            <h2 class="accordion-header " id="panelsStayOpen-headingFour ">
+                                <button class="accordion-button collapsed " type="button " data-bs-toggle="collapse
+                        " data-bs-target="#panelsStayOpen-collapseFour "
+                                    aria-expanded="false " aria-controls="panelsStayOpen-collapseFour ">
                                     <h4>Expected deliverables as bullet points</h4>
-                                    <span class="required-asterisk" style="color:red;">*</span>
+                                    <span class="required-asterisk " style="color:red; ">*</span>
                                 </button>
                             </h2>
-                            <div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingFour">
-                                <div class="accordion-body">
-                                    <ng-ckeditor ng-model="proposalDetails.Expected_Deliverables__c" ng-config="config" required="true" ng-required="proposalDetails.Expected_Deliverables__c"></ng-ckeditor>
+                            <div id="panelsStayOpen-collapseFour " class="accordion-collapse collapse
+                        " aria-labelledby="panelsStayOpen-headingFour ">
+                                <div class="accordion-body ">
+                                    <ng-ckeditor ng-model="proposalDetails.Expected_Deliverables__c " ng-config="config
+                        " required="true " ng-required="proposalDetails.Expected_Deliverables__c "></ng-ckeditor>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="panelsStayOpen-headingFive">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseFive"
-                                    aria-expanded="false" aria-controls="panelsStayOpen-collapseFive">
+                        <div class="accordion-item ">
+                            <h2 class="accordion-header " id="panelsStayOpen-headingFive ">
+                                <button class="accordion-button collapsed " type="button " data-bs-toggle="collapse
+                        " data-bs-target="#panelsStayOpen-collapseFive "
+                                    aria-expanded="false " aria-controls="panelsStayOpen-collapseFive ">
                                     <h4>Reasons for and benefits of cooperation including previous collaboration with the partner
                                         country
                                     </h4>
-                                    <span class="required-asterisk" style="color:red;">*</span>
+                                    <span class="required-asterisk " style="color:red; ">*</span>
                                 </button>
                             </h2>
-                            <div id="panelsStayOpen-collapseFive" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingFive">
-                                <div class="accordion-body">
-                                    <ng-ckeditor ng-model="proposalDetails.Reasons_For_And_Benefits_Of_Cooperation__c" ng-config="config" required="true" ng-required="proposalDetails.Reasons_For_And_Benefits_Of_Cooperation__c"></ng-ckeditor>
+                            <div id="panelsStayOpen-collapseFive " class="accordion-collapse collapse
+                        " aria-labelledby="panelsStayOpen-headingFive ">
+                                <div class="accordion-body ">
+                                    <ng-ckeditor ng-model="proposalDetails.Reasons_For_And_Benefits_Of_Cooperation__c
+                        " ng-config="config " required="true " ng-required="proposalDetails.Reasons_For_And_Benefits_Of_Cooperation__c "></ng-ckeditor>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="panelsStayOpen-headingSix">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseSix"
-                                    aria-expanded="false" aria-controls="panelsStayOpen-collapseSix">
+                        <div class="accordion-item ">
+                            <h2 class="accordion-header " id="panelsStayOpen-headingSix ">
+                                <button class="accordion-button collapsed " type="button " data-bs-toggle="collapse
+                        " data-bs-target="#panelsStayOpen-collapseSix "
+                                    aria-expanded="false " aria-controls="panelsStayOpen-collapseSix ">
                                     <h4>Equipment</h4>
-                                    <span class="required-asterisk" style="color:red;">*</span>
+                                    <span class="required-asterisk " style="color:red; ">*</span>
                                 </button>
                             </h2>
-                            <div id="panelsStayOpen-collapseSix" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingSix">
-                                <div class="accordion-body">
-                                    <ng-ckeditor ng-model="proposalDetails.Equipment__c" ng-config="config" required="true" ng-required="proposalDetails.Equipment__c"></ng-ckeditor>
+                            <div id="panelsStayOpen-collapseSix " class="accordion-collapse collapse
+                        " aria-labelledby="panelsStayOpen-headingSix ">
+                                <div class="accordion-body ">
+                                    <ng-ckeditor ng-model="proposalDetails.Equipment__c " ng-config="config
+                        " required="true " ng-required="proposalDetails.Equipment__c "></ng-ckeditor>
                                 </div>
                             </div>
                         </div>
-                        <div ng-show="secondstage">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="panelsStayOpen-headingSeven">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseSeven"
-                                        aria-expanded="false" aria-controls="panelsStayOpen-collapseSeven">
+                        <div ng-show="secondstage ">
+                            <div class="accordion-item ">
+                                <h2 class="accordion-header " id="panelsStayOpen-headingSeven ">
+                                    <button class="accordion-button collapsed " type="button " data-bs-toggle="collapse
+                        " data-bs-target="#panelsStayOpen-collapseSeven "
+                                        aria-expanded="false " aria-controls="panelsStayOpen-collapseSeven ">
                                         <h4>Criteria For Abandoning the Project</h4>
-                                        <span class="required-asterisk" style="color:red;">*</span>
+                                        <span class="required-asterisk " style="color:red; ">*</span>
                                     </button>
                                 </h2>
-                                <div id="panelsStayOpen-collapseSeven" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingSeven">
-                                    <div class="accordion-body">
-                                        <ng-ckeditor ng-model="proposalDetails.Criteria_For_Abandoning_The_Project__c" ng-config="config" required="true" ng-required="proposalDetails.Criteria_For_Abandoning_The_Project__c"></ng-ckeditor>
+                                <div id="panelsStayOpen-collapseSeven " class="accordion-collapse collapse
+                        " aria-labelledby="panelsStayOpen-headingSeven ">
+                                    <div class="accordion-body ">
+                                        <ng-ckeditor ng-model="proposalDetails.Criteria_For_Abandoning_The_Project__c
+                        " ng-config="config " required="true " ng-required="proposalDetails.Criteria_For_Abandoning_The_Project__c "></ng-ckeditor>
                                     </div>
                                 </div>
                             </div>
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="panelsStayOpen-headingEight">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseEight"
-                                        aria-expanded="false" aria-controls="panelsStayOpen-collapseEight">
+                            <div class="accordion-item ">
+                                <h2 class="accordion-header " id="panelsStayOpen-headingEight ">
+                                    <button class="accordion-button collapsed " type="button " data-bs-toggle="collapse
+                        " data-bs-target="#panelsStayOpen-collapseEight "
+                                        aria-expanded="false " aria-controls="panelsStayOpen-collapseEight ">
                                         <h4>Innovative Aspects / IP and Future Potential Utilization Plan</h4>
                                     </button>
                                 </h2>
-                                <div id="panelsStayOpen-collapseEight" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingEight">
-                                    <div class="accordion-body">
-                                        <ng-ckeditor ng-model="proposalDetails.Innovative_Aspects__c" ng-config="config"></ng-ckeditor>
+                                <div id="panelsStayOpen-collapseEight " class="accordion-collapse collapse
+                        " aria-labelledby="panelsStayOpen-headingEight ">
+                                    <div class="accordion-body ">
+                                        <ng-ckeditor ng-model="proposalDetails.Innovative_Aspects__c " ng-config="config "></ng-ckeditor>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="panelsStayOpen-headingNine">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseNine"
-                                        aria-expanded="false" aria-controls="panelsStayOpen-collapseNine">
+                            <div class="accordion-item ">
+                                <h2 class="accordion-header " id="panelsStayOpen-headingNine ">
+                                    <button class="accordion-button collapsed " type="button " data-bs-toggle="collapse
+                        " data-bs-target="#panelsStayOpen-collapseNine "
+                                        aria-expanded="false " aria-controls="panelsStayOpen-collapseNine ">
                                         <h4>Involvement of young scientists / Research Scholars</h4>
                                     </button>
                                 </h2>
-                                <div id="panelsStayOpen-collapseNine" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingNine">
-                                    <div class="accordion-body">
-                                        <ng-ckeditor ng-model="proposalDetails.Research_Scholars__c" ng-config="config"></ng-ckeditor>
+                                <div id="panelsStayOpen-collapseNine " class="accordion-collapse collapse
+                        " aria-labelledby="panelsStayOpen-headingNine ">
+                                    <div class="accordion-body ">
+                                        <ng-ckeditor ng-model="proposalDetails.Research_Scholars__c " ng-config="config "></ng-ckeditor>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="panelsStayOpen-headingTen">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTen"
-                                        aria-expanded="false" aria-controls="panelsStayOpen-collapseTen">
+                            <div class="accordion-item ">
+                                <h2 class="accordion-header " id="panelsStayOpen-headingTen ">
+                                    <button class="accordion-button collapsed " type="button " data-bs-toggle="collapse
+                        " data-bs-target="#panelsStayOpen-collapseTen "
+                                        aria-expanded="false " aria-controls="panelsStayOpen-collapseTen ">
                                         <h4>Necessity Of Funding</h4>
-                                        <span class="required-asterisk" style="color:red;">*</span>
+                                        <span class="required-asterisk " style="color:red; ">*</span>
                                     </button>
                                 </h2>
-                                <div id="panelsStayOpen-collapseTen" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTen">
-                                    <div class="accordion-body">
-                                        <ng-ckeditor ng-model="proposalDetails.Necessity_Of_Funding__c" ng-config="config" required="true" ng-required="proposalDetails.Necessity_Of_Funding__c"></ng-ckeditor>
+                                <div id="panelsStayOpen-collapseTen " class="accordion-collapse collapse
+                        " aria-labelledby="panelsStayOpen-headingTen ">
+                                    <div class="accordion-body ">
+                                        <ng-ckeditor ng-model="proposalDetails.Necessity_Of_Funding__c " ng-config="config
+                        " required="true " ng-required="proposalDetails.Necessity_Of_Funding__c "></ng-ckeditor>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer">
-                        <button type="button" class="blue-btn float-end me-4" ng-click="saveDetails()">Save and Next
-                            <i class="fa-solid fa-arrow-right ms-3"></i>
+                    <div class="card-footer ">
+                        <button type="button " class="blue-btn float-end me-4 " ng-click="saveDetails() ">Save and Next
+                            <i class="fa-solid fa-arrow-right ms-3 "></i>
                         </button>
-                        <button type="button" class="blue-bordered-btn float-end me-4" ng-click="redirectPageURL('Financial_Overview')">
-                            <i class="fa-solid fa-arrow-left i-padding"></i>Previous</button>
+                        <button type="button " class="blue-bordered-btn float-end me-4 " ng-click="redirectPageURL(
+                        'Financial_Overview') ">
+                            <i class="fa-solid fa-arrow-left i-padding "></i>Previous</button>
                     </div>
                 </div>
             </div> -->
 
-            <!-- <div class="container px-4">
-                <div class="card h-100 m-5">
-                    <div class="card-header">
-                        <h2 class="p-3">
+            <!-- <div class="container px-4 ">
+                <div class="card h-100 m-5 ">
+                    <div class="card-header ">
+                        <h2 class="p-3 ">
                             <b>Project Details</b>
                         </h2>
                     </div>
-                    <div class="row p-5">
-                        <div class="col-md-12 mb-5">
-                            <h4 class="mb-3">
+                    <div class="row p-5 ">
+                        <div class="col-md-12 mb-5 ">
+                            <h4 class="mb-3 ">
                                 <b>Main objectives of the research approach - as bullet points</b>
                             </h4>
-                            <div text-angular="text-angular" name="htmlcontent" ng-model="proposalDetails.Research_Approach_Objectives__c" ta-disabled='true'
-                                ng-readonly="true"></div>
+                            <div text-angular="text-angular " name="htmlcontent " ng-model="proposalDetails.Research_Approach_Objectives__c " ta-disabled='true'
+                                ng-readonly="true "></div>
                         </div>
-                        <div class="col-md-12 mb-5">
-                            <h4 class="mb-3">
+                        <div class="col-md-12 mb-5 ">
+                            <h4 class="mb-3 ">
                                 <b>Current state of the art in the field</b>
                             </h4>
-                            <div text-angular="text-angular" name="htmlcontent" ng-model="proposalDetails.Current_State_Of_The_Art__c" ta-disabled='true'
-                                ng-readonly="true"></div>
+                            <div text-angular="text-angular " name="htmlcontent " ng-model="proposalDetails.Current_State_Of_The_Art__c " ta-disabled='true'
+                                ng-readonly="true "></div>
                         </div>
-                        <div class="col-md-12 mb-5">
-                            <h4 class="mb-3">
+                        <div class="col-md-12 mb-5 ">
+                            <h4 class="mb-3 ">
                                 <b>Project description including work packages/work distribution amongst partners</b>
                             </h4>
-                            <div text-angular="text-angular" name="htmlcontent" ng-model="proposalDetails.Project_Description__c" ta-disabled='true'
-                                ng-readonly="true"></div>
+                            <div text-angular="text-angular " name="htmlcontent " ng-model="proposalDetails.Project_Description__c " ta-disabled='true'
+                                ng-readonly="true "></div>
                         </div>
-                        <div class="col-md-12 mb-5">
-                            <h4 class="mb-3">
+                        <div class="col-md-12 mb-5 ">
+                            <h4 class="mb-3 ">
                                 <b>Expected deliverables as bullet points</b>
                             </h4>
-                            <div text-angular="text-angular" name="htmlcontent" ng-model="proposalDetails.Expected_Deliverables__c" ta-disabled='true'
-                                ng-readonly="true"></div>
+                            <div text-angular="text-angular " name="htmlcontent " ng-model="proposalDetails.Expected_Deliverables__c " ta-disabled='true'
+                                ng-readonly="true "></div>
                         </div>
-                        <div class="col-md-12 mb-5">
-                            <h4 class="mb-3">
+                        <div class="col-md-12 mb-5 ">
+                            <h4 class="mb-3 ">
                                 <b>Reasons for and benefits of cooperation including previous collaboration with the partner
                                     country</b>
                             </h4>
-                            <div text-angular="text-angular" name="htmlcontent" ng-model="proposalDetails.Reasons_For_And_Benefits_Of_Cooperation__c"
-                                ta-disabled='true' ng-readonly="true"></div>
+                            <div text-angular="text-angular " name="htmlcontent " ng-model="proposalDetails.Reasons_For_And_Benefits_Of_Cooperation__c "
+                                ta-disabled='true' ng-readonly="true "></div>
                         </div>
-                        <div class="col-md-12 mb-5">
-                            <h4 class="mb-3">
+                        <div class="col-md-12 mb-5 ">
+                            <h4 class="mb-3 ">
                                 <b>Equipment</b>
                             </h4>
-                            <div text-angular="text-angular" name="htmlcontent" ng-model="proposalDetails.Equipment__c" ta-disabled='true' ng-readonly="true"></div>
+                            <div text-angular="text-angular " name="htmlcontent " ng-model="proposalDetails.Equipment__c
+                        " ta-disabled='true' ng-readonly="true "></div>
                         </div>
-                        <div class="col-md-12 mb-5" ng-show="secondstage">
-                            <h4 class="mb-3">
+                        <div class="col-md-12 mb-5 " ng-show="secondstage ">
+                            <h4 class="mb-3 ">
                                 <b>Criteria For Abandoning the Project</b>
                             </h4>
-                            <div text-angular="text-angular" name="htmlcontent" ng-model="proposalDetails.Criteria_For_Abandoning_The_Project__c" ta-disabled='true'
-                                ng-readonly="true"></div>
+                            <div text-angular="text-angular " name="htmlcontent " ng-model="proposalDetails.Criteria_For_Abandoning_The_Project__c " ta-disabled='true'
+                                ng-readonly="true "></div>
                         </div>
-                        <div class="col-md-12 mb-5" ng-show="secondstage">
-                            <h4 class="mb-3">
+                        <div class="col-md-12 mb-5 " ng-show="secondstage ">
+                            <h4 class="mb-3 ">
                                 <b>Innovative Aspects / IP and Future Potential Utilization Plan</b>
                             </h4>
-                            <div text-angular="text-angular" name="htmlcontent" ng-model="proposalDetails.Innovative_Aspects__c" ta-disabled='true' ng-readonly="true"></div>
+                            <div text-angular="text-angular " name="htmlcontent " ng-model="proposalDetails.Innovative_Aspects__c
+                        " ta-disabled='true' ng-readonly="true "></div>
                         </div>
-                        <div class="col-md-12 mb-5" ng-show="secondstage">
-                            <h4 class="mb-3">
+                        <div class="col-md-12 mb-5 " ng-show="secondstage ">
+                            <h4 class="mb-3 ">
                                 <b>Involvement of young scientists / Research Scholars</b>
                             </h4>
-                            <div text-angular="text-angular" name="htmlcontent" ng-model="proposalDetails.Research_Scholars__c" ta-disabled='true' ng-readonly="true"></div>
+                            <div text-angular="text-angular " name="htmlcontent " ng-model="proposalDetails.Research_Scholars__c
+                        " ta-disabled='true' ng-readonly="true "></div>
                         </div>
-                        <div class="col-md-12" ng-show="secondstage">
-                            <label class="control-label">
-                                <h4 class="mb-3">
+                        <div class="col-md-12 " ng-show="secondstage ">
+                            <label class="control-label ">
+                                <h4 class="mb-3 ">
                                     <b>Necessity Of Funding</b>
                                 </h4>
                             </label>
-                            <textarea class="form-control" rows="4" cols="50" ng-model="proposalDetails.Necessity_Of_Funding__c" size="100" maxlength="255"
-                                ng-disabled="disable"></textarea>
+                            <textarea class="form-control " rows="4 " cols="50 " ng-model="proposalDetails.Necessity_Of_Funding__c
+                        " size="100 " maxlength="255 "
+                                ng-disabled="disable "></textarea>
                         </div>
                     </div>
-                    <div class="card-footer">
-                        <button type="button" class="blue-btn float-end me-4" ng-click="saveDetails()">Submit and Next
-                            <i class="fa-solid fa-arrow-right ms-3"></i>
+                    <div class="card-footer ">
+                        <button type="button " class="blue-btn float-end me-4 " ng-click="saveDetails() ">Submit and Next
+                            <i class="fa-solid fa-arrow-right ms-3 "></i>
                         </button>
-                        <button type="button" class="blue-bordered-btn float-end me-4" ng-click="redirectPageURL('Financial_Overview')">
-                            <i class="fa-solid fa-arrow-left i-padding"></i>Previous</button>
+                        <button type="button " class="blue-bordered-btn float-end me-4 " ng-click="redirectPageURL(
+                        'Financial_Overview') ">
+                            <i class="fa-solid fa-arrow-left i-padding "></i>Previous</button>
                     </div>
                 </div>
             </div> -->
-            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+
+
+
+
+            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js "></script>
         </body>
     </div>
 

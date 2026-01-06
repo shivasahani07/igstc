@@ -6,6 +6,8 @@ angular.module('cp_app').controller('declaration_ctrl', function($scope,$sce,$ro
     $scope.SignDate=new Date($rootScope.signDate);
     $scope.disableUploadButton = true;
     
+    
+    
      // Fetching the proposalId from Local Storage
     if (localStorage.getItem('proposalId')) {
         $rootScope.proposalId = localStorage.getItem('proposalId');
@@ -93,6 +95,7 @@ angular.module('cp_app').controller('declaration_ctrl', function($scope,$sce,$ro
                 alert("Please upload in PDF format only");
                 return;
             } */
+            var maxStringSize = 6000000;    
             var fileReader = new FileReader();
             fileReader.onloadend = function (e) {
                 attachment = window.btoa(this.result);  //Base 64 encode the file before sending it
@@ -138,6 +141,7 @@ angular.module('cp_app').controller('declaration_ctrl', function($scope,$sce,$ro
 
         $scope.uploadAttachment = function (type, userDocId, fileId) {
             debugger;
+            var chunkSize = 750000;
             var attachmentBody = "";
             if (fileId == undefined) {
                 fileId = " ";

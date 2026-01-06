@@ -53,10 +53,10 @@ angular.module('cp_app').controller('fellowshipP_ctrl', function($scope,$rootSco
             debugger;
             if(event.status){
                 if(result != null){
-					$scope.Pecfar_dateInformationText = new Date(result.Applicant_Proposal_Associations__r[0].Proposals__r.Campaign__r.Yearly_Call__r.Pecfar_Information_Text__c);
+					$scope.Pecfar_dateInformationText = new Date(result.Applicant_Proposal_Associations__r[0].Proposals__r.yearly_Call__r.Pecfar_Information_Text__c);
                     // $rootScope.projectId = result.Id;
-                    if(result.Applicant_Proposal_Associations__r[0].Proposals__r.Campaign__r.Result_Announcement_Date__c != null){
-                        $scope.announcementDate = new Date(result.Applicant_Proposal_Associations__r[0].Proposals__r.Campaign__r.Result_Announcement_Date__c)
+                    if(result.Applicant_Proposal_Associations__r[0].Proposals__r.yearly_Call__r.Result_Announcement_Date__c != null){
+                        $scope.announcementDate = new Date(result.Applicant_Proposal_Associations__r[0].Proposals__r.yearly_Call__r.Result_Announcement_Date__c)
                     }
                     if(result.Tentative_Start_Date__c!=null){
                         $scope.startDate = true;

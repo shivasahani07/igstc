@@ -810,7 +810,8 @@ angular.module('cp_app').controller('projectCtrl', function ($scope, $sce, $root
         //         return;
         // }
         $("#btnSubmit").html('<i class="fa-solid fa-spinner fa-spin-pulse me-3"></i>Please wait...');
-        ApplicantPortal_Contoller.insertProjectDetails($scope.proposalDetails, function (result, event) {
+        ApplicantPortal_Contoller.insertProjectDetails($scope.proposalFieldsDetails, function (result, event) {
+            //ApplicantPortal_Contoller.insertProjectDetails($scope.proposalDetails, function (result, event) {
             $("#btnSubmit").html('<i class="fa-solid fa-check me-2"></i>Save and Next');
             if (event.status) {
                 debugger;
@@ -898,5 +899,149 @@ angular.module('cp_app').controller('projectCtrl', function ($scope, $sce, $root
         link.href = "#/" + pageName;
         link.click();
     }
+
+    /* ###################### NEW RTF FIELDS LOGIC HANDLED HERE  ###################### */
+    $scope.proposalFieldsDetails;
+
+    // $scope.objRtf = [{ charCount: 0, maxCharLimit: 1000, errorStatus: false }];
+
+    $scope.getProjectDetailsData = function () {
+        debugger;
+        ApplicantPortal_Contoller.getProjectDetailsFromApex($rootScope.proposalId, function (result, event) {
+            debugger;
+            if (event.status && result) {
+                debugger;
+                // FOR STAGE 1 FIELDS
+                if (result.Research_Approach_Objectives__c != undefined || result.Research_Approach_Objectives__c != "") {
+                    result.Research_Approach_Objectives__c = result.Research_Approach_Objectives__c ? result.Research_Approach_Objectives__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('lt;', '<').replaceAll('&gt;', '>').replaceAll('gt;', '>').replaceAll('&amp;', '&').replaceAll('amp;', '&').replaceAll('&quot;', '\'') : result.Research_Approach_Objectives__c;
+                }
+                if (result.Current_State_Of_The_Art__c != undefined || result.Current_State_Of_The_Art__c != "") {
+                    result.Current_State_Of_The_Art__c = result.Current_State_Of_The_Art__c ? result.Current_State_Of_The_Art__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('lt;', '<').replaceAll('&gt;', '>').replaceAll('gt;', '>').replaceAll('&amp;', '&').replaceAll('amp;', '&').replaceAll('&quot;', '\'') : result.Current_State_Of_The_Art__c;
+                }
+                if (result.Project_Description__c != undefined || result.Project_Description__c != "") {
+                    result.Project_Description__c = result.Project_Description__c ? result.Project_Description__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('lt;', '<').replaceAll('&gt;', '>').replaceAll('gt;', '>').replaceAll('&amp;', '&').replaceAll('amp;', '&').replaceAll('&quot;', '\'') : result.Project_Description__c;
+                }
+                if (result.Expected_Deliverables__c != undefined || result.Expected_Deliverables__c != "") {
+                    result.Expected_Deliverables__c = result.Expected_Deliverables__c ? result.Expected_Deliverables__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('lt;', '<').replaceAll('&gt;', '>').replaceAll('gt;', '>').replaceAll('&amp;', '&').replaceAll('amp;', '&').replaceAll('&quot;', '\'') : result.Expected_Deliverables__c;
+                }
+                if (result.Reasons_For_And_Benefits_Of_Cooperation__c != undefined || result.Reasons_For_And_Benefits_Of_Cooperation__c != "") {
+                    result.Reasons_For_And_Benefits_Of_Cooperation__c = result.Reasons_For_And_Benefits_Of_Cooperation__c ? result.Reasons_For_And_Benefits_Of_Cooperation__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('lt;', '<').replaceAll('&gt;', '>').replaceAll('gt;', '>').replaceAll('&amp;', '&').replaceAll('amp;', '&').replaceAll('&quot;', '\'') : result.Reasons_For_And_Benefits_Of_Cooperation__c;
+                }
+                if (result.Equipment__c != undefined || result.Equipment__c != "") {
+                    result.Equipment__c = result.Equipment__c ? result.Equipment__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('lt;', '<').replaceAll('&gt;', '>').replaceAll('gt;', '>').replaceAll('&amp;', '&').replaceAll('amp;', '&').replaceAll('&quot;', '\'') : result.Equipment__c;
+                }
+                if (result.Brief_Statement_of_Purpose__c != undefined || result.Brief_Statement_of_Purpose__c != "") {
+                    result.Brief_Statement_of_Purpose__c = result.Brief_Statement_of_Purpose__c ? result.Brief_Statement_of_Purpose__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('lt;', '<').replaceAll('&gt;', '>').replaceAll('gt;', '>').replaceAll('&amp;', '&').replaceAll('amp;', '&').replaceAll('&quot;', '\'') : result.Brief_Statement_of_Purpose__c;
+                }
+
+                // FOR STAGE 2 FIELDS
+                if (result.Main_Objective_Research_Approach_S2__c != undefined || result.Main_Objective_Research_Approach_S2__c != "") {
+                    result.Main_Objective_Research_Approach_S2__c = result.Main_Objective_Research_Approach_S2__c ? result.Main_Objective_Research_Approach_S2__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('lt;', '<').replaceAll('&gt;', '>').replaceAll('gt;', '>').replaceAll('&amp;', '&').replaceAll('amp;', '&').replaceAll('&quot;', '\'') : result.Main_Objective_Research_Approach_S2__c;
+                }
+                if (result.Current_State_Of_The_Art_Stage_2__c != undefined || result.Current_State_Of_The_Art_Stage_2__c != "") {
+                    result.Current_State_Of_The_Art_Stage_2__c = result.Current_State_Of_The_Art_Stage_2__c ? result.Current_State_Of_The_Art_Stage_2__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('lt;', '<').replaceAll('&gt;', '>').replaceAll('gt;', '>').replaceAll('&amp;', '&').replaceAll('amp;', '&').replaceAll('&quot;', '\'') : result.Current_State_Of_The_Art_Stage_2__c;
+                }
+                if (result.Project_Description_Stage_2__c != undefined || result.Project_Description_Stage_2__c != "") {
+                    result.Project_Description_Stage_2__c = result.Project_Description_Stage_2__c ? result.Project_Description_Stage_2__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('lt;', '<').replaceAll('&gt;', '>').replaceAll('gt;', '>').replaceAll('&amp;', '&').replaceAll('amp;', '&').replaceAll('&quot;', '\'') : result.Project_Description_Stage_2__c;
+                }
+                if (result.Risk_Assessment_And_Migration_Strategy__c != undefined || result.Risk_Assessment_And_Migration_Strategy__c != "") {
+                    result.Risk_Assessment_And_Migration_Strategy__c = result.Risk_Assessment_And_Migration_Strategy__c ? result.Risk_Assessment_And_Migration_Strategy__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('lt;', '<').replaceAll('&gt;', '>').replaceAll('gt;', '>').replaceAll('&amp;', '&').replaceAll('amp;', '&').replaceAll('&quot;', '\'') : result.Risk_Assessment_And_Migration_Strategy__c;
+                }
+                if (result.Reasons_For_And_Benefits_Of_Corp_Stage2__c != undefined || result.Reasons_For_And_Benefits_Of_Corp_Stage2__c != "") {
+                    result.Reasons_For_And_Benefits_Of_Corp_Stage2__c = result.Reasons_For_And_Benefits_Of_Corp_Stage2__c ? result.Reasons_For_And_Benefits_Of_Corp_Stage2__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('lt;', '<').replaceAll('&gt;', '>').replaceAll('gt;', '>').replaceAll('&amp;', '&').replaceAll('amp;', '&').replaceAll('&quot;', '\'') : result.Reasons_For_And_Benefits_Of_Corp_Stage2__c;
+                }
+                if (result.Innovative_Aspects__c != undefined || result.Innovative_Aspects__c != "") {
+                    result.Innovative_Aspects__c = result.Innovative_Aspects__c ? result.Innovative_Aspects__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('lt;', '<').replaceAll('&gt;', '>').replaceAll('gt;', '>').replaceAll('&amp;', '&').replaceAll('amp;', '&').replaceAll('&quot;', '\'') : result.Innovative_Aspects__c;
+                }
+                if (result.Market_Assessment_Of_Proposed_Tech__c != undefined || result.Market_Assessment_Of_Proposed_Tech__c != "") {
+                    result.Market_Assessment_Of_Proposed_Tech__c = result.Market_Assessment_Of_Proposed_Tech__c ? result.Market_Assessment_Of_Proposed_Tech__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('lt;', '<').replaceAll('&gt;', '>').replaceAll('gt;', '>').replaceAll('&amp;', '&').replaceAll('amp;', '&').replaceAll('&quot;', '\'') : result.Market_Assessment_Of_Proposed_Tech__c;
+                }
+                if (result.Future_Commercialization_Plan__c != undefined || result.Future_Commercialization_Plan__c != "") {
+                    result.Future_Commercialization_Plan__c = result.Future_Commercialization_Plan__c ? result.Future_Commercialization_Plan__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('lt;', '<').replaceAll('&gt;', '>').replaceAll('gt;', '>').replaceAll('&amp;', '&').replaceAll('amp;', '&').replaceAll('&quot;', '\'') : result.Future_Commercialization_Plan__c;
+                }
+                if (result.Data_Management_And_Sharing_Protocols__c != undefined || result.Data_Management_And_Sharing_Protocols__c != "") {
+                    result.Data_Management_And_Sharing_Protocols__c = result.Data_Management_And_Sharing_Protocols__c ? result.Data_Management_And_Sharing_Protocols__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('lt;', '<').replaceAll('&gt;', '>').replaceAll('gt;', '>').replaceAll('&amp;', '&').replaceAll('amp;', '&').replaceAll('&quot;', '\'') : result.Data_Management_And_Sharing_Protocols__c;
+                }
+                if (result.Involvement_Of_Young_Scientists__c != undefined || result.Involvement_Of_Young_Scientists__c != "") {
+                    result.Involvement_Of_Young_Scientists__c = result.Involvement_Of_Young_Scientists__c ? result.Involvement_Of_Young_Scientists__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('lt;', '<').replaceAll('&gt;', '>').replaceAll('gt;', '>').replaceAll('&amp;', '&').replaceAll('amp;', '&').replaceAll('&quot;', '\'') : result.Involvement_Of_Young_Scientists__c;
+                }
+                if (result.Necessity_Of_Funding__c != undefined || result.Necessity_Of_Funding__c != "") {
+                    result.Necessity_Of_Funding__c = result.Necessity_Of_Funding__c ? result.Necessity_Of_Funding__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('lt;', '<').replaceAll('&gt;', '>').replaceAll('gt;', '>').replaceAll('&amp;', '&').replaceAll('amp;', '&').replaceAll('&quot;', '\'') : result.Necessity_Of_Funding__c;
+                }
+
+                $scope.proposalFieldsDetails = result;
+                $scope.$apply();
+            }
+        },
+            { escape: true }
+        )
+    }
+    $scope.getProjectDetailsData();
+
+    // $scope.readCharacter = function (event, index) {
+    //     debugger;
+
+    //     try {
+    //         var rtfString = event.toString().replace(/<[^>]*>|\s/g, '').replace(/\s+/g, '').replace(/&ndash;/g, '-').replace(/&euro;/g, '1').replace(/&amp;/g, '1').replace(/&#39;/g, '1').replace(/&quot;/g, '1').replace(/&nbsp;/g, '').replace(/&mdash;/g, '-').replace(/&gt;/g, '>').replace(/&lt;/g, '<').replace(/&bull;/g, '');
+    //         charLength = rtfString.length;
+    //         if (charLength > 0) {
+    //             $scope.objRtf[index].charCount = charLength;
+    //             if (charLength > $scope.objRtf[index].maxCharLimit) {
+    //                 $scope.objRtf[index].errorStatus = true;
+    //             } else {
+    //                 $scope.objRtf[index].errorStatus = false;
+    //             }
+    //         }
+    //         else {
+    //             $scope.objRtf[index].charCount = 0;
+    //             $scope.objRtf[index].errorStatus = false;
+    //         }
+    //     } catch (e) { }
+    // }
+
+
+
+    $scope.objRtf = []; // start empty
+
+    $scope.readCharacter = function (event, index, maxLimit) {
+        try {
+
+            // Initialize index if not exists
+            if (!$scope.objRtf[index]) {
+                $scope.objRtf[index] = {
+                    charCount: 0,
+                    maxCharLimit: maxLimit,
+                    errorStatus: false
+                };
+            }
+
+            if (!event) {
+                $scope.objRtf[index].charCount = 0;
+                $scope.objRtf[index].errorStatus = false;
+                return;
+            }
+
+            // Strip HTML tags + entities
+            var plainText = event
+                .replace(/<[^>]*>/g, '')
+                .replace(/&nbsp;/g, ' ')
+                .replace(/&[a-zA-Z0-9#]+;/g, ' ');
+
+            var charLength = plainText.length;
+
+            $scope.objRtf[index].charCount = charLength;
+            $scope.objRtf[index].errorStatus = charLength > maxLimit;
+
+        } catch (e) { }
+    };
+
+
+    // ----------------------------- Need to add afterwards -----------------------------
+    // if ($scope.applicantDetails.Summary__c != undefined || $scope.applicantDetails.Summary__c != "") {
+    //         if ($scope.objRtf[0].errorStatus) {
+    //             swal("info", "Summary max. length limit is 1000 character only.", "info");
+    //             return;
+    //         }
+    //     }
 
 });

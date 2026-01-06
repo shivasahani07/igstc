@@ -36,7 +36,58 @@
                                 <div class="progress-success w-100"></div>
                             </div>
                             <ul>
+
+                                <!-- Not Confirmed Yet -->
                                 <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Pairing Details</span>
+                                    </a>
+                                </li>
+
+                                <!-- Pair Project Details -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('HostProjectDetails')">
+                                        <div class="icon-circle">
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Paired Project Details</span>
+                                    </a>
+                                </li>
+
+                                <!-- Pair Details -->
+                                <!-- <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('HostInfoApplicationPage')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Host Details</span>
+                                    </a>
+                                </li> -->
+
+                                <!-- Applicant Details -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('WiserApplicationPage')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Applicant Details</span>
+                                    </a>
+                                </li>
+
+                                <!-- Financial Details -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('FinancialOverview_wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <span>Financial Overview</span>
+                                    </a>
+                                </li>
+
+                                <!-- <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('WiserApplicationPage')">
                                         <div class="icon-circle">
                                             <i class="fas fa-user-alt"></i>
@@ -76,7 +127,7 @@
                                         </div>
                                         <span>Pair Project Details</span>
                                     </a>
-                                </li>   
+                                </li>    -->
                             </ul>
                         </div>
                         <div class="tab-link" ng-hide="proposalStage">
@@ -84,7 +135,50 @@
                                 <div class="progress-success w-100"></div>
                             </div>
                             <ul>
+
                                 <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Pairing Details</span>
+                                    </a>
+                                </li>
+
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Paired Project Details</span>
+                                    </a>
+                                </li>
+                                <!-- <li >
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Host Details</span>
+                                    </a>
+                                </li> -->
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Applicant Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <span>Financial Overview</span>
+                                    </a>
+                                </li>
+                                
+                                <!-- <li class="active">
                                     <a>
                                         <div class="icon-circle">
                                             <i class="fas fa-user-alt"></i>
@@ -123,7 +217,7 @@
                                         </div>
                                         <span>Pair Project Details</span>
                                     </a>
-                                </li>
+                                </li> -->
                             </ul>
                         </div>
                         </div>
@@ -153,14 +247,7 @@
                                             <span>Grant Details</span>
                                         </a>
                                     </li>
-                                    <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('CV_Wiser')">
-                                            <div class="icon-circle">
-                                                <i class="fa-solid fa-address-book"></i>
-                                            </div>
-                                            <span>Curriculum Vitae</span>
-                                        </a>
-                                    </li>
+                                    
                                     <li class="active pb-cursor">
                                         <a ng-click="redirectPageURL('AttachmentsInWiser')">
                                             <div class="icon-circle">
@@ -169,6 +256,16 @@
                                             <span>Attachments</span>
                                         </a>
                                     </li>
+
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('CV_Wiser')">
+                                            <div class="icon-circle">
+                                                <i class="fa-solid fa-address-book"></i>
+                                            </div>
+                                            <span>Curriculum Vitae</span>
+                                        </a>
+                                    </li>
+
                                     <li class="active pb-cursor">
                                         <a ng-click="redirectPageURL('Declaration_Wiser')">
                                             <div class="icon-circle">
@@ -201,14 +298,7 @@
                                             <span>Grant Details</span>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a>
-                                            <div class="icon-circle">
-                                                <i class="fa-solid fa-address-book"></i>
-                                            </div>
-                                            <span>Curriculum Vitae</span>
-                                        </a>
-                                    </li>
+
                                     <li>
                                         <a>
                                             <div class="icon-circle">
@@ -217,6 +307,16 @@
                                             <span>Attachments</span>
                                         </a>
                                     </li>
+
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa-solid fa-address-book"></i>
+                                            </div>
+                                            <span>Curriculum Vitae</span>
+                                        </a>
+                                    </li>
+                                    
                                     <li>
                                         <a>
                                             <div class="icon-circle">

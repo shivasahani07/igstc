@@ -419,6 +419,7 @@ angular.module('cp_app').controller('ConsortiaContacts_Ctrl', function ($scope, 
         // Remove UI-only fields safely (ONLY from cleaned copy)
         delete $scope.cleanedDetailList['Education_Details__r'];
         delete $scope.cleanedDetailList['Employment_Details__r'];
+        delete $scope.cleanedDetailList['Applicant_Proposal_Associations__r'];
         delete $scope.cleanedDetailList['stateList'];
         delete $scope.cleanedDetailList['Account'];
         delete $scope.cleanedDetailList._charLimitMap;

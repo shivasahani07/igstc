@@ -28,17 +28,7 @@
                             </div>
                             <ul>
                                 
-                                <!-- Not Confirmed Yet -->
-                                <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
-                                        <div class="icon-circle">
-                                            <i class="fa fa-home"></i>
-                                        </div>
-                                        <span>Pairing Details</span>
-                                    </a>
-                                </li>
-
-                                 <!-- Pair Project Details -->
+                                <!-- Pair Project Details -->
                                 <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('HostProjectDetails')">
                                         <div class="icon-circle">
@@ -48,16 +38,25 @@
                                     </a>
                                 </li>
 
+                                <!-- Not Confirmed Yet -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Applicant Project Details</span>
+                                    </a>
+                                </li>
 
                                 <!-- Pair Details -->
-                                <!-- <li class="active pb-cursor">
+                                <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('HostInfoApplicationPage')">
                                         <div class="icon-circle">
                                             <i class="fas fa-file-invoice"></i>
                                         </div>
                                         <span>Host Details</span>
                                     </a>
-                                </li> -->
+                                </li>
 
                                 <!-- Applicant Details -->
                                 <li class="active pb-cursor">
@@ -124,9 +123,18 @@
                         </div>
                         <div class="tab-link" ng-hide="proposalStage">
                             <div class="progress">
-                                <div class="progress-success wp-2"></div>
+                                <div class="progress-success wp-5"></div>
                             </div>
                             <ul>
+                               
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Pair Project Details</span>
+                                    </a>
+                                </li>
 
                                 <li class="active">
                                     <a>
@@ -136,17 +144,6 @@
                                         <span>Pairing Details</span>
                                     </a>
                                 </li>
-                               
-                                <li >
-                                    <a>
-                                        <div class="icon-circle">
-                                            <i class="fas fa-user-alt"></i>
-                                        </div>
-                                        <span>Pair Project Details</span>
-                                    </a>
-                                </li>
-
-                                
 
                                 <!-- <li >
                                     <a>

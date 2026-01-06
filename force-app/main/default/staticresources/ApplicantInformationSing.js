@@ -4,6 +4,7 @@ $scope.ddStatus={};
 $rootScope.proposalId;
 $scope.baseURL = window.location.origin;
 $rootScope.proposalStage;
+$rootScope.CampaignId;
 // $scope.proposalStage = true;
 // $rootScope.proposalStage = true;
 
@@ -482,7 +483,7 @@ debugger
         closeOnEsc: false
       });
       
-    IndustrialFellowshipController.saveApplicantPortalSingh($rootScope.candidateId,$scope.objContact,$scope.accountDet,birthYear,birthMonth,birthDay,$rootScope.contactId, 'SING', '701e10000011XxTAAU', $rootScope.yearlyCallId, function (result, event) {
+    IndustrialFellowshipController.saveApplicantPortalSingh($rootScope.candidateId,$scope.objContact,$scope.accountDet,birthYear,birthMonth,birthDay,$rootScope.contactId, 'SING', $rootScope.CampaignId, $rootScope.yearlyCallId, function (result, event) {
         debugger
 
         // Saving the ProposalId in Local Storage
@@ -520,6 +521,7 @@ $scope.getCampaignEndDate=function(){
     console.log('campaign date');
       console.log(result);
     if(event.status){
+      $rootScope.CampaignId = result.Id;
       $scope.objCampaign=result;
       $scope.endDate=new Date(result.EndDate);
       //$scope.getContactDet();

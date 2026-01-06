@@ -329,7 +329,7 @@ $scope.saveandNext = function(){
         }
     }
 
-    $scope.redirectPageURL('Declaration_Wiser');
+    $scope.redirectPageURL('CV_Wiser');
 }
 
 

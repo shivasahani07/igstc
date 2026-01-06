@@ -379,7 +379,7 @@ $scope.getProjectdetils = function () {
                  icon: "success",
                button: "ok!",
           });
-          $scope.redirectPageURL('HostInfoApplicationPage');
+          $scope.redirectPageURL('FinancialOverview_wiser');
             
           }
           else

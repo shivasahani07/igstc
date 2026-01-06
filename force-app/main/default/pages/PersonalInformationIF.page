@@ -360,7 +360,7 @@
                         <!-- <select class="form-control" aria-label="Default select example" id="country" ng-focus="removeClass('country')" ng-model="objContact.MailingCountry" ng-disabled="proposalStage" ng-change="onCountryChange()">
                             <option ng-repeat="staff in countryIndia">{{staff}}</option>
                         </select> -->
-                        <input type="text" ng-disabled="proposalStage" id="country" ng-focus="removeClass('country')" ng-model="objContact.MailingCountry" class="form-control" />
+                        <input type="text"  ng-disabled="true" id="country" ng-focus="removeClass('country')" ng-model="objContact.MailingCountry" class="form-control" />
                     </div>
                 </div>
 

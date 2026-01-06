@@ -275,7 +275,7 @@ angular.module('cp_app').controller('HostInfoApplication_Ctrl', function($scope,
      $scope.previousPage = function(){
         var link = document.createElement("a");
             link.id = 'someLink'; //give it an ID!
-            link.href = '#/WiserApplicationPage';
+            link.href = '#/HostProjectDetails';
             link.click();
 
      }

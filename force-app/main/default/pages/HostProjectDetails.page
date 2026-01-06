@@ -17,7 +17,6 @@
 
         <body>
             <div class="container mt-5">
-                ************ for testing ***************
                 <div class="row mx-5">
                     <div class="col-md-12">
 
@@ -27,6 +26,17 @@
                             </div>
 
                             <ul>
+
+                                <!-- Not Confirmed Yet -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Pairing Details</span>
+                                    </a>
+                                </li>
+
                                 <!-- Pair Project Details -->
                                 <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('HostProjectDetails')">
@@ -37,20 +47,22 @@
                                     </a>
                                 </li>
 
+
+
                                 <!-- Pair Details -->
-                                <li class="active pb-cursor">
+                                <!-- <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('HostInfoApplicationPage')">
                                         <div class="icon-circle">
                                             <i class="fas fa-file-invoice"></i>
                                         </div>
                                         <span>Host Details</span>
                                     </a>
-                                </li>
+                                </li> -->
 
                                 <!-- Applicant Details -->
                                 <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('WiserApplicationPage')">
-                                        <div class="icon-circle">
+                                        <div c-lass="icon-circle">
                                             <i class="fas fa-user-alt"></i>
                                         </div>
                                         <span>Applicant Details</span>
@@ -67,24 +79,25 @@
                                     </a>
                                 </li>
 
-                                <!-- Not Confirmed Yet -->
-                                <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
-                                        <div class="icon-circle">
-                                            <i class="fa fa-home"></i>
-                                        </div>
-                                        <span>Applicant Project Details</span>
-                                    </a>
-                                </li>
+
 
                             </ul>
                         </div>
 
                         <div class="tab-link" ng-hide="proposalStage">
                             <div class="progress">
-                                <div class="progress-success w-100"></div>
+                                <div class="progress-success wp-5"></div>
                             </div>
                             <ul>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Pairing Details</span>
+                                    </a>
+                                </li>
+
                                 <li class="active">
                                     <a>
                                         <div class="icon-circle">
@@ -93,15 +106,18 @@
                                         <span>Pair Project Details</span>
                                     </a>
                                 </li>
-                                <li class="active">
+
+
+
+                                <!-- <li >
                                     <a>
                                         <div class="icon-circle">
                                             <i class="fas fa-file-invoice"></i>
                                         </div>
                                         <span>Host Details</span>
                                     </a>
-                                </li>
-                                <li class="active">
+                                </li> -->
+                                <li>
                                     <a>
                                         <div class="icon-circle">
                                             <i class="fa fa-home"></i>
@@ -109,7 +125,7 @@
                                         <span>Applicant Details</span>
                                     </a>
                                 </li>
-                                <li class="active">
+                                <li>
                                     <a>
                                         <div class="icon-circle">
                                             <i class="fas fa-chart-line"></i>
@@ -117,14 +133,7 @@
                                         <span>Financial Overview</span>
                                     </a>
                                 </li>
-                                <li class="active">
-                                    <a>
-                                        <div class="icon-circle">
-                                            <i class="far fa-address-card"></i>
-                                        </div>
-                                        <span>Applicant Project Details</span>
-                                    </a>
-                                </li>
+
                             </ul>
                         </div>
 
@@ -261,14 +270,7 @@
                                         <span>Grant Details</span>
                                     </a>
                                 </li>
-                                <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('CV_Wiser')">
-                                        <div class="icon-circle">
-                                            <i class="fa-solid fa-address-book"></i>
-                                        </div>
-                                        <span>Curriculum Vitae</span>
-                                    </a>
-                                </li>
+
                                 <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('AttachmentsInWiser')">
                                         <div class="icon-circle">
@@ -277,6 +279,16 @@
                                         <span>Attachments</span>
                                     </a>
                                 </li>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('CV_Wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li>
+
                                 <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('Declaration_Wiser')">
                                         <div class="icon-circle">
@@ -309,14 +321,7 @@
                                         <span>Grant Details</span>
                                     </a>
                                 </li>
-                                <li>
-                                    <a>
-                                        <div class="icon-circle">
-                                            <i class="fa-solid fa-address-book"></i>
-                                        </div>
-                                        <span>Curriculum Vitae</span>
-                                    </a>
-                                </li>
+
                                 <li>
                                     <a>
                                         <div class="icon-circle">
@@ -325,6 +330,16 @@
                                         <span>Attachments</span>
                                     </a>
                                 </li>
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li>
+
                                 <li>
                                     <a>
                                         <div class="icon-circle">
@@ -357,6 +372,94 @@
                         <textarea rows="3" maxlength="255" ng-focus="removeClass('txtTitle')" id="txtTitle" ng-model="objContact.Host_Project_Title__c"
                             type="text" class="form-control" ng-disabled="proposalStage" />
                     </div>
+
+                    <!-- <div class="col-md-12 mt-4">
+                        <div class="row">
+                            <label class="font-if color-theme">
+                                <b>Title of project</b>
+                                <span class="required-asterisk text-danger">*</span>
+                            </label>
+                            <input name="Title Of Proposal" class="form-control" type="text" ng-focus="removeClass('txtTitle')" id="txtTitle" ng-model="applicantDetails.Title_Of__c"
+                                ng-disabled="proposalStage" />
+                        </div>
+
+                        <div class="col-md-6 mt-5">
+                            <label class="font-if color-theme">
+                                <b>Broad area of research</b>
+                                <span class="required-asterisk text-danger">*</span>
+                            </label>
+                            <input class="form-control" type="text" ng-focus="removeClass('txtResearch')" id="txtResearch" ng-model="applicantDetails.Broad_area_of_research__c"
+                                ng-disabled="proposalStage" />
+                        </div>
+                    </div> -->
+
+                    <div class="col-md-12 mt-5">
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <label class="font-if color-theme">
+                                    <b>Title of project</b>
+                                    <span class="required-asterisk text-danger">*</span>
+                                </label>
+                                <input class="form-control" type="text" ng-model="objContact.Title_Of__c" ng-disabled="proposalStage" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="font-if color-theme">
+                                    <b>Broad area of research</b>
+                                    <span class="required-asterisk text-danger">*</span>
+                                </label>
+                                <input class="form-control" type="text" ng-model="objContact.Broad_area_of_research__c" ng-disabled="proposalStage" />
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mt-5">
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <label class="font-if color-theme">
+                                    <b>Duration in months (Min 24 Max 36)</b>
+                                    <span class="required-asterisk text-danger">*</span>
+                                </label>
+                                <input name="duration" placeholder="Min -24 months and Maximum – 36 months." class="form-control mt-3" number="objContact.Duration_In_Months_Max_36__c"
+                                    type="text" ng-model="objContact.Duration_In_Months_Max_36__c" ng-focus="removeClass('txtDuration')"
+                                    id="txtDuration" ng-disabled="proposalStage" ng-maxlength="2" ng-minlength="2" min="24" max="36"
+                                    ng-keyup="restrictDecimalVal(objContact.Duration_In_Months_Max_36__c)" />
+                                <span ng-if="!formPrjDet.duration.$valid" class="text-danger">duration must be between 24 and 36 Months</span>
+                            </div>
+
+                            <!--
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <label class="font-if color-theme">
+                                            <b>Keywords</b>
+                                            <span class="required-asterisk text-danger">*</span>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <i ng-click="addKeyword()" class="fa-solid fa-2x text-primary fa-circle-plus mt-2" ng-if="!proposalStage"></i>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2" ng-repeat="key in objKeyword">
+                                    <div class="col-md-10">
+                                        <input type="text" ng-focus="removeClass('txtKeyword')" id="txtKeyword" ng-model="key.keyword" class="form-control mb-2"
+                                            maxlength="255" required="true" ng-required="key.keyword" ng-disabled="proposalStage"
+                                        />
+                                    </div>
+                                    <div class="col-md-2">
+                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger mt-2" ng-click="removeKeyword($index)" ng-if="!proposalStage"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        -->
+                        </div>
+                    </div>
+
+
 
                     <!-- <div class="col-md-12 mt-5">
                     <label class="font-if color-theme">Funding source</label>
@@ -409,7 +512,18 @@
                             <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
                     </div>
                 </div>
+
+                <!-- <div class="row m-5" ng-if="proposalStage">
+                    <div class="col-md-12">
+                        <button class="blue-btn float-end" ng-click="saveApplicationPortalHostInformation()" type="button">
+                            <i class="fa-solid fa-check me-2"></i>Save and Next</button>
+                        <button class="blue-bordered-btn float-end me-2" ng-click="previousPage()" type="button">
+                            <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+                    </div>
+                </div> -->
             </div>
+
+
 
             <!-- <div class="container px-4" >
             

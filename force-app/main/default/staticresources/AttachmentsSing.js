@@ -378,8 +378,8 @@ $scope.uploadAttachment = function (inputId, userDocId, fileId) {
 //         // $('#file_frame').attr('src', $scope.selectedFile.ContentDistribution.DistributionPublicUrl);
 //         $('#file_frame').attr('src', $scope.filesrec);
     
-//         var myModal = new bootstrap.Modal(document.getElementById('filePreview'))        
-//         myModal.show('slow') ;
+//         var myModal = new bootstrap.Modal(document.getElementById('filePreview'))ï¿½ ï¿½ ï¿½ ï¿½ 
+//         myModal.show('slow')ï¿½;
 //         $scope.$apply();
     
 //         //.ContentDistribution.DistributionPublicUrl

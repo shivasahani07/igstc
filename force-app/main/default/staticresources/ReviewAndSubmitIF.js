@@ -236,7 +236,7 @@ angular.module('cp_app').controller('ReviewAndSubmitIF_Ctrl', function ($scope, 
                         title: "Save as a draft",
                         text: "Your Proposal has been saved as Draft!",
                         icon: "success",
-                        buttons: true,
+                        buttons: "OK",
                         dangerMode: false,
                     }).then((willDelete) => {
                         if (willDelete) {
@@ -260,7 +260,7 @@ angular.module('cp_app').controller('ReviewAndSubmitIF_Ctrl', function ($scope, 
                         title: "Submit",
                         text: "Your Proposal has been submitted successfully!",
                         icon: "success",
-                        buttons: true,
+                        buttons: "OK",
                         dangerMode: false,
                     }).then((willDelete) => {
                         if (willDelete) {

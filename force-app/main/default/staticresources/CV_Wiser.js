@@ -209,7 +209,7 @@ angular.module('cp_app').controller('cv_wiser', function($scope,$rootScope) {
                     'your CV Details has been Saved successfully.',
                     'success'
                 );
-               $scope.redirectPageURL('AttachmentsInWiser');
+               $scope.redirectPageURL('Declaration_Wiser');
                $scope.$apply();
             }
         })

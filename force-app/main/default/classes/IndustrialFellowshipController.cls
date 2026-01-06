@@ -103,10 +103,7 @@ public static String saveApplicantPortalSingh(String loginHashCode,Contact con,A
     return IndustrialFellowshipModel.getContactHostInfo(hashcode);
    }
 
-   @RemoteAction
-   public static Application_Proposal__c getHostProjectDetails(string hashcode){
-    return IndustrialFellowshipModel.getHostProjectDetails(hashcode);
-   }
+   
    // Host Information 1
    @RemoteAction 
     public static String saveApplicationPortalHostInformation(Contact hostDetails, Account accDet, string projectId, string recordtype){
@@ -116,9 +113,31 @@ public static String saveApplicantPortalSingh(String loginHashCode,Contact con,A
         return IndustrialFellowshipHelper.insertHostInfoDetails(hostDetails, accDet, projectId, recordtype);
     }
 
-    @RemoteAction 
+    // ------------------------------------- WISER METHOD TO GET PROPOSAL ----------------------------------------- //
+    /* @RemoteAction
+    public static Application_Proposal__c getHostProjectDetails(string hashcode){
+        return IndustrialFellowshipModel.getHostProjectDetails(hashcode);
+    } */
+
+    @RemoteAction
+    public static Application_Proposal__c getHostProjectDetails(String proposalId){
+        return IndustrialFellowshipModel.getHostProjectDetails(proposalId);
+    }
+
+    // ------------------------------------- WISER METHOD TO CREATE PROPOSAL ----------------------------------------- //
+    /* @RemoteAction 
     public static String saveHostProjectInformation(Application_Proposal__c hostDetails, integer sDate, integer sMonth, integer sYear, integer eDate, integer eMonth, integer eYear){
         return IndustrialFellowshipHelper.insertHostProjectDetails(hostDetails, sDate, sMonth, sYear, eDate, eMonth, eYear);
+    } */
+
+    // @RemoteAction 
+    // public static IndustrialFellowshipHelper.ProposalAndAPAWrapper saveHostProjectInformation(Application_Proposal__c hostDetails, String proposalId, String candidateId, String yearlyCallId, Integer sDate, Integer sMonth, Integer sYear, Integer eDate, Integer eMonth, Integer eYear){
+    //     return IndustrialFellowshipHelper.insertHostProjectDetails(hostDetails, proposalId, candidateId, yearlyCallId, sDate, sMonth, sYear, eDate, eMonth, eYear);
+    // }
+
+    @RemoteAction 
+    public static String saveHostProjectInformation(Application_Proposal__c hostDetails, String proposalId, String candidateId, String yearlyCallId, Integer sDate, Integer sMonth, Integer sYear, Integer eDate, Integer eMonth, Integer eYear){
+        return IndustrialFellowshipHelper.insertHostProjectDetails(hostDetails, proposalId, candidateId, yearlyCallId, sDate, sMonth, sYear, eDate, eMonth, eYear);
     }
 
     //consortia functions

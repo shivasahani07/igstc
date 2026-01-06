@@ -162,7 +162,7 @@ angular.module('cp_app').controller('twoReferencePageCtrl', function($scope,$roo
       }
 
       $scope.previousPage = function(){
-          $scope.redirectPageURL('HostProjectDetails');
+          $scope.redirectPageURL('FinancialOverview_wiser');
           // window.location.replace(window.location.origin+'/ApplicantDashboard/ApplicantPortal?id='+$rootScope.userId+'#/HostProjectDetails');
       }
 

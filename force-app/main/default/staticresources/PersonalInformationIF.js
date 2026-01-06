@@ -275,6 +275,7 @@ angular.module('cp_app').controller('PersonalInformationIF_Ctrl', function($scop
             }
             if(result.MailingCountry != undefined || result.MailingCountry != ''){
               result.MailingCountry = result.MailingCountry ? result.MailingCountry.replace(/&amp;/g,'&').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&amp;','&') : result.MailingCountry;  
+               localStorage.setItem('IFcountry', result.MailingCountry);
             }
             if(result.OtherStreet != undefined || result.OtherStreet != ''){
               result.OtherStreet = result.OtherStreet ? result.OtherStreet.replace(/&amp;/g,'&').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&amp;','&') : result.OtherStreet;  

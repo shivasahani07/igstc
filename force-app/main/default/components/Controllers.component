@@ -308,4 +308,5 @@
     <script src="{!$Resource.WISERDocUpload}" />
     <script src="{!$Resource.WiserSEUCorExpenseUpload}" />
     <script src="{!$Resource.Declartion_2plus2}" />
+    <script src="{!$Resource.NewWiserPairingPage}" />
 </apex:component>

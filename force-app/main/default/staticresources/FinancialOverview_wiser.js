@@ -354,7 +354,7 @@ $scope.saveExpenceLineitems = function(){
                  icon: "success",
                  button: "ok!",
             })  
-            $scope.redirectPageURL('HostProjectDetails');                  
+            $scope.redirectPageURL('TwoReferenceWiser');                  
           
        } else{
             swal({

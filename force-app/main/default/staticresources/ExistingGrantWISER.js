@@ -48,7 +48,7 @@ $scope.getProposalStage();
 
 
     $scope.getApplicantDetails = function(){
-     ApplicantPortal_Contoller.getApplicantDetailsForGrantWISER($rootScope.contactId,$rootScope.apaId, function (result, event){
+     ApplicantPortal_Contoller.getApplicantDetailsForGrantWISER($rootScope.contactId, function (result, event){
             if(event.status) {
                 debugger;
                 $scope.applicantDetails = result;
@@ -78,7 +78,7 @@ $scope.getProposalStage();
                             'Starting_Date__c': '',
                             'End_Date__c': '',
                             'Account__c': $scope.input[i].Id,
-                            'Application__c': $rootScope.projectId
+                            'Application__c': $rootScope.proposalId
                         };
                         $scope.input[i].Existing_Grants__r = [];
                         debugger;
@@ -170,9 +170,9 @@ $scope.getProposalStage();
                 // }
                 var grantApplication = {"title":"","fundingagency":"","Account":$scope.input[i].Id,"AccountName":$scope.input[i].Name,"role":"",currencyPick:"","budget":"","id":"","startDate":"","endDate":"","Application":""};
                     grantApplication.Account = $scope.input[i].Id;
-                    grantApplication.Application = $rootScope.projectId;
+                    grantApplication.Application = $rootScope.proposalId;
                     grantApplication.AccountName = $scope.input[i].Name;
-                    grantApplication.id = $scope.input[i].Existing_Grants__r[j].Id;
+                    grantApplication.id = $scope.input[i].Existing_Grants__r[j].Id==undefined?null:$scope.input[i].Existing_Grants__r[j].Id;
                     grantApplication.title = $scope.input[i].Existing_Grants__r[j].Title__c;
                     grantApplication.fundingagency = $scope.input[i].Existing_Grants__r[j].Funding_Agency__c;
                     grantApplication.role = $scope.input[i].Existing_Grants__r[j].Role_in_the_Project__c;
@@ -228,7 +228,7 @@ $scope.getProposalStage();
             'Budget__c': '',
             'Starting_Date__c': '',
             'Account__c': $scope.input[index].Id,
-            'Application__c': $rootScope.projectId
+            'Application__c': $rootScope.proposalId
         };
         $scope.input[index].Existing_Grants__r.push(rec);
     }
