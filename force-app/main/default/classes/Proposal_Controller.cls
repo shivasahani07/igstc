@@ -3479,6 +3479,347 @@ return e.getMessage() + e.getLineNumber();
                                                              }
                                                          }
     
+    // NEW METHOD: Save expense data to Expense_Head__c and Expense_Line_Item__c
+    // Uses Yearly_Expense__c which has lookup to Applicant_Proposal_Association__c
+    public static String createExpenseWithHeadAndLineItems(List<Expense_Line_Item__c> expenseLineItems, String apaId, Applicant_Proposal_Association__c updatedApa) {
+        System.debug('expenseLineItems::' + expenseLineItems);
+        System.debug('apaId::' + apaId);
+        
+        try {
+            // Get Yearly_Expense__c records for this APA (Year 1, 2, 3)
+            List<Yearly_Expense__c> yearlyExpenseList = [SELECT Id, Year__c, Applicant_Proposal_Association__c 
+                                                         FROM Yearly_Expense__c 
+                                                         WHERE Applicant_Proposal_Association__c = :apaId 
+                                                         ORDER BY Year__c ASC];
+            
+            // Create Yearly_Expense__c records if they don't exist
+            if(yearlyExpenseList.isEmpty()) {
+                yearlyExpenseList = new List<Yearly_Expense__c>();
+                for(Integer i = 1; i <= 3; i++) {
+                    Yearly_Expense__c ye = new Yearly_Expense__c();
+                    ye.Year__c = String.valueOf(i);
+                    ye.Applicant_Proposal_Association__c = apaId;
+                    yearlyExpenseList.add(ye);
+                }
+                insert yearlyExpenseList;
+                // Re-query to get IDs
+                yearlyExpenseList = [SELECT Id, Year__c, Applicant_Proposal_Association__c 
+                                     FROM Yearly_Expense__c 
+                                     WHERE Applicant_Proposal_Association__c = :apaId 
+                                     ORDER BY Year__c ASC];
+            }
+            
+            // Map year number to Yearly_Expense__c record
+            Map<String, Yearly_Expense__c> yearToExpenseMap = new Map<String, Yearly_Expense__c>();
+            Set<Id> yearlyExpenseIds = new Set<Id>();
+            for(Yearly_Expense__c ye : yearlyExpenseList) {
+                yearToExpenseMap.put(ye.Year__c, ye);
+                yearlyExpenseIds.add(ye.Id);
+            }
+            
+            // Get existing Expense_Head__c records
+            List<Expense_Head__c> existingHeads = [SELECT Id, Name, Yearly_Expense__c 
+                                                   FROM Expense_Head__c 
+                                                   WHERE Yearly_Expense__c IN :yearlyExpenseIds];
+            
+            // Map: Year + Head Name -> Expense_Head__c
+            Map<String, Expense_Head__c> yearHeadMap = new Map<String, Expense_Head__c>();
+            for(Expense_Head__c eh : existingHeads) {
+                String key = eh.Yearly_Expense__c + '_' + eh.Name;
+                yearHeadMap.put(key, eh);
+            }
+            
+            // Collect unique expense types from line items
+            Set<String> expenseTypes = new Set<String>();
+            for(Expense_Line_Item__c eli : expenseLineItems) {
+                if(String.isNotBlank(eli.Expense_Type__c)) {
+                    expenseTypes.add(eli.Expense_Type__c);
+                }
+            }
+            
+            // Create Expense_Head__c records for each year and expense type
+            List<Expense_Head__c> headsToUpsert = new List<Expense_Head__c>();
+            for(String expenseType : expenseTypes) {
+                for(String year : yearToExpenseMap.keySet()) {
+                    String key = yearToExpenseMap.get(year).Id + '_' + expenseType;
+                    if(!yearHeadMap.containsKey(key)) {
+                        Expense_Head__c newHead = new Expense_Head__c();
+                        newHead.Name = expenseType;
+                        newHead.Yearly_Expense__c = yearToExpenseMap.get(year).Id;
+                        headsToUpsert.add(newHead);
+                    }
+                }
+            }
+            
+            if(!headsToUpsert.isEmpty()) {
+                insert headsToUpsert;
+            }
+            
+            // Re-query all heads after insert
+            existingHeads = [SELECT Id, Name, Yearly_Expense__c, Yearly_Expense__r.Year__c 
+                            FROM Expense_Head__c 
+                            WHERE Yearly_Expense__c IN :yearlyExpenseIds];
+            
+            // Rebuild map with all heads
+            yearHeadMap.clear();
+            Map<String, Expense_Head__c> yearNumHeadMap = new Map<String, Expense_Head__c>();
+            for(Expense_Head__c eh : existingHeads) {
+                String key = eh.Yearly_Expense__c + '_' + eh.Name;
+                yearHeadMap.put(key, eh);
+                String yearKey = eh.Yearly_Expense__r.Year__c + '_' + eh.Name;
+                yearNumHeadMap.put(yearKey, eh);
+            }
+            
+            // Get existing line items by head and index
+            Set<Id> headIds = new Set<Id>();
+            for(Expense_Head__c eh : existingHeads) {
+                headIds.add(eh.Id);
+            }
+            
+            List<Expense_Line_Item__c> existingLineItems = [SELECT Id, Expense_Head__c, Index__c 
+                                                            FROM Expense_Line_Item__c 
+                                                            WHERE Expense_Head__c IN :headIds];
+            
+            // Map: Head Id + Index -> Line Item Id
+            Map<String, Id> headIndexToLineItemId = new Map<String, Id>();
+            for(Expense_Line_Item__c eli : existingLineItems) {
+                String key = eli.Expense_Head__c + '_' + eli.Index__c;
+                headIndexToLineItemId.put(key, eli.Id);
+            }
+            
+            // Create line items for each year
+            List<Expense_Line_Item__c> lineItemsToUpsert = new List<Expense_Line_Item__c>();
+            
+            for(Expense_Line_Item__c eli : expenseLineItems) {
+                if(String.isBlank(eli.Expense_Type__c)) continue;
+                
+                // Year 1 Line Item
+                if(eli.Year1_Expense__c != null && eli.Year1_Expense__c >= 0) {
+                    Expense_Head__c head1 = yearNumHeadMap.get('1_' + eli.Expense_Type__c);
+                    if(head1 != null) {
+                        Expense_Line_Item__c newELI = new Expense_Line_Item__c();
+                        newELI.Description__c = eli.Description__c;
+                        newELI.Position__c = eli.Position__c;
+                        newELI.Number__c = eli.Number__c;
+                        newELI.Person_Month__c = eli.Person_Month__c;
+                        newELI.Salary_Month__c = eli.Salary_Month__c;
+                        newELI.Unit_Price__c = eli.Unit_Price__c;
+                        newELI.Multiplier__c = eli.Multiplier__c;
+                        newELI.Year1_Expense__c = eli.Year1_Expense__c;
+                        newELI.Year2_Expense__c = 0;
+                        newELI.Year3_Expense__c = 0;
+                        newELI.Year1_Approved_Amount__c = eli.Year1_Approved_Amount__c;
+                        newELI.Expense_Head__c = head1.Id;
+                        newELI.Index__c = eli.Index__c;
+                        newELI.Expense_Type__c = eli.Expense_Type__c;
+                        
+                        // Check if exists for update
+                        String key = head1.Id + '_' + eli.Index__c;
+                        if(headIndexToLineItemId.containsKey(key)) {
+                            newELI.Id = headIndexToLineItemId.get(key);
+                        }
+                        lineItemsToUpsert.add(newELI);
+                    }
+                }
+                
+                // Year 2 Line Item
+                if(eli.Year2_Expense__c != null && eli.Year2_Expense__c >= 0) {
+                    Expense_Head__c head2 = yearNumHeadMap.get('2_' + eli.Expense_Type__c);
+                    if(head2 != null) {
+                        Expense_Line_Item__c newELI = new Expense_Line_Item__c();
+                        newELI.Description__c = eli.Description__c;
+                        newELI.Position__c = eli.Position__c;
+                        newELI.Number__c = eli.Number__c;
+                        newELI.Person_Month__c = eli.Person_Month__c;
+                        newELI.Salary_Month__c = eli.Salary_Month__c;
+                        newELI.Unit_Price__c = eli.Unit_Price__c;
+                        newELI.Multiplier__c = eli.Multiplier__c;
+                        newELI.Year1_Expense__c = 0;
+                        newELI.Year2_Expense__c = eli.Year2_Expense__c;
+                        newELI.Year3_Expense__c = 0;
+                        newELI.Year2_Approved_Amount__c = eli.Year2_Approved_Amount__c;
+                        newELI.Expense_Head__c = head2.Id;
+                        newELI.Index__c = eli.Index__c;
+                        newELI.Expense_Type__c = eli.Expense_Type__c;
+                        
+                        String key = head2.Id + '_' + eli.Index__c;
+                        if(headIndexToLineItemId.containsKey(key)) {
+                            newELI.Id = headIndexToLineItemId.get(key);
+                        }
+                        lineItemsToUpsert.add(newELI);
+                    }
+                }
+                
+                // Year 3 Line Item
+                if(eli.Year3_Expense__c != null && eli.Year3_Expense__c >= 0) {
+                    Expense_Head__c head3 = yearNumHeadMap.get('3_' + eli.Expense_Type__c);
+                    if(head3 != null) {
+                        Expense_Line_Item__c newELI = new Expense_Line_Item__c();
+                        newELI.Description__c = eli.Description__c;
+                        newELI.Position__c = eli.Position__c;
+                        newELI.Number__c = eli.Number__c;
+                        newELI.Person_Month__c = eli.Person_Month__c;
+                        newELI.Salary_Month__c = eli.Salary_Month__c;
+                        newELI.Unit_Price__c = eli.Unit_Price__c;
+                        newELI.Multiplier__c = eli.Multiplier__c;
+                        newELI.Year1_Expense__c = 0;
+                        newELI.Year2_Expense__c = 0;
+                        newELI.Year3_Expense__c = eli.Year3_Expense__c;
+                        newELI.Year3_Approved_Amount__c = eli.Year3_Approved_Amount__c;
+                        newELI.Expense_Head__c = head3.Id;
+                        newELI.Index__c = eli.Index__c;
+                        newELI.Expense_Type__c = eli.Expense_Type__c;
+                        
+                        String key = head3.Id + '_' + eli.Index__c;
+                        if(headIndexToLineItemId.containsKey(key)) {
+                            newELI.Id = headIndexToLineItemId.get(key);
+                        }
+                        lineItemsToUpsert.add(newELI);
+                    }
+                }
+            }
+            
+            if(!lineItemsToUpsert.isEmpty()) {
+                upsert lineItemsToUpsert;
+            }
+            
+            // Update APA with funding details
+            if(updatedApa != null && updatedApa.Id != null) {
+                update updatedApa;
+            }
+            
+            return 'success';
+        } catch(Exception e) {
+            System.debug('Error creating expense head and line items ===> ' + e.getMessage() + ' at Line ===> ' + e.getLineNumber() + ' stack Trace ===> ' + e.getStackTraceString());
+            return 'error: ' + e.getMessage();
+        }
+    }
+    
+    // NEW METHOD: Get expense records from Expense_Head__c and Expense_Line_Item__c
+    public static ExpenseHeadLineItemWrapper getExpenseHeadLineItems(String apaId) {
+        ExpenseHeadLineItemWrapper wrapper = new ExpenseHeadLineItemWrapper();
+        
+        try {
+            // Get Yearly_Expense__c records for this APA
+            List<Yearly_Expense__c> yearlyExpenses = [SELECT Id, Year__c, Applicant_Proposal_Association__c 
+                                                       FROM Yearly_Expense__c 
+                                                       WHERE Applicant_Proposal_Association__c = :apaId 
+                                                       ORDER BY Year__c ASC];
+            
+            if(yearlyExpenses.isEmpty()) {
+                return wrapper;
+            }
+            
+            Set<Id> yearlyExpenseIds = new Set<Id>();
+            for(Yearly_Expense__c ye : yearlyExpenses) {
+                yearlyExpenseIds.add(ye.Id);
+            }
+            
+            // Get all Expense_Head__c records
+            List<Expense_Head__c> expenseHeads = [SELECT Id, Name, Yearly_Expense__c, Yearly_Expense__r.Year__c 
+                                                   FROM Expense_Head__c 
+                                                   WHERE Yearly_Expense__c IN :yearlyExpenseIds];
+            
+            Set<Id> headIds = new Set<Id>();
+            for(Expense_Head__c eh : expenseHeads) {
+                headIds.add(eh.Id);
+            }
+            
+            // Get all line items
+            List<Expense_Line_Item__c> lineItems = [SELECT Id, Name, Description__c, Position__c, Number__c, 
+                                                     Person_Month__c, Salary_Month__c, Unit_Price__c, Multiplier__c,
+                                                     Year1_Expense__c, Year2_Expense__c, Year3_Expense__c,
+                                                     Year1_Approved_Amount__c, Year2_Approved_Amount__c, Year3_Approved_Amount__c,
+                                                     Total_Expense__c, Index__c, Expense_Type__c, Expense_Head__c,
+                                                     Expense_Head__r.Name, Expense_Head__r.Yearly_Expense__r.Year__c
+                                                     FROM Expense_Line_Item__c 
+                                                     WHERE Expense_Head__c IN :headIds 
+                                                     ORDER BY Index__c ASC];
+            
+            // Consolidate line items by expense type and index (merge Year 1, 2, 3 into single records)
+            Map<String, Expense_Line_Item__c> consolidatedMap = new Map<String, Expense_Line_Item__c>();
+            
+            for(Expense_Line_Item__c eli : lineItems) {
+                String key = eli.Expense_Head__r.Name + '_' + eli.Index__c;
+                
+                if(consolidatedMap.containsKey(key)) {
+                    Expense_Line_Item__c existing = consolidatedMap.get(key);
+                    // Merge year data
+                    if(eli.Expense_Head__r.Yearly_Expense__r.Year__c == '1') {
+                        existing.Year1_Expense__c = eli.Year1_Expense__c;
+                        existing.Year1_Approved_Amount__c = eli.Year1_Approved_Amount__c;
+                    } else if(eli.Expense_Head__r.Yearly_Expense__r.Year__c == '2') {
+                        existing.Year2_Expense__c = eli.Year2_Expense__c;
+                        existing.Year2_Approved_Amount__c = eli.Year2_Approved_Amount__c;
+                    } else if(eli.Expense_Head__r.Yearly_Expense__r.Year__c == '3') {
+                        existing.Year3_Expense__c = eli.Year3_Expense__c;
+                        existing.Year3_Approved_Amount__c = eli.Year3_Approved_Amount__c;
+                    }
+                    // Recalculate total
+                    existing.Total_Expense__c = (existing.Year1_Expense__c != null ? existing.Year1_Expense__c : 0) +
+                                                (existing.Year2_Expense__c != null ? existing.Year2_Expense__c : 0) +
+                                                (existing.Year3_Expense__c != null ? existing.Year3_Expense__c : 0);
+                } else {
+                    Expense_Line_Item__c consolidated = new Expense_Line_Item__c();
+                    consolidated.Id = eli.Id;
+                    consolidated.Description__c = eli.Description__c;
+                    consolidated.Position__c = eli.Position__c;
+                    consolidated.Number__c = eli.Number__c;
+                    consolidated.Person_Month__c = eli.Person_Month__c;
+                    consolidated.Salary_Month__c = eli.Salary_Month__c;
+                    consolidated.Unit_Price__c = eli.Unit_Price__c;
+                    consolidated.Multiplier__c = eli.Multiplier__c;
+                    consolidated.Index__c = eli.Index__c;
+                    consolidated.Expense_Type__c = eli.Expense_Head__r.Name;
+                    
+                    if(eli.Expense_Head__r.Yearly_Expense__r.Year__c == '1') {
+                        consolidated.Year1_Expense__c = eli.Year1_Expense__c;
+                        consolidated.Year1_Approved_Amount__c = eli.Year1_Approved_Amount__c;
+                        consolidated.Year2_Expense__c = 0;
+                        consolidated.Year3_Expense__c = 0;
+                    } else if(eli.Expense_Head__r.Yearly_Expense__r.Year__c == '2') {
+                        consolidated.Year1_Expense__c = 0;
+                        consolidated.Year2_Expense__c = eli.Year2_Expense__c;
+                        consolidated.Year2_Approved_Amount__c = eli.Year2_Approved_Amount__c;
+                        consolidated.Year3_Expense__c = 0;
+                    } else if(eli.Expense_Head__r.Yearly_Expense__r.Year__c == '3') {
+                        consolidated.Year1_Expense__c = 0;
+                        consolidated.Year2_Expense__c = 0;
+                        consolidated.Year3_Expense__c = eli.Year3_Expense__c;
+                        consolidated.Year3_Approved_Amount__c = eli.Year3_Approved_Amount__c;
+                    }
+                    
+                    consolidated.Total_Expense__c = (consolidated.Year1_Expense__c != null ? consolidated.Year1_Expense__c : 0) +
+                                                    (consolidated.Year2_Expense__c != null ? consolidated.Year2_Expense__c : 0) +
+                                                    (consolidated.Year3_Expense__c != null ? consolidated.Year3_Expense__c : 0);
+                    
+                    consolidatedMap.put(key, consolidated);
+                }
+            }
+            
+            wrapper.lineItems = consolidatedMap.values();
+            wrapper.expenseHeads = expenseHeads;
+            wrapper.yearlyExpenses = yearlyExpenses;
+            
+            return wrapper;
+        } catch(Exception e) {
+            System.debug('Error getting expense head line items ===> ' + e.getMessage());
+            return wrapper;
+        }
+    }
+    
+    public class ExpenseHeadLineItemWrapper {
+        public List<Expense_Line_Item__c> lineItems;
+        public List<Expense_Head__c> expenseHeads;
+        public List<Yearly_Expense__c> yearlyExpenses;
+        
+        public ExpenseHeadLineItemWrapper() {
+            lineItems = new List<Expense_Line_Item__c>();
+            expenseHeads = new List<Expense_Head__c>();
+            yearlyExpenses = new List<Yearly_Expense__c>();
+        }
+    }
+    
     //expense head logic - single - commented this code for year expense issue
     /*
 public static string createExpenseDeclarationDetails(List<Expense_Line_Item__c> expenseLineItem,String proposalId,String accId){

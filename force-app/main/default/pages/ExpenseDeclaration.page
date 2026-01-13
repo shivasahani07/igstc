@@ -243,77 +243,17 @@
                 </div>
                 <div class="row mx-5 mt-5">
                     <div class="alert bg-color-list font-if" role="alert">
-                        <li class="ps-4">
-                            <i class="fa-solid fa-circle text-success me-3"></i>Indian Partner(s) should enter amount in INR</li>
-                        <li class="ps-4">
-                            <i class="fa-solid fa-circle text-success me-3"></i>German Partner(s) should enter amount in EUR</li>
+                        <li class="ps-4"><i class="fa-solid fa-circle text-success me-3"></i>Indian Partner(s) should enter amount in INR</li>
+                        <li class="ps-4"><i class="fa-solid fa-circle text-success me-3"></i>German Partner(s) should enter amount in EUR</li>
                         <!-- <li class="ps-4"><i class="fa-solid fa-circle text-success me-3"></i>Industry Partners should fill "Own Contribution" for each heads</li> -->
-                    </div>
+                  </div>
                 </div>
-
-                <!-- *************************** NEWLY ADDED - START *************************** -->
-                <div class="row mx-4 mt-5">
-                    <div class="col-md-12">
-                        <table class="tablefinance" cellpadding="4">
-                            <thead>
-                                <tr>
-                                    <th style="width:20%;">Organization Name</th>
-                                    <th style="width:0%;">Country</th>
-                                    <th style="width:0%;">Type</th>
-                                    <th style="width:0%;">Currency</th>
-                                    <th style="width:11%;">IGSTC Funding</th>
-                                    <th style="width:0%;">Own Contribution</th>
-                                    <th style="width:11%;">Total</th>
-                                    <th style="width:12%;">% Funding Requested from IGSTC</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="x in input">
-                                    <td>{{x.Contact__r.Name|specialChar}}</td>
-                                    <td>{{x.Contact__r.Account.BillingCountry}}</td>
-                                    <td>{{x.Contact__r.Account_Type__c}}</td>
-                                    <td>
-                                        <span ng-show="x.Contact__r.Account.BillingCountry=='India'">INR</span>
-                                        <span ng-show="x.Contact__r.Account.BillingCountry=='Germany'">EURO</span>
-                                    </td>
-                                    <td>
-                                        <input ng-focus="removeClass('igstc',$index)" id="igstc{{$index}}" type="text" class="form-control" ng-keyup="calculateOtherField($index)"
-                                            ng-change="calculateOtherField($index)" ng-keypress="calculateOtherField($index)"
-                                            number="x.Financial_Contribution__r[0].IGSTC_Contribution__c" ng-model="x.Financial_Contribution__r[0].IGSTC_Contribution__c"
-                                            ng-disabled="proposalStage" />
-                                    </td>
-                                    <td>
-                                        <input ng-focus="removeClass('own',$index)" id="own{{$index}}" type="text" class="form-control" ng-keyup="calculateOtherField($index)"
-                                            ng-change="calculateOtherField($index)" ng-keypress="calculateOtherField($index)"
-                                            number="x.Financial_Contribution__r[0].Own_Contribution__c" ng-model="x.Financial_Contribution__r[0].Own_Contribution__c"
-                                            ng-disabled="proposalStage" />
-                                    </td>
-
-                                    <td>
-                                        <input ng-focus="removeClass('total',$index)" id="total{{$index}}" type="text" class="form-control" ng-disabled="disabled"
-                                            ng-model="x.Financial_Contribution__r[0].Total__c" size="5" />
-                                    </td>
-                                    <td>
-                                        <!--
-                                        <input ng-focus="removeClass('percentage',$index)" id="percentage{{$index}}" type="text" class="form-control" ng-disabled="disabled"
-                                            ng-model="x.Financial_Contribution__r[0].Asked_From_IGSTC__c | number : 2" /> -->
-
-                                        <input ng-focus="removeClass('percentage',$index)" id="percentage{{$index}}" type="text" class="form-control" ng-disabled="disabled"
-                                            ng-value="(x.Financial_Contribution__r[0].Asked_From_IGSTC__c | number:2)" />
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <!-- *************************** NEWLY ADDED - END *************************** -->
-
                 <div class="container-fluid mt-5">
                     <div class="row px-4">
                         <div class="col-md-12">
                             <div class="accordion" id="accordionExample" ng-show="!expenseDetails">
                                 <!-- <div ng-repeat="acc in accList"> -->
-                                <div>
+                                    <div>
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="accList.Id">
                                             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accList.Name" aria-expanded="true"
@@ -364,39 +304,17 @@
                                         </tr>
                                         <tbody id="manpower-body">
                                             <tr class="input-row" ng-repeat="con in manPowerRecords">
-                                                <td>
-                                                    <input type="text" ng-model="con.Position__c" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'India'">
-                                                    <input type="number" ng-model="con.Person_Month__c" placeholder="Person Month" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'">
-                                                    <input type="text" ng-model="con.Person_Month__c" placeholder="Person Month" euro-input="true" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'India'">
-                                                    <input type="number" ng-model="con.Salary_Month__c" placeholder="Salary" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'">
-                                                    <input type="text" ng-model="con.Salary_Month__c" placeholder="Salary" euro-input="true" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'India'">
-                                                    <input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('man')" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'">
-                                                    <input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('man')" euro-input="true" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'India'">
-                                                    <input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('man')" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'">
-                                                    <input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('man')" euro-input="true" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'India'">
-                                                    <input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('man')" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'">
-                                                    <input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('man')" euro-input="true" />
-                                                </td>
+                                                <td><input type="text" ng-model="con.Position__c" /></td>
+                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Person_Month__c" placeholder="Person Month"/></td>
+                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Person_Month__c" placeholder="Person Month" euro-input="true"/></td>
+                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Salary_Month__c" placeholder="Salary"/></td>
+                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Salary_Month__c" placeholder="Salary" euro-input="true"/></td>
+                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('man')"/></td>
+                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('man')" euro-input="true"/></td>
+                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('man')"/></td>
+                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('man')" euro-input="true"/></td>
+                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('man')"/></td>
+                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('man')" euro-input="true"/></td>
                                                 <td ng-if="accList.BillingCountry == 'India'">{{con.Total_Expense__c || 0 | inrCurrency}}</td>
                                                 <td ng-if="accList.BillingCountry == 'Germany'">{{con.Total_Expense__c || 0 | euroCurrency}}</td>
                                                 <td ng-show="manPowerRecords.length > 1">
@@ -409,8 +327,7 @@
                                         </tbody>
                                         <tr>
                                             <td colspan="8" style="text-align:left;">
-                                                <button class="add-row-btn" ng-click="addRow($parent.$index,$index)">
-                                                    <i class="fa-solid fa-plus"></i>Add Manpower Row</button>
+                                                <button class="add-row-btn" ng-click="addRow($parent.$index,$index)"><i class="fa-solid fa-plus"></i>Add Manpower Row</button>
                                             </td>
                                         </tr>
                                         <!-- Equipment & Accessories Section -->
@@ -434,36 +351,16 @@
                                         </tr>
                                         <tbody id="equipment-body">
                                             <tr class="input-row" ng-repeat="con in Equipment">
-                                                <td>
-                                                    <input type="text" ng-model="con.Description__c" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" ng-model="con.Number__c" placeholder="Quantity" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'India'">
-                                                    <input type="number" ng-model="con.Unit_Price__c" placeholder="Unit Price" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'">
-                                                    <input type="text" ng-model="con.Unit_Price__c" placeholder="Unit Price" euro-input="true" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'India'">
-                                                    <input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('equi')" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'">
-                                                    <input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('equi')" euro-input="true" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'India'">
-                                                    <input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('equi')" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'">
-                                                    <input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('equi')" euro-input="true" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'India'">
-                                                    <input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('equi')" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'">
-                                                    <input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('equi')" euro-input="true" />
-                                                </td>
+                                                <td><input type="text" ng-model="con.Description__c" /></td>
+                                                <td><input type="text" ng-model="con.Number__c" placeholder="Quantity"/></td>
+                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Unit_Price__c" placeholder="Unit Price"/></td>
+                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Unit_Price__c" placeholder="Unit Price" euro-input="true"/></td>
+                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('equi')"/></td>
+                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('equi')" euro-input="true"/></td>
+                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('equi')"/></td>
+                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('equi')" euro-input="true"/></td>
+                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('equi')"/></td>
+                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('equi')" euro-input="true"/></td>
                                                 <td ng-if="accList.BillingCountry == 'India'">{{con.Total_Expense__c || 0 | inrCurrency}}</td>
                                                 <td ng-if="accList.BillingCountry == 'Germany'">{{con.Total_Expense__c || 0 | euroCurrency}}</td>
                                                 <td ng-show="Equipment.length > 1">
@@ -503,36 +400,16 @@
                                         </tr>
                                         <tbody id="consumables-body">
                                             <tr class="input-row" ng-repeat="con in consumables">
-                                                <td>
-                                                    <input type="text" ng-model="con.Description__c" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" ng-model="con.Number__c" placeholder="Quantity" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'India'">
-                                                    <input type="number" ng-model="con.Unit_Price__c" placeholder="Unit Price" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'">
-                                                    <input type="text" ng-model="con.Unit_Price__c" placeholder="Unit Price" euro-input="true" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'India'">
-                                                    <input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('cons')" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'">
-                                                    <input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('cons')" euro-input="true" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'India'">
-                                                    <input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('cons')" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'">
-                                                    <input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('cons')" euro-input="true" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'India'">
-                                                    <input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('cons')" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'">
-                                                    <input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('cons')" euro-input="true" />
-                                                </td>
+                                                <td><input type="text" ng-model="con.Description__c"/></td>
+                                                <td><input type="text" ng-model="con.Number__c" placeholder="Quantity"/></td>
+                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Unit_Price__c" placeholder="Unit Price"/></td>
+                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Unit_Price__c" placeholder="Unit Price" euro-input="true"/></td>
+                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('cons')"/></td>
+                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('cons')" euro-input="true"/></td>
+                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('cons')"/></td>
+                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('cons')" euro-input="true"/></td>
+                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('cons')"/></td>
+                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('cons')" euro-input="true"/></td>
                                                 <td ng-if="accList.BillingCountry == 'India'">{{con.Total_Expense__c || 0 | inrCurrency}}</td>
                                                 <td ng-if="accList.BillingCountry == 'Germany'">{{con.Total_Expense__c || 0 | euroCurrency}}</td>
                                                 <td ng-show="consumables.length > 1">
@@ -572,36 +449,15 @@
                                         <tbody id="travel-body">
                                             <tr class="input-row" ng-repeat="con in travel">
                                                 <td>{{con.Description__c || ''}}</td>
-                                                <td ng-if="con.Description__c != 'Hosting German Partner'">
-                                                    <input type="text" ng-model="con.Number__c" placeholder="Quantity" required="true" />
-                                                </td>
-                                                <td ng-if="con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'India'">
-                                                    <input type="number" ng-model="con.Unit_Price__c" placeholder="Unit Price" required="true" />
-                                                </td>
-                                                <td ng-if="con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'Germany'">
-                                                    <input type="text" ng-model="con.Unit_Price__c" placeholder="Unit Price" required="true" euro-input="true" />
-                                                </td>
-                                                <td ng-if="con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'India'">
-                                                    <input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('travel')" required="true" />
-                                                </td>
-                                                <td ng-if="con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'Germany'">
-                                                    <input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('travel')" required="true" euro-input="true"
-                                                    />
-                                                </td>
-                                                <td ng-if="con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'India'">
-                                                    <input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('travel')" required="true" />
-                                                </td>
-                                                <td ng-if="con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'Germany'">
-                                                    <input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('travel')" required="true" euro-input="true"
-                                                    />
-                                                </td>
-                                                <td ng-if="con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'India'">
-                                                    <input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('travel')" required="true" />
-                                                </td>
-                                                <td ng-if="con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'Germany'">
-                                                    <input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('travel')" required="true" euro-input="true"
-                                                    />
-                                                </td>
+                                                <td ng-if="con.Description__c != 'Hosting German Partner'"><input type="text" ng-model="con.Number__c" placeholder="Quantity" required="true"/></td>
+                                                <td ng-if="con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Unit_Price__c" placeholder="Unit Price" required="true"/></td>
+                                                <td ng-if="con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Unit_Price__c" placeholder="Unit Price" required="true" euro-input="true"/></td>
+                                                <td ng-if="con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('travel')" required="true"/></td>
+                                                <td ng-if="con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('travel')" required="true" euro-input="true"/></td>
+                                                <td ng-if="con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('travel')" required="true"/></td>
+                                                <td ng-if="con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('travel')" required="true" euro-input="true"/></td>
+                                                <td ng-if="con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('travel')" required="true"/></td>
+                                                <td ng-if="con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('travel')" required="true" euro-input="true"/></td>
                                                 <td ng-if="accList.BillingCountry == 'India' && con.Description__c != 'Hosting German Partner'">{{con.Total_Expense__c || 0 | inrCurrency}}</td>
                                                 <td ng-if="accList.BillingCountry == 'Germany' && con.Description__c != 'Hosting German Partner'">{{con.Total_Expense__c || 0 | euroCurrency}}</td>
                                                 <td ng-if="con.Description__c == 'Hosting German Partner'"></td>
@@ -646,29 +502,15 @@
                                         </tr>
                                         <tbody id="outsourcing-body">
                                             <tr class="input-row" ng-repeat="con in outsourcing">
-                                                <td>
-                                                    <input ng-model="con.Description__c" type="text" />
-                                                </td>
+                                                <td><input ng-model="con.Description__c" type="text"/></td>
                                                 <td></td>
                                                 <td></td>
-                                                <td ng-if="accList.BillingCountry == 'India'">
-                                                    <input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('outsourcing')" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'">
-                                                    <input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('outsourcing')" euro-input="true" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'India'">
-                                                    <input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('outsourcing')" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'">
-                                                    <input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('outsourcing')" euro-input="true" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'India'">
-                                                    <input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('outsourcing')" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'">
-                                                    <input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('outsourcing')" euro-input="true" />
-                                                </td>
+                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('outsourcing')"/></td>
+                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('outsourcing')" euro-input="true"/></td>
+                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('outsourcing')"/></td>
+                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('outsourcing')" euro-input="true"/></td>
+                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('outsourcing')"/></td>
+                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('outsourcing')" euro-input="true"/></td>
                                                 <td ng-if="accList.BillingCountry == 'India'">{{con.Total_Expense__c || 0 | inrCurrency }}</td>
                                                 <td ng-if="accList.BillingCountry == 'Germany'">{{con.Total_Expense__c || 0 | euroCurrency }}</td>
                                                 <td ng-show="outsourcing.length > 1">
@@ -711,24 +553,12 @@
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
-                                                <td ng-if="accList.BillingCountry == 'India'">
-                                                    <input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('contingency')" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'">
-                                                    <input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('contingency')" euro-input="true" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'India'">
-                                                    <input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('contingency')" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'">
-                                                    <input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('contingency')" euro-input="true" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'India'">
-                                                    <input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('contingency')" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'">
-                                                    <input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('contingency')" euro-input="true" />
-                                                </td>
+                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('contingency')"/></td>
+                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('contingency')" euro-input="true"/></td>
+                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('contingency')"/></td>
+                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('contingency')" euro-input="true"/></td>
+                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('contingency')"/></td>
+                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('contingency')" euro-input="true"/></td>
                                                 <td ng-if="accList.BillingCountry == 'India'">{{con.Total_Expense__c || 0 | inrCurrency }}</td>
                                                 <td ng-if="accList.BillingCountry == 'Germany'">{{con.Total_Expense__c || 0 | euroCurrency }}</td>
                                                 <td ng-show="contingency.length > 1">
@@ -820,32 +650,17 @@
                                             <td ng-show="overhead.length > 1">Actions</td>
                                             <td ng-hide="overhead.length > 1"></td>
                                         </tr>
-                                        <tbody ng-if="(accList.BillingCountry == 'India' && accList.Academia__c == true) || (accList.BillingCountry == 'Germany')"
-                                            id="overhead-body">
+                                        <tbody ng-if="(accList.BillingCountry == 'India' && accList.Academia__c == true) || (accList.BillingCountry == 'Germany')" id="overhead-body">
                                             <tr class="input-row" ng-repeat="con in overhead">
-                                                <td>
-                                                    <input ng-model="con.Description__c" placeholder="Description" type="text" />
-                                                </td>
+                                                <td><input ng-model="con.Description__c" placeholder="Description" type="text"/></td>
                                                 <td></td>
                                                 <td></td>
-                                                <td ng-if="accList.BillingCountry == 'India'">
-                                                    <input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('overhead')" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'">
-                                                    <input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('overhead')" euro-input="true" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'India'">
-                                                    <input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('overhead')" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'">
-                                                    <input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('overhead')" euro-input="true" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'India'">
-                                                    <input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('overhead')" />
-                                                </td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'">
-                                                    <input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('overhead')" euro-input="true" />
-                                                </td>
+                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('overhead')"/></td>
+                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('overhead')" euro-input="true"/></td>
+                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('overhead')"/></td>
+                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('overhead')" euro-input="true"/></td>
+                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('overhead')"/></td>
+                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('overhead')" euro-input="true"/></td>
                                                 <td ng-if="accList.BillingCountry == 'India'">{{con.Total_Expense__c || 0 | inrCurrency }}</td>
                                                 <td ng-if="accList.BillingCountry == 'Germany'">{{con.Total_Expense__c || 0 | euroCurrency }}</td>
                                                 <td ng-show="overhead.length > 1">
@@ -904,24 +719,12 @@
                                             <td>IGSTC Funding</td>
                                             <td></td>
                                             <td></td>
-                                            <td ng-if="accList.BillingCountry == 'India'">
-                                                <input type="number" ng-model="igstcFunding.Year1_Expense__c" ng-blur="calculateOtherField('igstc')" />
-                                            </td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">
-                                                <input type="text" ng-model="igstcFunding.Year1_Expense__c" ng-blur="calculateOtherField('igstc')" euro-input="true" />
-                                            </td>
-                                            <td ng-if="accList.BillingCountry == 'India'">
-                                                <input type="number" ng-model="igstcFunding.Year2_Expense__c" ng-blur="calculateOtherField('igstc')" />
-                                            </td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">
-                                                <input type="text" ng-model="igstcFunding.Year2_Expense__c" ng-blur="calculateOtherField('igstc')" euro-input="true" />
-                                            </td>
-                                            <td ng-if="accList.BillingCountry == 'India'">
-                                                <input type="number" ng-model="igstcFunding.Year3_Expense__c" ng-blur="calculateOtherField('igstc')" />
-                                            </td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">
-                                                <input type="text" ng-model="igstcFunding.Year3_Expense__c" ng-blur="calculateOtherField('igstc')" euro-input="true" />
-                                            </td>
+                                            <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="igstcFunding.Year1_Expense__c" ng-blur="calculateOtherField('igstc')"/></td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="igstcFunding.Year1_Expense__c" ng-blur="calculateOtherField('igstc')" euro-input="true"/></td>
+                                            <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="igstcFunding.Year2_Expense__c" ng-blur="calculateOtherField('igstc')"/></td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="igstcFunding.Year2_Expense__c" ng-blur="calculateOtherField('igstc')" euro-input="true"/></td>
+                                            <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="igstcFunding.Year3_Expense__c" ng-blur="calculateOtherField('igstc')"/></td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="igstcFunding.Year3_Expense__c" ng-blur="calculateOtherField('igstc')" euro-input="true"/></td>
                                             <td ng-if="accList.BillingCountry == 'India'">{{igstcFunding.Total_Expense__c || 0 | inrCurrency }}</td>
                                             <td ng-if="accList.BillingCountry == 'Germany'">{{igstcFunding.Total_Expense__c || 0 | euroCurrency }}</td>
                                             <td></td>
@@ -930,30 +733,18 @@
                                             <td>Industry Contribution</td>
                                             <td></td>
                                             <td></td>
-                                            <td ng-if="accList.BillingCountry == 'India'">
-                                                <input type="number" ng-model="industryContr.Year1_Expense__c" ng-blur="calculateOtherField('ic')" />
-                                            </td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">
-                                                <input type="text" ng-model="industryContr.Year1_Expense__c" ng-blur="calculateOtherField('ic')" euro-input="true" />
-                                            </td>
-                                            <td ng-if="accList.BillingCountry == 'India'">
-                                                <input type="number" ng-model="industryContr.Year2_Expense__c" ng-blur="calculateOtherField('ic')" />
-                                            </td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">
-                                                <input type="text" ng-model="industryContr.Year2_Expense__c" ng-blur="calculateOtherField('ic')" euro-input="true" />
-                                            </td>
-                                            <td ng-if="accList.BillingCountry == 'India'">
-                                                <input type="number" ng-model="industryContr.Year3_Expense__c" ng-blur="calculateOtherField('ic')" />
-                                            </td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">
-                                                <input type="text" ng-model="industryContr.Year3_Expense__c" ng-blur="calculateOtherField('ic')" euro-input="true" />
-                                            </td>
+                                            <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="industryContr.Year1_Expense__c" ng-blur="calculateOtherField('ic')"/></td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="industryContr.Year1_Expense__c" ng-blur="calculateOtherField('ic')" euro-input="true"/></td>
+                                            <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="industryContr.Year2_Expense__c" ng-blur="calculateOtherField('ic')"/></td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="industryContr.Year2_Expense__c" ng-blur="calculateOtherField('ic')" euro-input="true"/></td>
+                                            <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="industryContr.Year3_Expense__c" ng-blur="calculateOtherField('ic')"/></td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="industryContr.Year3_Expense__c" ng-blur="calculateOtherField('ic')" euro-input="true"/></td>
                                             <td ng-if="accList.BillingCountry == 'India'">{{industryContr.Total_Expense__c || 0 | inrCurrency }}</td>
                                             <td ng-if="accList.BillingCountry == 'Germany'">{{industryContr.Total_Expense__c || 0 | euroCurrency }}</td>
                                             <td></td>
                                         </tr>
                                     </tbody>
-                                </table>
+                                </table>                              
                                 <!-- <div class="accordion" id="accordionExample">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingOne">
@@ -970,9 +761,9 @@
                                                             <tr>
                                                                 <th class="p-2">Details</th>
                                                                 <th class="p-2" width="23%">Expense Description</th> -->
-                                <!-- <th class="p-2">Person Per Month</th>
+                                                                <!-- <th class="p-2">Person Per Month</th>
                                                                 <th class="p-2">Salary/Month</th> -->
-                                <!-- <th class="p-2">Year 1</th>
+                                                                <!-- <th class="p-2">Year 1</th>
                                                                 <th class="p-2">Year 2</th>
                                                                 <th class="p-2">Year 3</th>
                                                                 <th class="p-2">Total</th>
@@ -991,7 +782,7 @@
                                                                     </label>
                                                                     <br/>
                                                                 </td> -->
-                                <!-- <td>
+                                                                <!-- <td>
                                                                     <label>
                                                                         <input class="form-control" ng-model="con.Unit_Price__c" ng-disabled="proposalStage" ng-keyup="calculateYearField('man')"
                                                                             ng-change="calculateYearField('man')" ng-keypress="calculateYearField('man')"
@@ -999,15 +790,15 @@
                                                                     </label>
                                                                     <br/>
                                                                 </td> -->
-                                <!-- <td> -->
-                                <!--<span class="required-asterisk" style="color:red;">*</span>-->
-                                <!-- <label>
+                                                                <!-- <td> -->
+                                                                    <!--<span class="required-asterisk" style="color:red;">*</span>-->
+                                                                    <!-- <label>
                                                                         <input class="form-control" ng-model="con.Multiplier__c" ng-disabled="proposalStage" ng-keyup="calculateYearField('man')"
                                                                             ng-change="calculateYearField('man')" ng-keypress="calculateYearField('man')"
                                                                         />
                                                                     </label>
                                                                 </td> -->
-                                <!-- <td>
+                                                                <!-- <td>
                                                                     <label>
                                                                         <input class="form-control" ng-model="con.Year1_Expense__c" ng-disabled="proposalStage"
                                                                             ng-blur="calculateOtherField('man')"
@@ -1051,8 +842,8 @@
                                                     </table>
                                                     <div class="mb-3">
                                                         <button type="button" ng-hide="proposalStage" class="btn btn-primary background-theme" ng-click="submitExpense('Man_Power');">Submit</button> -->
-                                <!-- <button type="button" class="btn btn-primary background-theme" ng-click="disableExpenseModule($index)">Back</button> -->
-                                <!-- </div>
+                                                        <!-- <button type="button" class="btn btn-primary background-theme" ng-click="disableExpenseModule($index)">Back</button> -->
+                                                    <!-- </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1072,9 +863,9 @@
                                                             <tr>
                                                                 <th class="p-2">Details</th>
                                                                 <th class="p-2" width="23%">Expense Description</th> -->
-                                <!-- <th class="p-2">Person Per Month</th>
+                                                                <!-- <th class="p-2">Person Per Month</th>
                                                                 <th class="p-2">Salary/Month</th> -->
-                                <!-- <th class="p-2">Year 1</th>
+                                                                <!-- <th class="p-2">Year 1</th>
                                                                 <th class="p-2">Year 2</th>
                                                                 <th class="p-2">Year 3</th>
                                                                 <th class="p-2">Total</th>
@@ -1093,7 +884,7 @@
                                                                     </label>
                                                                     <br/>
                                                                 </td> -->
-                                <!-- <td>
+                                                                <!-- <td>
                                                                     <label>
                                                                         <input class="form-control" ng-model="con.Unit_Price__c" ng-disabled="proposalStage" ng-keyup="calculateYearField('cons')"
                                                                             ng-change="calculateYearField('cons')" ng-keypress="calculateYearField('cons')"
@@ -1101,15 +892,15 @@
                                                                     </label>
                                                                     <br/>
                                                                 </td> -->
-                                <!-- <td> -->
-                                <!--<span class="required-asterisk" style="color:red;">*</span>-->
-                                <!-- <label>
+                                                                <!-- <td> -->
+                                                                    <!--<span class="required-asterisk" style="color:red;">*</span>-->
+                                                                    <!-- <label>
                                                                         <input class="form-control" ng-disabled="proposalStage" ng-model="con.Multiplier__c" required="true" ng-required="con.Email"
                                                                             ng-keyup="calculateYearField('cons')" ng-change="calculateYearField('cons')"
                                                                             ng-keypress="calculateYearField('cons')" />
                                                                     </label>
                                                                 </td> -->
-                                <!-- <td>
+                                                                <!-- <td>
                                                                     <label>
                                                                         <input class="form-control" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('cons')" ng-disabled="proposalStage"
                                                                         />
@@ -1171,9 +962,9 @@
                                                             <tr>
                                                                 <th class="p-2">Details</th>
                                                                 <th class="p-2" width="23%">Expense Description</th> -->
-                                <!-- <th class="p-2">Person Per Month</th>
+                                                                <!-- <th class="p-2">Person Per Month</th>
                                                                 <th class="p-2">Salary/Month</th> -->
-                                <!-- <th class="p-2">Year 1</th>
+                                                                <!-- <th class="p-2">Year 1</th>
                                                                 <th class="p-2">Year 2</th>
                                                                 <th class="p-2">Year 3</th>
                                                                 <th class="p-2">Total</th>
@@ -1192,7 +983,7 @@
                                                                     </label>
                                                                     <br/>
                                                                 </td> -->
-                                <!-- <td>
+                                                                <!-- <td>
                                                                     <label>
                                                                         <input class="form-control" ng-model="con.Unit_Price__c" ng-disabled="proposalStage" required="true" ng-keyup="calculateYearField('equi')"
                                                                             ng-change="calculateYearField('equi')" ng-keypress="calculateYearField('equi')"
@@ -1201,14 +992,14 @@
                                                                     <br/>
                                                                 </td>
                                                                 <td> -->
-                                <!--<span class="required-asterisk" style="color:red;">*</span>-->
-                                <!-- <label>
+                                                                    <!--<span class="required-asterisk" style="color:red;">*</span>-->
+                                                                    <!-- <label>
                                                                         <input class="form-control" ng-disabled="proposalStage" ng-model="con.Multiplier__c" required="true" ng-keyup="calculateYearField('equi')"
                                                                             ng-change="calculateYearField('equi')" ng-keypress="calculateYearField('equi')"
                                                                             ng-required="con.Email" />
                                                                     </label>
                                                                 </td> -->
-                                <!-- <td>
+                                                                <!-- <td>
                                                                     <label>
                                                                         <input class="form-control" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('equi')" ng-disabled="proposalStage"
                                                                         />
@@ -1270,9 +1061,9 @@
                                                             <tr>
                                                                 <th class="p-2">Details</th>
                                                                 <th class="p-2" width="23%">Expense Description</th> -->
-                                <!-- <th class="p-2">Person Per Month</th>
+                                                                <!-- <th class="p-2">Person Per Month</th>
                                                                 <th class="p-2">Salary/Month</th> -->
-                                <!-- <th class="p-2">Year 1</th>
+                                                                <!-- <th class="p-2">Year 1</th>
                                                                 <th class="p-2">Year 2</th>
                                                                 <th class="p-2">Year 3</th>
                                                                 <th class="p-2">Total</th>
@@ -1291,7 +1082,7 @@
                                                                     </label>
                                                                     <br/>
                                                                 </td> -->
-                                <!-- <td>
+                                                                <!-- <td>
                                                                     <label>
                                                                         <input class="form-control" ng-model="con.Unit_Price__c" ng-keyup="calculateYearField('travel')" ng-change="calculateYearField('travel')"
                                                                             ng-keypress="calculateYearField('travel')" ng-disabled="proposalStage"
@@ -1300,14 +1091,14 @@
                                                                     <br/>
                                                                 </td>
                                                                 <td> -->
-                                <!--<span class="required-asterisk" style="color:red;">*</span>-->
-                                <!-- <label>
+                                                                    <!--<span class="required-asterisk" style="color:red;">*</span>-->
+                                                                    <!-- <label>
                                                                         <input class="form-control" ng-disabled="proposalStage" ng-model="con.Multiplier__c" ng-keyup="calculateYearField('travel')"
                                                                             ng-change="calculateYearField('travel')" ng-keypress="calculateYearField('travel')"
                                                                             required="true" ng-required="con.Email" />
                                                                     </label>
                                                                 </td> -->
-                                <!-- <td>
+                                                                <!-- <td>
                                                                     <label>
                                                                         <input class="form-control" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('travel')" ng-disabled="proposalStage"
                                                                         />
@@ -1369,9 +1160,9 @@
                                                             <tr>
                                                                 <th class="p-2">Details</th>
                                                                 <th class="p-2" width="23%">Expense Description</th> -->
-                                <!-- <th class="p-2">Person Per Month</th>
+                                                                <!-- <th class="p-2">Person Per Month</th>
                                                                 <th class="p-2">Salary/Month</th> -->
-                                <!-- <th class="p-2">Year 1</th>
+                                                                <!-- <th class="p-2">Year 1</th>
                                                                 <th class="p-2">Year 2</th>
                                                                 <th class="p-2">Year 3</th>
                                                                 <th class="p-2">Total</th>
@@ -1390,7 +1181,7 @@
                                                                     </label>
                                                                     <br/>
                                                                 </td> -->
-                                <!-- <td>
+                                                                <!-- <td>
                                                                     <label>
                                                                         <input class="form-control" ng-model="con.Unit_Price__c" ng-keyup="calculateYearField('other')" ng-change="calculateYearField('other')"
                                                                             ng-keypress="calculateYearField('other')" ng-disabled="proposalStage"
@@ -1399,14 +1190,14 @@
                                                                     <br/>
                                                                 </td>
                                                                 <td> -->
-                                <!--<span class="required-asterisk" style="color:red;">*</span>-->
-                                <!-- <label>
+                                                                    <!--<span class="required-asterisk" style="color:red;">*</span>-->
+                                                                    <!-- <label>
                                                                         <input class="form-control" ng-disabled="proposalStage" ng-model="con.Multiplier__c" ng-keyup="calculateYearField('other')"
                                                                             ng-change="calculateYearField('other')" ng-keypress="calculateYearField('other')"
                                                                             required="true" ng-required="con.Email" />
                                                                     </label>
                                                                 </td> -->
-                                <!-- <td>
+                                                                <!-- <td>
                                                                     <label>
                                                                         <input class="form-control" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('outsourcing')" ng-disabled="proposalStage"
                                                                         />
@@ -1468,9 +1259,9 @@
                                                             <tr>
                                                                 <th class="p-2">Details</th>
                                                                 <th class="p-2" width="23%">Expense Description</th> -->
-                                <!-- <th class="p-2">Person Per Month</th>
+                                                                <!-- <th class="p-2">Person Per Month</th>
                                                                 <th class="p-2">Salary/Month</th> -->
-                                <!-- <th class="p-2">Year 1</th>
+                                                                <!-- <th class="p-2">Year 1</th>
                                                                 <th class="p-2">Year 2</th>
                                                                 <th class="p-2">Year 3</th>
                                                                 <th class="p-2">Total</th>
@@ -1489,7 +1280,7 @@
                                                                     </label>
                                                                     <br/>
                                                                 </td> -->
-                                <!-- <td>
+                                                                <!-- <td>
                                                                     <label>
                                                                         <input class="form-control" ng-model="con.Unit_Price__c" ng-keyup="calculateYearField('other')" ng-change="calculateYearField('other')"
                                                                             ng-keypress="calculateYearField('other')" ng-disabled="proposalStage"
@@ -1498,14 +1289,14 @@
                                                                     <br/>
                                                                 </td>
                                                                 <td> -->
-                                <!--<span class="required-asterisk" style="color:red;">*</span>-->
-                                <!-- <label>
+                                                                    <!--<span class="required-asterisk" style="color:red;">*</span>-->
+                                                                    <!-- <label>
                                                                         <input class="form-control" ng-disabled="proposalStage" ng-model="con.Multiplier__c" ng-keyup="calculateYearField('other')"
                                                                             ng-change="calculateYearField('other')" ng-keypress="calculateYearField('other')"
                                                                             required="true" ng-required="con.Email" />
                                                                     </label>
                                                                 </td> -->
-                                <!-- <td>
+                                                                <!-- <td>
                                                                     <label>
                                                                         <input class="form-control" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('contingency')" ng-disabled="proposalStage"
                                                                         />
@@ -1567,9 +1358,9 @@
                                                             <tr>
                                                                 <th class="p-2">Details</th>
                                                                 <th class="p-2" width="23%">Expense Description</th> -->
-                                <!-- <th class="p-2">Person Per Month</th>
+                                                                <!-- <th class="p-2">Person Per Month</th>
                                                                 <th class="p-2">Salary/Month</th> -->
-                                <!-- <th class="p-2">Year 1</th>
+                                                                <!-- <th class="p-2">Year 1</th>
                                                                 <th class="p-2">Year 2</th>
                                                                 <th class="p-2">Year 3</th>
                                                                 <th class="p-2">Total</th>
@@ -1588,7 +1379,7 @@
                                                                     </label>
                                                                     <br/>
                                                                 </td> -->
-                                <!-- <td>
+                                                                <!-- <td>
                                                                     <label>
                                                                         <input class="form-control" ng-model="con.Unit_Price__c" ng-keyup="calculateYearField('other')" ng-change="calculateYearField('other')"
                                                                             ng-keypress="calculateYearField('other')" ng-disabled="proposalStage"
@@ -1597,14 +1388,14 @@
                                                                     <br/>
                                                                 </td>
                                                                 <td> -->
-                                <!--<span class="required-asterisk" style="color:red;">*</span>-->
-                                <!-- <label>
+                                                                    <!--<span class="required-asterisk" style="color:red;">*</span>-->
+                                                                    <!-- <label>
                                                                         <input class="form-control" ng-disabled="proposalStage" ng-model="con.Multiplier__c" ng-keyup="calculateYearField('other')"
                                                                             ng-change="calculateYearField('other')" ng-keypress="calculateYearField('other')"
                                                                             required="true" ng-required="con.Email" />
                                                                     </label>
                                                                 </td> -->
-                                <!-- <td>
+                                                                <!-- <td>
                                                                     <label>
                                                                         <input class="form-control" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('overhead')" ng-disabled="proposalStage"
                                                                         />
@@ -1654,13 +1445,12 @@
                                 </div> -->
                             </div>
 
-                            <!-- <div class="row mt-4 mb-4" ng-if="!proposalStage"> -->
-                            <!-- Condition removed for Submit and Next Button, because we were not able to save the data. -->
-                            <div class="col-md-12">
-                                <!-- <button type="button" class="blue-btn float-end ms-3" ng-click="redirectPageURL('Declartion_2plus2')">Save and Next</button> -->
-                                <button type="button" class="blue-btn float-end ms-3" ng-click="submitExpense()">Save and Next</button>
-                                <button type="button" class="blue-bordered-btn float-end" ng-click="redirectPageURL('ProjectDetail')">Previous</button>
-                            </div>
+                            <!-- <div class="row mt-4 mb-4" ng-if="!proposalStage"> --> <!-- Condition removed for Submit and Next Button, because we were not able to save the data. -->
+                                <div class="col-md-12">
+                                    <!-- <button type="button" class="blue-btn float-end ms-3" ng-click="redirectPageURL('Declartion_2plus2')">Save and Next</button> -->
+                                    <button type="button" class="blue-btn float-end ms-3" ng-click="submitExpense()">Save and Next</button>
+                                    <button type="button" class="blue-bordered-btn float-end" ng-click="redirectPageURL('ProjectDetail')">Previous</button>
+                                </div>
                             <!-- </div> -->
                         </div>
                     </div>

@@ -28,9 +28,10 @@
                             <ul>
                                 <!-- Pair Project Details -->
                                 <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
+                                    <a ng-click="redirectPageURL('HostProjectDetails')">
                                         <div class="icon-circle">
-                                            <i class="far fa-address-card"></i>
+                                            <!-- <i class="far fa-address-card"></i> -->
+                                            <i class="fas fa-file-invoice"></i>
                                         </div>
                                         <span>Paired Project Details</span>
                                     </a>
@@ -38,9 +39,10 @@
 
                                 <!-- Not Confirmed Yet -->
                                 <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('HostProjectDetails')">
+                                    <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
                                         <div class="icon-circle">
-                                            <i class="fa fa-home"></i>
+                                            <!-- <i class="fa fa-home"></i> -->
+                                            <i class="far fa-address-card"></i>
                                         </div>
                                         <span>Pairing Details</span>
                                     </a>
@@ -88,7 +90,8 @@
                                 <li class="active">
                                     <a>
                                         <div class="icon-circle">
-                                            <i class="fas fa-user-alt"></i>
+                                            <!-- <i class="fas fa-user-alt"></i> -->
+                                            <i class="fas fa-file-invoice"></i>
                                         </div>
                                         <span>Paired Project Details</span>
                                     </a>
@@ -115,7 +118,8 @@
                                 <li>
                                     <a>
                                         <div class="icon-circle">
-                                            <i class="fa fa-home"></i>
+                                            <!-- <i class="fa fa-home"></i> -->
+                                            <i class="fas fa-user-alt"></i>
                                         </div>
                                         <span>Applicant Details</span>
                                     </a>

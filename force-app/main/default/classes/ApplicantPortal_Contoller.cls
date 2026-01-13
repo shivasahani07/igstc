@@ -1076,6 +1076,18 @@ public static List<YealyCall__c> getActiveCampaignIf(String yearlyCallId) {
         return Proposal_Controller.createExpenseDeclarationDetails(accId, manPowerRecords, consumables, Equipment, travel, overhead, contingency, outsourcing, updatedApa);
     }
     
+    // NEW METHOD: Create expense with Expense_Head__c and Expense_Line_Item__c
+    @RemoteAction
+    public static String createExpenseWithHeadAndLineItems(List<Expense_Line_Item__c> expenseLineItems, String apaId, Applicant_Proposal_Association__c updatedApa) {
+        return Proposal_Controller.createExpenseWithHeadAndLineItems(expenseLineItems, apaId, updatedApa);
+    }
+    
+    // NEW METHOD: Get expense records from Expense_Head__c and Expense_Line_Item__c
+    @RemoteAction
+    public static Proposal_Controller.ExpenseHeadLineItemWrapper getExpenseHeadLineItems(String apaId) {
+        return Proposal_Controller.getExpenseHeadLineItems(apaId);
+    }
+    
     // @RemoteAction
     // public static List<Expense_Detail__c> getExpenseRecords(String ProposalId){
     //     return Proposal_Controller.getExpenseRecords(ProposalId);

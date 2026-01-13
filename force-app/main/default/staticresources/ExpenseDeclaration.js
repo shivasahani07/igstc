@@ -7,12 +7,6 @@ angular.module('cp_app').controller('ExpenseDeclaration', function ($scope, $roo
         console.log('Loaded proposalId from localStorage:', $rootScope.proposalId);
     }
 
-    // Fetching the APA Id from Local Storage
-    if (localStorage.getItem('apaId')) {
-        $rootScope.apaId = localStorage.getItem('apaId');
-        console.log('Loaded apaId from localStorage:', $rootScope.apaId);
-    }
-
     console.log('Intiated::');
     $scope.siteURL = siteURL;
     $rootScope.projectId;
@@ -41,185 +35,7 @@ angular.module('cp_app').controller('ExpenseDeclaration', function ($scope, $roo
     $scope.industryContr = {};
     $scope.igstcFunding = {};
     $scope.financeDetails = {};
-
-    // ------------------------------------------------------------------------------ //
-    // Method to get the Proposal Stage and APA Is_Coordinator
-
-    $rootScope.currentProposalStage = '';
-    $rootScope.isCoordinator = false;
-    $rootScope.stage = '';
-
-    $scope.getProposalStage = function () {
-        debugger;
-
-        ApplicantPortal_Contoller.getProposalStageUsingProposalId(
-            $rootScope.proposalId,
-            $rootScope.apaId,
-            function (result, event) {
-
-                if (event.status && result) {
-                    $scope.$apply(function () {
-
-                        $rootScope.currentProposalStage = result.proposalStage;
-                        $rootScope.isCoordinator = result.isCoordinator;
-                        $rootScope.stage = result.stage;
-
-                        $rootScope.proposalStage = result.proposalStage;
-                        $rootScope.secondStage = $rootScope.stage == '2nd Stage' ? true : false;
-
-                        $scope.uploadDisable =
-                            !(
-                                $rootScope.currentProposalStage === "Draft"
-                                && $rootScope.isCoordinator === true
-                            );
-                    });
-                }
-
-                console.log('$rootScope.currentProposalStage : ', $rootScope.currentProposalStage);
-                console.log('$rootScope.isCoordinator : ', $rootScope.isCoordinator);
-                console.log('$rootScope.stage : ', $rootScope.stage);
-                console.log('$rootScope.secondStage : ', $rootScope.secondStage);
-                console.log('uploadDisable:', $scope.uploadDisable);
-            }
-        );
-    };
-    $scope.getProposalStage();
-
-    $scope.getApplicantDeetails = function () {
-        ApplicantPortal_Contoller.getProjectDetailsDetails($rootScope.proposalId, function (result, event) {
-            if (event.status) {
-                debugger;
-                console.log(result);
-                debugger;
-                for (var i = 0; i < result.length; i++) {
-                    if (result[i].Financial_Contribution__r != undefined) {
-                        if (result[i].Financial_Contribution__r[0].Total__c == 'NaN' || result[i].Financial_Contribution__r[0].Total__c == '' || result[i].Financial_Contribution__r[0].Total__c == undefined) {
-                            result[i].Financial_Contribution__r[0].Total__c = 0;
-                        }
-                        if (result[i].Financial_Contribution__r[0].Own_Contribution__c == 'NaN' || result[i].Financial_Contribution__r[0].Own_Contribution__c == '' || result[i].Financial_Contribution__r[0].Own_Contribution__c == undefined) {
-                            result[i].Financial_Contribution__r[0].Own_Contribution__c = 0;
-                        }
-                        if (result[i].Financial_Contribution__r[0].IGSTC_Contribution__c == 'NaN' || result[i].Financial_Contribution__r[0].IGSTC_Contribution__c == '' || result[i].Financial_Contribution__r[0].IGSTC_Contribution__c == undefined) {
-                            result[i].Financial_Contribution__r[0].IGSTC_Contribution__c = 0;
-                        }
-                    }
-                    else {
-                        result[i].Financial_Contribution__r = [];
-                        result[i].Financial_Contribution__r.push({ Applicant_Proposal_Association__c: result[i].Id, Total__c: 0, Own_Contribution__c: 0, IGSTC_Contribution__c: 0, Asked_From_IGSTC__c: 0 });
-                    }
-                }
-                $scope.applicantDetails = result;
-                if ($rootScope.isPrimaryContact == "true") {
-                    $scope.input = result;
-                }
-                $scope.indianIndus = 0;
-                $scope.indianAcademia = 0;
-                $scope.germanIndus = 0;
-                $scope.germanAcademia = 0;
-
-                $scope.financialOverViewList = $scope.financialOverViewList || [];
-                $scope.input = $scope.input || [];
-
-                for (var i = 0; i < $scope.applicantDetails.length; i++) {
-                    if ($rootScope.isPrimaryContact == "false") {
-                        statusLoginHas = 0;
-                        if ($scope.applicantDetails[i].Contact__r && $scope.applicantDetails[i].Contact__r.Login_Hash_Code__c == $rootScope.candidateId) {
-                            $scope.input.push($scope.applicantDetails[i]);
-                            statusLoginHas = 1;
-                        }
-                        // if ($scope.applicantDetails[i].Contacts != undefined){
-                        // for (j = 0; j < $scope.applicantDetails[i].Contacts.length; j++) {
-                        //     if ($scope.applicantDetails[i].Contacts[j].Login_Hash_Code__c == $rootScope.userId) {
-                        //         $scope.input.push($scope.applicantDetails[i]);
-                        //         statusLoginHas=1;
-                        //     }
-                        //  }
-                        // }
-                        if (statusLoginHas == 0) {
-                            $scope.financialOverViewList.push($scope.applicantDetails[i]);
-                        }
-                    }
-                    console.log("financial contribution");
-                    console.log($scope.input);
-
-                    if ($scope.applicantDetails[i].Financial_Contribution__r != undefined) {
-                        for (var j = 0; j < $scope.applicantDetails[i].Financial_Contribution__r.length; j++) {
-                            if ($scope.applicantDetails[i].Contact__r.Account.BillingCountry == "India" && $scope.applicantDetails[i].Contact__r.Account.Industry__c == true) {
-                                $scope.indianIndus = Number($scope.indianIndus) + Number($scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c);
-                                //$scope.OwnContr=Number($scope.OwnContr)+Number($scope.applicantDetails[i].Financial_Contribution__r[j].Own_Contribution__c);                    
-                            } else if ($scope.applicantDetails[i].Contact__r.Account.BillingCountry == "India" && $scope.applicantDetails[i].Contact__r.Account.Academia__c == true) {
-                                $scope.indianAcademia = Number($scope.indianAcademia) + Number($scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c);
-                            } else if ($scope.applicantDetails[i].Contact__r.Account.BillingCountry == "Germany" && $scope.applicantDetails[i].Contact__r.Account.Industry__c == true) {
-                                $scope.germanIndus = Number($scope.germanIndus) + Number($scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c);
-                            } else {
-                                $scope.germanAcademia = Number($scope.germanAcademia) + Number($scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c);
-                            }
-
-                            $scope.TotalIndianContribution = Number($scope.indianIndus) + Number($scope.indianAcademia);
-                            $scope.TotalGermanContribution = Number($scope.germanIndus) + Number($scope.germanAcademia);
-                            // $scope.TotalContriIndianIndustry=$scope.OwnContr;   
-                            $scope.TotalContriIndianIndustry = $scope.indianIndus;
-                            $scope.TotalContriIndianAcademia = $scope.indianAcademia;
-                            $scope.TotalContriGermanIndustry = $scope.germanIndus;
-                            $scope.TotalContriGermanAcademia = $scope.germanAcademia;
-                        }
-                    }
-                    //         if($scope.applicantDetails[i].Financial_Contribution__r != undefined){
-                    //             for(var j=0;j<$scope.applicantDetails[i].Financial_Contribution__r.length;j++){
-                    //                 if($scope.applicantDetails[i].BillingCountry == "India" && $scope.applicantDetails[i].Industry__c == true){
-                    //                     $scope.indianIndus = $scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c ;
-                    //                 }else if($scope.applicantDetails[i].BillingCountry == "India" && $scope.applicantDetails[i].Academia__c == true){
-                    //                     $scope.indianAcademia = $scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c ;
-                    //                 }else if($scope.applicantDetails[i].BillingCountry == "Germany" && $scope.applicantDetails[i].Industry__c == true){
-                    //                     $scope.germanIndus = $scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c ;
-                    //                 }else{
-                    //                     $scope.germanAcademia = $scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c ;
-                    //                 }
-
-                    //                 $scope.TotalIndianContribution = Number($scope.indianIndus) + Number($scope.indianAcademia);
-                    //                 $scope.TotalGermanContribution = Number($scope.germanIndus) + Number($scope.germanAcademia);
-                    //     }
-                    // }
-                    //     if($scope.applicantDetails[i].Financial_Contribution__r != undefined){
-                    //         for(var j=0;j<$scope.applicantDetails[i].Financial_Contribution__r.length;j++){
-                    //         if($scope.applicantDetails[i].Financial_Contribution__r[j].Country__c == 'India' && $scope.applicantDetails[i].Financial_Contribution__r[j].Account_Type__c == 'Industry'){
-                    //             $scope.indianIndus = $scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c ;
-                    //         }
-                    //         if($scope.applicantDetails[i].Financial_Contribution__r[j].Country__c == 'India' && $scope.applicantDetails[i].Financial_Contribution__r[j].Account_Type__c == 'Academia'){
-                    //             $scope.indianAcademia = $scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c ;
-                    //         }
-                    //         if($scope.applicantDetails[i].Financial_Contribution__r[j].Country__c == 'Germany' && $scope.applicantDetails[i].Financial_Contribution__r[j].Account_Type__c == 'Industry'){
-                    //             $scope.germanIndus = $scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c ;
-                    //         }
-                    //         if($scope.applicantDetails[i].Financial_Contribution__r[j].Country__c == 'Germany' && $scope.applicantDetails[i].Financial_Contribution__r[j].Account_Type__c == 'Academia'){
-                    //             $scope.germanAcademia = $scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c ;
-                    //         }
-                    //     }
-                    // }
-                }
-
-                for (let i = 0; i < $scope.input.length; i++) {
-                    var financialOverview = { "Name": $scope.input[i].Contact__r.Name, "Applicant_Proposal_Association__c": $scope.input[i].Id, "Own_Contribution__c": " ", "IGSTC_Contribution__c": "" };
-                    if ($scope.input[i].Financial_Contribution__r == undefined) {
-                        var financeDet = [{ "Name": $scope.input[i].Contact__r.Name, "Applicant_Proposal_Association__c": $scope.input[i].Id, "Own_Contribution__c": " ", "IGSTC_Contribution__c": "" }];
-                        $scope.input[i].Financial_Contribution__r = financeDet;
-                    }
-                }
-                $scope.$apply();
-            }
-        },
-            { escape: true }
-        )
-    }
-
-    // $scope.totalAmount = 0;
-    // $scope.changeHandler = function(){
-    //     debugger;
-    //     $scope.totalAmount = $scope.input[0].Financial_Contribution__r[0].IGSTC_Contribution__c+$scope.input[0].Financial_Contribution__r[0].Own_Contribution__c;
-    //     console.log('$scope.input',$scope.input);
-    //     console.log('InputBaski',$scope.totalAmount);
-    // }
-    $scope.getApplicantDeetails();
+    $rootScope.apaId = '';
 
     $scope.getExpenseRecords = function () {
         debugger;
@@ -274,6 +90,143 @@ angular.module('cp_app').controller('ExpenseDeclaration', function ($scope, $roo
     // }
     // $scope.getAccounts();
     $scope.getExpenseRecords();
+    
+    // NEW METHOD: Get expense records from Expense_Head__c and Expense_Line_Item__c
+    $scope.getExpenseHeadLineItems = function () {
+        if (!$rootScope.apaId) {
+            console.log('APA Id not available yet');
+            return;
+        }
+        
+        ApplicantPortal_Contoller.getExpenseHeadLineItems($rootScope.apaId, function (result, event) {
+            console.log('getExpenseHeadLineItems result:', result);
+            if (event.status && result != null && result.lineItems != null) {
+                // Clear existing arrays
+                $scope.manPowerRecords = [];
+                $scope.consumables = [];
+                $scope.Equipment = [];
+                $scope.travel = [];
+                $scope.outsourcing = [];
+                $scope.contingency = [];
+                $scope.overhead = [];
+                
+                // Reset totals
+                $scope.manPower = {};
+                $scope.equipmentTotals = {};
+                $scope.consumableTotal = {};
+                $scope.travelTotal = {};
+                $scope.outsourcingTotal = {};
+                $scope.contingencyTotal = {};
+                $scope.overheadCharges = {};
+                
+                // Process line items and categorize by Expense_Type__c
+                for (let i = 0; i < result.lineItems.length; i++) {
+                    let item = result.lineItems[i];
+                    let expenseType = item.Expense_Type__c;
+                    
+                    // Decode special characters
+                    if (item.Description__c) {
+                        item.Description__c = item.Description__c
+                            .replace(/&amp;/g, '&')
+                            .replace(/&#39;/g, '\'')
+                            .replaceAll('&amp;amp;', '&')
+                            .replaceAll('&lt;', '<')
+                            .replaceAll('&gt;', '>')
+                            .replaceAll('&quot;', '\'');
+                    }
+                    
+                    // Create record object
+                    let record = {
+                        Id: item.Id,
+                        Description__c: item.Description__c,
+                        Position__c: item.Position__c,
+                        Number__c: item.Number__c,
+                        Person_Month__c: item.Person_Month__c,
+                        Salary_Month__c: item.Salary_Month__c,
+                        Unit_Price__c: item.Unit_Price__c,
+                        Multiplier__c: item.Multiplier__c,
+                        Year1_Expense__c: item.Year1_Expense__c || 0,
+                        Year2_Expense__c: item.Year2_Expense__c || 0,
+                        Year3_Expense__c: item.Year3_Expense__c || 0,
+                        Total_Expense__c: item.Total_Expense__c || 0,
+                        Index__c: item.Index__c,
+                        Expense_Type__c: expenseType
+                    };
+                    
+                    // Categorize by expense type
+                    if (expenseType === 'Manpower') {
+                        $scope.manPowerRecords.push(record);
+                        $scope.manPower.Total_Year1_Expense__c = ($scope.manPower.Total_Year1_Expense__c || 0) + (item.Year1_Expense__c || 0);
+                        $scope.manPower.Total_Year2_Expense__c = ($scope.manPower.Total_Year2_Expense__c || 0) + (item.Year2_Expense__c || 0);
+                        $scope.manPower.Total_Year3_Expense__c = ($scope.manPower.Total_Year3_Expense__c || 0) + (item.Year3_Expense__c || 0);
+                        $scope.manPower.Overall_Expense = ($scope.manPower.Overall_Expense || 0) + (item.Total_Expense__c || 0);
+                    } else if (expenseType === 'Consumables/Materials') {
+                        $scope.consumables.push(record);
+                        $scope.consumableTotal.Total_Year1_Expense__c = ($scope.consumableTotal.Total_Year1_Expense__c || 0) + (item.Year1_Expense__c || 0);
+                        $scope.consumableTotal.Total_Year2_Expense__c = ($scope.consumableTotal.Total_Year2_Expense__c || 0) + (item.Year2_Expense__c || 0);
+                        $scope.consumableTotal.Total_Year3_Expense__c = ($scope.consumableTotal.Total_Year3_Expense__c || 0) + (item.Year3_Expense__c || 0);
+                        $scope.consumableTotal.Overall_Expense = ($scope.consumableTotal.Overall_Expense || 0) + (item.Total_Expense__c || 0);
+                    } else if (expenseType === 'Equipment & Accessories') {
+                        $scope.Equipment.push(record);
+                        $scope.equipmentTotals.Total_Year1_Expense__c = ($scope.equipmentTotals.Total_Year1_Expense__c || 0) + (item.Year1_Expense__c || 0);
+                        $scope.equipmentTotals.Total_Year2_Expense__c = ($scope.equipmentTotals.Total_Year2_Expense__c || 0) + (item.Year2_Expense__c || 0);
+                        $scope.equipmentTotals.Total_Year3_Expense__c = ($scope.equipmentTotals.Total_Year3_Expense__c || 0) + (item.Year3_Expense__c || 0);
+                        $scope.equipmentTotals.Overall_Expense = ($scope.equipmentTotals.Overall_Expense || 0) + (item.Total_Expense__c || 0);
+                    } else if (expenseType === 'Travel & Networking') {
+                        $scope.travel.push(record);
+                        $scope.travelTotal.Total_Year1_Expense__c = ($scope.travelTotal.Total_Year1_Expense__c || 0) + (item.Year1_Expense__c || 0);
+                        $scope.travelTotal.Total_Year2_Expense__c = ($scope.travelTotal.Total_Year2_Expense__c || 0) + (item.Year2_Expense__c || 0);
+                        $scope.travelTotal.Total_Year3_Expense__c = ($scope.travelTotal.Total_Year3_Expense__c || 0) + (item.Year3_Expense__c || 0);
+                        $scope.travelTotal.Overall_Expense = ($scope.travelTotal.Overall_Expense || 0) + (item.Total_Expense__c || 0);
+                    } else if (expenseType === 'Overhead' || expenseType === 'Projektpauschale') {
+                        $scope.overhead.push(record);
+                        $scope.overheadCharges.Total_Year1_Expense__c = ($scope.overheadCharges.Total_Year1_Expense__c || 0) + (item.Year1_Expense__c || 0);
+                        $scope.overheadCharges.Total_Year2_Expense__c = ($scope.overheadCharges.Total_Year2_Expense__c || 0) + (item.Year2_Expense__c || 0);
+                        $scope.overheadCharges.Total_Year3_Expense__c = ($scope.overheadCharges.Total_Year3_Expense__c || 0) + (item.Year3_Expense__c || 0);
+                        $scope.overheadCharges.Overall_Expense = ($scope.overheadCharges.Overall_Expense || 0) + (item.Total_Expense__c || 0);
+                    } else if (expenseType === 'Contingency') {
+                        $scope.contingency.push(record);
+                        $scope.contingencyTotal.Total_Year1_Expense__c = ($scope.contingencyTotal.Total_Year1_Expense__c || 0) + (item.Year1_Expense__c || 0);
+                        $scope.contingencyTotal.Total_Year2_Expense__c = ($scope.contingencyTotal.Total_Year2_Expense__c || 0) + (item.Year2_Expense__c || 0);
+                        $scope.contingencyTotal.Total_Year3_Expense__c = ($scope.contingencyTotal.Total_Year3_Expense__c || 0) + (item.Year3_Expense__c || 0);
+                        $scope.contingencyTotal.Overall_Expense = ($scope.contingencyTotal.Overall_Expense || 0) + (item.Total_Expense__c || 0);
+                    } else if (expenseType === 'Subcontract/Outsourcing') {
+                        $scope.outsourcing.push(record);
+                        $scope.outsourcingTotal.Total_Year1_Expense__c = ($scope.outsourcingTotal.Total_Year1_Expense__c || 0) + (item.Year1_Expense__c || 0);
+                        $scope.outsourcingTotal.Total_Year2_Expense__c = ($scope.outsourcingTotal.Total_Year2_Expense__c || 0) + (item.Year2_Expense__c || 0);
+                        $scope.outsourcingTotal.Total_Year3_Expense__c = ($scope.outsourcingTotal.Total_Year3_Expense__c || 0) + (item.Year3_Expense__c || 0);
+                        $scope.outsourcingTotal.Overall_Expense = ($scope.outsourcingTotal.Overall_Expense || 0) + (item.Total_Expense__c || 0);
+                    }
+                }
+                
+                // Add empty records if arrays are empty
+                if ($scope.manPowerRecords.length === 0) {
+                    $scope.manPowerRecords.push({ Description__c: '', Year1_Expense__c: 0, Year2_Expense__c: 0, Year3_Expense__c: 0, Total_Expense__c: 0 });
+                }
+                if ($scope.consumables.length === 0) {
+                    $scope.consumables.push({ Description__c: '', Year1_Expense__c: 0, Year2_Expense__c: 0, Year3_Expense__c: 0, Total_Expense__c: 0 });
+                }
+                if ($scope.Equipment.length === 0) {
+                    $scope.Equipment.push({ Description__c: '', Year1_Expense__c: 0, Year2_Expense__c: 0, Year3_Expense__c: 0, Total_Expense__c: 0 });
+                }
+                if ($scope.travel.length === 0) {
+                    $scope.travel.push({ Description__c: '', Year1_Expense__c: 0, Year2_Expense__c: 0, Year3_Expense__c: 0, Total_Expense__c: 0 });
+                }
+                if ($scope.overhead.length === 0) {
+                    $scope.overhead.push({ Description__c: '', Year1_Expense__c: 0, Year2_Expense__c: 0, Year3_Expense__c: 0, Total_Expense__c: 0 });
+                }
+                if ($scope.contingency.length === 0) {
+                    $scope.contingency.push({ Description__c: '', Year1_Expense__c: 0, Year2_Expense__c: 0, Year3_Expense__c: 0, Total_Expense__c: 0 });
+                }
+                if ($scope.outsourcing.length === 0) {
+                    $scope.outsourcing.push({ Description__c: '', Year1_Expense__c: 0, Year2_Expense__c: 0, Year3_Expense__c: 0, Total_Expense__c: 0 });
+                }
+                
+                $scope.calculateGrandTotals();
+                $scope.$apply();
+            }
+        }, { escape: true });
+    };
     $scope.enableExpenseModule = function (index) {
         debugger;
         $scope.accId = index;
@@ -1063,97 +1016,28 @@ angular.module('cp_app').controller('ExpenseDeclaration', function ($scope, $roo
         //         return;
         //     }
         // }
-        // if(para === "Man_Power"){
-        $scope.manpowerCategory = $scope.expenseCategory.filter(item => item.Name == 'Manpower');
+        // Filter out empty records before saving
         $scope.manPowerRecords = $scope.manPowerRecords.filter(item => !(
             typeof item === "object" && !Array.isArray(item) && item !== null && !$scope.hasValues(item)
         ));
-        for (let i = 0; i < $scope.manPowerRecords.length; i++) {
-            // $scope.manPowerRecords[i]['Expense_Type__c'] = 'Manpower';
-            // $scope.manPowerRecords[i]['Index__c'] = i +1;
-            $scope.manPowerRecords[i]['Expense_Category__c'] = $scope.manpowerCategory ? $scope.manpowerCategory[0].Id : '';
-            delete ($scope.manPowerRecords[i]['$$hashKey']);
-
-        }
-        //     $scope.tempObj = $scope.manPowerRecords;
-        // }else if(para === "consumables"){
-        $scope.consumableCategory = $scope.expenseCategory.filter(item => item.Name == 'Consumables/Materials');
         $scope.consumables = $scope.consumables.filter(item => !(
             typeof item === "object" && !Array.isArray(item) && item !== null && !$scope.hasValues(item)
         ));
-        for (let i = 0; i < $scope.consumables.length; i++) {
-            // $scope.consumables[i]['Expense_Type__c'] = 'Consumables';
-            // $scope.consumables[i]['Index__c'] = i +1;
-            $scope.consumables[i]['Expense_Category__c'] = $scope.consumableCategory ? $scope.consumableCategory[0].Id : '';
-            delete ($scope.consumables[i]['$$hashKey']);
-
-        }
-        //     $scope.tempObj = $scope.consumables;
-        // }else if(para === "quipment"){
-        $scope.equipmentCategory = $scope.expenseCategory.filter(item => item.Name == 'Equipment &amp; Accessories');
         $scope.Equipment = $scope.Equipment.filter(item => !(
             typeof item === "object" && !Array.isArray(item) && item !== null && !$scope.hasValues(item)
         ));
-        for (let i = 0; i < $scope.Equipment.length; i++) {
-            // $scope.Equipment[i]['Expense_Type__c'] = 'Equipment';
-            // $scope.Equipment[i]['Index__c'] = i +1;
-            $scope.Equipment[i]['Expense_Category__c'] = $scope.equipmentCategory ? $scope.equipmentCategory[0].Id : '';
-            delete ($scope.Equipment[i]['$$hashKey']);
-
-        }
-        //     $scope.tempObj = $scope.Equipment;
-        // }else if(para === "travel"){
-        $scope.travelCategory = $scope.expenseCategory.filter(item => item.Name == 'Travel &amp; Networking');
         $scope.travel = $scope.travel.filter(item => !(
             typeof item === "object" && !Array.isArray(item) && item !== null && !$scope.hasValues(item)
         ));
-        for (let i = 0; i < $scope.travel.length; i++) {
-            // $scope.travel[i]['Expense_Type__c'] = 'Travel/Networking';
-            // $scope.travel[i]['Index__c'] = i +1;
-            $scope.travel[i]['Expense_Category__c'] = $scope.travelCategory ? $scope.travelCategory[0].Id : '';
-            delete ($scope.travel[i]['$$hashKey']);
-
-        }
-        //     $scope.tempObj = $scope.travel;
-        // }else if(para === "overhead"){
-        $scope.overheadCategory = $scope.expenseCategory.filter(item => { return item.Name == 'Overhead' || item.Name == 'Projektpauschale' });
         $scope.overhead = $scope.overhead.filter(item => !(
             typeof item === "object" && !Array.isArray(item) && item !== null && !$scope.hasValues(item)
         ));
-        for (let i = 0; i < $scope.overhead.length; i++) {
-            // $scope.overhead[i]['Expense_Type__c'] = 'Overhead';
-            // $scope.overhead[i]['Index__c'] = i +1;
-            $scope.overhead[i]['Expense_Category__c'] = $scope.overheadCategory ? $scope.overheadCategory[0].Id : '';
-            delete ($scope.overhead[i]['$$hashKey']);
-
-        }
-        //     $scope.tempObj = $scope.overhead;
-        // }else if(para === "contingency"){
-        $scope.contingencyCategory = $scope.expenseCategory.filter(item => item.Name == 'Contingency');
         $scope.contingency = $scope.contingency.filter(item => !(
             typeof item === "object" && !Array.isArray(item) && item !== null && !$scope.hasValues(item)
         ));
-        for (let i = 0; i < $scope.contingency.length; i++) {
-            // $scope.contingency[i]['Expense_Type__c'] = 'Contingency';
-            // $scope.contingency[i]['Index__c'] = i +1;
-            $scope.contingency[i]['Expense_Category__c'] = $scope.contingencyCategory ? $scope.contingencyCategory[0].Id : '';
-            delete ($scope.contingency[i]['$$hashKey']);
-
-        }
-        //     $scope.tempObj = $scope.contingency;
-        // }else if(para === "outsourcing"){
-        $scope.outsourcingCategory = $scope.expenseCategory.filter(item => item.Name == 'Subcontract/Outsourcing');
         $scope.outsourcing = $scope.outsourcing.filter(item => !(
             typeof item === "object" && !Array.isArray(item) && item !== null && !$scope.hasValues(item)
         ));
-        for (let i = 0; i < $scope.outsourcing.length; i++) {
-            // $scope.outsourcing[i]['Expense_Type__c'] = 'Outsourcing/Sub Contract';
-            // $scope.outsourcing[i]['Index__c'] = i +1;
-            $scope.outsourcing[i]['Expense_Category__c'] = $scope.outsourcingCategory ? $scope.outsourcingCategory[0].Id : '';
-            delete ($scope.outsourcing[i]['$$hashKey']);
-        }
-        //     $scope.tempObj = $scope.outsourcing;
-        // }
         // if($scope.accList.Industry__c){
         //     flag=false;
         //     for(let i=0; i<$scope.tempObj.length; i++){
@@ -1169,13 +1053,106 @@ angular.module('cp_app').controller('ExpenseDeclaration', function ($scope, $roo
         //     }
         // }
         //$scope.tempObj = $scope.manPowerRecords;
-        // ApplicantPortal_Contoller.createExpenseDeclarationDetails($scope.tempObj,$rootScope.projectId,$scope.accId,function (result, event){
-        ApplicantPortal_Contoller.createExpenseDeclarationDetails(
-            $scope.accId, $scope.manPowerRecords, $scope.consumables, $scope.Equipment,
-            $scope.travel, $scope.overhead, $scope.contingency, $scope.outsourcing, $scope.updatedApa,
+        
+        // NEW CODE: Combine all expense records into single list with Expense_Type__c
+        let allExpenseLineItems = [];
+        let indexCounter = 1;
+        
+        // Add Manpower records
+        for (let i = 0; i < $scope.manPowerRecords.length; i++) {
+            let rec = angular.copy($scope.manPowerRecords[i]);
+            rec.Expense_Type__c = 'Manpower';
+            rec.Index__c = indexCounter++;
+            delete rec.$$hashKey;
+            delete rec.Expense_Category__c;  // Remove old model field if present
+            delete rec.Expense_Category__r;  // Remove old model relationship if present
+            allExpenseLineItems.push(rec);
+        }
+        
+        // Add Consumables records
+        indexCounter = 1;
+        for (let i = 0; i < $scope.consumables.length; i++) {
+            let rec = angular.copy($scope.consumables[i]);
+            rec.Expense_Type__c = 'Consumables/Materials';
+            rec.Index__c = indexCounter++;
+            delete rec.$$hashKey;
+            delete rec.Expense_Category__c;
+            delete rec.Expense_Category__r;
+            allExpenseLineItems.push(rec);
+        }
+        
+        // Add Equipment records
+        indexCounter = 1;
+        for (let i = 0; i < $scope.Equipment.length; i++) {
+            let rec = angular.copy($scope.Equipment[i]);
+            rec.Expense_Type__c = 'Equipment & Accessories';
+            rec.Index__c = indexCounter++;
+            delete rec.$$hashKey;
+            delete rec.Expense_Category__c;
+            delete rec.Expense_Category__r;
+            allExpenseLineItems.push(rec);
+        }
+        
+        // Add Travel records
+        indexCounter = 1;
+        for (let i = 0; i < $scope.travel.length; i++) {
+            let rec = angular.copy($scope.travel[i]);
+            rec.Expense_Type__c = 'Travel & Networking';
+            rec.Index__c = indexCounter++;
+            delete rec.$$hashKey;
+            delete rec.Expense_Category__c;
+            delete rec.Expense_Category__r;
+            allExpenseLineItems.push(rec);
+        }
+        
+        // Add Overhead records
+        indexCounter = 1;
+        for (let i = 0; i < $scope.overhead.length; i++) {
+            let rec = angular.copy($scope.overhead[i]);
+            rec.Expense_Type__c = 'Overhead';
+            rec.Index__c = indexCounter++;
+            delete rec.$$hashKey;
+            delete rec.Expense_Category__c;
+            delete rec.Expense_Category__r;
+            allExpenseLineItems.push(rec);
+        }
+        
+        // Add Contingency records
+        indexCounter = 1;
+        for (let i = 0; i < $scope.contingency.length; i++) {
+            let rec = angular.copy($scope.contingency[i]);
+            rec.Expense_Type__c = 'Contingency';
+            rec.Index__c = indexCounter++;
+            delete rec.$$hashKey;
+            delete rec.Expense_Category__c;
+            delete rec.Expense_Category__r;
+            allExpenseLineItems.push(rec);
+        }
+        
+        // Add Outsourcing records
+        indexCounter = 1;
+        for (let i = 0; i < $scope.outsourcing.length; i++) {
+            let rec = angular.copy($scope.outsourcing[i]);
+            rec.Expense_Type__c = 'Subcontract/Outsourcing';
+            rec.Index__c = indexCounter++;
+            delete rec.$$hashKey;
+            delete rec.Expense_Category__c;
+            delete rec.Expense_Category__r;
+            allExpenseLineItems.push(rec);
+        }
+        
+        console.log('allExpenseLineItems:', allExpenseLineItems);
+        
+        // Call new method that saves to Expense_Head__c and Expense_Line_Item__c
+        ApplicantPortal_Contoller.createExpenseWithHeadAndLineItems(
+            allExpenseLineItems, $rootScope.apaId, $scope.updatedApa,
             function (result, event) {
                 if (event.status && result != null) {
                     debugger;
+                    if (result.startsWith('error')) {
+                        swal("Error", "Error saving expense details: " + result, "error");
+                        return;
+                    }
                     if (!validation.isValid) {
                         swal(
                             "Saved as Draft",
@@ -1186,15 +1163,7 @@ angular.module('cp_app').controller('ExpenseDeclaration', function ($scope, $roo
                         );
                         return;
                     }
-                    // swal("Expense Details", "Your Expense Detail has been saved Successfully");
-
-                    swal(
-                        "Expense Details",
-                        "Your Expense details have been saved successfully.\n\n" +
-                        "Next Step:\n" +
-                        "Complete the Declaration details on the next page."
-                    );
-
+                    swal("Expense Details", "Your Expense Detail has been saved Successfully");
                     $scope.redirectPageURL('Declartion_2plus2');
                     //$scope.enableExpenseModule();
                     //$scope.$apply();

@@ -43,9 +43,10 @@ roup' )
                                 <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
                                         <div class="icon-circle">
-                                            <i class="fa fa-home"></i>
+                                            <!-- <i class="fa fa-home"></i> -->
+                                            <i class="fas fa-file-invoice"></i>
                                         </div>
-                                        <span>Pairing Details</span>
+                                        <span>Paired Project Details</span>
                                     </a>
                                 </li>
 
@@ -55,7 +56,7 @@ roup' )
                                         <div class="icon-circle">
                                             <i class="far fa-address-card"></i>
                                         </div>
-                                        <span>Paired Project Details</span>
+                                        <span>Pairing Details</span>
                                     </a>
                                 </li>
 
@@ -142,6 +143,15 @@ roup' )
                             </div>
 
                             <ul>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <!-- <i class="fas fa-user-alt"></i> -->
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Paired Project Details</span>
+                                    </a>
+                                </li>
 
                                 <li class="active">
                                     <a>
@@ -149,15 +159,6 @@ roup' )
                                             <i class="far fa-address-card"></i>
                                         </div>
                                         <span>Pairing Details</span>
-                                    </a>
-                                </li>
-
-                                <li class="active">
-                                    <a>
-                                        <div class="icon-circle">
-                                            <i class="fas fa-user-alt"></i>
-                                        </div>
-                                        <span>Paired Project Details</span>
                                     </a>
                                 </li>
 
@@ -172,7 +173,8 @@ roup' )
                                 <li class="active">
                                     <a>
                                         <div class="icon-circle">
-                                            <i class="fa fa-home"></i>
+                                            <!-- <i class="fa fa-home"></i> -->
+                                            <i class="fas fa-user-alt"></i>
                                         </div>
                                         <span>Applicant Details</span>
                                     </a>

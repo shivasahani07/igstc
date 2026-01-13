@@ -30,19 +30,21 @@
                             <ul>
                                 <!-- Pair Project Details -->
                                 <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
+                                    <a ng-click="redirectPageURL('HostProjectDetails')">
                                         <div class="icon-circle">
-                                            <i class="far fa-address-card"></i>
+                                            <!-- <i class="far fa-address-card"></i> -->
+                                            <i class="fas fa-file-invoice"></i>
                                         </div>
-                                        <span>Pair Project Details</span>
+                                        <span>Paired Project Details</span>
                                     </a>
                                 </li>
 
                                 <!-- Not Confirmed Yet -->
                                 <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('HostProjectDetails')">
+                                    <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
                                         <div class="icon-circle">
-                                            <i class="fa fa-home"></i>
+                                            <!-- <i class="fa fa-home"></i> -->
+                                            <i class="far fa-address-card"></i>
                                         </div>
                                         <span>Pairing Details</span>
                                     </a>
@@ -130,7 +132,8 @@
                                 <li class="active">
                                     <a>
                                         <div class="icon-circle">
-                                            <i class="far fa-address-card"></i>
+                                            <!-- <i class="fas fa-user-alt"></i> -->
+                                            <i class="fas fa-file-invoice"></i>
                                         </div>
                                         <span>Paired Project Details</span>
                                     </a>
@@ -139,7 +142,7 @@
                                 <li class="active">
                                     <a>
                                         <div class="icon-circle">
-                                            <i class="fas fa-user-alt"></i>
+                                            <i class="far fa-address-card"></i>
                                         </div>
                                         <span>Pairing Details</span>
                                     </a>
@@ -156,7 +159,8 @@
                                 <li>
                                     <a>
                                         <div class="icon-circle">
-                                            <i class="fa fa-home"></i>
+                                            <!-- <i class="fa fa-home"></i> -->
+                                            <i class="fas fa-user-alt"></i>
                                         </div>
                                         <span>Applicant Details</span>
                                     </a>
@@ -582,14 +586,35 @@
                                         id="txtIndOrg" ng-model="pairingDetails.Account.Name"
                                         ng-disabled="proposalStage || primary" />
                                 </div>
-                                <div class="col-md-12 mt-5 mb-5">
+                                <!-- <div class="col-md-12 mt-5 mb-5">
                                     <label class="font-if">Date of Birth
                                         <span class="required-asterisk" style="color:red;">*</span></label>
-                                    <!-- <md-datepicker ng-disabled="proposalStage" ng-model="pairingDetails.Birthdate" ng-focus="removeClass('txtIndBD')" id="txtIndBD" md-placeholder="Birthdate" class="form-control" md-current-view="year"></md-datepicker> -->
+                                    <! <md-datepicker ng-disabled="proposalStage" ng-model="pairingDetails.Birthdate" ng-focus="removeClass('txtIndBD')" id="txtIndBD" md-placeholder="Birthdate" class="form-control" md-current-view="year"></md-datepicker> ==>
                                     <input type="date" class="form-control" ng-focus="removeClass('txtIndBD')"
                                         id="txtIndBD" ng-model="pairingDetails.Birthdate"
                                         ng-disabled="proposalStage || primary" />
+                                </div> -->
+
+                                <div class="col-md-12 mt-5 mb-5">
+                                    <label class="font-if">
+                                        Date of Birth 2222
+                                        <span class="required-asterisk" style="color:red;">*</span>
+                                    </label>
+
+                                    <input type="date" class="form-control" name="dobPrimary" id="txtIndBD"
+                                        ng-model="pairingDetails.Birthdate" ng-focus="removeClass('txtIndBD')"
+                                        ng-disabled="proposalStage || primary"
+                                        ng-change="validateDOB(pairingDetails.Birthdate, 'dobPrimary')"
+                                        required="true" />
+
+                                    <!-- Error message -->
+                                    <div class="text-danger mt-1"
+                                        ng-show="formPrjDet.dobPrimary.$error && dobErrors.dobPrimary">
+                                        Age must be more than 26 years and less than 55 years.
+                                    </div>
                                 </div>
+
+
                             </div>
 
                         </div>
@@ -641,17 +666,34 @@
                                         id="txtGerOrg" ng-model="pairList.Account.Name" ng-disabled="proposalStage" />
                                 </div>
 
-                                <div class="col-md-12 mt-5 mb-5">
+                                <!-- <div class="col-md-12 mt-5 mb-5">
                                     <label class="font-if">Date of Birth
                                         <span class="required-asterisk" style="color:red;">*</span></label>
-                                    <!-- <md-datepicker ng-disabled="proposalStage" ng-model="pairList.Birthdate" ng-focus="removeClass('txtGerBD')" id="txtGerBD" md-placeholder="Birthdate" class="form-control" md-current-view="year"></md-datepicker> -->
+                                    <! <md-datepicker ng-disabled="proposalStage" ng-model="pairList.Birthdate" ng-focus="removeClass('txtGerBD')" id="txtGerBD" md-placeholder="Birthdate" class="form-control" md-current-view="year"></md-datepicker> ==>
                                     <input type="date" class="form-control" ng-focus="removeClass('txtGerBD')"
                                         id="txtGerBD" ng-model="pairList.Birthdate"
                                         ng-init="pairList.Birthdate=(pairList.Birthdate | date:'')"
                                         ng-disabled="proposalStage" />
+                                </div> -->
+                                <!-- {{ pairList.Birthdate }} {{mydate}} -->
+
+                                <div class="col-md-12 mt-5 mb-5">
+                                    <label class="font-if">
+                                        Date of Birth ***
+                                        <span class="required-asterisk" style="color:red;">*</span>
+                                    </label>
+
+                                    <input type="date" class="form-control" name="dobSecondary" id="txtGerBD"
+                                        ng-model="pairList.Birthdate" ng-focus="removeClass('txtGerBD')"
+                                        ng-disabled="proposalStage || primary"
+                                        ng-change="validateDOB(pairList.Birthdate, 'dobSecondary')" required="true" />
+
+                                    <!-- Error message -->
+                                    <div class="text-danger mt-1"
+                                        ng-show="formPrjDet.dobSecondary.$error && dobErrors.dobSecondary">
+                                        Age must be more than 26 years and less than 55 years.
+                                    </div>
                                 </div>
-                                <!-- {{ pairList.Birthdate }}
-{{mydate}} -->
                             </div>
 
                         </div>
