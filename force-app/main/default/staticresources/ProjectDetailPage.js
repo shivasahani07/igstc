@@ -203,15 +203,45 @@ angular.module('cp_app').controller('ProjectDetailCtrl', function ($scope, $root
             return;
         }
 
+        if ($scope.applicantDetails.Acronym__c.length > 300) {
+            swal(
+                "info",
+                "Project Acronym cannot exceed 300 characters.",
+                "info"
+            );
+            $("#Acronym").addClass('border-theme');
+            return;
+        }
+
         if ($scope.applicantDetails.Title_Of__c == undefined || $scope.applicantDetails.Title_Of__c == "") {
             swal("info", "Please Enter Title of Proposal.", "info");
             $("#title").addClass('border-theme');
             return;
         }
 
+        if ($scope.applicantDetails.Title_Of__c.length > 600) {
+            swal(
+                "info",
+                "Title of Proposal cannot exceed 600 characters.",
+                "info"
+            );
+            $("#Acronym").addClass('border-theme');
+            return;
+        }
+
         if ($scope.applicantDetails.Title_In_German__c == undefined || $scope.applicantDetails.Title_In_German__c == "") {
             swal("info", "Please Enter Title des Antrages(In German).", "info");
             $("#titleG").addClass('border-theme');
+            return;
+        }
+
+        if ($scope.applicantDetails.Title_In_German__c.length > 600) {
+            swal(
+                "info",
+                "Title In German cannot exceed 600 characters.",
+                "info"
+            );
+            $("#Acronym").addClass('border-theme');
             return;
         }
 
@@ -250,6 +280,7 @@ angular.module('cp_app').controller('ProjectDetailCtrl', function ($scope, $root
         }
         $scope.applicantDetails.KeyWords__c = keyword;
         delete ($scope.applicantDetails.Application_Thematic_Area__r);
+        delete $scope.applicantDetails._charLimitMap;
 
         if ($scope.applicantDetails.KeyWords__c == undefined || $scope.applicantDetails.KeyWords__c == "") {
             swal("info", "Please Enter Keyword.", "info");
@@ -445,6 +476,96 @@ angular.module('cp_app').controller('ProjectDetailCtrl', function ($scope, $root
     //         {escape: true}
     //         )
     // }
+
+    $scope.checkCharLimit = function (obj, fieldName, limit) {
+        debugger;
+
+        if (!obj) return;
+
+        var targetObj;
+        var value;
+
+        // 🔹 Account field
+        if (obj.hasOwnProperty(fieldName)) {
+            targetObj = obj;
+            value = obj[fieldName];
+
+        }
+        // 🔹 Contact field
+        else if (
+            obj.Contacts &&
+            obj.Contacts.length > 0 &&
+            obj.Contacts[0].hasOwnProperty(fieldName)
+        ) {
+            targetObj = obj.Contacts[0];
+            value = obj.Contacts[0][fieldName];
+
+        } else {
+            return;
+        }
+
+        // Init error map
+        targetObj._charLimitMap = targetObj._charLimitMap || {};
+
+        if (!value) {
+            targetObj._charLimitMap[fieldName] = false;
+            return;
+        }
+
+        /* =====================================================
+           SPECIAL CASE: POSTAL / ZIP CODE
+           ===================================================== */
+        if (fieldName === 'BillingPostalCode') {
+
+            var country = obj.BillingCountry;
+            var cleanedValue = value.replace(/[^0-9]/g, '');
+
+            var maxLength;
+            var regex;
+
+            if (country === 'India') {
+                maxLength = 6;
+                regex = /^[0-9]{6}$/;
+            }
+            else if (country === 'Germany') {
+                maxLength = 5;
+                regex = /^[0-9]{5}$/;
+            }
+            else {
+                maxLength = limit; // fallback
+            }
+
+            // Length check
+            if (cleanedValue.length > maxLength) {
+                targetObj._charLimitMap[fieldName] = true;
+                console.log('❌ Postal code length exceeded for', country);
+                return;
+            }
+
+            // Pattern check (only when full length entered)
+            if (cleanedValue.length === maxLength) {
+                if (regex && !regex.test(cleanedValue)) {
+                    targetObj._charLimitMap[fieldName] = true;
+                    console.log('❌ Invalid Postal Code for', country);
+                    return;
+                }
+            }
+
+            targetObj._charLimitMap[fieldName] = false;
+            console.log('✅ Valid Postal Code for', country);
+            return;
+        }
+
+        /* =====================================================
+            DEFAULT CHAR LIMIT LOGIC (Website, Department, etc.)
+           ===================================================== */
+
+        if (value.length > limit) {
+            targetObj._charLimitMap[fieldName] = true;
+        } else {
+            targetObj._charLimitMap[fieldName] = false;
+        }
+    };
 
     $scope.getDetails = function () {
         debugger;

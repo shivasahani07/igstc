@@ -203,10 +203,11 @@
         // File Upload and render
 
 
-        angular.module('cp_app', ['ngRoute', 'ui.bootstrap', 'ui.bootstrap.datetimepicker', 'textAngular', 'ng.ckeditor', 'dropdown-multiselect', 'ngSanitize', 'number', 'ngMaterial', 'ngMessages', 'material.svgAssetsCache', 'text', 'textarea', 'decimal', 'specialChar']); 
+        // angular.module('cp_app', ['ngRoute', 'ui.bootstrap', 'ui.bootstrap.datetimepicker', 'textAngular', 'ng.ckeditor', 'dropdown-multiselect', 'ngSanitize', 'number', 'ngMaterial', 'ngMessages', 'material.svgAssetsCache', 'text', 'textarea', 'decimal', 'specialChar']); 
+        angular.module('cp_app', ['ngRoute', 'ui.bootstrap', 'ui.bootstrap.datetimepicker', 'textAngular', 'ng.ckeditor', 'ngSanitize', 'number', 'ngMaterial', 'ngMessages', 'material.svgAssetsCache', 'text', 'textarea', 'decimal', 'specialChar']); 
     </script>
-    
-    <script src="{!$Resource.Home}" /> 
+
+    <script src="{!$Resource.Home}" />
     <script src="{!$Resource.Campaign}" />
     <script src="{!$Resource.TestJs}" />
     <script src="{!$Resource.Test2}" />
@@ -295,7 +296,7 @@
     <script src="{!$Resource.Parent_Organization}" />
     <script src="{!$Resource.ExistingGrantWISER}" />
     <script src="{!$Resource.IntimationLetter_IF}" />
-    <script src="{!$Resource.IntimationLetter_pecfar}"  />
+    <script src="{!$Resource.IntimationLetter_pecfar}" />
     <script src="{!$Resource.WORKSHOPDocUpload}" />
     <script src="{!$Resource.ConnectPlusAdditionalinfo}" />
     <script src="{!$Resource.WORKSHOPDocUpload2}" />

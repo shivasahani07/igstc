@@ -26,27 +26,25 @@
                             </div>
 
                             <ul>
+                                <!-- Pair Project Details -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
+                                        <div class="icon-circle">
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Paired Project Details</span>
+                                    </a>
+                                </li>
 
                                 <!-- Not Confirmed Yet -->
                                 <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
+                                    <a ng-click="redirectPageURL('HostProjectDetails')">
                                         <div class="icon-circle">
                                             <i class="fa fa-home"></i>
                                         </div>
                                         <span>Pairing Details</span>
                                     </a>
                                 </li>
-
-                                <!-- Pair Project Details -->
-                                <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('HostProjectDetails')">
-                                        <div class="icon-circle">
-                                            <i class="far fa-address-card"></i>
-                                        </div>
-                                        <span>Pair Project Details</span>
-                                    </a>
-                                </li>
-
 
 
                                 <!-- Pair Details -->
@@ -78,18 +76,25 @@
                                         <span>Financial Overview</span>
                                     </a>
                                 </li>
-
-
-
                             </ul>
                         </div>
 
                         <div class="tab-link" ng-hide="proposalStage">
                             <div class="progress">
-                                <div class="progress-success wp-5"></div>
+                                <div class="progress-success wp-2"></div>
                             </div>
                             <ul>
+
                                 <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Paired Project Details</span>
+                                    </a>
+                                </li>
+
+                                <li>
                                     <a>
                                         <div class="icon-circle">
                                             <i class="far fa-address-card"></i>
@@ -97,16 +102,6 @@
                                         <span>Pairing Details</span>
                                     </a>
                                 </li>
-
-                                <li class="active">
-                                    <a>
-                                        <div class="icon-circle">
-                                            <i class="fas fa-user-alt"></i>
-                                        </div>
-                                        <span>Pair Project Details</span>
-                                    </a>
-                                </li>
-
 
 
                                 <!-- <li >
@@ -367,7 +362,9 @@
 
                 <div class="row mt-3 mx-5">
                     <div class="col-md-12">
-                        <label class="font-if color-theme">Title</label>
+                        <label class="font-if color-theme">
+                            <b>Title</b>
+                        </label>
                         <span class="required-asterisk" style="color:red;">*</span>
                         <textarea rows="3" maxlength="255" ng-focus="removeClass('txtTitle')" id="txtTitle" ng-model="objContact.Host_Project_Title__c"
                             type="text" class="form-control" ng-disabled="proposalStage" />
@@ -401,7 +398,8 @@
                                     <b>Title of project</b>
                                     <span class="required-asterisk text-danger">*</span>
                                 </label>
-                                <input class="form-control" type="text" ng-model="objContact.Title_Of__c" ng-disabled="proposalStage" />
+                                <input class="form-control" type="text" ng-model="objContact.Title_Of__c" ng-disabled="proposalStage" id="titleOfProposal"
+                                />
                             </div>
 
                             <div class="col-md-6">
@@ -409,29 +407,89 @@
                                     <b>Broad area of research</b>
                                     <span class="required-asterisk text-danger">*</span>
                                 </label>
-                                <input class="form-control" type="text" ng-model="objContact.Broad_area_of_research__c" ng-disabled="proposalStage" />
+                                <input class="form-control" type="text" ng-model="objContact.Broad_area_of_research__c" ng-disabled="proposalStage" id="areaOfResearch"
+                                />
                             </div>
 
                         </div>
                     </div>
 
                     <div class="col-md-12 mt-5">
-                        <div class="row">
 
+
+                        <div class="row mt-5">
+
+                            <!-- LEFT COLUMN : Duration -->
+                            <div class="col-md-6">
+                                <label class="pb-3 color-theme">
+                                    Duration In Months (Min 24 Max 36)
+                                </label>
+                                <span class="required-asterisk" style="color:red;">*</span>
+                                <!-- <input name="duration" placeholder="Min -24 months and Maximum – 36 months." class="form-control" type="text" number="applicantDetails.Duration_In_Months_Max_36__c" ng-model="applicantDetails.Duration_In_Months_Max_36__c"
+                                ng-disabled="proposalStage" ng-minlength="2" ng-maxlength="2" min="24" max="36" id="txtDuration" ng-focus="removeClass2('txtDuration')"
+                                ng-change="restrictDecimalVal(applicantDetails.Duration_In_Months_Max_36__c)" />
+                                <span ng-if="!formPrjDet.duration.$valid" class="text-danger">duration must be between 24 and 36 Months</span> -->
+
+                                <form name="formPrjDet">
+                                    <input name="duration" type="number" class="form-control" placeholder="Min 24 months and Max 36 months" ng-model="objContact.Duration_In_Months_Max_36__c"
+                                        ng-disabled="proposalStage" min="24" max="36" id="txtDuration" ng-focus="removeClass2('txtDuration')"
+                                    />
+                                    <!-- ng-change="restrictDecimalVal()" -->
+
+                                    <span class="text-danger" ng-show="formPrjDet.duration.$error.min || formPrjDet.duration.$error.max">
+                                        Duration must be between 24 and 36 months
+                                    </span>
+                                </form>
+                            </div>
+
+                            <!-- 
                             <div class="col-md-6">
                                 <label class="font-if color-theme">
                                     <b>Duration in months (Min 24 Max 36)</b>
                                     <span class="required-asterisk text-danger">*</span>
                                 </label>
-                                <input name="duration" placeholder="Min -24 months and Maximum – 36 months." class="form-control mt-3" number="objContact.Duration_In_Months_Max_36__c"
+                                <input name="duration" placeholder="Min 24 months and Maximum 36 months." class="form-control mt-3" number="objContact.Duration_In_Months_Max_36__c"
                                     type="text" ng-model="objContact.Duration_In_Months_Max_36__c" ng-focus="removeClass('txtDuration')"
                                     id="txtDuration" ng-disabled="proposalStage" ng-maxlength="2" ng-minlength="2" min="24" max="36"
                                     ng-keyup="restrictDecimalVal(objContact.Duration_In_Months_Max_36__c)" />
                                 <span ng-if="!formPrjDet.duration.$valid" class="text-danger">duration must be between 24 and 36 Months</span>
+                            </div> 
+                            -->
+
+                            <!-- RIGHT COLUMN : Keywords -->
+                            <div class="col-md-6">
+
+                                <!-- Header row -->
+                                <div class="d-flex align-items-center mb-2">
+                                    <label class="color-theme mb-0">
+                                        <b>
+                                            Keywords
+                                            <span class="required-asterisk text-danger">*</span>
+                                            (Max. 6)
+                                            <i>(To add click plus sign)</i>
+                                        </b>
+                                    </label>
+
+                                    <i class="fa-solid fa-circle-plus fa-2x text-primary ms-3" ng-click="addKeyword()" ng-if="!proposalStage" style="cursor:pointer;"></i>
+                                </div>
+
+                                <!-- Keywords inputs -->
+                                <div ng-repeat="item in objKeyword track by $index" class="row mb-2">
+
+                                    <div class="col-md-10">
+                                        <input type="text" ng-model="item.keyword" class="form-control" maxlength="255" ng-disabled="proposalStage" ng-focus="removeClass2('keywords')"
+                                            id="keywords" />
+                                    </div>
+
+                                    <div class="col-md-2 d-flex align-items-center">
+                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger" ng-click="removeKeyword($index)" ng-if="!proposalStage" style="cursor:pointer;"></i>
+                                    </div>
+
+                                </div>
+
                             </div>
 
-                            <!--
-                            <div class="col-md-6">
+                            <!-- <div class="col-md-6">
                                 <div class="row">
                                     <div class="col-md-10">
                                         <label class="font-if color-theme">
@@ -454,10 +512,12 @@
                                         <i class="fa-solid fa-circle-xmark fa-2x text-danger mt-2" ng-click="removeKeyword($index)" ng-if="!proposalStage"></i>
                                     </div>
                                 </div>
-                            </div>
-                        -->
+                            </div> -->
+
                         </div>
+
                     </div>
+
 
 
 

@@ -294,8 +294,12 @@
                                             ng-model="x.Financial_Contribution__r[0].Total__c" size="5" />
                                     </td>
                                     <td>
+                                        <!--
                                         <input ng-focus="removeClass('percentage',$index)" id="percentage{{$index}}" type="text" class="form-control" ng-disabled="disabled"
-                                            ng-model="x.Financial_Contribution__r[0].Asked_From_IGSTC__c | number : 2" />
+                                            ng-model="x.Financial_Contribution__r[0].Asked_From_IGSTC__c | number : 2" /> -->
+
+                                        <input ng-focus="removeClass('percentage',$index)" id="percentage{{$index}}" type="text" class="form-control" ng-disabled="disabled"
+                                            ng-value="(x.Financial_Contribution__r[0].Asked_From_IGSTC__c | number:2)" />
                                     </td>
                                 </tr>
                             </tbody>

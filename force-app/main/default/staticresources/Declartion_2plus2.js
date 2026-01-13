@@ -13,7 +13,52 @@ angular.module('cp_app').controller('declarationplus2_ctrl', function ($scope, $
     $scope.disableUploadButton = true;
     $scope.partnerInfoStage = false;
 
+    $scope.isCoordinator=isCoordinator;
+    if (localStorage.getItem('apaId')) {
+        $rootScope.apaId = localStorage.getItem('apaId');
+    }
+
     console.log('$rootScope.proposalStage on Declaration Page:', $rootScope.proposalStage);
+    console.log('$rootScope.isCoordinator on Declaration Page:', $scope.isCoordinator +'--'+ isCoordinator);
+
+    $scope.getProposalStage = function () {
+        debugger;
+
+        ApplicantPortal_Contoller.getProposalStageUsingProposalId(
+            $rootScope.proposalId,
+            $rootScope.apaId,
+            function (result, event) {
+
+                if (event.status && result) {
+                    $scope.$apply(function () {
+
+                        $rootScope.currentProposalStage = result.proposalStage;
+                        $rootScope.isCoordinator = result.isCoordinator==true   ?'true':'false';
+                        $scope.isCoordinator=result.isCoordinator==true?'true':'false';
+                        $rootScope.stage = result.stage;
+                       
+
+                        $rootScope.secondStage = $rootScope.stage == '2nd Stage' ? true : false;
+                        $scope.proposalStage = $rootScope.currentProposalStage=='Draft' ? false : true; 
+                        $rootScope.proposalStage=$scope.proposalStage;
+                        $scope.uploadDisable =
+                            !(
+                                $rootScope.currentProposalStage === "Draft"
+                                && $rootScope.isCoordinator === true
+                            );
+                    });
+                }
+
+                console.log('$rootScope.currentProposalStage : ', $rootScope.currentProposalStage);
+                console.log('$rootScope.isCoordinator : ', $rootScope.isCoordinator);
+                console.log('$rootScope.stage : ', $rootScope.stage);
+                console.log('$rootScope.secondStage : ', $rootScope.secondStage);
+                console.log('uploadDisable:', $scope.uploadDisable);
+            }
+        );
+    };
+    $scope.getProposalStage();
+
 
     $scope.getDeclarationfields = function () {
         debugger;

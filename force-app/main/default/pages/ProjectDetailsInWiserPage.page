@@ -1,23 +1,24 @@
 <apex:page sidebar="false" showHeader="false" standardStylesheets="false">
-<html>
-     <div ng-controller="ProjectDetailInWiserCtrl">
-          <head>
+    <html>
+    <div ng-controller="ProjectDetailInWiserCtrl">
+
+        <head>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
             <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-               <style>
-                   .ta-editor {
-                       min-height: 300px;
-                       height: auto;
-                       overflow: auto;
-                       font-family: inherit;
-                       font-size: 100%;
-                   }
-               </style>
-               <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
-           </head>
+            <style>
+                .ta-editor {
+                    min-height: 300px;
+                    height: auto;
+                    overflow: auto;
+                    font-family: inherit;
+                    font-size: 100%;
+                }
+            </style>
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+        </head>
 
-           <body>
+        <body>
 
             <div class="container mt-5">
                 <div class="row mx-5">
@@ -27,20 +28,9 @@
                                 <div class="progress-success w-100"></div>
                             </div>
                             <ul>
-                                
-                                <!-- Not Confirmed Yet -->
+                                <!-- Pair Project Details -->
                                 <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
-                                        <div class="icon-circle">
-                                            <i class="fa fa-home"></i>
-                                        </div>
-                                        <span>Pairing Details</span>
-                                    </a>
-                                </li>
-
-                                 <!-- Pair Project Details -->
-                                <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('HostProjectDetails')">
                                         <div class="icon-circle">
                                             <i class="far fa-address-card"></i>
                                         </div>
@@ -48,6 +38,15 @@
                                     </a>
                                 </li>
 
+                                <!-- Not Confirmed Yet -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('HostProjectDetails')">
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Pairing Details</span>
+                                    </a>
+                                </li>
 
                                 <!-- Pair Details -->
                                 <!-- <li class="active pb-cursor">
@@ -124,7 +123,7 @@
                         </div>
                         <div class="tab-link" ng-hide="proposalStage">
                             <div class="progress">
-                                <div class="progress-success wp-2"></div>
+                                <div class="progress-success wp-5"></div>
                             </div>
                             <ul>
 
@@ -133,20 +132,18 @@
                                         <div class="icon-circle">
                                             <i class="far fa-address-card"></i>
                                         </div>
-                                        <span>Pairing Details</span>
+                                        <span>Paired Project Details</span>
                                     </a>
                                 </li>
-                               
-                                <li >
+
+                                <li class="active">
                                     <a>
                                         <div class="icon-circle">
                                             <i class="fas fa-user-alt"></i>
                                         </div>
-                                        <span>Pair Project Details</span>
+                                        <span>Pairing Details</span>
                                     </a>
                                 </li>
-
-                                
 
                                 <!-- <li >
                                     <a>
@@ -156,7 +153,7 @@
                                         <span>Host Details</span>
                                     </a>
                                 </li> -->
-                                <li >
+                                <li>
                                     <a>
                                         <div class="icon-circle">
                                             <i class="fa fa-home"></i>
@@ -164,7 +161,7 @@
                                         <span>Applicant Details</span>
                                     </a>
                                 </li>
-                                <li >
+                                <li>
                                     <a>
                                         <div class="icon-circle">
                                             <i class="fas fa-chart-line"></i>
@@ -217,137 +214,138 @@
                                 </li> -->
                             </ul>
                         </div>
+                    </div>
+                </div>
+
+                <div class="row mx-5">
+                    <div class="col-md-12">
+                        <div class="tab-link" ng-show="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('TwoReferenceWiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-friends"></i>
+                                        </div>
+                                        <span>References</span>
+                                    </a>
+                                </li>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ExistingGrantWISER')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-money-bill"></i>
+                                        </div>
+                                        <span>Grant Details</span>
+                                    </a>
+                                </li>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('AttachmentsInWiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-upload"></i>
+                                        </div>
+                                        <span>Attachments</span>
+                                    </a>
+                                </li>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('CV_Wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Declaration_Wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                        <span>Declaration</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-link" ng-hide="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success wp-0"></div>
+                            </div>
+                            <ul>
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-friends"></i>
+                                        </div>
+                                        <span>References</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-money-bill"></i>
+                                        </div>
+                                        <span>Grant Details</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-upload"></i>
+                                        </div>
+                                        <span>Attachments</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                        <span>Declaration</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
+                </div>
 
-                    <div class="row mx-5">
-                        <div class="col-md-12">
-                            <div class="tab-link" ng-show="proposalStage">
-                                <div class="progress">
-                                    <div class="progress-success w-100"></div>
-                                </div>
-                                <ul>
-                                    <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('TwoReferenceWiser')">
-                                            <div class="icon-circle">
-                                                <i class="fas fa-user-friends"></i>
-                                            </div>
-                                            <span>References</span>
-                                        </a>
-                                    </li>
-                                    
-                                    <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('ExistingGrantWISER')">
-                                            <div class="icon-circle">
-                                                <i class="fas fa-money-bill"></i>
-                                            </div>
-                                            <span>Grant Details</span>
-                                        </a>
-                                    </li>
-                                    
-                                    <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('AttachmentsInWiser')">
-                                            <div class="icon-circle">
-                                                <i class="fas fa-upload"></i>
-                                            </div>
-                                            <span>Attachments</span>
-                                        </a>
-                                    </li>
-
-                                    <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('CV_Wiser')">
-                                            <div class="icon-circle">
-                                                <i class="fa-solid fa-address-book"></i>
-                                            </div>
-                                            <span>Curriculum Vitae</span>
-                                        </a>
-                                    </li>
-
-                                    <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('Declaration_Wiser')">
-                                            <div class="icon-circle">
-                                                <i class="fas fa-check"></i>
-                                            </div>
-                                            <span>Declaration</span>
-                                        </a>
-                                    </li>
-                                </ul>
+                <div class="modal" id="filePreview">
+                    <div class="modal-dialog" style="min-width:120rem">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">
+                                    <div class="d-flex" style="background:unset;">
+                                        <h3 style="text-align: center"><b>{{selectedFile.userDocument.Name}}</b></h3>
+                                    </div>
+                                </h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
-                            <div class="tab-link" ng-hide="proposalStage">
-                                <div class="progress">
-                                    <div class="progress-success wp-0"></div>
-                                </div>
-                                <ul>
-                                    <li>
-                                        <a>
-                                            <div class="icon-circle">
-                                                <i class="fas fa-user-friends"></i>
-                                            </div>
-                                            <span>References</span>
-                                        </a>
-                                    </li>
-                                    
-                                    <li>
-                                        <a>
-                                            <div class="icon-circle">
-                                                <i class="fas fa-money-bill"></i>
-                                            </div>
-                                            <span>Grant Details</span>
-                                        </a>
-                                    </li>
-                                    
-                                    <li>
-                                        <a>
-                                            <div class="icon-circle">
-                                                <i class="fas fa-upload"></i>
-                                            </div>
-                                            <span>Attachments</span>
-                                        </a>
-                                    </li>
-
-                                    <li>
-                                        <a>
-                                            <div class="icon-circle">
-                                                <i class="fa-solid fa-address-book"></i>
-                                            </div>
-                                            <span>Curriculum Vitae</span>
-                                        </a>
-                                    </li>
-
-                                    <li>
-                                        <a>
-                                            <div class="icon-circle">
-                                                <i class="fas fa-check"></i>
-                                            </div>
-                                            <span>Declaration</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+                            <div class="modal-body">
+                                <iframe style="width:100%;height:75vh;border: 0px;border-radius: 10px;" id="file_frame"
+                                    title="File"></iframe>
                             </div>
                         </div>
-
-                        <div class="modal" id="filePreview">
-                            <div class="modal-dialog" style="min-width:120rem">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4 class="modal-title">
-                                            <div class="d-flex" style="background:unset;">
-                                                <h3 style="text-align: center"><b>{{selectedFile.userDocument.Name}}</b></h3>
-                                            </div>
-                                        </h4>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <iframe style="width:100%;height:75vh;border: 0px;border-radius: 10px;" id="file_frame" title="File"></iframe>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    </div>
+                </div>
 
 
-                                                            <!-- ***************************************    START :- Commented by Harsh  for Pairing Detail Page    *************************************** -->
-                        <!-- <form name="formPrjDet">
+                <!-- ***************************************    START :- Commented by Harsh  for Pairing Detail Page    *************************************** -->
+                <!-- <form name="formPrjDet">
                         <div class="row mt-5 mx-5">
 
                           <div class="col-md-6">
@@ -385,11 +383,11 @@
                                 </div>
                             </div>
                         </div> -->
-                                                    <!-- ********************************************************     END :- Commented by Harsh  for Pairing Detail Page **************************************** -->
+                <!-- ********************************************************     END :- Commented by Harsh  for Pairing Detail Page **************************************** -->
 
-                                                        
 
-                        <!-- <div class="row mt-5 mx-5">
+
+                <!-- <div class="row mt-5 mx-5">
                             <div class="col-md-12">
                                 <label class="pb-3 color-theme">
                                     <b>Keywords</b>
@@ -416,8 +414,8 @@
 
 
 
-                                                                <!-- ***************************************    START :- Commented by Harsh  for Pairing Detail Page    *************************************** -->
-                        <!-- <div class="row mt-5 mx-5">
+                <!-- ***************************************    START :- Commented by Harsh  for Pairing Detail Page    *************************************** -->
+                <!-- <div class="row mt-5 mx-5">
                             <div class="col-md-12">
                                 <label class="font-if color-theme"><b>Abstract of proposed work (Max. 600 characters without  space)</b><span class="required-asterisk text-danger">*</span></label><br/>
                                 <small class="label-rtf"><b>To use the below RTF box more efficiently, make sure you write your content in word document first and then copy paste here</b></small>
@@ -427,11 +425,11 @@
                             </div>
 
                         </div> -->
-                                                    <!-- ********************************************************     END :- Commented by Harsh  for Pairing Detail Page **************************************** -->
+                <!-- ********************************************************     END :- Commented by Harsh  for Pairing Detail Page **************************************** -->
 
 
 
-                       <!-- <div class="row mt-5 mx-5">
+                <!-- <div class="row mt-5 mx-5">
                             <div class="col-md-12">
                                 <label class="font-if color-theme"><b>Project description (including specific objectives, methodologies, expected outcome and value addition to the host/parent institutions in max 4500 characters without space):</b><span class="required-asterisk text-danger">*</span></label><br/>
                                 <small class="label-rtf"><b>To use the below RTF box more efficiently, make sure you write your content in word document first and then copy paste here</b></small>
@@ -441,7 +439,7 @@
                             </div>
                         </div> -->
 
-                        <!-- <div class="row mt-5 mx-5">
+                <!-- <div class="row mt-5 mx-5">
                             <label class="font-if color-theme pt-2">Upload the project proposal in a PDF format with a min of 30Kb and max 1Mb.<span class="required-asterisk text-danger">*</span></label>
                             <div class="input-group input-group-lg col-md-6">
                             <input type="file" required="true" accept=".pdf" ng-disabled="proposalStage" id="{{doc.userDocument.Name}}" class="form-control "/>
@@ -455,160 +453,228 @@
                     </div>
                     <p style="margin-left: 40px">Click on the <a href="{!$Resource.project_Description_format}" target="_blank">download link</a> to get the project description format<br/> fill the doc save as pdf and upload.</p> -->
 
-                       
-                                                <!-- ***************************************    START :- Commented by Harsh  for Pairing Detail Page    *************************************** -->
-                    
-                    <!-- <div class="row mt-5 mx-5 mb-3" ng-if="!proposalStage">
+
+                <!-- ***************************************    START :- Commented by Harsh  for Pairing Detail Page    *************************************** -->
+
+                <!-- <div class="row mt-5 mx-5 mb-3" ng-if="!proposalStage">
                             <div class="col-md-12">
                                 <button class="blue-btn float-end" ng-click="saveApplication()" type="button">
                                     <i class="fa-solid fa-check me-2"></i>Save and Next</button> -->
-                                <!-- <button class="blue-bordered-btn float-end me-2" ng-click="redirectPageURL('HostInfoApplicationPage')" type="button">
+                <!-- <button class="blue-bordered-btn float-end me-2" ng-click="redirectPageURL('HostInfoApplicationPage')" type="button">
                                     <i class="fa-solid fa-arrow-left me-2"></i>Previous</button> -->
-                            <!-- </div>
+                <!-- </div>
                         </div>
                     </form> -->
 
-                                                <!-- ********************************************************     END :- Commented by Harsh for Pairing Detail Page **************************************** -->
+                <!-- ********************************************************     END :- Commented by Harsh for Pairing Detail Page **************************************** -->
 
 
-                    <!--pairing details(new Page Added By karthik-->
+                <!--pairing details(new Page Added By karthik-->
                 <form name="formPrjDet">
-                        <br></br>
-                        <br></br>
-                        <div class="row mx-5">
-                            
-                            <div class="col-md-12 alert bg-color-list" role="alert">
-                                <ul class="font-if">
-                                    <li><i class="fa-solid fa-circle text-success me-3"></i>If there is a problem in submitting, kindly press "CTRL+Shift+R" in one go and then try to submit. If the problem still<br/>&nbsp;&nbsp;&nbsp;&nbsp; persists, then contact us.</li><br/>
-                                    <li><h4 class="color-theme pb-4"><b>
-                                        How to form a pair?
-                                        </b></h4></li>
-                                    
-                                    <li><i class="fa-solid fa-circle text-success me-3"></i>Early career researchers holding regular position in academia/research institution/industry or holding a long-term nationally recognized fellowship.</li>
-                                    <li><i class="fa-solid fa-circle text-success me-3"></i>Minimum Qualification: Master’s in Science/Bachelor’s in Engineering (4 years).</li><br/>
-                                    <!--<li><i class="fa-solid fa-circle text-success me-3"></i>PhD Students/Post-docs affiliated with research institutions/industries may also apply.</li><br/>
+                    <br></br>
+                    <br></br>
+                    <div class="row mx-5">
+
+                        <div class="col-md-12 alert bg-color-list" role="alert">
+                            <ul class="font-if">
+                                <li><i class="fa-solid fa-circle text-success me-3"></i>If there is a problem in
+                                    submitting, kindly press "CTRL+Shift+R" in one go and then try to submit. If the
+                                    problem still<br />&nbsp;&nbsp;&nbsp;&nbsp; persists, then contact us.</li><br />
+                                <li>
+                                    <h4 class="color-theme pb-4"><b>
+                                            How to form a pair?
+                                        </b></h4>
+                                </li>
+
+                                <li><i class="fa-solid fa-circle text-success me-3"></i>Early career researchers holding
+                                    regular position in academia/research institution/industry or holding a long-term
+                                    nationally recognized fellowship.</li>
+                                <li><i class="fa-solid fa-circle text-success me-3"></i>Minimum Qualification: Master’s
+                                    in Science/Bachelor’s in Engineering (4 years).</li><br />
+                                <!--<li><i class="fa-solid fa-circle text-success me-3"></i>PhD Students/Post-docs affiliated with research institutions/industries may also apply.</li><br/>
                                         -->
-                                    <li><h5 class="color-theme pb-4"><b>
-                                        Instructions for Application Submission
-                                        </b></h5></li>
-                                    
-                                    <li><i class="fa-solid fa-circle text-success me-3"></i>Please check your eligibility before applying for the fellowship.</li>
-                                    <li><i class="fa-solid fa-circle text-success me-3"></i>To start the online application, you must register on the portal first using your email address.</li><span id="dots"></span>
-                                    <span id="more"><li><i class="fa-solid fa-circle text-success me-3"></i>Please enter a correct working email address when you register in the portal, as it will send a link for verification. </li>
-                                        <li><i class="fa-solid fa-circle text-success me-3"></i>Registration can be done by any one of the applicants. Once the registration is completed, he/she can add his/her partner from India/Germany.</li>
-                                        <li><i class="me-4"></i>The one who registers in the portal first (from the Pair) will be known as the Primary applicant.</li>
-                                        <li><i class="fa-solid fa-circle text-success me-3"></i>In case you do not receive an email for verification, please check your ‘SPAM’ or ‘JUNK’ folder. If you still fail to find the email, please try reaching</li>
-                                        <li><i class="me-4"></i>us at pecfar@igstc.org.</li>
-                                        <li><i class="fa-solid fa-circle text-success me-3"></i>Both the fellows (from India and Germany) must individually complete their part within the same application. Once completed, the final</li>
-                                        <li><i class="me-4"></i>submission of the application will be done by the Primary applicant only.</li>
-                                        <li><i class="fa-solid fa-circle text-success me-3"></i>It is the responsibility of the Primary applicant to make sure that the application is completed by his/her partner before final submission.</li>
-                                        <li><i class="fa-solid fa-circle text-success me-3"></i>Applicants must strictly follow the instructions given for application submission. Failure to do so may result in cancellation of the application.</li>
-                                    </span>
-        
-                                </ul>
+                                <li>
+                                    <h5 class="color-theme pb-4"><b>
+                                            Instructions for Application Submission
+                                        </b></h5>
+                                </li>
+
+                                <li><i class="fa-solid fa-circle text-success me-3"></i>Please check your eligibility
+                                    before applying for the fellowship.</li>
+                                <li><i class="fa-solid fa-circle text-success me-3"></i>To start the online application,
+                                    you must register on the portal first using your email address.</li><span
+                                    id="dots"></span>
+                                <span id="more">
+                                    <li><i class="fa-solid fa-circle text-success me-3"></i>Please enter a correct
+                                        working email address when you register in the portal, as it will send a link
+                                        for verification. </li>
+                                    <li><i class="fa-solid fa-circle text-success me-3"></i>Registration can be done by
+                                        any one of the applicants. Once the registration is completed, he/she can add
+                                        his/her partner from India/Germany.</li>
+                                    <li><i class="me-4"></i>The one who registers in the portal first (from the Pair)
+                                        will be known as the Primary applicant.</li>
+                                    <li><i class="fa-solid fa-circle text-success me-3"></i>In case you do not receive
+                                        an email for verification, please check your ‘SPAM’ or ‘JUNK’ folder. If you
+                                        still fail to find the email, please try reaching</li>
+                                    <li><i class="me-4"></i>us at pecfar@igstc.org.</li>
+                                    <li><i class="fa-solid fa-circle text-success me-3"></i>Both the fellows (from India
+                                        and Germany) must individually complete their part within the same application.
+                                        Once completed, the final</li>
+                                    <li><i class="me-4"></i>submission of the application will be done by the Primary
+                                        applicant only.</li>
+                                    <li><i class="fa-solid fa-circle text-success me-3"></i>It is the responsibility of
+                                        the Primary applicant to make sure that the application is completed by his/her
+                                        partner before final submission.</li>
+                                    <li><i class="fa-solid fa-circle text-success me-3"></i>Applicants must strictly
+                                        follow the instructions given for application submission. Failure to do so may
+                                        result in cancellation of the application.</li>
+                                </span>
+
+                            </ul>
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <div class="row mx-5 mb-3">
+                                <div class="col-md-12 p-3">
+                                    <i ng-show="pairingDetails.MailingCountry == 'India'">
+                                        <apex:image url="{!$Resource.indiaFlag}" styleClass="img-fluid"
+                                            style="max-width:30px;" />
+                                    </i>
+                                    <i ng-show="pairingDetails.MailingCountry == 'Germany'">
+                                        <apex:image url="{!$Resource.germanyFlag}" styleClass="img-fluid"
+                                            style="max-width:30px;" />
+                                    </i>
+                                    <h4 class="pb-3 pt-2 color-theme w-75 float-end" style="font-weight:700">
+                                        {{country1}} Member of the Pair</h4>
+                                </div>
                             </div>
-                            
-                            
-                            <div class="col-md-6">
-                                
-                                <div class="row mx-5 mb-3">
-                                    <div class="col-md-12 p-3">
-                                        <i ng-show="pairingDetails.MailingCountry == 'India'"><apex:image url="{!$Resource.indiaFlag}" styleClass="img-fluid" style="max-width:30px;" /></i>
-                                        <i ng-show="pairingDetails.MailingCountry == 'Germany'"><apex:image url="{!$Resource.germanyFlag}" styleClass="img-fluid" style="max-width:30px;" /></i>
-                                        <h4 class="pb-3 pt-2 color-theme w-75 float-end" style="font-weight:700">{{country1}} Member of the Pair</h4>
-                                    </div>
+
+                            <div class="row box-shadow-3 ms-1 me-2">
+                                <div class="col-md-12 mt-5">
+                                    <label class="font-if">
+                                        Email<span class="required-asterisk" style="color:red;">*</span></label>
+                                    <input type="text" class="form-control" ng-model="pairingDetails.Email"
+                                        ng-focus="removeClass('txtIndEmail')" id="txtIndEmail"
+                                        ng-disabled="proposalStage || primary"
+                                        ng-change="checkEmail(pairingDetails.Email,pairingDetails.Id)" />
                                 </div>
-                                
-                                <div class="row box-shadow-3 ms-1 me-2">
-                                    <div class="col-md-12 mt-5">
-                                        <label class="font-if">
-                                            Email<span class="required-asterisk" style="color:red;">*</span></label>
-                                        <input type="text" class="form-control" ng-model="pairingDetails.Email" ng-focus="removeClass('txtIndEmail')" id="txtIndEmail" ng-disabled="proposalStage || primary" ng-change="checkEmail(pairingDetails.Email,pairingDetails.Id)" />
-                                    </div>
-                                    <div class="col-md-12 mt-5">
-                                        <label class="font-if">
-                                            First Name<span class="required-asterisk" style="color:red;">*</span></label>
-                                        <input type="text" class="form-control" ng-focus="removeClass('txtIndFN')" id="txtIndFN" ng-model="pairingDetails.FirstName" ng-disabled="proposalStage || primary" />
-                                    </div>
-                                    <div class="col-md-12 mt-5">
-                                        <label class="font-if">Last Name<span class="required-asterisk" style="color:red;">*</span></label>
-                                        <input type="text" class="form-control" ng-focus="removeClass('txtIndLN')" id="txtIndLN" ng-model="pairingDetails.LastName" ng-disabled="proposalStage || primary" />
-                                    </div>
-                                    <div class="col-md-12 mt-5">
-                                        <label class="font-if">
-                                            Institution / Organization<span class="required-asterisk" style="color:red;">*</span></label>
-                                        <input type="text" class="form-control" ng-focus="removeClass('txtIndOrg')" id="txtIndOrg" ng-model="pairingDetails.Account.Name" ng-disabled="proposalStage || primary" />
-                                    </div>
-                                    <div class="col-md-12 mt-5 mb-5">
-                                        <label class="font-if">Date of Birth
-                                            <span class="required-asterisk" style="color:red;">*</span></label>
-                                        <!-- <md-datepicker ng-disabled="proposalStage" ng-model="pairingDetails.Birthdate" ng-focus="removeClass('txtIndBD')" id="txtIndBD" md-placeholder="Birthdate" class="form-control" md-current-view="year"></md-datepicker> -->
-                                        <input type="date" class="form-control" ng-focus="removeClass('txtIndBD')" id="txtIndBD" ng-model="pairingDetails.Birthdate" ng-disabled="proposalStage || primary" />
-                                    </div>
+                                <div class="col-md-12 mt-5">
+                                    <label class="font-if">
+                                        First Name<span class="required-asterisk" style="color:red;">*</span></label>
+                                    <input type="text" class="form-control" ng-focus="removeClass('txtIndFN')"
+                                        id="txtIndFN" ng-model="pairingDetails.FirstName"
+                                        ng-disabled="proposalStage || primary" />
                                 </div>
-                                
+                                <div class="col-md-12 mt-5">
+                                    <label class="font-if">Last Name<span class="required-asterisk"
+                                            style="color:red;">*</span></label>
+                                    <input type="text" class="form-control" ng-focus="removeClass('txtIndLN')"
+                                        id="txtIndLN" ng-model="pairingDetails.LastName"
+                                        ng-disabled="proposalStage || primary" />
+                                </div>
+                                <div class="col-md-12 mt-5">
+                                    <label class="font-if">
+                                        Institution / Organization<span class="required-asterisk"
+                                            style="color:red;">*</span></label>
+                                    <input type="text" class="form-control" ng-focus="removeClass('txtIndOrg')"
+                                        id="txtIndOrg" ng-model="pairingDetails.Account.Name"
+                                        ng-disabled="proposalStage || primary" />
+                                </div>
+                                <div class="col-md-12 mt-5 mb-5">
+                                    <label class="font-if">Date of Birth
+                                        <span class="required-asterisk" style="color:red;">*</span></label>
+                                    <!-- <md-datepicker ng-disabled="proposalStage" ng-model="pairingDetails.Birthdate" ng-focus="removeClass('txtIndBD')" id="txtIndBD" md-placeholder="Birthdate" class="form-control" md-current-view="year"></md-datepicker> -->
+                                    <input type="date" class="form-control" ng-focus="removeClass('txtIndBD')"
+                                        id="txtIndBD" ng-model="pairingDetails.Birthdate"
+                                        ng-disabled="proposalStage || primary" />
+                                </div>
                             </div>
-                            
-                            <div class="col-md-6">
-                                <div class="row mx-5 mb-3">
-                                    <div class="col-md-12 p-3">
-                                        <i ng-show="pairList.MailingCountry == 'India'"><apex:image url="{!$Resource.indiaFlag}" styleClass="img-fluid" style="max-width:30px;" /></i>
-                                        <i ng-show="pairList.MailingCountry == 'Germany'"><apex:image url="{!$Resource.germanyFlag}" styleClass="img-fluid" style="max-width:30px;" /></i>
-                                        <h4 class="pb-3 pt-2 color-theme w-75 float-end" style="font-weight:700">{{country2}} Member of the Pair</h4>
-                                    </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="row mx-5 mb-3">
+                                <div class="col-md-12 p-3">
+                                    <i ng-show="pairList.MailingCountry == 'India'">
+                                        <apex:image url="{!$Resource.indiaFlag}" styleClass="img-fluid"
+                                            style="max-width:30px;" />
+                                    </i>
+                                    <i ng-show="pairList.MailingCountry == 'Germany'">
+                                        <apex:image url="{!$Resource.germanyFlag}" styleClass="img-fluid"
+                                            style="max-width:30px;" />
+                                    </i>
+                                    <h4 class="pb-3 pt-2 color-theme w-75 float-end" style="font-weight:700">
+                                        {{country2}} Member of the Pair</h4>
                                 </div>
-                                <!-- <div class="col-md-12 my-4" style="padding-left: 0px;">
+                            </div>
+                            <!-- <div class="col-md-12 my-4" style="padding-left: 0px;">
                                 <label class="color-theme ms-2">German Counter Part</label>
                                 </div> -->
-                                
-                                <div class="row box-shadow-3 ms-1 me-2">     
-                                    <div class="col-md-12 mt-5">
-                                        <label class="font-if">
-                                            Email<span class="required-asterisk" style="color:red;">*</span></label>
-                                        <input type="text" class="form-control" ng-focus="removeClass('txtGerEmail')" id="txtGerEmail" ng-model="pairList.Email" ng-disabled="proposalStage" ng-change="checkEmail(pairList.Email,pairList.Id)" />
-                                    </div>
-                                    <div class="col-md-12 mt-5">
-                                        <label class="font-if">
-                                            First Name<span class="required-asterisk" style="color:red;">*</span></label>
-                                        <input type="text" class="form-control" ng-focus="removeClass('txtGerFN')" id="txtGerFN" ng-model="pairList.FirstName" ng-disabled="proposalStage" />
-                                    </div>
-                                    <div class="col-md-12 mt-5">
-                                        <label class="font-if">Last Name<span class="required-asterisk" style="color:red;">*</span></label>
-                                        <input type="text" class="form-control" ng-focus="removeClass('txtGerLn')" id="txtGerLn" ng-model="pairList.LastName" ng-disabled="proposalStage" />
-                                    </div>
-                                    <div class="col-md-12 mt-5">
-                                        <label class="font-if">
-                                            Institution / Organization<span class="required-asterisk" style="color:red;">*</span></label>
-                                        <input type="text" class="form-control" ng-focus="removeClass('txtGerOrg')" id="txtGerOrg" ng-model="pairList.Account.Name" ng-disabled="proposalStage" />
-                                    </div>
-                                    
-                                    <div class="col-md-12 mt-5 mb-5">
-                                        <label class="font-if">Date of Birth
-                                            <span class="required-asterisk" style="color:red;">*</span></label>
-                                        <!-- <md-datepicker ng-disabled="proposalStage" ng-model="pairList.Birthdate" ng-focus="removeClass('txtGerBD')" id="txtGerBD" md-placeholder="Birthdate" class="form-control" md-current-view="year"></md-datepicker> -->
-                                        <input type="date" class="form-control" ng-focus="removeClass('txtGerBD')" id="txtGerBD" ng-model="pairList.Birthdate" ng-init="pairList.Birthdate=(pairList.Birthdate | date:'')" ng-disabled="proposalStage" />
-                                    </div>
-                                    <!-- {{ pairList.Birthdate }}
-{{mydate}} -->
-                                </div>
-                                
-                            </div>
-                            
-                            <div class="col-md-12 my-4 mb-5 mt-5" ng-if="!proposalStage">
-                                <button class="blue-btn float-end" ng-click="insertPairingDetailsinWiser()" type="button">
-                                    <i class="fa-solid fa-check me-2"></i>Save and Next</button>
-                                <button class="blue-btn float-end" ng-click="redirectToApplicantPortal()" type="button">
-                                    <i class="fa-solid fa-check me-2"></i>Back</button>
-                            </div>
-                        </div>
-                        
-                        
-                    </form>
-                   <!--pairing details(new Page Added By karthik-->
 
-                    
-                </div>
-               <!-- <div class="container px-4">
+                            <div class="row box-shadow-3 ms-1 me-2">
+                                <div class="col-md-12 mt-5">
+                                    <label class="font-if">
+                                        Email<span class="required-asterisk" style="color:red;">*</span></label>
+                                    <input type="text" class="form-control" ng-focus="removeClass('txtGerEmail')"
+                                        id="txtGerEmail" ng-model="pairList.Email" ng-disabled="proposalStage"
+                                        ng-change="checkEmail(pairList.Email,pairList.Id)" />
+                                </div>
+                                <div class="col-md-12 mt-5">
+                                    <label class="font-if">
+                                        First Name<span class="required-asterisk" style="color:red;">*</span></label>
+                                    <input type="text" class="form-control" ng-focus="removeClass('txtGerFN')"
+                                        id="txtGerFN" ng-model="pairList.FirstName" ng-disabled="proposalStage" />
+                                </div>
+                                <div class="col-md-12 mt-5">
+                                    <label class="font-if">Last Name<span class="required-asterisk"
+                                            style="color:red;">*</span></label>
+                                    <input type="text" class="form-control" ng-focus="removeClass('txtGerLn')"
+                                        id="txtGerLn" ng-model="pairList.LastName" ng-disabled="proposalStage" />
+                                </div>
+                                <div class="col-md-12 mt-5">
+                                    <label class="font-if">
+                                        Institution / Organization<span class="required-asterisk"
+                                            style="color:red;">*</span></label>
+                                    <input type="text" class="form-control" ng-focus="removeClass('txtGerOrg')"
+                                        id="txtGerOrg" ng-model="pairList.Account.Name" ng-disabled="proposalStage" />
+                                </div>
+
+                                <div class="col-md-12 mt-5 mb-5">
+                                    <label class="font-if">Date of Birth
+                                        <span class="required-asterisk" style="color:red;">*</span></label>
+                                    <!-- <md-datepicker ng-disabled="proposalStage" ng-model="pairList.Birthdate" ng-focus="removeClass('txtGerBD')" id="txtGerBD" md-placeholder="Birthdate" class="form-control" md-current-view="year"></md-datepicker> -->
+                                    <input type="date" class="form-control" ng-focus="removeClass('txtGerBD')"
+                                        id="txtGerBD" ng-model="pairList.Birthdate"
+                                        ng-init="pairList.Birthdate=(pairList.Birthdate | date:'')"
+                                        ng-disabled="proposalStage" />
+                                </div>
+                                <!-- {{ pairList.Birthdate }}
+{{mydate}} -->
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12 my-4 mb-5 mt-5" ng-if="!proposalStage">
+                            <button class="blue-btn float-end" ng-click="insertPairingDetailsinWiser()" type="button">
+                                <i class="fa-solid fa-check me-2"></i>Save and Next</button>
+                            <button class="blue-bordered-btn float-end me-2" ng-click="redirectToApplicantPortal()"
+                                type="button">
+                                <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+                            <!-- <button class="blue-bordered-btn float-end me-2" ng-click="redirectToApplicantPortal()"
+                                type="button">
+                                <i class="fa-solid fa-check me-2"></i>Back</button> &nbsp; &nbsp; -->
+                        </div>
+                    </div>
+
+
+                </form>
+                <!--pairing details(new Page Added By karthik-->
+
+
+            </div>
+            <!-- <div class="container px-4">
                     <div class="card h-100 m-5">
                          <div class="card-header">
                               <h2 class="p-3">
@@ -692,9 +758,10 @@
 
                     </div>
                </div> -->
-               <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-           </body>
-     </div>
-</html>
+        </body>
+    </div>
+
+    </html>
 </apex:page>

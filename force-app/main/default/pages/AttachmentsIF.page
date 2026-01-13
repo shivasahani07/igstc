@@ -317,7 +317,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-3 mt-4" ng-show="permission.userDocument.Status__c=='Uploaded'">
+                            <div class="col-md-3" ng-show="permission.userDocument.Status__c=='Uploaded'">
                                 <!-- <a class="blue-btn float-end mt-4 py-3" target="_blank" href="{{baseUrl+recommendation.Attachments[0].Id}}">View</a> -->
                                 <a class="blue-btn float-end mt-4 py-3" ng-click="filePreviewHandler(permission)">View</a>
                                 <!-- <a class="blue-btn float-end mt-4 py-3" href="{{recommendation.ContentDistribution.DistributionPublicUrl}}" target="_blank">View</a> -->
@@ -360,7 +360,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-3 mt-4" ng-show="proof.userDocument.Status__c=='Uploaded'">
+                            <div class="col-md-3" ng-show="proof.userDocument.Status__c=='Uploaded'">
                                 <!-- <a class="blue-btn float-end mt-4 py-3" target="_blank" href="{{baseUrl+recommendation.Attachments[0].Id}}">View</a> -->
                                 <a class="blue-btn float-end mt-4 py-3" ng-click="filePreviewHandler(proof)">View</a>
                                 <!-- <a class="blue-btn float-end mt-4 py-3" href="{{recommendation.ContentDistribution.DistributionPublicUrl}}" target="_blank">View</a> -->
@@ -383,7 +383,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-3 mt-4" ng-show="currentPassport.userDocument.Status__c=='Uploaded'">
+                            <div class="col-md-3" ng-show="currentPassport.userDocument.Status__c=='Uploaded'">
                                 <!-- <a class="blue-btn float-end mt-4 py-3" target="_blank" href="{{baseUrl+recommendation.Attachments[0].Id}}">View</a> -->
                                 <a class="blue-btn float-end mt-4 py-3" ng-click="filePreviewHandler(currentPassport)">View</a>
                                 <!-- <a class="blue-btn float-end mt-4 py-3" href="{{recommendation.ContentDistribution.DistributionPublicUrl}}" target="_blank">View</a> -->

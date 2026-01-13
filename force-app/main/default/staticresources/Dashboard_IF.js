@@ -3,6 +3,7 @@ angular.module('cp_app').controller('Dashboard_iF_Ctlr', function($scope,$sce,$r
     $scope.basicDetails=true;
     
     $rootScope.proposalId;
+    $rootScope.proposalStage;
     
     $rootScope.yearlyCallId;
     $scope.eduQualification=false;

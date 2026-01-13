@@ -7,6 +7,12 @@ angular.module('cp_app').controller('ExpenseDeclaration', function ($scope, $roo
         console.log('Loaded proposalId from localStorage:', $rootScope.proposalId);
     }
 
+    // Fetching the APA Id from Local Storage
+    if (localStorage.getItem('apaId')) {
+        $rootScope.apaId = localStorage.getItem('apaId');
+        console.log('Loaded apaId from localStorage:', $rootScope.apaId);
+    }
+
     console.log('Intiated::');
     $scope.siteURL = siteURL;
     $rootScope.projectId;
@@ -35,7 +41,49 @@ angular.module('cp_app').controller('ExpenseDeclaration', function ($scope, $roo
     $scope.industryContr = {};
     $scope.igstcFunding = {};
     $scope.financeDetails = {};
-    $rootScope.apaId = '';
+
+    // ------------------------------------------------------------------------------ //
+    // Method to get the Proposal Stage and APA Is_Coordinator
+
+    $rootScope.currentProposalStage = '';
+    $rootScope.isCoordinator = false;
+    $rootScope.stage = '';
+
+    $scope.getProposalStage = function () {
+        debugger;
+
+        ApplicantPortal_Contoller.getProposalStageUsingProposalId(
+            $rootScope.proposalId,
+            $rootScope.apaId,
+            function (result, event) {
+
+                if (event.status && result) {
+                    $scope.$apply(function () {
+
+                        $rootScope.currentProposalStage = result.proposalStage;
+                        $rootScope.isCoordinator = result.isCoordinator;
+                        $rootScope.stage = result.stage;
+
+                        $rootScope.proposalStage = result.proposalStage;
+                        $rootScope.secondStage = $rootScope.stage == '2nd Stage' ? true : false;
+
+                        $scope.uploadDisable =
+                            !(
+                                $rootScope.currentProposalStage === "Draft"
+                                && $rootScope.isCoordinator === true
+                            );
+                    });
+                }
+
+                console.log('$rootScope.currentProposalStage : ', $rootScope.currentProposalStage);
+                console.log('$rootScope.isCoordinator : ', $rootScope.isCoordinator);
+                console.log('$rootScope.stage : ', $rootScope.stage);
+                console.log('$rootScope.secondStage : ', $rootScope.secondStage);
+                console.log('uploadDisable:', $scope.uploadDisable);
+            }
+        );
+    };
+    $scope.getProposalStage();
 
     $scope.getApplicantDeetails = function () {
         ApplicantPortal_Contoller.getProjectDetailsDetails($rootScope.proposalId, function (result, event) {

@@ -7,6 +7,7 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
 
      $rootScope.proposalStage;
      $rootScope.candidateId;
+     $scope.objKeyword = [];
 
      // Get proposalId from LocalStorage
      if (localStorage.getItem('proposalId')) {
@@ -41,6 +42,20 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
                     }
                     if (result.Host_Abstract_Of_Project__c != undefined || result.Host_Abstract_Of_Project__c != "") {
                          result.Host_Abstract_Of_Project__c = result.Host_Abstract_Of_Project__c ? result.Host_Abstract_Of_Project__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('lt;', '<').replaceAll('&gt;', '>').replaceAll('gt;', '>').replaceAll('&amp;', '&').replaceAll('amp;', '&').replaceAll('&quot;', '\'') : result.Host_Abstract_Of_Project__c;
+                    }
+                    if (result.Broad_area_of_research__c != undefined || result.Broad_area_of_research__c != "") {
+                         result.Broad_area_of_research__c = result.Broad_area_of_research__c ? result.Broad_area_of_research__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('lt;', '<').replaceAll('&gt;', '>').replaceAll('gt;', '>').replaceAll('&amp;', '&').replaceAll('amp;', '&').replaceAll('&quot;', '\'') : result.Broad_area_of_research__c;
+                    }
+                    // ------------------------- Keyword Functionality ------------------------------ //
+                    if (result.KeyWords__c != undefined && result.KeyWords__c != '') {
+                         var keyword = result.KeyWords__c.split(';');
+                         $scope.objKeyword.splice(0, 1);
+                         for (var k = 0; k < keyword.length; k++) {
+                              $scope.objKeyword.push({ "keyword": keyword[k] });
+                         }
+                    }
+                    else {
+                         $scope.objKeyword.push({ "keyword": "" });
                     }
                     $scope.objContact = result;
                     $scope.$apply();
@@ -79,10 +94,58 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
 
           debugger;
           if ($scope.objContact.Host_Project_Title__c == undefined || $scope.objContact.Host_Project_Title__c == "") {
-               swal("info", "Please enter project title.", "info");
+               swal("info", "Please Enter Project Title.", "info");
                $("#txtTitle").addClass('border-theme');
                return;
           }
+
+          if ($scope.objContact.Title_Of__c == undefined || $scope.objContact.Title_Of__c == "") {
+               swal("info", "Please Enter Title Of Project.", "info");
+               $("#titleOfProposal").addClass('border-theme');
+               return;
+          }
+
+          if ($scope.objContact.Broad_area_of_research__c == undefined || $scope.objContact.Broad_area_of_research__c == "") {
+               swal("info", "Please Enter Area Of Research.", "info");
+               $("#areaOfResearch").addClass('border-theme');
+               return;
+          }
+
+          // if (
+          //      $scope.objContact.Duration_In_Months_Max_36__c === null || $scope.objContact.Duration_In_Months_Max_36__c === undefined
+          // ) {
+          //      swal("info", "Please Enter Project Duration.", "info");
+          //      //$("#txtDuration").addClass('border-theme');
+          //      return;
+          // }
+
+          if ($scope.formPrjDet.$invalid) {
+               swal("info", "Duration must be between 24 and 36 months.", "info");
+               $("#txtDuration").addClass('border-theme');
+               return;
+          }
+
+
+
+
+          var keyword = ""; startDay
+          for (var i = 0; i < $scope.objKeyword.length; i++) {
+               if ($scope.objKeyword[i].keyword != '' && $scope.objKeyword[i].keyword != undefined) {
+                    if (i == 0)
+                         keyword = $scope.objKeyword[i].keyword;
+                    else
+                         keyword = keyword + ';' + $scope.objKeyword[i].keyword;
+               }
+          }
+          $scope.objContact.KeyWords__c = keyword;
+
+          if ($scope.objContact.KeyWords__c == undefined || $scope.objContact.KeyWords__c == "") {
+               swal("info", "Please Enter Keywords.", "info");
+               $("#keywords").addClass('border-theme');
+               return;
+          }
+
+
           // if($scope.objContact.Host_Funding_Source__c == undefined || $scope.objContact.Host_Funding_Source__c == ""){
           //      swal("info", "Please enter funding source.","info");
           //      $("#txtFunding").addClass('border-theme');
@@ -149,7 +212,7 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
                parseInt(endYear, 10),
                function (result, event) {
                     debugger;
-                    console.log("Result IN saveApplicationPortalHostInformation ::", result);
+                    console.log("Result In saveApplicationPortalHostInformation ::", result);
                     if (event.status) {
                          swal({
                               title: "SUCCESS",
@@ -158,8 +221,8 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
                               button: "ok!",
                          })
                          // $scope.redirectPageURL('TwoReferenceWiser');
-                         // $scope.redirectPageURL('ProjectDetailsInWiserPage');
-                         $scope.redirectPageURL('WiserApplicationPage');
+                         $scope.redirectPageURL('ProjectDetailsInWiserPage');
+                         // $scope.redirectPageURL('WiserApplicationPage');
                          // window.location.replace(window.location.origin+'/ApplicantDashboard/ApplicantPortal?id='+$rootScope.userId+'#/TwoReferenceWiser');
 
                     } else {
@@ -208,4 +271,25 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
      $scope.removeClass = function (controlid) {
           $("#" + controlid + "").removeClass('border-theme');
      }
+
+     // ----------------- Add and Remove Keyword Functionality ------------------ //
+     $scope.objKeyword = [];
+
+     $scope.addKeyword = function () {
+          debugger
+          if ($scope.objKeyword.length <= 5) {
+               $scope.objKeyword.push({ keyword: "" });
+               $scope.$apply();
+          }
+     }
+     $scope.removeKeyword = function (index) {
+          if ($scope.objKeyword.length > 1) {
+               $scope.objKeyword.splice(index, 1);
+          }
+     }
+
+     $scope.removeClass2 = function (controlid) {
+          $("#" + controlid + "").removeClass('border-theme');
+     }
+
 })

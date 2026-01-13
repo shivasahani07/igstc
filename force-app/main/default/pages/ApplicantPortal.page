@@ -794,11 +794,26 @@
 
                         <div class="program-deadline">Application Deadline: {{p.deadline}}</div>  
                         <div class="program-proposal"><i class="fa fa-id-card" aria-hidden="true"></i><span class="program-proposal-text">Proposal No: </span>{{p.PropName}}</div>
-                        <div class="program-desc"><i class="fa fa-file-text" aria-hidden="true"></i><span class="program-desc-text"> Title: </span>{{p.desc}}</div>
+                        <!--<div class="program-desc"><i class="fa fa-file-text" aria-hidden="true"></i><span class="program-desc-text"> Title: </span>{{p.desc}}</div>-->
+                        <div class="program-desc"><i class="fa fa-file-text" aria-hidden="true"></i><span class="program-desc-text"> Title of Project: </span>{{p.titleOfProject}}</div>
                         <div class="btn-container">
-                            <div class="btn" ng-click="redirectToForm(p)">Edit</div>
-                            <!-- <div class="btn">Know More</div> -->
+                            
+                              <div class="btn"
+                                 ng-if="p.proposalStage === 'Draft'"
+                                 ng-click="redirectToForm(p)">
+                                Edit
+                            </div>
+                        
+                            <!-- VIEW : When NOT Draft -->
+                            <div class="btn"
+                                 ng-if="p.proposalStage !== 'Draft'"
+                                 ng-click="redirectToForm(p, true)">
+                                View
+                            </div>
                         </div>
+                        
+                                               
+                        
                     </div>
                 </div>
                 <h2 ng-if="allPrograms.length > 0">Programs Offered By IGSTC in year</h2>
@@ -860,5 +875,4 @@
     
     </body>
     
-   
 </apex:page>

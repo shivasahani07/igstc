@@ -1416,17 +1416,46 @@ return appProposal;
         Integer startingyear;
     }
     
-    public static List<Account> getApplicantDetailsForGrant(string applicantHashCode){
-        contact conRec = [select name,id,Proposals__c,AccountId,Account.Name from contact where Login_Hash_Code__c =:applicantHashCode limit 1];
-        list<Account> applicantList = New list<Account>();
-        if(conRec.AccountId != null){
-            applicantList = [select Id,Name,Proposals__c,(SELECT Id,Title__c,Funding_Agency__c,Budget__c,Starting_Date__c,Duration__c,Account__c,Application__c FROM Existing_Grants__r),(Select Id,Login_Hash_Code__c From Contacts) from Account where Proposals__c=:conRec.Proposals__c];
-            return applicantList;
+    // public static List<Account> getApplicantDetailsForGrant(string applicantHashCode){
+    //     contact conRec = [select name,id,Proposals__c,AccountId,Account.Name from contact where Login_Hash_Code__c =:applicantHashCode limit 1];
+    //     list<Account> applicantList = New list<Account>();
+    //     if(conRec.AccountId != null){
+    //         applicantList = [select Id,Name,Proposals__c,
+    //         (SELECT Id,Title__c,Funding_Agency__c,Budget__c,Starting_Date__c,Duration__c,Account__c,Application__c FROM Existing_Grants__r),(
+    //             Select Id,Login_Hash_Code__c From Contacts) from Account where Proposals__c=:conRec.Proposals__c];
+    //         return applicantList;
+    //     }
+    //     return applicantList;
+    // }
+
+    public static List<Account> getApplicantDetailsForGrant(String apaId, String proposalId){
+        
+        List<Applicant_Proposal_Association__c> apaList = [
+            SELECT Id, Proposals__c, Contact__c, Contact__r.AccountId 
+            FROM Applicant_Proposal_Association__c 
+            WHERE Proposals__c = :proposalId
+        ];
+        System.debug('apaList :::::: ' + apaList);
+
+        Set<Id> accIdSet = new Set<Id>();
+        for(Applicant_Proposal_Association__c  apa : apaList){
+            accIdSet.add(apa.Contact__r.AccountId);
         }
-        return applicantList;
+        System.debug('accIdSet :::: ' + accIdSet);
+
+        List<Account> accList = new List<Account>();
+        if(! accIdSet.isEmpty()){
+            accList = [SELECT Id, Name, Proposals__c,
+                (SELECT Id, Title__c, Funding_Agency__c, Budget__c, Starting_Date__c, Duration__c, Account__c, Application__c, Applicant_Proposal_Association__c FROM Existing_Grants__r),
+                (SELECT Id, Login_Hash_Code__c FROM Contacts) 
+                FROM Account WHERE Id IN : accIdSet];
+            return accList;
+        }
+        System.debug('accList :::: ' + accList);
+        return accList;
     }
     
-    public static String insertExistingGrants(List<ExistingGrantsWrapper> grantList){
+    public static String insertExistingGrants(List<ExistingGrantsWrapper> grantList, String apaId){
         try{
             system.debug('size ---> '+grantList.size());
             List<Application_Proposal__c> applicationList = new List<Application_Proposal__c>();
@@ -1441,26 +1470,29 @@ return appProposal;
                 grantsRec.Application__c = wrap.Application;
                 grantsRec.Budget__c = wrap.budget;
                 grantsRec.Duration__c = wrap.duration;
+                grantsRec.Applicant_Proposal_Association__c = apaId;
+
                 if(wrap.id != null){
                     grantsRec.id = wrap.id;
                 }
                 if(wrap.startingyear != 0){
                     // grantsRec.Starting_Date__c = Date.newInstance(wrap.startingyear, wrap.startingmonth, wrap.startingday);
+                    grantsRec.Starting_Date__c = wrap.startingday + '/' + wrap.startingmonth + '/' + wrap.startingyear;
                 }
                 existingGrantList.add(grantsRec);
                 ids.add(grantsRec.Application__c);
             }
             system.debug('existingGrantList :: '+existingGrantList);
-            for(String grant : ids){
-                Application_Proposal__c applicatProposal = New Application_Proposal__c();
-                applicatProposal.Id = grant;
-                applicatProposal.Stage__c = '2nd Stage';
-                applicatProposal.Proposal_Stages__c = 'Submitted';
-                applicationList.add(applicatProposal);
+            // for(String grant : ids){
+            //     Application_Proposal__c applicatProposal = New Application_Proposal__c();
+            //     applicatProposal.Id = grant;
+            //     applicatProposal.Stage__c = '2nd Stage';
+            //     applicatProposal.Proposal_Stages__c = 'Submitted';
+            //     applicationList.add(applicatProposal);
                 
-            }
+            // }
             system.debug('applicationList::'+applicationList);
-            upsert applicationList;
+            // upsert applicationList;
             upsert existingGrantList;
             return 'SUCCESS';
             
@@ -2858,19 +2890,27 @@ return e.getMessage() + e.getLineNumber();
         return accOptions;
     }
     
-    public static List<Work_Package__c> getWPDetails(string applicantHashCode){
+    /* public static List<Work_Package__c> getWPDetails(string applicantHashCode){
         List<Work_Package__c> workPackageList = New List<Work_Package__c>();
         
-        Contact conRec = [Select Id,Name,Proposals__c From Contact WHERE Login_Hash_Code__c =:applicantHashCode limit 1];
-        system.debug('applicantHashCode ::'+applicantHashCode);
-        
-        if(!string.isBlank(conRec.Proposals__c)){
             workPackageList = [SELECT Id,TRL_Level__c,End_TRL_Level__c,WP_Sequence__c,Work_Package_Detail__c,Title__c,External_Id__c,Duration__c,Application__c,Account__c,Account__r.Name,(SELECT Id,Name,Account_Name__c,Account__c FROM Account_Mapping__r),
-                               (SELECT Id,Name From Accounts__r) From Work_Package__c WHERE Application__c =: conRec.Proposals__c];
-        }
+                               (SELECT Id,Name From Accounts__r) From Work_Package__c WHERE Application__c =: applicantHashCode];
+        
         // for(Work_Package__c wpack : workPackageList){
         //     wpack.WP_Sequence__c = Integer.valueOf(wpack.WP_Sequence__c);
         // }
+        system.debug('workPackageList ::'+workPackageList);
+        return workPackageList;
+    } */
+
+    public static List<Work_Package__c> getWPDetails(String proposalId, String proposalStage){
+        List<Work_Package__c> workPackageList = [
+            SELECT Id,TRL_Level__c, End_TRL_Level__c, WP_Sequence__c, Work_Package_Detail__c,Title__c,External_Id__c,Duration__c,Application__c,Account__c,Account__r.Name,(SELECT Id,Name,Account_Name__c,Account__c FROM Account_Mapping__r),
+            (SELECT Id,Name From Accounts__r) 
+            FROM Work_Package__c 
+            WHERE Application__c =: proposalId
+            AND Proposal_Stage__c =: proposalStage];
+        
         system.debug('workPackageList ::'+workPackageList);
         return workPackageList;
     }

@@ -269,26 +269,73 @@
                 <div class="row box-shadow-2 mt-5 mx-5 p-3 mb-5">
                     <div class="col-md-6 mt-5">
                         <label class="pb-3 color-theme">
-                            Project Acronym (Max. characters 32,768)
+                            Project Acronym (Max. characters 300)
                         </label>
                         <span class="required-asterisk" style="color:red;">*</span>
-                        <input ng-focus="removeClass2('Acronym')" id="Acronym" name="Acronym" placeholder="Acronym" class="form-control" type="text" ng-model="applicantDetails.Acronym__c" maxlength="32768" ng-disabled="proposalStage" required="true" ng-required="applicantDetails.Acronym__c" />
+                        <input 
+                            ng-focus="removeClass2('Acronym')" 
+                            id="Acronym" 
+                            name="Acronym" 
+                            placeholder="Acronym" 
+                            class="form-control" 
+                            type="text" 
+                            ng-model="applicantDetails.Acronym__c" 
+                            ng-disabled="proposalStage" 
+                            required="true" 
+                            ng-required="applicantDetails.Acronym__c" 
+                            ng-change="checkCharLimit(applicantDetails, 'Acronym__c', 300)" />
+
+                            <small class="text-danger"
+                                    ng-if="applicantDetails._charLimitMap &&
+                                        applicantDetails._charLimitMap.Acronym__c">
+                                    Maximum 300 characters allowed
+                            </small>
                     </div>
 
                     <div class="col-md-6 mt-5">
                         <label class="pb-3 color-theme">
-                            Title Of Proposal (Max. characters 32,768)
+                            Title Of Proposal (Max. characters 600)
                         </label>
                         <span class="required-asterisk" style="color:red;">*</span>
-                        <input ng-focus="removeClass2('title')" id="title" name="Title Of Proposal" placeholder="Title Of Proposal" class="form-control" type="text" ng-model="applicantDetails.Title_Of__c" ng-disabled="proposalStage"/>
+                        <input 
+                            ng-focus="removeClass2('title')" 
+                            id="title" 
+                            name="Title Of Proposal" 
+                            placeholder="Title Of Proposal" 
+                            class="form-control" 
+                            type="text" 
+                            ng-model="applicantDetails.Title_Of__c" 
+                            ng-disabled="proposalStage"
+                            ng-change="checkCharLimit(applicantDetails, 'Title_Of__c', 600)" />
+
+                            <small class="text-danger"
+                                    ng-if="applicantDetails._charLimitMap &&
+                                        applicantDetails._charLimitMap.Title_Of__c">
+                                    Maximum 600 characters allowed
+                            </small>
                     </div>
 
                     <div class="col-md-6 mt-5">
                         <label class="pb-3 color-theme">
-                            Title des Antrages(In German) (Max. characters 32,768)
+                            Title des Antrages(In German) (Max. characters 600)
                         </label>
                         <span class="required-asterisk" style="color:red;">*</span>
-                        <input ng-focus="removeClass2('titleG')" id="titleG" name="Title In German" placeholder="Title In German" class="form-control" type="text" ng-model="applicantDetails.Title_In_German__c" ng-disabled="proposalStage"/>
+                        <input 
+                            ng-focus="removeClass2('titleG')" 
+                            id="titleG" 
+                            name="Title In German" 
+                            placeholder="Title In German" 
+                            class="form-control" 
+                            type="text" 
+                            ng-model="applicantDetails.Title_In_German__c" 
+                            ng-disabled="proposalStage"
+                            ng-change="checkCharLimit(applicantDetails, 'Title_In_German__c', 600)" />
+
+                            <small class="text-danger"
+                                    ng-if="applicantDetails._charLimitMap &&
+                                        applicantDetails._charLimitMap.Title_In_German__c">
+                                    Maximum 600 characters allowed
+                            </small>
                     </div>
 
                     <div class="col-md-6 mt-5">

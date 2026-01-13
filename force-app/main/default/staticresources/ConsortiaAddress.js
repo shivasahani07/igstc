@@ -377,6 +377,15 @@ angular.module('cp_app').controller('address_ctrl', function ($scope, $sce, $roo
                 $("#ownership").addClass('border-theme');
                 return;
             }
+            if ($scope.addressDetails.Ownership_Profile__c.length > 600) {
+                swal(
+                    "info",
+                    "Ownership Profile cannot exceed 600 characters.",
+                    "info"
+                );
+                $("#ownership").addClass('border-theme');
+                return;
+            }
             if ($scope.addressDetails.Last_Year_s_Balance__c == undefined || $scope.addressDetails.Last_Year_s_Balance__c == "") {
                 swal("Address Details", "Please Enter Last year's balance.");
                 $("#balance").addClass('border-theme');

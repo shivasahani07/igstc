@@ -258,7 +258,8 @@ angular.module('cp_app').controller('ProjectDetailsSing_Ctrl', function($scope,$
 
     $scope.restrictDecimalVal = function(myVar){
       // myVar = Math.round($scope.applicantDetails.Duration_In_Months_Max_36__c);
-      if(myVar>12){
+      console.log(myVar);
+      if(myVar>12 || myVar<0 ){
           return false;
       }
       else

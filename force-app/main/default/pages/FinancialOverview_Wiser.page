@@ -19,8 +19,8 @@
                                 <div class="progress-success w-100"></div>
                             </div>
                             <ul>
-                                
-                                
+
+
                                 <!-- Not Confirmed Yet -->
                                 <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
@@ -71,7 +71,7 @@
                                     </a>
                                 </li>
 
-                                
+
                             </ul>
                         </div>
                         <div class="tab-link" ng-hide="proposalStage">
@@ -79,7 +79,7 @@
                                 <div class="progress-success w-100"></div>
                             </div>
                             <ul>
-                                
+
 
                                 <li class="active">
                                     <a>
@@ -133,107 +133,107 @@
                 <div class="row mx-5">
                     <div class="col-md-12">
                         <div class="tab-link" ng-show="proposalStage">
-                                <div class="progress">
-                                    <div class="progress-success w-100"></div>
-                                </div>
-                                <ul>
-                                    <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('TwoReferenceWiser')">
-                                            <div class="icon-circle">
-                                                <i class="fas fa-user-friends"></i>
-                                            </div>
-                                            <span>References</span>
-                                        </a>
-                                    </li>
-                                    
-                                    <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('ExistingGrantWISER')">
-                                            <div class="icon-circle">
-                                                <i class="fas fa-money-bill"></i>
-                                            </div>
-                                            <span>Grant Details</span>
-                                        </a>
-                                    </li>
-                                    
-                                    <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('AttachmentsInWiser')">
-                                            <div class="icon-circle">
-                                                <i class="fas fa-upload"></i>
-                                            </div>
-                                            <span>Attachments</span>
-                                        </a>
-                                    </li>
-
-                                    <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('CV_Wiser')">
-                                            <div class="icon-circle">
-                                                <i class="fa-solid fa-address-book"></i>
-                                            </div>
-                                            <span>Curriculum Vitae</span>
-                                        </a>
-                                    </li>
-
-                                    <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('Declaration_Wiser')">
-                                            <div class="icon-circle">
-                                                <i class="fas fa-check"></i>
-                                            </div>
-                                            <span>Declaration</span>
-                                        </a>
-                                    </li>
-                                </ul>
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
                             </div>
-                            <div class="tab-link" ng-hide="proposalStage">
-                                <div class="progress">
-                                    <div class="progress-success wp-0"></div>
-                                </div>
-                                <ul>
-                                    <li>
-                                        <a>
-                                            <div class="icon-circle">
-                                                <i class="fas fa-user-friends"></i>
-                                            </div>
-                                            <span>References</span>
-                                        </a>
-                                    </li>
-                                    
-                                    <li>
-                                        <a>
-                                            <div class="icon-circle">
-                                                <i class="fas fa-money-bill"></i>
-                                            </div>
-                                            <span>Grant Details</span>
-                                        </a>
-                                    </li>
-                                    
-                                    <li>
-                                        <a>
-                                            <div class="icon-circle">
-                                                <i class="fas fa-upload"></i>
-                                            </div>
-                                            <span>Attachments</span>
-                                        </a>
-                                    </li>
+                            <ul>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('TwoReferenceWiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-friends"></i>
+                                        </div>
+                                        <span>References</span>
+                                    </a>
+                                </li>
 
-                                    <li>
-                                        <a>
-                                            <div class="icon-circle">
-                                                <i class="fa-solid fa-address-book"></i>
-                                            </div>
-                                            <span>Curriculum Vitae</span>
-                                        </a>
-                                    </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ExistingGrantWISER')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-money-bill"></i>
+                                        </div>
+                                        <span>Grant Details</span>
+                                    </a>
+                                </li>
 
-                                    <li>
-                                        <a>
-                                            <div class="icon-circle">
-                                                <i class="fas fa-check"></i>
-                                            </div>
-                                            <span>Declaration</span>
-                                        </a>
-                                    </li>
-                                </ul>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('AttachmentsInWiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-upload"></i>
+                                        </div>
+                                        <span>Attachments</span>
+                                    </a>
+                                </li>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('CV_Wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Declaration_Wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                        <span>Declaration</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-link" ng-hide="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success wp-0"></div>
                             </div>
+                            <ul>
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-friends"></i>
+                                        </div>
+                                        <span>References</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-money-bill"></i>
+                                        </div>
+                                        <span>Grant Details</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-upload"></i>
+                                        </div>
+                                        <span>Attachments</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                        <span>Declaration</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
 
@@ -338,7 +338,7 @@
                     <table class="table basic">
                         <thead>
                             <tr>
-                                <th class="pb-3 color-theme" style="width:5%;"></th>
+                                <th class="pb-3 color-theme" style="width:5%;">S.No.</th>
                                 <th class="pb-3 color-theme" style="width:32%;">Description</th>
                                 <th class="pb-3 color-theme" style="width:18%;">Year-1 Expense</th>
                                 <th class="pb-3 color-theme" style="width:18%;" ng-show="Showyear2">Year-2 Expense</th>
@@ -394,7 +394,7 @@
                     </table>
                 </div>
 
-                <div class="m-5" ng-if="!proposalStage">
+                <div class="mx-5 mt-2 mb-3" ng-if="!proposalStage">
                     <button class="blue-btn float-end" ng-click="saveExpenceLineitems()" type="button">
                         <i class="fa-solid fa-check me-2"></i>Save and Next</button>
                     <button class="blue-bordered-btn float-end me-2" ng-click="redirectPageURL('WiserApplicationPage')" type="button">

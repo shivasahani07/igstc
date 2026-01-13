@@ -130,15 +130,15 @@ public static String saveApplicantPortalSingh(String loginHashCode,Contact con,A
         return IndustrialFellowshipHelper.insertHostProjectDetails(hostDetails, sDate, sMonth, sYear, eDate, eMonth, eYear);
     } */
 
-    // @RemoteAction 
-    // public static IndustrialFellowshipHelper.ProposalAndAPAWrapper saveHostProjectInformation(Application_Proposal__c hostDetails, String proposalId, String candidateId, String yearlyCallId, Integer sDate, Integer sMonth, Integer sYear, Integer eDate, Integer eMonth, Integer eYear){
-    //     return IndustrialFellowshipHelper.insertHostProjectDetails(hostDetails, proposalId, candidateId, yearlyCallId, sDate, sMonth, sYear, eDate, eMonth, eYear);
-    // }
-
     @RemoteAction 
-    public static String saveHostProjectInformation(Application_Proposal__c hostDetails, String proposalId, String candidateId, String yearlyCallId, Integer sDate, Integer sMonth, Integer sYear, Integer eDate, Integer eMonth, Integer eYear){
+    public static IndustrialFellowshipHelper.ProposalAndAPAWrapper saveHostProjectInformation(Application_Proposal__c hostDetails, String proposalId, String candidateId, String yearlyCallId, Integer sDate, Integer sMonth, Integer sYear, Integer eDate, Integer eMonth, Integer eYear){
         return IndustrialFellowshipHelper.insertHostProjectDetails(hostDetails, proposalId, candidateId, yearlyCallId, sDate, sMonth, sYear, eDate, eMonth, eYear);
     }
+
+    // @RemoteAction 
+    // public static String saveHostProjectInformation(Application_Proposal__c hostDetails, String proposalId, String candidateId, String yearlyCallId, Integer sDate, Integer sMonth, Integer sYear, Integer eDate, Integer eMonth, Integer eYear){
+    //     return IndustrialFellowshipHelper.insertHostProjectDetails(hostDetails, proposalId, candidateId, yearlyCallId, sDate, sMonth, sYear, eDate, eMonth, eYear);
+    // }
 
     //consortia functions
     @RemoteAction 
@@ -176,10 +176,15 @@ public static String saveApplicantPortalSingh(String loginHashCode,Contact con,A
         IndustrialFellowshipHelper instanceIFH = new IndustrialFellowshipHelper();
         return instanceIFH.saveAccountContactEduOtherDetList(ProposalId,accountId,con,ed,edu,flag);
     }
-    @RemoteAction 
+    /* @RemoteAction 
     public static String saveWorkPackageDet(List<IndustrialFellowshipHelper.WrapperWorkpackageDet> wrapper,String ProposalId){
         IndustrialFellowshipHelper instanceIFH = new IndustrialFellowshipHelper();
         return instanceIFH.saveWorkPackageDet(wrapper,ProposalId);
+    } */
+    @RemoteAction 
+    public static String saveWorkPackageDet(List<IndustrialFellowshipHelper.WrapperWorkpackageDet> wrapper, String ProposalId, String proposalStage){
+        IndustrialFellowshipHelper instanceIFH = new IndustrialFellowshipHelper();
+        return instanceIFH.saveWorkPackageDet(wrapper, ProposalId, proposalStage);
     }
     @RemoteAction
     public static string deleteWorkPackageDetails(string workPackageId){

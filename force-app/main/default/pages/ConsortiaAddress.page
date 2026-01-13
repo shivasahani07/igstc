@@ -649,7 +649,7 @@
 
                             <div class="col-md-6">
                                 <label class="font-if">
-                                    Ownership Profile (Max. char 1,31,072)
+                                    Ownership Profile (Max. char 600)
                                     <span class="ms-2 text-danger">*</span>
                                 </label>
 
@@ -659,12 +659,12 @@
                                     class="form-control"
                                     ng-disabled="proposalStage"
                                     ng-focus="removeClass2('ownership')"
-                                    ng-change="checkCharLimit(addressDetails, 'Ownership_Profile__c', 131072)" />
+                                    ng-change="checkCharLimit(addressDetails, 'Ownership_Profile__c', 600)" />
 
                                 <small class="text-danger"
                                     ng-if="addressDetails._charLimitMap &&
                                         addressDetails._charLimitMap.Ownership_Profile__c">
-                                    Maximum 1,31,072 characters allowed
+                                    Maximum 600 characters allowed
                                 </small>
                             </div>
 
