@@ -487,4 +487,36 @@ public static String saveApplicantPortalSingh(String loginHashCode,Contact con,A
         }
        return 'Success';
     }
+
+    @RemoteAction
+    public static List<String> getCitiesByState(String country, String state) {
+
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint('https://countriesnow.space/api/v0.1/countries/cities');
+        req.setMethod('POST');
+        req.setTimeout(120000); // important
+        req.setHeader('Content-Type', 'application/json');
+        req.setHeader('Accept', 'application/json');
+
+        req.setBody(JSON.serialize(new Map<String, String>{
+            'country' => country,
+            'state'   => state
+        }));
+
+        Http http = new Http();
+        HttpResponse res = http.send(req);
+
+        System.debug('STATUS CODE => ' + res.getStatusCode());
+        System.debug('STATUS      => ' + res.getStatus());
+        System.debug('BODY        => ' + res.getBody());
+
+        if (res.getStatusCode() == 200) {
+            Map<String, Object> parsed =
+                (Map<String, Object>) JSON.deserializeUntyped(res.getBody());
+            return (List<String>) parsed.get('data');
+        }
+
+        throw new CalloutException('API failed: ' + res.getStatus());
+    }
+
 }

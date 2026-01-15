@@ -1,4 +1,4 @@
-angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($scope, $rootScope) {
+angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($scope, $sce, $rootScope) {
      $scope.objContact = {};
      $rootScope.projectId;
      $scope.startdate;
@@ -111,6 +111,36 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
                return;
           }
 
+          if ($scope.objContact.Layman_title_of_project__c == undefined || $scope.objContact.Layman_title_of_project__c == "") {
+               swal("info", "Please Enter Layman Title Of Project.", "info");
+               $("#laymanTitle").addClass('border-theme');
+               return;
+          }
+
+          if ($scope.objContact.Layman_title_of_project__c.length > 600) {
+               swal(
+                    "info",
+                    "Please Enter Layman Title Of Proposal.",
+                    "info");
+               //$("#laymanTitle").addClass('border-theme');
+               return;
+          }
+
+          if ($scope.objContact.Layman_abstract_of_proposed_work__c == undefined || $scope.objContact.Layman_abstract_of_proposed_work__c == "") {
+               swal("info", "Please Enter Layman Abstract Of Proposed Work.", "info");
+               $("#laymanabstract").addClass('border-theme');
+               return;
+          }
+
+          if ($scope.objContact.Layman_abstract_of_proposed_work__c.length > 600) {
+               swal(
+                    "info",
+                    "Please Enter Layman Abstract Of Proposed Work.",
+                    "info");
+               //$("#laymanabstract").addClass('border-theme');
+               return;
+          }
+
           // if (
           //      $scope.objContact.Duration_In_Months_Max_36__c === null || $scope.objContact.Duration_In_Months_Max_36__c === undefined
           // ) {
@@ -124,6 +154,7 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
                $("#txtDuration").addClass('border-theme');
                return;
           }
+
 
 
 
@@ -197,6 +228,7 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
 
           delete ($scope.objContact.Actual_Application_Start_Date__c);
           delete ($scope.objContact.Actual_Application_End_Date__c);
+          delete $scope.objContact._charLimitMap;
 
           // New method to create a Proposal
           IndustrialFellowshipController.saveHostProjectInformation(
@@ -219,7 +251,10 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
                               text: 'Pair Project Details have been saved successfully.',
                               icon: "success",
                               button: "ok!",
-                         })
+                         });
+
+                         // Fetch documents
+                         $scope.getProjectDetails();
                          // $scope.redirectPageURL('TwoReferenceWiser');
                          $scope.redirectPageURL('ProjectDetailsInWiserPage');
                          // $scope.redirectPageURL('WiserApplicationPage');
@@ -292,4 +327,313 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
           $("#" + controlid + "").removeClass('border-theme');
      }
 
+     $scope.checkCharLimit = function (obj, fieldName, limit) {
+          debugger;
+
+          if (!obj) return;
+
+          var targetObj;
+          var value;
+
+          // 🔹 Account field
+          if (obj.hasOwnProperty(fieldName)) {
+               targetObj = obj;
+               value = obj[fieldName];
+
+          }
+          // 🔹 Contact field
+          else if (
+               obj.Contacts &&
+               obj.Contacts.length > 0 &&
+               obj.Contacts[0].hasOwnProperty(fieldName)
+          ) {
+               targetObj = obj.Contacts[0];
+               value = obj.Contacts[0][fieldName];
+
+          } else {
+               return;
+          }
+
+          // Init error map
+          targetObj._charLimitMap = targetObj._charLimitMap || {};
+
+          if (!value) {
+               targetObj._charLimitMap[fieldName] = false;
+               return;
+          }
+
+          /* =====================================================
+             SPECIAL CASE: POSTAL / ZIP CODE
+             ===================================================== */
+          if (fieldName === 'BillingPostalCode') {
+
+               var country = obj.BillingCountry;
+               var cleanedValue = value.replace(/[^0-9]/g, '');
+
+               var maxLength;
+               var regex;
+
+               if (country === 'India') {
+                    maxLength = 6;
+                    regex = /^[0-9]{6}$/;
+               }
+               else if (country === 'Germany') {
+                    maxLength = 5;
+                    regex = /^[0-9]{5}$/;
+               }
+               else {
+                    maxLength = limit; // fallback
+               }
+
+               // Length check
+               if (cleanedValue.length > maxLength) {
+                    targetObj._charLimitMap[fieldName] = true;
+                    console.log('❌ Postal code length exceeded for', country);
+                    return;
+               }
+
+               // Pattern check (only when full length entered)
+               if (cleanedValue.length === maxLength) {
+                    if (regex && !regex.test(cleanedValue)) {
+                         targetObj._charLimitMap[fieldName] = true;
+                         console.log('❌ Invalid Postal Code for', country);
+                         return;
+                    }
+               }
+
+               targetObj._charLimitMap[fieldName] = false;
+               console.log('✅ Valid Postal Code for', country);
+               return;
+          }
+
+          /* =====================================================
+              DEFAULT CHAR LIMIT LOGIC (Website, Department, etc.)
+             ===================================================== */
+
+          if (value.length > limit) {
+               targetObj._charLimitMap[fieldName] = true;
+          } else {
+               targetObj._charLimitMap[fieldName] = false;
+          }
+     };
+
+     // --------------------- PROJECT PROPOSAL UPLOAD FUNCTIONALITY ----------------------- //
+     $scope.getProjectdetils = function () {
+          debugger;
+          ApplicantPortal_Contoller.getAllUserDoc($rootScope.proposalId, function (result, event) {
+               debugger;
+               console.log('result : ', result);
+               if (event.status) {
+                    $scope.allDocs = result;
+                    for (var i = 0; i < $scope.allDocs.length; i++) {
+                         if ($scope.allDocs[i].userDocument.Name == 'project Description') {
+                              $scope.doc = $scope.allDocs[i];
+                         }
+                    }
+                    $scope.$apply();
+               }
+          }, {
+               escape: true
+          })
+     }
+     $scope.getProjectdetils();
+
+     $scope.uploadFile = function (type, userDocId, good, fileId, fileSizeFun) {
+          debugger;
+
+          console.log('type :', type);
+          console.log('userDocId :', userDocId);
+          console.log('fileId :', fileId);
+          console.log('fileSizeFun :', fileSizeFun);
+
+          var lll = good;
+          var chunkSize = 950000;
+          var positionIndex = 0;
+          var maxStringSize = 1500000;
+          var attachment = "";
+          var attachmentName = "";
+          var fileSize = 0;
+          var doneUploading = false;
+
+          var minFileSize = 30 * 1024;         // 30 KB
+          var maxFileSize = 1 * 1024 * 1024;  // 1 MB
+
+          //userDocId = 'a0xe10000001L7FAAU';
+          //type = 'PDF Upload Testing';
+
+          var maxFileSize = fileSizeFun;
+          $scope.showSpinnereditProf = true;
+          var file;
+
+          file = document.getElementById(type).files[0];
+          //file = document.getElementById('fileUploader').files[0];
+          console.log("Selected File:", file);
+
+          if (!file) {
+               console.error("File is undefined. INPUT NOT FOUND.");
+               return;
+          }
+
+          fileName = file.name;
+          var typeOfFile = fileName.split(".");
+          lengthOfType = typeOfFile.length;
+          if (typeOfFile[lengthOfType - 1] == "pdf" || typeOfFile[lengthOfType - 1] == "PDF") {
+
+          } else {
+               swal('info', 'Please choose pdf file only.', 'info');
+               return;
+          }
+          console.log(file);
+          if (file != undefined) {
+               if (file.size <= maxFileSize) {
+
+                    if (file.size < minFileSize) {
+                         swal("info", "File must be at least 30 KB.", "info");
+                         return;
+                    }
+
+                    attachmentName = file.name;
+                    const myArr = attachmentName.split(".");
+                    /* if (myArr[1] != "pdf" && type != 'profilePic') {
+                        alert("Please upload in PDF format only");
+                        return;
+                    } */
+                    var fileReader = new FileReader();
+                    console.log("FileReader created:", fileReader);
+                    fileReader.onloadend = function (e) {
+                         console.log('E Object==>', e);
+                         //attachment = window.btoa(e.target.result);  //Base 64 encode the file before sending it
+                         attachment = e.target.result.split(",")[1];
+                         positionIndex = 0;
+                         fileSize = attachment.length;
+                         $scope.showSpinnereditProf = false;
+                         console.log("Total Attachment Length: " + fileSize);
+                         doneUploading = false;
+                         debugger;
+
+                         console.log('attachment : ', attachment);
+                         console.log('fileSize : ', fileSize);
+                         console.log('doneUploading : ', doneUploading);
+                         console.log('userDocId===>', userDocId);
+
+                         if (fileSize < maxStringSize) {
+                              $scope.uploadAttachment(type, userDocId, null, attachment, attachmentName);
+                         } else {
+                              swal("info", "Base 64 Encoded file is too large.  Maximum size is " + maxStringSize + " your file is " + fileSize + ".", "info");
+                              return;
+                              // alert("Base 64 Encoded file is too large.  Maximum size is " + maxStringSize + " your file is " + fileSize + ".");
+                         }
+
+                    }
+                    fileReader.onerror = function (e) {
+                         swal("info", "There was an error reading the file.  Please try again.", "info");
+                         console.log('Error is==>', e);
+                         console.log('Error Body Is===>', JSON.stringify(e.target.result));
+                         return;
+                         // alert("There was an error reading the file.  Please try again.");
+                    }
+                    fileReader.onabort = function (e) {
+                         swal("info", "There was an error reading the file.  Please try again.", "info");
+                         return;
+                         // alert("There was an error reading the file.  Please try again.");
+                    }
+
+                    fileReader.readAsDataURL(file); //Read the body of the file
+
+               } else {
+                    swal("info", "File must be under 1 Mb in size.  Your file is too large.  Please try again.", "info");
+                    return;
+               }
+          } else {
+               swal("info", "You must choose a file before trying to upload it", "info");
+               return;
+               // alert("You must choose a file before trying to upload it");
+               // $scope.showSpinnereditProf = false;
+          }
+     }
+
+     $scope.uploadAttachment = function (type, userDocId, fileId, attachment, attachmentName) {
+          debugger;
+
+          console.log('type : ', type);
+          console.log('userDocId : ', userDocId);
+          console.log('fileId : ', fileId);
+          console.log('attachment : ', attachment);
+          console.log('attachmentName : ', attachmentName);
+
+          //var attachmentBody;
+          var fileSize = 1048576;
+          var positionIndex = 1000000;
+          var chunkSize = 48576;
+          // if (fileId == undefined) {
+          //     fileId = " ";
+          // }
+          attachmentBody = attachment;
+          if (userDocId == undefined) {
+               userDocId = null;
+          }
+          if (fileSize <= positionIndex + chunkSize) {
+               debugger;
+               attachmentBody = attachment;
+               doneUploading = true;
+          }
+          else {
+               attachmentBody = attachment.substring(positionIndex, positionIndex + chunkSize);
+          }
+          console.log("Uploading " + attachmentBody.length + " chars of " + fileSize);
+          debugger;
+
+          ApplicantPortal_Contoller.doCUploadAttachmentAa(
+               attachmentBody, attachmentName, fileId, userDocId,
+               function (result, event) {
+                    debugger;
+                    console.log(result);
+                    if (event.type === 'exception') {
+                         console.log("exception");
+                         console.log(event);
+                    } else if (event.status) {
+                         if (doneUploading == true) {
+                              swal(
+                                   'success',
+                                   'Uploaded Successfully!',
+                                   'success'
+                              )
+
+                              $scope.getProjectdetils();
+                              // $scope.disableSubmit = false;
+
+                         }
+                         else {
+                              debugger;
+                              positionIndex += chunkSize;
+                              $scope.uploadAttachment(type, userDocId, result);
+                         }
+                         $scope.showUplaodUserDoc = false;
+                         // $scope.getCandidateDetails();
+
+                    }
+               },
+               { buffer: true, escape: true, timeout: 120000 }
+          );
+     };
+
+
+     $scope.filePreviewHandler = function (fileContent) {
+          debugger;
+          $scope.selectedFile = fileContent;
+
+          console.log('selectedFile---', $scope.selectedFile);
+          var jhj = $scope.selectedFile.userDocument.Attachments[0].Id;
+          console.log(jhj);
+          $scope.filesrec = $sce.trustAsResourceUrl(window.location.origin + '/ApplicantDashboard/servlet/servlet.FileDownload?file=' + $scope.selectedFile.userDocument.Attachments[0].Id);
+          //$scope.filesrec = window.location.origin +'/ApplicantDashboard/servlet/servlet.FileDownload?file='+$scope.selectedFile.userDocument.Attachments[0].Id;
+          // $('#file_frame').attr('src', $scope.selectedFile.ContentDistribution.DistributionPublicUrl);
+          $('#file_frame').attr('src', $scope.filesrec);
+
+          var myModal = new bootstrap.Modal(document.getElementById('filePreview'))
+          myModal.show('slow');
+          $scope.$apply();
+
+          //.ContentDistribution.DistributionPublicUrl
+     }
 })

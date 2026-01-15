@@ -53,7 +53,7 @@ angular.module('cp_app').controller('financialCtrl', function ($scope, $rootScop
                     }
                     else {
                         result[i].Financial_Contribution__r = [];
-                        result[i].Financial_Contribution__r.push({ Applicant_Proposal_Association__c: result[i].Id, Total__c: 0, Own_Contribution__c: 0, IGSTC_Contribution__c: 0, Asked_From_IGSTC__c: 0 });
+                        result[i].Financial_Contribution__r.push({ Applicant_Proposal_Association__c: result[i].Id, Total__c: 0, Own_Contribution__c: 0, IGSTC_Contribution__c: 0, Asked_From_IGSTC__c: 0, Budget_for_Capital_Expenditure__c: 0, Budget_for_Recurring_Expenditure__c: 0 });
                     }
                 }
                 $scope.applicantDetails = result;
@@ -143,9 +143,9 @@ angular.module('cp_app').controller('financialCtrl', function ($scope, $rootScop
                 }
 
                 for (let i = 0; i < $scope.input.length; i++) {
-                    var financialOverview = { "Name": $scope.input[i].Contact__r.Name, "Applicant_Proposal_Association__c": $scope.input[i].Id, "Own_Contribution__c": " ", "IGSTC_Contribution__c": "" };
+                    var financialOverview = { "Name": $scope.input[i].Contact__r.Name, "Applicant_Proposal_Association__c": $scope.input[i].Id, "Own_Contribution__c": " ", "IGSTC_Contribution__c": "", "Budget_for_Capital_Expenditure__c": 0, "Budget_for_Recurring_Expenditure__c": 0 };
                     if ($scope.input[i].Financial_Contribution__r == undefined) {
-                        var financeDet = [{ "Name": $scope.input[i].Contact__r.Name, "Applicant_Proposal_Association__c": $scope.input[i].Id, "Own_Contribution__c": " ", "IGSTC_Contribution__c": "" }];
+                        var financeDet = [{ "Name": $scope.input[i].Contact__r.Name, "Applicant_Proposal_Association__c": $scope.input[i].Id, "Own_Contribution__c": " ", "IGSTC_Contribution__c": "", "Budget_for_Capital_Expenditure__c": 0, "Budget_for_Recurring_Expenditure__c": 0 }];
                         $scope.input[i].Financial_Contribution__r = financeDet;
                     }
                 }

@@ -421,25 +421,6 @@
                             <input ng-focus="removeClass2('phone')" id="phone" type="text" number="addressDetails.Phone" ng-model="addressDetails.Contacts[0].Phone" class="form-control" ng-disabled="proposalStage" />
                         </div>
                     </div>
-                    <div class="row mt-5" ng-if="addressDetails.Industry__c == true && addressDetails.BillingCountry == 'India'">
-                        <div class="col-md-4">
-                            <label class="font-if">DSIR Certificate number (Max. char 255)</label>
-                            <!-- <span class="required-asterisk" style="color:red;">*</span> -->
-                            <input type="text" ng-focus="removeClass('dsir')" id="dsir" ng-model="addressDetails.DSIR_Recoginition_Details__c" ng-keyup="setSaveStatus($index)" ng-disabled="proposalStage" class="form-control" />
-                        </div>
-                        <div class="col-md-4 input-group ms-4">
-                            <label class="font-if">Upload DSIR Certificate (PDF only till 1MB)</label>
-                            <input type="file" accept=".pdf" class="form-control" ng-disabled="proposalStage" id="{{doc.userDocument.Name}}"/>
-                            <span class="input-group-btn pt-3" ng-hide="proposalStage">
-                                <button class="btn btn-success mt-4 py-3" ng-click="uploadFile(doc.userDocument.Name,doc.userDocument.Id,'','1048576','1048576')" type="button">Upload</button>
-                                </span>
-                        </div>
-                        <div class="col-md-3">
-                            <div ng-show="doc.userDocument.Status__c=='Uploaded'">
-                                <a class="blue-btn float-end mt-5 py-3"  ng-click="filePreviewHandler(doc)">View</a>
-                            </div>
-                        </div>
-                    </div>
 <div class="row mb-5">
     <div class="col-md-12"></div>
 </div>
@@ -462,7 +443,7 @@
                     <div class="row ms-3">
                         <div class="row mt-5">
                             <div class="col-md-6">
-                                <h4><b>Industry Details</b></h4>
+                                <h4><b>Industry Profile</b></h4>
                             </div>
                         </div>
                         <div class="row mt-5">
@@ -491,7 +472,6 @@
                                 <select aria-label="Default select example" ng-focus="removeClass2('IState')" id="IState" type="text" ng-model="addressDetails.BillingState" class="form-control" ng-disabled="proposalStage">
                                     <option ng-repeat="staff in stateList">{{staff}}</option>
                                    </select>
-                                <!-- <input ng-focus="removeClass2('IState')" id="IState" type="text" ng-model="addressDetails.BillingState" class="form-control" ng-disabled="proposalStage" /> -->
                             </div>
                         </div>
     
@@ -501,14 +481,9 @@
                                 <input ng-focus="removeClass2('IPcode')" id="IPcode" type="text" ng-model="addressDetails.BillingPostalCode" class="form-control" ng-disabled="proposalStage" />
                             </div>
 
-                            <!-- <div class="col-md-6">
-                                <label class="font-if">Year Of Establishment (Max. char 4)<span class="ms-2 text-danger">*</span></label>
-                                <input ng-focus="removeClass2('establish')" id="establish" type="text" number="addressDetails.Year_Of_Establishment__c" min="1000" max="9999" maxlength="4" minlength="4" ng-model="addressDetails.Year_Of_Establishment__c" class="form-control" ng-disabled="proposalStage" />
-                            </div> -->
-
                             <div class="col-md-6">
                                 <label class="font-if">
-                                    Year Of Establishment (Max. char 4)
+                                    Year of Establishment (Max. char 4)
                                     <span class="ms-2 text-danger">*</span>
                                 </label>
 
@@ -530,11 +505,6 @@
                         </div>
     
                         <div class="row mt-5">
-                            <!-- <div class="col-md-6">
-                                <label class="font-if">Main Business Area (Max. char 255)<span class="ms-2 text-danger">*</span></label>
-                                <input ng-focus="removeClass2('business')" id="business" type="text" ng-model="addressDetails.Main_Business_Area__c" class="form-control" ng-disabled="proposalStage" />
-                            </div> -->
-
                             <div class="col-md-6">
                                 <label class="font-if">
                                     Main Business Area (Max. char 255)
@@ -555,97 +525,6 @@
                                     Maximum 255 characters allowed
                                 </small>
                             </div>
-
-<!--     
-                            <div class="col-md-6">
-                                <label class="font-if">Number Of Permanent Employees (Max. char 8)<span class="ms-2 text-danger">*</span></label>
-                                <input ng-focus="removeClass2('employees')" id="employees" type="text" number="addressDetails.NumberOfEmployees" ng-model="addressDetails.NumberOfEmployees" class="form-control" ng-disabled="proposalStage" />
-                            </div> -->
-
-                            <div class="col-md-6">
-                                <label class="font-if">
-                                    Number Of Permanent Employees (Max. char 8)
-                                    <span class="ms-2 text-danger">*</span>
-                                </label>
-
-                                <input type="text"
-                                    id="employees"
-                                    ng-model="addressDetails.NumberOfEmployees"
-                                    class="form-control"
-                                    ng-disabled="proposalStage"
-                                    ng-focus="removeClass2('employees')"
-                                    ng-change="checkCharLimit(addressDetails, 'NumberOfEmployees', 8)" />
-
-                                <small class="text-danger"
-                                    ng-if="addressDetails._charLimitMap &&
-                                        addressDetails._charLimitMap.NumberOfEmployees">
-                                    Maximum 8 characters allowed
-                                </small>
-                            </div>
-
-                        </div>
-    
-                        <div class="row mt-5">
-                            <!-- <div class="col-md-6">
-                                <label class="font-if">Infrastructural Facilities (Max. char 255)<span class="ms-2 text-danger">*</span></label>
-                                <input ng-focus="removeClass2('facility')" id="facility" type="text" ng-model="addressDetails.Infrastructural_Facilities__c" class="form-control" ng-disabled="proposalStage" />
-                            </div> -->
-
-                            <div class="col-md-6">
-                                <label class="font-if">
-                                    Infrastructural Facilities (Max. char 255)
-                                    <span class="ms-2 text-danger">*</span>
-                                </label>
-
-                                <input type="text"
-                                    id="facility"
-                                    ng-model="addressDetails.Infrastructural_Facilities__c"
-                                    class="form-control"
-                                    ng-disabled="proposalStage"
-                                    ng-focus="removeClass2('facility')"
-                                    ng-change="checkCharLimit(addressDetails, 'Infrastructural_Facilities__c', 255)" />
-
-                                <small class="text-danger"
-                                    ng-if="addressDetails._charLimitMap &&
-                                        addressDetails._charLimitMap.Infrastructural_Facilities__c">
-                                    Maximum 255 characters allowed
-                                </small>
-                            </div>
-
-    
-                            <!-- <div class="col-md-6">
-                                <label class="font-if">Domain Expertise Available/Existing (Max. char 255)<span class="ms-2 text-danger">*</span></label>
-                                <input ng-focus="removeClass2('domain')" id="domain" type="text" ng-model="addressDetails.Domain_Expertise_Available__c" class="form-control" ng-disabled="proposalStage" />
-                            </div> -->
-
-                            <div class="col-md-6">
-                                <label class="font-if">
-                                    Domain Expertise Available / Existing (Max. char 255)
-                                    <span class="ms-2 text-danger">*</span>
-                                </label>
-
-                                <input type="text"
-                                    id="domain"
-                                    ng-model="addressDetails.Domain_Expertise_Available__c"
-                                    class="form-control"
-                                    ng-disabled="proposalStage"
-                                    ng-focus="removeClass2('domain')"
-                                    ng-change="checkCharLimit(addressDetails, 'Domain_Expertise_Available__c', 255)" />
-
-                                <small class="text-danger"
-                                    ng-if="addressDetails._charLimitMap &&
-                                        addressDetails._charLimitMap.Domain_Expertise_Available__c">
-                                    Maximum 255 characters allowed
-                                </small>
-                            </div>
-
-                        </div>
-    
-                        <div class="row mt-5 mb-5">
-                            <!-- <div class="col-md-6">
-                                <label class="font-if">Ownership Profile (Max. char 1,31,072)<span class="ms-2 text-danger">*</span></label>
-                                <input ng-focus="removeClass2('ownership')" id="ownership" type="text" ng-model="addressDetails.Ownership_Profile__c" class="form-control" ng-disabled="proposalStage" />
-                            </div> -->
 
                             <div class="col-md-6">
                                 <label class="font-if">
@@ -668,15 +547,73 @@
                                 </small>
                             </div>
 
-    
-                            <!-- <div class="col-md-6">
-                                <label class="font-if">Last Year’s Revenue (Max. char 16)<span class="ms-2 text-danger">*</span></label>
-                                <input ng-focus="removeClass2('balance')" id="balance" type="text" number="addressDetails.Last_Year_s_Balance__c" ng-model="addressDetails.Last_Year_s_Balance__c" class="form-control" ng-disabled="proposalStage" />
-                            </div> -->
+                        </div>
+
+                        <div class="row mt-5">
+                            <div class="col-md-6">
+                                <label class="font-if">
+                                    Number of Employees (Max. char 8)
+                                    <span class="ms-2 text-danger">*</span>
+                                </label>
+
+                                <input type="text"
+                                    id="employees"
+                                    ng-model="addressDetails.NumberOfEmployees"
+                                    class="form-control"
+                                    ng-disabled="proposalStage"
+                                    ng-focus="removeClass2('employees')"
+                                    ng-change="checkCharLimit(addressDetails, 'NumberOfEmployees', 8)" />
+
+                                <small class="text-danger"
+                                    ng-if="addressDetails._charLimitMap &&
+                                        addressDetails._charLimitMap.NumberOfEmployees">
+                                    Maximum 8 characters allowed
+                                </small>
+                            </div>
 
                             <div class="col-md-6">
                                 <label class="font-if">
-                                    Last Year’s Revenue (Max. char 16)
+                                    Infrastructural Facilities (Max. char 255)
+                                    <span class="ms-2 text-danger">*</span>
+                                </label>
+
+                                <input type="text"
+                                    id="facility"
+                                    ng-model="addressDetails.Infrastructural_Facilities__c"
+                                    class="form-control"
+                                    ng-disabled="proposalStage"
+                                    ng-focus="removeClass2('facility')"
+                                    ng-change="checkCharLimit(addressDetails, 'Infrastructural_Facilities__c', 255)" />
+
+                                <small class="text-danger"
+                                    ng-if="addressDetails._charLimitMap &&
+                                        addressDetails._charLimitMap.Infrastructural_Facilities__c">
+                                    Maximum 255 characters allowed
+                                </small>
+                            </div>
+
+                        </div>
+    
+                        <div class="row mt-5">
+                            <div class="col-md-6" ng-if="addressDetails.BillingCountry == 'India'">
+                                <label class="font-if">DSIR Recognition Details (Max. char 255)</label>
+                                <input type="text" 
+                                    ng-focus="removeClass2('dsir')" 
+                                    id="dsir" 
+                                    ng-model="addressDetails.DSIR_Recoginition_Details__c" 
+                                    ng-disabled="proposalStage" 
+                                    class="form-control"
+                                    ng-change="checkCharLimit(addressDetails, 'DSIR_Recoginition_Details__c', 255)" />
+                                <small class="text-danger"
+                                    ng-if="addressDetails._charLimitMap &&
+                                        addressDetails._charLimitMap.DSIR_Recoginition_Details__c">
+                                    Maximum 255 characters allowed
+                                </small>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="font-if">
+                                    Last 3 Year's Revenue (Max. char 255)
                                     <span class="ms-2 text-danger">*</span>
                                 </label>
 
@@ -686,18 +623,33 @@
                                     class="form-control"
                                     ng-disabled="proposalStage"
                                     ng-focus="removeClass2('balance')"
-                                    ng-change="checkCharLimit(addressDetails, 'Last_Year_s_Balance__c', 16)" />
+                                    ng-change="checkCharLimit(addressDetails, 'Last_Year_s_Balance__c', 255)" />
 
                                 <small class="text-danger"
                                     ng-if="addressDetails._charLimitMap &&
                                         addressDetails._charLimitMap.Last_Year_s_Balance__c">
-                                    Maximum 16 characters allowed
+                                    Maximum 255 characters allowed
                                 </small>
                             </div>
 
                         </div>
+
+                        <div class="row mt-5" ng-if="addressDetails.BillingCountry == 'India'">
+                            <div class="col-md-4 input-group">
+                                <label class="font-if">Upload DSIR Certificate (PDF only till 1MB)</label>
+                                <input type="file" accept=".pdf" class="form-control" ng-disabled="proposalStage" id="{{doc.userDocument.Name}}"/>
+                                <span class="input-group-btn pt-3" ng-hide="proposalStage">
+                                    <button class="btn btn-success mt-4 py-3" ng-click="uploadFile(doc.userDocument.Name,doc.userDocument.Id,'','1048576','1048576')" type="button">Upload</button>
+                                </span>
+                            </div>
+                            <div class="col-md-2">
+                                <div ng-show="doc.userDocument.Status__c=='Uploaded'">
+                                    <a class="blue-btn float-end mt-5 py-3" ng-click="filePreviewHandler(doc)">View</a>
+                                </div>
+                            </div>
+                        </div>
     
-                        <div class="row mt-3 mb-5" ng-if="!proposalStage">
+                        <div class="row mt-5 mb-5" ng-if="!proposalStage">
                             <div class="col-md-12">
                                 <button class="blue-btn float-end" id="btnSubmit" ng-click="saveAddressDetails()" type="button">
                                     <i class="fa-solid fa-check me-2"></i>Save and Next</button>
@@ -712,7 +664,7 @@
                     <div class="row ms-3">
                         <div class="row mt-5">
                             <div class="col-md-6">
-                                <h4><b>Address of the Institute/Organization</b></h4>
+                                <h4><b>Institution Profile</b></h4>
                             </div>
                         </div>
                         <div class="row mt-5">    
@@ -740,13 +692,11 @@
                                 <label class="font-if">State<span class="ms-2 text-danger">*</span></label>
                                 <select aria-label="Default select example" ng-focus="removeClass2('IState')" id="IState" type="text" ng-model="addressDetails.BillingState" class="form-control" ng-disabled="proposalStage">
                                     <option ng-repeat="staff in stateList">{{staff}}</option>
-                                   </select>
-                                <!-- <input ng-focus="removeClass2('IState')" id="IState" type="text" ng-model="addressDetails.BillingState" class="form-control" ng-disabled="proposalStage" /> -->
+                                </select>
                             </div>
                         </div>
     
                         <div class="row mt-5">
-    
                             <div class="col-md-6">
                                 <label class="font-if">Postal/Zip Code<span class="ms-2 text-danger">*</span></label>
                                 <input 
@@ -758,35 +708,152 @@
                                     ng-disabled="proposalStage" 
                                     ng-change="checkCharLimit(addressDetails, 'BillingPostalCode', 6)" 
                                     maxlength="6"/>
+                                <small class="text-danger"
+                                    ng-if="addressDetails._charLimitMap && addressDetails._charLimitMap.BillingPostalCode">
+                                    Invalid Postal / Zip Code
+                                </small>
                             </div>
 
-                            <small class="text-danger"
-                                ng-if="account._charLimitMap.BillingPostalCode">
-                                Invalid Postal / Zip Code
-                            </small>
+                            <div class="col-md-6">
+                                <label class="font-if">
+                                    Legal Status and Mandate (Max. char 255)
+                                    <span class="ms-2 text-danger">*</span>
+                                </label>
+                                <input type="text"
+                                    id="legalStatus"
+                                    ng-model="addressDetails.Legal_Status_and_Mandate__c"
+                                    class="form-control"
+                                    ng-disabled="proposalStage"
+                                    ng-focus="removeClass2('legalStatus')"
+                                    ng-change="checkCharLimit(addressDetails, 'Legal_Status_and_Mandate__c', 255)" />
+                                <small class="text-danger"
+                                    ng-if="addressDetails._charLimitMap &&
+                                        addressDetails._charLimitMap.Legal_Status_and_Mandate__c">
+                                    Maximum 255 characters allowed
+                                </small>
+                            </div>
+                        </div>
 
+                        <div class="row mt-5">
+                            <div class="col-md-6">
+                                <label class="font-if">
+                                    Year of Establishment (Max. char 4)
+                                    <span class="ms-2 text-danger">*</span>
+                                </label>
+                                <input type="text"
+                                    id="instEstablish"
+                                    ng-model="addressDetails.Year_Of_Establishment__c"
+                                    class="form-control"
+                                    ng-disabled="proposalStage"
+                                    ng-focus="removeClass2('instEstablish')"
+                                    ng-change="checkCharLimit(addressDetails, 'Year_Of_Establishment__c', 4)" />
+                                <small class="text-danger"
+                                    ng-if="addressDetails._charLimitMap &&
+                                        addressDetails._charLimitMap.Year_Of_Establishment__c">
+                                    Maximum 4 characters allowed
+                                </small>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="font-if">
+                                    Infrastructural Facilities Available Relevant to the Proposal (Max. char 500)
+                                    <span class="ms-2 text-danger">*</span>
+                                </label>
+                                <textarea
+                                    id="instFacility"
+                                    ng-model="addressDetails.Infrastructural_Facilities__c"
+                                    class="form-control"
+                                    rows="2"
+                                    ng-disabled="proposalStage"
+                                    ng-focus="removeClass2('instFacility')"
+                                    ng-change="checkCharLimit(addressDetails, 'Infrastructural_Facilities__c', 500)"></textarea>
+                                <small class="text-danger"
+                                    ng-if="addressDetails._charLimitMap &&
+                                        addressDetails._charLimitMap.Infrastructural_Facilities__c">
+                                    Maximum 500 characters allowed
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="row mt-5">
+                            <div class="col-md-6">
+                                <label class="font-if">
+                                    No. of Industry Sponsored Projects Handled in Last 5 Years
+                                    <span class="ms-2 text-danger">*</span>
+                                </label>
+                                <input type="number"
+                                    id="industrySponsoredProjects"
+                                    ng-model="addressDetails.Industry_Sponsored_Projects_Last_5_Yrs__c"
+                                    class="form-control"
+                                    ng-disabled="proposalStage"
+                                    ng-focus="removeClass2('industrySponsoredProjects')" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="font-if">
+                                    No. of Executed Externally Funded R&amp;D Projects in Last 5 Years
+                                    <span class="ms-2 text-danger">*</span>
+                                </label>
+                                <input type="number"
+                                    id="externallyFundedProjects"
+                                    ng-model="addressDetails.Externally_Funded_RD_Projects_Last_5_Yrs__c"
+                                    class="form-control"
+                                    ng-disabled="proposalStage"
+                                    ng-focus="removeClass2('externallyFundedProjects')" />
+                            </div>
+                        </div>
+
+                        <div class="row mt-5">
+                            <div class="col-md-6">
+                                <label class="font-if">
+                                    No. of International/Bilateral Projects Handled in Last 5 Years
+                                    <span class="ms-2 text-danger">*</span>
+                                </label>
+                                <input type="number"
+                                    id="internationalProjects"
+                                    ng-model="addressDetails.Intl_Bilateral_Projects_Last_5_Yrs__c"
+                                    class="form-control"
+                                    ng-disabled="proposalStage"
+                                    ng-focus="removeClass2('internationalProjects')" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="font-if">
+                                    No. of Patents Granted in Last 5 Years Relevant to the Proposal
+                                    <span class="ms-2 text-danger">*</span>
+                                </label>
+                                <input type="number"
+                                    id="patentsGranted"
+                                    ng-model="addressDetails.Patents_Granted_Last_5_Yrs__c"
+                                    class="form-control"
+                                    ng-disabled="proposalStage"
+                                    ng-focus="removeClass2('patentsGranted')" />
+                            </div>
+                        </div>
+
+                        <div class="row mt-5">
+                            <div class="col-md-6">
+                                <label class="font-if">
+                                    No. of Technology Transferred in Last 5 Years Relevant to the Proposal
+                                    <span class="ms-2 text-danger">*</span>
+                                </label>
+                                <input type="number"
+                                    id="techTransferred"
+                                    ng-model="addressDetails.Technology_Transferred_Last_5_Yrs__c"
+                                    class="form-control"
+                                    ng-disabled="proposalStage"
+                                    ng-focus="removeClass2('techTransferred')" />
+                            </div>
                         </div>
     
                         <div class="row mt-5 mb-5">
-                            <div class="col-md-6">
-                            </div>
-
-                            <div class="col-md-6 mt-5">
+                            <div class="col-md-12">
                                 <button class="blue-btn float-end" id="btnSubmit" ng-click="saveAddressDetails()" type="button">
                                     <i class="fa-solid fa-check me-2"></i>Save and Next</button>
                                     <button class="btn btn-secondary float-end me-2" style="padding: 8px 20px !important;font-size: 16px !important;" ng-click="redirectPageURL('Consortia')" type="button">
                                         <i class="fa-solid fa-arrow-left me-2"></i>Back</button>
                             </div>
                         </div>
-    
-                        <!-- <div class="row mt-5" ng-if="!proposalStage">
-                            <div class="col-md-12">
-                                <button class="blue-btn float-end" ng-click="saveAddressDetails()" type="button">
-                                    <i class="fa-solid fa-check me-2"></i>Save and Next</button>
-                                    <button class="btn btn-secondary float-end me-2" style="padding: 8px 20px !important;font-size: 16px !important;" ng-click="redirectPageURL('Consortia')" type="button">
-                                        <i class="fa-solid fa-arrow-left me-2"></i>Back</button>
-                            </div>
-                        </div> -->
                     </div>
 
                 </div>

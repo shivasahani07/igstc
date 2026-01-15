@@ -431,11 +431,6 @@ angular.module('cp_app').controller('ProjectDetailInWiserCtrl', function ($scope
                 "Age must be more than 26 years and less than 55 years.",
                 "info"
             );
-
-            // Show inline errors
-            $scope.formPrjDet.dobPrimary.$setDirty();
-            $scope.formPrjDet.dobSecondary.$setDirty();
-
             return;
         }
 

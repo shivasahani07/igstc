@@ -3996,6 +3996,20 @@ return 'success';
             return wrap;
         }
         try {
+            // Fetch proposal to get Duration_In_Months_Max_36__c
+            List<Application_Proposal__c> proposalList = [SELECT Id, Duration_In_Months_Max_36__c FROM Application_Proposal__c WHERE Id = :ProposalId LIMIT 1];
+            if (!proposalList.isEmpty() && proposalList[0].Duration_In_Months_Max_36__c != null) {
+                wrap.durationInMonths = proposalList[0].Duration_In_Months_Max_36__c;
+                // Calculate number of years: 36 months = 3 years, 24 months = 2 years, 12 months = 1 year
+                Integer years = (Integer)Math.ceil(proposalList[0].Duration_In_Months_Max_36__c / 12);
+                if (years < 1) years = 1;
+                if (years > 3) years = 3;
+                wrap.numberOfYears = years;
+            } else {
+                wrap.numberOfYears = 3; // Default to 3 years
+                wrap.durationInMonths = 36;
+            }
+            
             List<Applicant_Proposal_Association__c> requiredApa = [SELECT Id, Contact__c, Proposals__c, IGSTC_Funding_Year_1__c, IGSTC_Funding_Year_2__c, IGSTC_Funding_Year_3__c, IGSTC_Total_Funding__c, Industry_Contribution_Year_1__c, Industry_Contribution_Year_2__c, Industry_Contribution_Year_3__c, Total_Industry_Contribution__c,
                                                                    (SELECT Id, Name, Own_Contribution__c, IGSTC_Contribution__c, Total__c FROM Financial_Contribution__r)
                                                                    FROM Applicant_Proposal_Association__c 
@@ -4040,6 +4054,8 @@ return 'success';
         public List<Applicant_Proposal_Association__c> apa;
         public List<Contact> conList;
         public List<Account> accList;
+        public Integer numberOfYears;
+        public Decimal durationInMonths;
     }
     
     public static List<Expense_Line_Item__c> getExpenseRecords(String ProposalId){

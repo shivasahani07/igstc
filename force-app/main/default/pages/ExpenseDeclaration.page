@@ -275,9 +275,9 @@
                                         <tr>
                                             <th>Heads</th>
                                             <th colspan="2"></th>
-                                            <th>Year-1</th>
-                                            <th>Year-2</th>
-                                            <th>Year-3</th>
+                                            <th ng-if="numberOfYears >= 1">Year-1</th>
+                                            <th ng-if="numberOfYears >= 2">Year-2</th>
+                                            <th ng-if="numberOfYears >= 3">Year-3</th>
                                             <th>Total</th>
                                             <th></th>
                                         </tr>
@@ -285,18 +285,18 @@
                                     <tbody>
                                         <!-- Manpower Section -->
                                         <tr class="section-header">
-                                            <td colspan="8">Manpower</td>
+                                            <td colspan="{{numberOfYears + 5}}">Manpower</td>
                                         </tr>
                                         <tr class="sub-header">
                                             <td>Position</td>
                                             <td>Person Month</td>
                                             <td>Salary/Month</td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{manPower.Total_Year1_Expense__c || 0 | inrCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{manPower.Total_Year1_Expense__c || 0 | euroCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{manPower.Total_Year2_Expense__c || 0 | inrCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{manPower.Total_Year2_Expense__c || 0 | euroCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{manPower.Total_Year3_Expense__c || 0 | inrCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{manPower.Total_Year3_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">{{manPower.Total_Year1_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">{{manPower.Total_Year1_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">{{manPower.Total_Year2_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">{{manPower.Total_Year2_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">{{manPower.Total_Year3_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">{{manPower.Total_Year3_Expense__c || 0 | euroCurrency}}</td>
                                             <td ng-if="accList.BillingCountry == 'India'">{{manPower.Overall_Expense || 0 | inrCurrency}}</td>
                                             <td ng-if="accList.BillingCountry == 'Germany'">{{manPower.Overall_Expense || 0 | euroCurrency}}</td>
                                             <td ng-show="manPowerRecords.length > 1">Actions</td>
@@ -309,12 +309,12 @@
                                                 <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Person_Month__c" placeholder="Person Month" euro-input="true"/></td>
                                                 <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Salary_Month__c" placeholder="Salary"/></td>
                                                 <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Salary_Month__c" placeholder="Salary" euro-input="true"/></td>
-                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('man')"/></td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('man')" euro-input="true"/></td>
-                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('man')"/></td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('man')" euro-input="true"/></td>
-                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('man')"/></td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('man')" euro-input="true"/></td>
+                                                <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('man')"/></td>
+                                                <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('man')" euro-input="true"/></td>
+                                                <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('man')"/></td>
+                                                <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('man')" euro-input="true"/></td>
+                                                <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('man')"/></td>
+                                                <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('man')" euro-input="true"/></td>
                                                 <td ng-if="accList.BillingCountry == 'India'">{{con.Total_Expense__c || 0 | inrCurrency}}</td>
                                                 <td ng-if="accList.BillingCountry == 'Germany'">{{con.Total_Expense__c || 0 | euroCurrency}}</td>
                                                 <td ng-show="manPowerRecords.length > 1">
@@ -332,18 +332,18 @@
                                         </tr>
                                         <!-- Equipment & Accessories Section -->
                                         <tr class="section-header">
-                                            <td colspan="8">Equipment &amp; Accessories</td>
+                                            <td colspan="{{numberOfYears + 5}}">Equipment &amp; Accessories</td>
                                         </tr>
                                         <tr class="sub-header">
                                             <td>Description</td>
                                             <td>Number</td>
                                             <td>Unit Price</td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{equipmentTotals.Total_Year1_Expense__c || 0 | inrCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{equipmentTotals.Total_Year1_Expense__c || 0 | euroCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{equipmentTotals.Total_Year2_Expense__c || 0 | inrCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{equipmentTotals.Total_Year2_Expense__c || 0 | euroCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{equipmentTotals.Total_Year3_Expense__c || 0 | inrCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{equipmentTotals.Total_Year3_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">{{equipmentTotals.Total_Year1_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">{{equipmentTotals.Total_Year1_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">{{equipmentTotals.Total_Year2_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">{{equipmentTotals.Total_Year2_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">{{equipmentTotals.Total_Year3_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">{{equipmentTotals.Total_Year3_Expense__c || 0 | euroCurrency}}</td>
                                             <td ng-if="accList.BillingCountry == 'India'">{{equipmentTotals.Overall_Expense || 0 | inrCurrency}}</td>
                                             <td ng-if="accList.BillingCountry == 'Germany'">{{equipmentTotals.Overall_Expense || 0 | euroCurrency}}</td>
                                             <td ng-show="Equipment.length > 1">Actions</td>
@@ -355,12 +355,12 @@
                                                 <td><input type="text" ng-model="con.Number__c" placeholder="Quantity"/></td>
                                                 <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Unit_Price__c" placeholder="Unit Price"/></td>
                                                 <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Unit_Price__c" placeholder="Unit Price" euro-input="true"/></td>
-                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('equi')"/></td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('equi')" euro-input="true"/></td>
-                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('equi')"/></td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('equi')" euro-input="true"/></td>
-                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('equi')"/></td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('equi')" euro-input="true"/></td>
+                                                <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('equi')"/></td>
+                                                <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('equi')" euro-input="true"/></td>
+                                                <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('equi')"/></td>
+                                                <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('equi')" euro-input="true"/></td>
+                                                <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('equi')"/></td>
+                                                <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('equi')" euro-input="true"/></td>
                                                 <td ng-if="accList.BillingCountry == 'India'">{{con.Total_Expense__c || 0 | inrCurrency}}</td>
                                                 <td ng-if="accList.BillingCountry == 'Germany'">{{con.Total_Expense__c || 0 | euroCurrency}}</td>
                                                 <td ng-show="Equipment.length > 1">
@@ -381,18 +381,18 @@
                                         </tr>
                                         <!-- Consumables/Materials Section -->
                                         <tr class="section-header">
-                                            <td colspan="8">Consumables/Materials</td>
+                                            <td colspan="{{numberOfYears + 5}}">Consumables/Materials</td>
                                         </tr>
                                         <tr class="sub-header">
                                             <td>Description</td>
                                             <td>Number/Amount</td>
                                             <td>Unit Price</td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{consumableTotal.Total_Year1_Expense__c || 0 | inrCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{consumableTotal.Total_Year1_Expense__c || 0 | euroCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{consumableTotal.Total_Year2_Expense__c || 0 | inrCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{consumableTotal.Total_Year2_Expense__c || 0 | euroCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{consumableTotal.Total_Year3_Expense__c || 0 | inrCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{consumableTotal.Total_Year3_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">{{consumableTotal.Total_Year1_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">{{consumableTotal.Total_Year1_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">{{consumableTotal.Total_Year2_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">{{consumableTotal.Total_Year2_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">{{consumableTotal.Total_Year3_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">{{consumableTotal.Total_Year3_Expense__c || 0 | euroCurrency}}</td>
                                             <td ng-if="accList.BillingCountry == 'India'">{{consumableTotal.Overall_Expense || 0 | inrCurrency}}</td>
                                             <td ng-if="accList.BillingCountry == 'Germany'">{{consumableTotal.Overall_Expense || 0 | euroCurrency}}</td>
                                             <td ng-show="consumables.length > 1">Actions</td>
@@ -404,12 +404,12 @@
                                                 <td><input type="text" ng-model="con.Number__c" placeholder="Quantity"/></td>
                                                 <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Unit_Price__c" placeholder="Unit Price"/></td>
                                                 <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Unit_Price__c" placeholder="Unit Price" euro-input="true"/></td>
-                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('cons')"/></td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('cons')" euro-input="true"/></td>
-                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('cons')"/></td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('cons')" euro-input="true"/></td>
-                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('cons')"/></td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('cons')" euro-input="true"/></td>
+                                                <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('cons')"/></td>
+                                                <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('cons')" euro-input="true"/></td>
+                                                <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('cons')"/></td>
+                                                <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('cons')" euro-input="true"/></td>
+                                                <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('cons')"/></td>
+                                                <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('cons')" euro-input="true"/></td>
                                                 <td ng-if="accList.BillingCountry == 'India'">{{con.Total_Expense__c || 0 | inrCurrency}}</td>
                                                 <td ng-if="accList.BillingCountry == 'Germany'">{{con.Total_Expense__c || 0 | euroCurrency}}</td>
                                                 <td ng-show="consumables.length > 1">
@@ -430,18 +430,18 @@
                                         </tr>
                                         <!-- Travel & Networking Section -->
                                         <tr class="section-header">
-                                            <td colspan="8">Travel &amp; Networking</td>
+                                            <td colspan="{{numberOfYears + 5}}">Travel &amp; Networking</td>
                                         </tr>
                                         <tr class="sub-header">
                                             <td>Description</td>
                                             <td>Number</td>
                                             <td>Unit Price</td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{travelTotal.Total_Year1_Expense__c || 0 | inrCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{travelTotal.Total_Year1_Expense__c || 0 | euroCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{travelTotal.Total_Year2_Expense__c || 0 | inrCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{travelTotal.Total_Year2_Expense__c || 0 | euroCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{travelTotal.Total_Year3_Expense__c || 0 | inrCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{travelTotal.Total_Year3_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">{{travelTotal.Total_Year1_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">{{travelTotal.Total_Year1_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">{{travelTotal.Total_Year2_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">{{travelTotal.Total_Year2_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">{{travelTotal.Total_Year3_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">{{travelTotal.Total_Year3_Expense__c || 0 | euroCurrency}}</td>
                                             <td ng-if="accList.BillingCountry == 'India'">{{travelTotal.Overall_Expense || 0 | inrCurrency}}</td>
                                             <td ng-if="accList.BillingCountry == 'Germany'">{{travelTotal.Overall_Expense || 0 | euroCurrency}}</td>
                                             <td></td>
@@ -452,19 +452,19 @@
                                                 <td ng-if="con.Description__c != 'Hosting German Partner'"><input type="text" ng-model="con.Number__c" placeholder="Quantity" required="true"/></td>
                                                 <td ng-if="con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Unit_Price__c" placeholder="Unit Price" required="true"/></td>
                                                 <td ng-if="con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Unit_Price__c" placeholder="Unit Price" required="true" euro-input="true"/></td>
-                                                <td ng-if="con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('travel')" required="true"/></td>
-                                                <td ng-if="con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('travel')" required="true" euro-input="true"/></td>
-                                                <td ng-if="con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('travel')" required="true"/></td>
-                                                <td ng-if="con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('travel')" required="true" euro-input="true"/></td>
-                                                <td ng-if="con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('travel')" required="true"/></td>
-                                                <td ng-if="con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('travel')" required="true" euro-input="true"/></td>
+                                                <td ng-if="numberOfYears >= 1 && con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('travel')" required="true"/></td>
+                                                <td ng-if="numberOfYears >= 1 && con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('travel')" required="true" euro-input="true"/></td>
+                                                <td ng-if="numberOfYears >= 2 && con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('travel')" required="true"/></td>
+                                                <td ng-if="numberOfYears >= 2 && con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('travel')" required="true" euro-input="true"/></td>
+                                                <td ng-if="numberOfYears >= 3 && con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('travel')" required="true"/></td>
+                                                <td ng-if="numberOfYears >= 3 && con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('travel')" required="true" euro-input="true"/></td>
                                                 <td ng-if="accList.BillingCountry == 'India' && con.Description__c != 'Hosting German Partner'">{{con.Total_Expense__c || 0 | inrCurrency}}</td>
                                                 <td ng-if="accList.BillingCountry == 'Germany' && con.Description__c != 'Hosting German Partner'">{{con.Total_Expense__c || 0 | euroCurrency}}</td>
                                                 <td ng-if="con.Description__c == 'Hosting German Partner'"></td>
                                                 <td ng-if="con.Description__c == 'Hosting German Partner'"></td>
-                                                <td ng-if="con.Description__c == 'Hosting German Partner'"></td>
-                                                <td ng-if="con.Description__c == 'Hosting German Partner'"></td>
-                                                <td ng-if="con.Description__c == 'Hosting German Partner'"></td>
+                                                <td ng-if="con.Description__c == 'Hosting German Partner' && numberOfYears >= 1"></td>
+                                                <td ng-if="con.Description__c == 'Hosting German Partner' && numberOfYears >= 2"></td>
+                                                <td ng-if="con.Description__c == 'Hosting German Partner' && numberOfYears >= 3"></td>
                                                 <td ng-if="con.Description__c == 'Hosting German Partner'"></td>
                                                 <td>
                                                     <!-- <button class="delete-row-btn" ng-click="deleteRowEquipment($parent.$index,$index,con.Id)">
@@ -483,18 +483,18 @@
                                         </tr> -->
                                         <!-- Subcontract/Outsourcing Section -->
                                         <tr class="section-header">
-                                            <td colspan="8">Subcontract/Outsourcing</td>
+                                            <td colspan="{{numberOfYears + 5}}">Subcontract/Outsourcing</td>
                                         </tr>
                                         <tr class="sub-header">
                                             <td>Description</td>
                                             <td></td>
                                             <td></td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{outsourcingTotal.Total_Year1_Expense__c || 0 | inrCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{outsourcingTotal.Total_Year1_Expense__c || 0 | euroCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{outsourcingTotal.Total_Year2_Expense__c || 0 | inrCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{outsourcingTotal.Total_Year2_Expense__c || 0 | euroCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{outsourcingTotal.Total_Year3_Expense__c || 0 | inrCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{outsourcingTotal.Total_Year3_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">{{outsourcingTotal.Total_Year1_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">{{outsourcingTotal.Total_Year1_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">{{outsourcingTotal.Total_Year2_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">{{outsourcingTotal.Total_Year2_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">{{outsourcingTotal.Total_Year3_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">{{outsourcingTotal.Total_Year3_Expense__c || 0 | euroCurrency}}</td>
                                             <td ng-if="accList.BillingCountry == 'India'">{{outsourcingTotal.Overall_Expense || 0 | inrCurrency}}</td>
                                             <td ng-if="accList.BillingCountry == 'Germany'">{{outsourcingTotal.Overall_Expense || 0 | euroCurrency}}</td>
                                             <td ng-show="outsourcing.length > 1">Actions</td>
@@ -505,12 +505,12 @@
                                                 <td><input ng-model="con.Description__c" type="text"/></td>
                                                 <td></td>
                                                 <td></td>
-                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('outsourcing')"/></td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('outsourcing')" euro-input="true"/></td>
-                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('outsourcing')"/></td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('outsourcing')" euro-input="true"/></td>
-                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('outsourcing')"/></td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('outsourcing')" euro-input="true"/></td>
+                                                <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('outsourcing')"/></td>
+                                                <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('outsourcing')" euro-input="true"/></td>
+                                                <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('outsourcing')"/></td>
+                                                <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('outsourcing')" euro-input="true"/></td>
+                                                <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('outsourcing')"/></td>
+                                                <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('outsourcing')" euro-input="true"/></td>
                                                 <td ng-if="accList.BillingCountry == 'India'">{{con.Total_Expense__c || 0 | inrCurrency }}</td>
                                                 <td ng-if="accList.BillingCountry == 'Germany'">{{con.Total_Expense__c || 0 | euroCurrency }}</td>
                                                 <td ng-show="outsourcing.length > 1">
@@ -531,18 +531,18 @@
                                         </tr>
                                         <!-- Contingency Section -->
                                         <tr ng-if="accList.BillingCountry == 'India'" class="section-header">
-                                            <td colspan="8">Contingency</td>
+                                            <td colspan="{{numberOfYears + 5}}">Contingency</td>
                                         </tr>
                                         <tr ng-if="accList.BillingCountry == 'India'" class="sub-header">
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{contingencyTotal.Total_Year1_Expense__c || 0 | inrCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{contingencyTotal.Total_Year1_Expense__c || 0 | euroCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{contingencyTotal.Total_Year2_Expense__c || 0 | inrCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{contingencyTotal.Total_Year2_Expense__c || 0 | euroCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{contingencyTotal.Total_Year3_Expense__c || 0 | inrCurrency}}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{contingencyTotal.Total_Year3_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">{{contingencyTotal.Total_Year1_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">{{contingencyTotal.Total_Year1_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">{{contingencyTotal.Total_Year2_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">{{contingencyTotal.Total_Year2_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">{{contingencyTotal.Total_Year3_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">{{contingencyTotal.Total_Year3_Expense__c || 0 | euroCurrency}}</td>
                                             <td ng-if="accList.BillingCountry == 'India'">{{contingencyTotal.Overall_Expense || 0 | inrCurrency}}</td>
                                             <td ng-if="accList.BillingCountry == 'Germany'">{{contingencyTotal.Overall_Expense || 0 | euroCurrency}}</td>
                                             <td ng-show="contingency.length > 1">Actions</td>
@@ -553,12 +553,12 @@
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
-                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('contingency')"/></td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('contingency')" euro-input="true"/></td>
-                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('contingency')"/></td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('contingency')" euro-input="true"/></td>
-                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('contingency')"/></td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('contingency')" euro-input="true"/></td>
+                                                <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('contingency')"/></td>
+                                                <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('contingency')" euro-input="true"/></td>
+                                                <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('contingency')"/></td>
+                                                <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('contingency')" euro-input="true"/></td>
+                                                <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('contingency')"/></td>
+                                                <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('contingency')" euro-input="true"/></td>
                                                 <td ng-if="accList.BillingCountry == 'India'">{{con.Total_Expense__c || 0 | inrCurrency }}</td>
                                                 <td ng-if="accList.BillingCountry == 'Germany'">{{con.Total_Expense__c || 0 | euroCurrency }}</td>
                                                 <td ng-show="contingency.length > 1">
@@ -579,21 +579,21 @@
                                         </tr> -->
                                         <!-- Subtotal Section -->
                                         <tr ng-if="accList.BillingCountry == 'India' && accList.Academia__c == true" class="section-header">
-                                            <td colspan="8">Subtotal</td>
+                                            <td colspan="{{numberOfYears + 5}}">Subtotal</td>
                                         </tr>
                                         <tr ng-if="accList.BillingCountry == 'Germany'" class="section-header">
-                                            <td colspan="8">Subtotal</td>
+                                            <td colspan="{{numberOfYears + 5}}">Subtotal</td>
                                         </tr>
                                         <tr ng-if="accList.BillingCountry == 'India' && accList.Academia__c == true" class="sub-header">
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{subTotal.Total_Year1_Expense__c || 0 | inrCurrency }}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{subTotal.Total_Year1_Expense__c || 0 | euroCurrency }}</td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{subTotal.Total_Year2_Expense__c || 0 | inrCurrency }}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{subTotal.Total_Year2_Expense__c || 0 | euroCurrency }}</td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{subTotal.Total_Year3_Expense__c || 0 | inrCurrency }}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{subTotal.Total_Year3_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">{{subTotal.Total_Year1_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">{{subTotal.Total_Year1_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">{{subTotal.Total_Year2_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">{{subTotal.Total_Year2_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">{{subTotal.Total_Year3_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">{{subTotal.Total_Year3_Expense__c || 0 | euroCurrency }}</td>
                                             <td ng-if="accList.BillingCountry == 'India'">{{subTotal.Overall_Expense || 0 | inrCurrency }}</td>
                                             <td ng-if="accList.BillingCountry == 'Germany'">{{subTotal.Overall_Expense || 0 | euroCurrency }}</td>
                                             <td></td>
@@ -602,33 +602,33 @@
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{subTotal.Total_Year1_Expense__c || 0 | inrCurrency }}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{subTotal.Total_Year1_Expense__c || 0 | euroCurrency }}</td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{subTotal.Total_Year2_Expense__c || 0 | inrCurrency }}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{subTotal.Total_Year2_Expense__c || 0 | euroCurrency }}</td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{subTotal.Total_Year3_Expense__c || 0 | inrCurrency }}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{subTotal.Total_Year3_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">{{subTotal.Total_Year1_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">{{subTotal.Total_Year1_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">{{subTotal.Total_Year2_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">{{subTotal.Total_Year2_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">{{subTotal.Total_Year3_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">{{subTotal.Total_Year3_Expense__c || 0 | euroCurrency }}</td>
                                             <td ng-if="accList.BillingCountry == 'India'">{{subTotal.Overall_Expense || 0 | inrCurrency }}</td>
                                             <td ng-if="accList.BillingCountry == 'Germany'">{{subTotal.Overall_Expense || 0 | euroCurrency }}</td>
                                             <td></td>
                                         </tr>
                                         <!-- Overhead Charges Section -->
                                         <tr ng-if="accList.BillingCountry == 'India' && accList.Academia__c == true" class="section-header">
-                                            <td colspan="8">Overhead charges</td>
+                                            <td colspan="{{numberOfYears + 5}}">Overhead charges</td>
                                         </tr>
                                         <tr ng-if="accList.BillingCountry == 'Germany'" class="section-header">
-                                            <td colspan="8">Projektpauschale</td>
+                                            <td colspan="{{numberOfYears + 5}}">Projektpauschale</td>
                                         </tr>
                                         <tr ng-if="accList.BillingCountry == 'India' && accList.Academia__c == true" class="sub-header">
-                                            <td>Overhead charges (10%) excluding “Equipment &amp; Accessories”</td>
+                                            <td>Overhead charges (10%) excluding "Equipment &amp; Accessories"</td>
                                             <td></td>
                                             <td></td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{overheadCharges.Total_Year1_Expense__c || 0 | inrCurrency }}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{overheadCharges.Total_Year1_Expense__c || 0 | euroCurrency }}</td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{overheadCharges.Total_Year2_Expense__c || 0 | inrCurrency }}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{overheadCharges.Total_Year2_Expense__c || 0 | euroCurrency }}</td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{overheadCharges.Total_Year3_Expense__c || 0 | inrCurrency }}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{overheadCharges.Total_Year3_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">{{overheadCharges.Total_Year1_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">{{overheadCharges.Total_Year1_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">{{overheadCharges.Total_Year2_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">{{overheadCharges.Total_Year2_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">{{overheadCharges.Total_Year3_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">{{overheadCharges.Total_Year3_Expense__c || 0 | euroCurrency }}</td>
                                             <td ng-if="accList.BillingCountry == 'India'">{{overheadCharges.Overall_Expense || 0 | inrCurrency }}</td>
                                             <td ng-if="accList.BillingCountry == 'Germany'">{{overheadCharges.Overall_Expense || 0 | euroCurrency }}</td>
                                             <td ng-show="overhead.length > 1">Actions</td>
@@ -639,12 +639,12 @@
                                             <td ng-if="accList.Industry__c == true">Projektpauschale (20% on personnel costs)</td>
                                             <td></td>
                                             <td></td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{overheadCharges.Total_Year1_Expense__c || 0 | inrCurrency }}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{overheadCharges.Total_Year1_Expense__c || 0 | euroCurrency }}</td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{overheadCharges.Total_Year2_Expense__c || 0 | inrCurrency }}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{overheadCharges.Total_Year2_Expense__c || 0 | euroCurrency }}</td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{overheadCharges.Total_Year3_Expense__c || 0 | inrCurrency }}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{overheadCharges.Total_Year3_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">{{overheadCharges.Total_Year1_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">{{overheadCharges.Total_Year1_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">{{overheadCharges.Total_Year2_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">{{overheadCharges.Total_Year2_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">{{overheadCharges.Total_Year3_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">{{overheadCharges.Total_Year3_Expense__c || 0 | euroCurrency }}</td>
                                             <td ng-if="accList.BillingCountry == 'India'">{{overheadCharges.Overall_Expense || 0 | inrCurrency }}</td>
                                             <td ng-if="accList.BillingCountry == 'Germany'">{{overheadCharges.Overall_Expense || 0 | euroCurrency }}</td>
                                             <td ng-show="overhead.length > 1">Actions</td>
@@ -655,12 +655,12 @@
                                                 <td><input ng-model="con.Description__c" placeholder="Description" type="text"/></td>
                                                 <td></td>
                                                 <td></td>
-                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('overhead')"/></td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('overhead')" euro-input="true"/></td>
-                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('overhead')"/></td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('overhead')" euro-input="true"/></td>
-                                                <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('overhead')"/></td>
-                                                <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('overhead')" euro-input="true"/></td>
+                                                <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('overhead')"/></td>
+                                                <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('overhead')" euro-input="true"/></td>
+                                                <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('overhead')"/></td>
+                                                <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('overhead')" euro-input="true"/></td>
+                                                <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'"><input type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('overhead')"/></td>
+                                                <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'"><input type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('overhead')" euro-input="true"/></td>
                                                 <td ng-if="accList.BillingCountry == 'India'">{{con.Total_Expense__c || 0 | inrCurrency }}</td>
                                                 <td ng-if="accList.BillingCountry == 'Germany'">{{con.Total_Expense__c || 0 | euroCurrency }}</td>
                                                 <td ng-show="overhead.length > 1">
@@ -699,18 +699,18 @@
                                         </tr> -->
                                         <!-- Total Section -->
                                         <tr class="section-header">
-                                            <td colspan="8">Total</td>
+                                            <td colspan="{{numberOfYears + 5}}">Total</td>
                                         </tr>
                                         <tr class="sub-header">
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{totals.Total_Year1_Expense__c || 0 | inrCurrency }}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{totals.Total_Year1_Expense__c || 0 | euroCurrency }}</td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{totals.Total_Year2_Expense__c || 0 | inrCurrency }}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{totals.Total_Year2_Expense__c || 0 | euroCurrency }}</td>
-                                            <td ng-if="accList.BillingCountry == 'India'">{{totals.Total_Year3_Expense__c || 0 | inrCurrency }}</td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'">{{totals.Total_Year3_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">{{totals.Total_Year1_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">{{totals.Total_Year1_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">{{totals.Total_Year2_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">{{totals.Total_Year2_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">{{totals.Total_Year3_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">{{totals.Total_Year3_Expense__c || 0 | euroCurrency }}</td>
                                             <td ng-if="accList.BillingCountry == 'India'">{{totals.Overall_Expense || 0 | inrCurrency }}</td>
                                             <td ng-if="accList.BillingCountry == 'Germany'">{{totals.Overall_Expense || 0 | euroCurrency }}</td>
                                             <td></td>
@@ -719,12 +719,12 @@
                                             <td>IGSTC Funding</td>
                                             <td></td>
                                             <td></td>
-                                            <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="igstcFunding.Year1_Expense__c" ng-blur="calculateOtherField('igstc')"/></td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="igstcFunding.Year1_Expense__c" ng-blur="calculateOtherField('igstc')" euro-input="true"/></td>
-                                            <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="igstcFunding.Year2_Expense__c" ng-blur="calculateOtherField('igstc')"/></td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="igstcFunding.Year2_Expense__c" ng-blur="calculateOtherField('igstc')" euro-input="true"/></td>
-                                            <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="igstcFunding.Year3_Expense__c" ng-blur="calculateOtherField('igstc')"/></td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="igstcFunding.Year3_Expense__c" ng-blur="calculateOtherField('igstc')" euro-input="true"/></td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'"><input type="number" ng-model="igstcFunding.Year1_Expense__c" ng-blur="calculateOtherField('igstc')"/></td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'"><input type="text" ng-model="igstcFunding.Year1_Expense__c" ng-blur="calculateOtherField('igstc')" euro-input="true"/></td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'"><input type="number" ng-model="igstcFunding.Year2_Expense__c" ng-blur="calculateOtherField('igstc')"/></td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'"><input type="text" ng-model="igstcFunding.Year2_Expense__c" ng-blur="calculateOtherField('igstc')" euro-input="true"/></td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'"><input type="number" ng-model="igstcFunding.Year3_Expense__c" ng-blur="calculateOtherField('igstc')"/></td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'"><input type="text" ng-model="igstcFunding.Year3_Expense__c" ng-blur="calculateOtherField('igstc')" euro-input="true"/></td>
                                             <td ng-if="accList.BillingCountry == 'India'">{{igstcFunding.Total_Expense__c || 0 | inrCurrency }}</td>
                                             <td ng-if="accList.BillingCountry == 'Germany'">{{igstcFunding.Total_Expense__c || 0 | euroCurrency }}</td>
                                             <td></td>
@@ -733,12 +733,12 @@
                                             <td>Industry Contribution</td>
                                             <td></td>
                                             <td></td>
-                                            <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="industryContr.Year1_Expense__c" ng-blur="calculateOtherField('ic')"/></td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="industryContr.Year1_Expense__c" ng-blur="calculateOtherField('ic')" euro-input="true"/></td>
-                                            <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="industryContr.Year2_Expense__c" ng-blur="calculateOtherField('ic')"/></td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="industryContr.Year2_Expense__c" ng-blur="calculateOtherField('ic')" euro-input="true"/></td>
-                                            <td ng-if="accList.BillingCountry == 'India'"><input type="number" ng-model="industryContr.Year3_Expense__c" ng-blur="calculateOtherField('ic')"/></td>
-                                            <td ng-if="accList.BillingCountry == 'Germany'"><input type="text" ng-model="industryContr.Year3_Expense__c" ng-blur="calculateOtherField('ic')" euro-input="true"/></td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'"><input type="number" ng-model="industryContr.Year1_Expense__c" ng-blur="calculateOtherField('ic')"/></td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'"><input type="text" ng-model="industryContr.Year1_Expense__c" ng-blur="calculateOtherField('ic')" euro-input="true"/></td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'"><input type="number" ng-model="industryContr.Year2_Expense__c" ng-blur="calculateOtherField('ic')"/></td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'"><input type="text" ng-model="industryContr.Year2_Expense__c" ng-blur="calculateOtherField('ic')" euro-input="true"/></td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'"><input type="number" ng-model="industryContr.Year3_Expense__c" ng-blur="calculateOtherField('ic')"/></td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'"><input type="text" ng-model="industryContr.Year3_Expense__c" ng-blur="calculateOtherField('ic')" euro-input="true"/></td>
                                             <td ng-if="accList.BillingCountry == 'India'">{{industryContr.Total_Expense__c || 0 | inrCurrency }}</td>
                                             <td ng-if="accList.BillingCountry == 'Germany'">{{industryContr.Total_Expense__c || 0 | euroCurrency }}</td>
                                             <td></td>

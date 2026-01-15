@@ -66,6 +66,9 @@ angular.module('cp_app').controller('WiserApplicantInformation_Ctrl', function (
 	$scope.onCountryChange = function () {
 		debugger;
 
+		// console.log('Calling cities function ---------------->>>');
+		// getCitieNamesgetCitieNames();
+
 		if ($scope.objContact.MailingCountry == 'India') {
 			$scope.objContact.stateList = $scope.indianStates;
 		} else if ($scope.objContact.MailingCountry == 'Germany') {
@@ -629,6 +632,60 @@ angular.module('cp_app').controller('WiserApplicantInformation_Ctrl', function (
 	$scope.abc = function () {
 		debugger;
 	}
+
+
+	// async function getCitieNames() {
+	// 	debugger;
+	// 	const url = "https://countriesnow.space/api/v0.1/countries/state/cities";
+	// 	const body = {
+	// 		"country": "Germany",
+	// 		"state": "Berlin"
+	// 	};
+
+	// 	try {
+	// 		const response = await fetch(url, { method: 'POST', body: JSON.stringify(body) });
+	// 		if (!response.ok) {
+	// 			console.log('response.status : ', response.status);
+	// 			throw new Error(`Response status: ${response.status}`);
+
+	// 		}
+
+	// 		const result = await response.json();
+	// 		console.log('result : ' + result);
+	// 	} catch (error) {
+	// 		console.error(error.message);
+	// 		console.debug('ERROR MESSAGE : ', error);
+	// 	}
+	// }
+
+
+	// --------------------- GETTING THE CITIES BASED ON COUNTRY AND STATE --------------------- //
+	/*
+	$scope.onStateChange = function () {
+		debugger;
+
+		$scope.cityList = [];
+		$scope.objContact.MailingCity = null;
+
+		if (!$scope.objContact.MailingCountry || !$scope.objContact.MailingState) {
+			return;
+		}
+
+		console.log('$scope.objContact.MailingCountry : ', $scope.objContact.MailingCountry);
+		console.log('$scope.objContact.MailingState : ', $scope.objContact.MailingState);
+
+		IndustrialFellowshipController.getCitiesByStateAndCountry(
+			$scope.objContact.MailingCountry,
+			$scope.objContact.MailingState,
+			function (result, event) {
+				if (event.status) {
+					$scope.cityList = result;
+				} else {
+					swal("Error", "Unable to fetch cities", "error");
+				}
+			}
+		);
+	}; */
 
 });
 

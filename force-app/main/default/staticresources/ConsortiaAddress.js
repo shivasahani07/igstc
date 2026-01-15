@@ -346,34 +346,20 @@ angular.module('cp_app').controller('address_ctrl', function ($scope, $sce, $roo
         }
 
 
+        // Industry Profile Validations
         if ($scope.addressDetails.Industry__c == true) {
             if ($scope.addressDetails.Year_Of_Establishment__c == undefined || $scope.addressDetails.Year_Of_Establishment__c == "") {
-                swal("Address Details", "Please Enter Year Of Establishment.");
+                swal("Industry Profile", "Please Enter Year of Establishment.");
                 $("#establish").addClass('border-theme');
                 return;
             }
             if ($scope.addressDetails.Main_Business_Area__c == undefined || $scope.addressDetails.Main_Business_Area__c == "") {
-                swal("Address Details", "Please Enter Main Business Area.");
+                swal("Industry Profile", "Please Enter Main Business Area.");
                 $("#business").addClass('border-theme');
                 return;
             }
-            if ($scope.addressDetails.NumberOfEmployees == undefined || $scope.addressDetails.NumberOfEmployees == "") {
-                swal("Address Details", "Please Enter Number Of Permanent Employees.");
-                $("#employees").addClass('border-theme');
-                return;
-            }
-            if ($scope.addressDetails.Infrastructural_Facilities__c == undefined || $scope.addressDetails.Infrastructural_Facilities__c == "") {
-                swal("Address Details", "Please Enter Infrastructural Facilities.");
-                $("#facility").addClass('border-theme');
-                return;
-            }
-            if ($scope.addressDetails.Domain_Expertise_Available__c == undefined || $scope.addressDetails.Domain_Expertise_Available__c == "") {
-                swal("Address Details", "Please Enter Domain Expertise Available/Existing.");
-                $("#domain").addClass('border-theme');
-                return;
-            }
             if ($scope.addressDetails.Ownership_Profile__c == undefined || $scope.addressDetails.Ownership_Profile__c == "") {
-                swal("Address Details", "Please Enter Ownership profile.");
+                swal("Industry Profile", "Please Enter Ownership Profile.");
                 $("#ownership").addClass('border-theme');
                 return;
             }
@@ -386,9 +372,63 @@ angular.module('cp_app').controller('address_ctrl', function ($scope, $sce, $roo
                 $("#ownership").addClass('border-theme');
                 return;
             }
+            if ($scope.addressDetails.NumberOfEmployees == undefined || $scope.addressDetails.NumberOfEmployees == "") {
+                swal("Industry Profile", "Please Enter Number of Employees.");
+                $("#employees").addClass('border-theme');
+                return;
+            }
+            if ($scope.addressDetails.Infrastructural_Facilities__c == undefined || $scope.addressDetails.Infrastructural_Facilities__c == "") {
+                swal("Industry Profile", "Please Enter Infrastructural Facilities.");
+                $("#facility").addClass('border-theme');
+                return;
+            }
             if ($scope.addressDetails.Last_Year_s_Balance__c == undefined || $scope.addressDetails.Last_Year_s_Balance__c == "") {
-                swal("Address Details", "Please Enter Last year's balance.");
+                swal("Industry Profile", "Please Enter Last 3 Year's Revenue.");
                 $("#balance").addClass('border-theme');
+                return;
+            }
+        }
+
+        // Institution Profile Validations (Academia)
+        if ($scope.addressDetails.Academia__c == true) {
+            if ($scope.addressDetails.Legal_Status_and_Mandate__c == undefined || $scope.addressDetails.Legal_Status_and_Mandate__c == "") {
+                swal("Institution Profile", "Please Enter Legal Status and Mandate.");
+                $("#legalStatus").addClass('border-theme');
+                return;
+            }
+            if ($scope.addressDetails.Year_Of_Establishment__c == undefined || $scope.addressDetails.Year_Of_Establishment__c == "") {
+                swal("Institution Profile", "Please Enter Year of Establishment.");
+                $("#instEstablish").addClass('border-theme');
+                return;
+            }
+            if ($scope.addressDetails.Infrastructural_Facilities__c == undefined || $scope.addressDetails.Infrastructural_Facilities__c == "") {
+                swal("Institution Profile", "Please Enter Infrastructural Facilities Available Relevant to the Proposal.");
+                $("#instFacility").addClass('border-theme');
+                return;
+            }
+            if ($scope.addressDetails.Industry_Sponsored_Projects_Last_5_Yrs__c == undefined || $scope.addressDetails.Industry_Sponsored_Projects_Last_5_Yrs__c === "") {
+                swal("Institution Profile", "Please Enter No. of Industry Sponsored Projects Handled in Last 5 Years.");
+                $("#industrySponsoredProjects").addClass('border-theme');
+                return;
+            }
+            if ($scope.addressDetails.Externally_Funded_RD_Projects_Last_5_Yrs__c == undefined || $scope.addressDetails.Externally_Funded_RD_Projects_Last_5_Yrs__c === "") {
+                swal("Institution Profile", "Please Enter No. of Executed Externally Funded R&D Projects in Last 5 Years.");
+                $("#externallyFundedProjects").addClass('border-theme');
+                return;
+            }
+            if ($scope.addressDetails.Intl_Bilateral_Projects_Last_5_Yrs__c == undefined || $scope.addressDetails.Intl_Bilateral_Projects_Last_5_Yrs__c === "") {
+                swal("Institution Profile", "Please Enter No. of International/Bilateral Projects Handled in Last 5 Years.");
+                $("#internationalProjects").addClass('border-theme');
+                return;
+            }
+            if ($scope.addressDetails.Patents_Granted_Last_5_Yrs__c == undefined || $scope.addressDetails.Patents_Granted_Last_5_Yrs__c === "") {
+                swal("Institution Profile", "Please Enter No. of Patents Granted in Last 5 Years Relevant to the Proposal.");
+                $("#patentsGranted").addClass('border-theme');
+                return;
+            }
+            if ($scope.addressDetails.Technology_Transferred_Last_5_Yrs__c == undefined || $scope.addressDetails.Technology_Transferred_Last_5_Yrs__c === "") {
+                swal("Institution Profile", "Please Enter No. of Technology Transferred in Last 5 Years Relevant to the Proposal.");
+                $("#techTransferred").addClass('border-theme');
                 return;
             }
         }

@@ -36,6 +36,8 @@ angular.module('cp_app').controller('ExpenseDeclaration', function ($scope, $roo
     $scope.igstcFunding = {};
     $scope.financeDetails = {};
     $rootScope.apaId = '';
+    $scope.numberOfYears = 3; // Default to 3 years
+    $scope.durationInMonths = 36; // Default to 36 months
 
     $scope.getExpenseRecords = function () {
         debugger;
@@ -60,6 +62,19 @@ angular.module('cp_app').controller('ExpenseDeclaration', function ($scope, $roo
                 $scope.industryContr.Year3_Expense__c = result?.apa[0]?.Industry_Contribution_Year_3__c;
                 $scope.industryContr.Total_Expense__c = result?.apa[0]?.Total_Industry_Contribution__c;
                 $rootScope.apaId = $scope.applicantProposalAsscocition.Id;
+                
+                // Set number of years based on Duration_In_Months_Max_36__c
+                if (result.numberOfYears != null && result.numberOfYears > 0) {
+                    $scope.numberOfYears = result.numberOfYears;
+                } else {
+                    $scope.numberOfYears = 3; // Default to 3 years
+                }
+                if (result.durationInMonths != null) {
+                    $scope.durationInMonths = result.durationInMonths;
+                }
+                console.log('Number of Years:', $scope.numberOfYears);
+                console.log('Duration in Months:', $scope.durationInMonths);
+                
                 if ($scope.allExpenseCategories != null) {
                     $scope.expenseCategory = $scope.allExpenseCategories.filter(item => item.Applicant_Proposal_Association__c == $rootScope.apaId);
                 }

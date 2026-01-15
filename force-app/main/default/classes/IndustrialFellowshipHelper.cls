@@ -989,6 +989,8 @@ public string saveApplicantPortalWiser(String loginHashCode, Contact con){
                 proposalRec.Host_Abstract_Of_Project__c = hostDetails.Host_Abstract_Of_Project__c;
                 proposalRec.Broad_area_of_research__c = hostDetails.Broad_area_of_research__c;
                 proposalRec.Duration_In_Months_Max_36__c = hostDetails.Duration_In_Months_Max_36__c;
+                proposalRec.Layman_title_of_project__c = hostDetails.Layman_title_of_project__c;
+                proposalRec.Layman_abstract_of_proposed_work__c = hostDetails.Layman_abstract_of_proposed_work__c;
                 proposalRec.KeyWords__c = hostDetails.KeyWords__c;
                 upsert proposalRec;
  
@@ -1548,7 +1550,7 @@ public String upsertConsortiaAccountDet(Account instanceAcc, String projectId){
     }
 
     public static contact getContactInfoWiser(string conId){
-        Contact conRec = [SELECT Id,Salutation,FirstName,Institution_Name__c,LastName,Country__c,MailingCity,MailingState,MailingCountry,MailingPostalCode, MailingStreet,Nationality__c,Institute_Name__c,Department,Country_Code__c,Designation__c,Phone,Email, Homepage_URL__c,Gender__c, Birthdate,Proposals__c,Profile_Pic_Attachment_Id__c,Account.Name,Uploaded__c,(select name,id from Attachments Order By CreatedDate DESC limit 1) FROM Contact WHERE Id=: conId];
+        Contact conRec = [SELECT Id,Salutation,FirstName,Institution_Name__c,LastName,Country__c,MailingCity,MailingState,MailingCountry,MailingPostalCode, MailingStreet,Nationality__c,Institute_Name__c,Department,Country_Code__c,Designation__c,Phone,Email, Homepage_URL__c,Gender__c, Birthdate,Proposals__c,Profile_Pic_Attachment_Id__c,Account.Name,Uploaded__c,PassportNo__c,(select name,id from Attachments Order By CreatedDate DESC limit 1) FROM Contact WHERE Id=: conId];
         return conRec;
     }
 

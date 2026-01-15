@@ -313,14 +313,16 @@
                         <table class="tablefinance" cellpadding="4">
                             <thead>
                                 <tr>
-                                    <th style="width:20%;">Organization Name</th>
+                                    <th style="width:15%;">Organization Name</th>
                                     <th style="width:0%;">Country</th>
                                     <th style="width:0%;">Type</th>
                                     <th style="width:0%;">Currency</th>
-                                    <th style="width:11%;">IGSTC Funding</th>
+                                    <th style="width:10%;">IGSTC Funding</th>
                                     <th style="width:0%;">Own Contribution</th>
-                                    <th style="width:11%;">Total</th>
-                                    <th style="width:12%;">% Funding Requested from IGSTC</th>
+                                    <th style="width:10%;">Budget for Capital Expenditure</th>
+                                    <th style="width:10%;">Budget for Recurring Expenditure</th>
+                                    <th style="width:10%;">Total</th>
+                                    <th style="width:10%;">% Funding Requested from IGSTC</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -342,6 +344,18 @@
                                         <input ng-focus="removeClass('own',$index)" id="own{{$index}}" type="text" class="form-control" ng-keyup="calculateOtherField($index)"
                                             ng-change="calculateOtherField($index)" ng-keypress="calculateOtherField($index)"
                                             number="x.Financial_Contribution__r[0].Own_Contribution__c" ng-model="x.Financial_Contribution__r[0].Own_Contribution__c"
+                                            ng-disabled="proposalStage" />
+                                    </td>
+                                    <td>
+                                        <input ng-focus="removeClass('capital',$index)" id="capital{{$index}}" type="text" class="form-control" ng-keyup="calculateOtherField($index)"
+                                            ng-change="calculateOtherField($index)" ng-keypress="calculateOtherField($index)"
+                                            number="x.Financial_Contribution__r[0].Budget_for_Capital_Expenditure__c" ng-model="x.Financial_Contribution__r[0].Budget_for_Capital_Expenditure__c"
+                                            ng-disabled="proposalStage" />
+                                    </td>
+                                    <td>
+                                        <input ng-focus="removeClass('recurring',$index)" id="recurring{{$index}}" type="text" class="form-control" ng-keyup="calculateOtherField($index)"
+                                            ng-change="calculateOtherField($index)" ng-keypress="calculateOtherField($index)"
+                                            number="x.Financial_Contribution__r[0].Budget_for_Recurring_Expenditure__c" ng-model="x.Financial_Contribution__r[0].Budget_for_Recurring_Expenditure__c"
                                             ng-disabled="proposalStage" />
                                     </td>
 
