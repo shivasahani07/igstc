@@ -80,6 +80,15 @@ roup' )
                                     </a>
                                 </li>
 
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('CV_Wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li>
+
                                 <!-- Financial Details -->
                                 <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('FinancialOverview_wiser')">
@@ -137,9 +146,10 @@ roup' )
                                 </li>   
                             </ul> -->
                         </div>
+
                         <div class="tab-link" ng-hide="proposalStage">
                             <div class="progress">
-                                <div class="progress-success w-75"></div>
+                                <div class="progress-success wp-5"></div>
                             </div>
 
                             <ul>
@@ -179,6 +189,16 @@ roup' )
                                         <span>Applicant Details</span>
                                     </a>
                                 </li>
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li>
+
                                 <li>
                                     <a>
                                         <div class="icon-circle">
@@ -243,6 +263,16 @@ roup' )
                                 <div class="progress-success w-100"></div>
                             </div>
                             <ul>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ExistingGrantWISER')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-money-bill"></i>
+                                        </div>
+                                        <span>Other Grants</span>
+                                    </a>
+                                </li>
+
                                 <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('TwoReferenceWiser')">
                                         <div class="icon-circle">
@@ -252,14 +282,7 @@ roup' )
                                     </a>
                                 </li>
 
-                                <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('ExistingGrantWISER')">
-                                        <div class="icon-circle">
-                                            <i class="fas fa-money-bill"></i>
-                                        </div>
-                                        <span>Grant Details</span>
-                                    </a>
-                                </li>
+
                                 <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('AttachmentsInWiser')">
                                         <div class="icon-circle">
@@ -269,14 +292,14 @@ roup' )
                                     </a>
                                 </li>
                                 <!-- Change place from 3rd to 4th -->
-                                <li class="active pb-cursor">
+                                <!-- <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('CV_Wiser')">
                                         <div class="icon-circle">
                                             <i class="fa-solid fa-address-book"></i>
                                         </div>
                                         <span>Curriculum Vitae</span>
                                     </a>
-                                </li>
+                                </li> -->
                                 <!-- ************ -->
                                 <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('Declaration_Wiser')">
@@ -296,18 +319,18 @@ roup' )
                                 <li>
                                     <a>
                                         <div class="icon-circle">
-                                            <i class="fas fa-user-friends"></i>
+                                            <i class="fas fa-money-bill"></i>
                                         </div>
-                                        <span>References</span>
+                                        <span>Other Grants</span>
                                     </a>
                                 </li>
 
                                 <li>
                                     <a>
                                         <div class="icon-circle">
-                                            <i class="fas fa-money-bill"></i>
+                                            <i class="fas fa-user-friends"></i>
                                         </div>
-                                        <span>Grant Details</span>
+                                        <span>References</span>
                                     </a>
                                 </li>
 
@@ -320,14 +343,14 @@ roup' )
                                     </a>
                                 </li>
                                 <!-- Change place from 3rd to 4th -->
-                                <li>
+                                <!-- <li>
                                     <a>
                                         <div class="icon-circle">
                                             <i class="fa-solid fa-address-book"></i>
                                         </div>
                                         <span>Curriculum Vitae</span>
                                     </a>
-                                </li>
+                                </li> -->
                                 <!-- ************ -->
                                 <li>
                                     <a>

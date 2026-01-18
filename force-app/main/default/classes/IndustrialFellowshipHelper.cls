@@ -387,6 +387,16 @@ Integer phdEnrollYear,Integer phdEnrollMonth,Integer phdEnrollDay,Integer phdAwa
 public String insertApplicantDetails(contact conRec, Account accDet, integer birthYear, integer birthMonth, integer birthDay, String campaignId) {
     try {
         upsert accDet;
+
+        
+        // Employment_Details__c empDetails = new Employment_Details__c(
+        //     Organization_Name__c = accDet.Name,
+        //     Applicant_Proposal_Association__c = apaId,
+        //     Contact__c = conRec.Id,
+        //     Position__c = conRec.Designation__c,
+        //     Department__c = conRec.Department
+        // );
+        // insert empDetails;
         
         List<Applicant_Proposal_Association__c> associations = [
             SELECT Id, Proposals__c 
@@ -555,6 +565,7 @@ public String updatePersonalInfoIF(String ContactId,Contact InstanceCon,Integer 
         return 'ERROR';
     }
 }
+ 
 public String saveEduDetailIF(String loginHashCode,List<Education_Details__c> instanceEduDet,List<WrapperDate> dateList,String apaId){
     try {
         system.debug('education detail :: '+instanceEduDet);
@@ -631,6 +642,172 @@ public String saveEduDetailIF(String loginHashCode,List<Education_Details__c> in
         return 'exception: ';
     }
     }
+    
+   // New method added by Rukasar
+   
+    public String saveEduDetailPecfar(String loginHashCode, List<Education_Details__c> instanceEduDet, List<WrapperDate> dateList, String apaId) {
+    try {
+        system.debug('education detail :: ' + instanceEduDet);
+        
+        Id eduId = Schema.SObjectType.Education_Details__c.getRecordTypeInfosByName().get('Education').getRecordTypeId();
+        Id thesisId = Schema.SObjectType.Education_Details__c.getRecordTypeInfosByName().get('Thesis').getRecordTypeId();
+        
+        Date newMtStartDate;
+        Date newMtEndDate;
+        Date newPhDStartDate;
+        Date newPhDEndDate;
+        
+        Integer mtStartDateCheck = 0;
+        Integer mtEndDateCheck = 0;
+        Integer phdStartDateCheck = 0;
+        Integer phdEndDateCheck = 0;
+        
+        // Process date wrapper list
+        for(WrapperDate singleDate : dateList) {
+            if(singleDate.GroupName == 'mt') {
+                if(singleDate.fromTo == 'start') {
+                    if(singleDate.year == 0) {
+                        mtStartDateCheck = 1;
+                    } else {
+                        newMtStartDate = Date.newInstance(singleDate.year, singleDate.month, singleDate.day);
+                    }
+                } else {
+                    if(singleDate.year == 0) {
+                        mtEndDateCheck = 1;
+                    } else {
+                        newMtEndDate = Date.newInstance(singleDate.year, singleDate.month, singleDate.day);
+                    }
+                }
+            } else {
+                if(singleDate.fromTo == 'start') {
+                    if(singleDate.year == 0) {
+                        phdStartDateCheck = 1;
+                    } else {
+                        newPhDStartDate = Date.newInstance(singleDate.year, singleDate.month, singleDate.day);
+                    }
+                } else {
+                    if(singleDate.year == 0) {
+                        phdEndDateCheck = 1;
+                    } else {
+                        newPhDEndDate = Date.newInstance(singleDate.year, singleDate.month, singleDate.day);
+                    }
+                }
+            }
+        }
+        
+        // Get contact ID from education records
+        Id contactId = null;
+        for(Education_Details__c edu : instanceEduDet) {
+            if(edu.Contact__c != null) {
+                contactId = edu.Contact__c;
+                break;
+            }
+        }
+        
+        // Get proposal details to check record type
+        List<Applicant_Proposal_Association__c> apaList = [
+            SELECT Id, Contact__c, Proposals__c, Proposals__r.Record_Type_Name__c
+            FROM Applicant_Proposal_Association__c 
+            WHERE Id = :apaId 
+            LIMIT 1
+        ];
+        
+        Id finalApaId = apaId;
+        
+        if(!apaList.isEmpty() && contactId != null) {
+            Applicant_Proposal_Association__c currentAPA = apaList[0];
+            Id proposalId = currentAPA.Proposals__c;
+            String proposalRecordType = currentAPA.Proposals__r.Record_Type_Name__c;
+            
+            // Check if proposal is PECFAR
+            if(proposalRecordType != null && proposalRecordType.contains('PECFAR')) {
+                // For PECFAR, use the APA that belongs to this contact for this proposal
+                List<Applicant_Proposal_Association__c> userAPA = [
+                    SELECT Id 
+                    FROM Applicant_Proposal_Association__c 
+                    WHERE Contact__c = :contactId 
+                    AND Proposals__c = :proposalId 
+                    LIMIT 1
+                ];
+                
+                if(!userAPA.isEmpty()) {
+                    finalApaId = userAPA[0].Id;
+                }
+            } else {
+                // For non-PECFAR, check if contact is primary
+                List<Contact> contactList = [
+                    SELECT Id, Is_Primary__c 
+                    FROM Contact 
+                    WHERE Id = :contactId 
+                    LIMIT 1
+                ];
+                
+                if(!contactList.isEmpty() && !contactList[0].Is_Primary__c) {
+                    // For non-primary contact, find primary APA for same proposal
+                    List<Applicant_Proposal_Association__c> primaryAPAs = [
+                        SELECT Id 
+                        FROM Applicant_Proposal_Association__c 
+                        WHERE Proposals__c = :proposalId 
+                        AND Contact__r.Is_Primary__c = true 
+                        LIMIT 1
+                    ];
+                    
+                    if(!primaryAPAs.isEmpty()) {
+                        finalApaId = primaryAPAs[0].Id;
+                    }
+                }
+            }
+        }
+        
+        // Set record types and APA on all education records
+        for(Education_Details__c lineItem : instanceEduDet) {
+            if(lineItem.Degree__c != null) {
+                lineItem.RecordTypeId = eduId;
+                lineItem.Applicant_Proposal_Association__c = finalApaId;
+            } else {
+                lineItem.RecordTypeId = thesisId;
+                lineItem.Applicant_Proposal_Association__c = finalApaId;
+                
+                if(lineItem.Thesis_Type__c == 'Master Thesis') {
+                    if(mtStartDateCheck == 0) {
+                        lineItem.Start_Date__c = newMtStartDate;
+                    } else {
+                        lineItem.Start_Date__c = null;
+                    }
+                    if(mtEndDateCheck == 0) {
+                        lineItem.End_Date__c = newMtEndDate;
+                    } else {
+                        lineItem.End_Date__c = null;
+                    }
+                } else {
+                    if(phdStartDateCheck == 0) {
+                        lineItem.Start_Date__c = newPhDStartDate;
+                    } else {
+                        lineItem.Start_Date__c = null;
+                    }
+                    if(phdEndDateCheck == 0) {
+                        lineItem.End_Date__c = newPhDEndDate;
+                    } else {
+                        lineItem.End_Date__c = null;
+                    }
+                }
+            }
+        }
+        
+        system.debug('education detail with final APA: ' + finalApaId + ' :: ' + instanceEduDet);
+        upsert instanceEduDet;
+        return 'Your Education details have been saved successfully.';
+        
+    } catch (DmlException e) {
+        system.debug('exception: ' + e.getMessage() + ' line no. ' + e.getLineNumber() + '');
+        return 'exception: ' + e.getMessage();
+    } catch (Exception e) {
+        system.debug('general exception: ' + e.getMessage() + ' line no. ' + e.getLineNumber() + '');
+        return 'exception: ' + e.getMessage();
+    }
+}
+    
+
 public String upsertAchievements(String loginHashCode,Achievement__c instanceAchiev,String flag){
     try {
         if(flag=='update'){

@@ -36,6 +36,14 @@
                                         <span>Personal Information</span>
                                     </a>
                                 </li>
+                                  <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ParentOrganization')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-building"></i>
+                                        </div>
+                                        <span>Parent Organization Details</span>
+                                    </a>
+                                </li> 
                                 <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('Education_Qualification')">
                                         <div class="icon-circle">
@@ -52,14 +60,7 @@
                                         <span>Employment Details</span>
                                     </a>
                                 </li>
-                                <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('ParentOrganization')">
-                                        <div class="icon-circle">
-                                            <i class="fas fa-building"></i>
-                                        </div>
-                                        <span>Parent Organization Details</span>
-                                    </a>
-                                </li>   
+                                  
                             </ul>
                         </div>
                         <div class="tab-link" ng-hide="proposalStage">
@@ -83,6 +84,14 @@
                                         <span>Personal Information</span>
                                     </a>
                                 </li>
+                                 <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-building"></i>
+                                        </div>
+                                        <span>Parent Organization Details</span>
+                                    </a>
+                                </li>       
                                 <li class="active">
                                     <a>
                                         <div class="icon-circle">
@@ -99,14 +108,7 @@
                                         <span>Employment Details</span>
                                     </a>
                                 </li>
-                                <li class="active">
-                                    <a>
-                                        <div class="icon-circle">
-                                            <i class="fas fa-building"></i>
-                                        </div>
-                                        <span>Parent Organization Details</span>
-                                    </a>
-                                </li>
+                                
                             </ul>
                         </div>
                         </div>
@@ -137,6 +139,14 @@
                                     <div class="progress-success w-100"></div>
                                 </div>
                                 <ul>
+                                     <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Achievements_Pecfar')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-trophy"></i>
+                                            </div>
+                                            <span>Achievements</span>
+                                        </a>
+                                    </li>   
                                     <li class="active pb-cursor">
                                         <a ng-click="redirectPageURL('Fellowship_Details')">
                                             <div class="icon-circle">
@@ -146,14 +156,7 @@
                                         </a>
                                     </li>
                                     
-                                    <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('Achievements_Pecfar')">
-                                            <div class="icon-circle">
-                                                <i class="fas fa-trophy"></i>
-                                            </div>
-                                            <span>Achievements</span>
-                                        </a>
-                                    </li>
+                                    
                                     <li class="active pb-cursor">
                                         <a ng-click="redirectPageURL('Attachments_Pecfar')">
                                             <div class="icon-circle">
@@ -188,20 +191,21 @@
                                     <li class="active">
                                         <a>
                                             <div class="icon-circle">
+                                                <i class="fas fa-trophy"></i>
+                                            </div>
+                                            <span>Achievements</span>
+                                        </a>
+                                    </li>
+                                    <li class="active">
+                                        <a>
+                                            <div class="icon-circle">
                                                 <i class="fa fa-home"></i>
                                             </div>
                                             <span>Fellowship Details</span>
                                         </a>
                                     </li>
                                     
-                                    <li class="active">
-                                        <a>
-                                            <div class="icon-circle">
-                                                <i class="fas fa-trophy"></i>
-                                            </div>
-                                            <span>Achievements</span>
-                                        </a>
-                                    </li>
+                                    
                                     <li class="active">
                                         <a>
                                             <div class="icon-circle">
@@ -361,7 +365,7 @@
                                     <div class="mt-5">
                                             <button class="blue-btn float-end" ng-click="saveandNext()" type="button">
                                                 <i class="fa-solid fa-check me-2"></i>Save and Next</button>
-                                        <button class="blue-bordered-btn float-end me-2" ng-click="redirectPageURL('Achievements_Pecfar')" type="button">
+                                        <button class="blue-bordered-btn float-end me-2" ng-click="redirectPageURL('Fellowship_Details')" type="button">
                                             <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
                                     </div>
                                 </div>
@@ -400,7 +404,7 @@
                             <div class="col-md-5 mt-4" ng-if="!proposalStage">
                                 <button class="blue-btn float-end" ng-click="redirectPageURL('Declaration_Pecfar')" type="button">
                                     <i class="fa-solid fa-check me-2"></i>Save and Next</button>
-                            <button class="blue-bordered-btn float-end me-2" ng-click="redirectPageURL('Achievements_Pecfar')" type="button">
+                            <button class="blue-bordered-btn float-end me-2" ng-click="redirectPageURL('Fellowship_Details')" type="button">
                                 <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
                             </div>
                         </div> -->

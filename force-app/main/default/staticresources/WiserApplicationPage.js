@@ -61,6 +61,11 @@ angular.module('cp_app').controller('WiserApplicantInformation_Ctrl', function (
 	if (localStorage.getItem('proposalId')) {
 		$rootScope.proposalId = localStorage.getItem('proposalId');
 	}
+
+	if (localStorage.getItem('apaId')) {
+		$rootScope.apaId = localStorage.getItem('apaId');
+	}
+
 	$scope.getDependentPicklistValues();
 
 	$scope.onCountryChange = function () {
@@ -107,7 +112,11 @@ angular.module('cp_app').controller('WiserApplicantInformation_Ctrl', function (
 		$scope.pairingDetails = [];
 		IndustrialFellowshipController.getContactWiser($rootScope.contactId, function (result, event) {
 			debugger;
+
 			console.log("result ::", result);
+
+			localStorage.setItem('accountId', result.Account.Name);
+
 			if (event.status && result) {
 				if (result.Birthdate != undefined) {
 					result.Birthdate = new Date(result.Birthdate);
@@ -383,7 +392,7 @@ angular.module('cp_app').controller('WiserApplicantInformation_Ctrl', function (
 					icon: "success",
 					button: "ok!",
 				});
-				$scope.redirectPageURL('FinancialOverview_wiser');
+				$scope.redirectPageURL('CV_Wiser');
 
 			}
 			else {

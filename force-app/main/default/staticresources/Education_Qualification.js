@@ -193,7 +193,7 @@ angular.module('cp_app').controller('educQual_ctrl', function($scope,$rootScope)
         link.href='#/'+URL+'';
         link.click();
     }
-    $scope.saveEduDetailIF=function(){
+    $scope.saveEduDetailPecfar=function(){
         debugger;
         for(var i=0;i<$scope.eduList.length;i++){
             if($scope.eduList[i].Degree__c == undefined || $scope.eduList[i].Degree__c == ""){
@@ -401,7 +401,7 @@ angular.module('cp_app').controller('educQual_ctrl', function($scope,$rootScope)
         
         //$scope.dateList.push({GroupName:'mt',fromTo:'end',year:years,month:month,day:day});
         debugger;
-        IndustrialFellowshipController.saveEduDetailIF($rootScope.candidateId,$scope.objSendData,$scope.dateList,$rootScope.apaId, function (result, event) {
+        IndustrialFellowshipController.saveEduDetailPecfar($rootScope.candidateId,$scope.objSendData,$scope.dateList,$rootScope.apaId, function (result, event) {
             debugger
             console.log(result);
             console.log(event);
@@ -438,7 +438,7 @@ angular.module('cp_app').controller('educQual_ctrl', function($scope,$rootScope)
     $scope.clickPreviousEduQualification=function(){
         var link=document.createElement("a");
         link.id = 'someLink'; //give it an ID!
-        link.href="#/Personal_Information";
+        link.href="#/ParentOrganization";
         link.click();
     }
     $scope.getEduQualification();

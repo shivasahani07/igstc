@@ -38,6 +38,19 @@ angular.module('cp_app').controller('ExpenseDeclaration', function ($scope, $roo
     $rootScope.apaId = '';
     $scope.numberOfYears = 3; // Default to 3 years
     $scope.durationInMonths = 36; // Default to 36 months
+    
+    // Initialize financial contribution totals (same as Financial_Overview)
+    $scope.indianIndus = 0;
+    $scope.indianAcademia = 0;
+    $scope.germanIndus = 0;
+    $scope.germanAcademia = 0;
+    $scope.TotalIndianContribution = 0;
+    $scope.TotalGermanContribution = 0;
+    $scope.TotalContriIndianIndustry = 0;
+    $scope.TotalContriIndianAcademia = 0;
+    $scope.TotalContriGermanIndustry = 0;
+    $scope.TotalContriGermanAcademia = 0;
+    $scope.applicantDetails = [];
 
     $scope.getExpenseRecords = function () {
         debugger;
@@ -78,6 +91,12 @@ angular.module('cp_app').controller('ExpenseDeclaration', function ($scope, $roo
                 if ($scope.allExpenseCategories != null) {
                     $scope.expenseCategory = $scope.allExpenseCategories.filter(item => item.Applicant_Proposal_Association__c == $rootScope.apaId);
                 }
+                
+                // Load existing expense line items if apaId is available
+                if ($rootScope.apaId) {
+                    $scope.getExpenseHeadLineItems();
+                }
+                
                 $scope.$apply();
             }
         },
@@ -104,7 +123,56 @@ angular.module('cp_app').controller('ExpenseDeclaration', function ($scope, $roo
     //     })
     // }
     // $scope.getAccounts();
+    // Function to calculate financial contribution totals (same as Financial_Overview)
+    $scope.calculateFinancialTotals = function () {
+        $scope.indianIndus = 0;
+        $scope.indianAcademia = 0;
+        $scope.germanIndus = 0;
+        $scope.germanAcademia = 0;
+        
+        if ($scope.applicantDetails && $scope.applicantDetails.length > 0) {
+            for (var i = 0; i < $scope.applicantDetails.length; i++) {
+                if ($scope.applicantDetails[i].Financial_Contribution__r != undefined) {
+                    for (var j = 0; j < $scope.applicantDetails[i].Financial_Contribution__r.length; j++) {
+                        var account = $scope.applicantDetails[i].Contact__r?.Account;
+                        if (account) {
+                            if (account.BillingCountry == "India" && account.Industry__c == true) {
+                                $scope.indianIndus = Number($scope.indianIndus) + Number($scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c || 0);
+                            } else if (account.BillingCountry == "India" && account.Academia__c == true) {
+                                $scope.indianAcademia = Number($scope.indianAcademia) + Number($scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c || 0);
+                            } else if (account.BillingCountry == "Germany" && account.Industry__c == true) {
+                                $scope.germanIndus = Number($scope.germanIndus) + Number($scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c || 0);
+                            } else if (account.BillingCountry == "Germany" && account.Academia__c == true) {
+                                $scope.germanAcademia = Number($scope.germanAcademia) + Number($scope.applicantDetails[i].Financial_Contribution__r[j].IGSTC_Contribution__c || 0);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        $scope.TotalIndianContribution = Number($scope.indianIndus) + Number($scope.indianAcademia);
+        $scope.TotalGermanContribution = Number($scope.germanIndus) + Number($scope.germanAcademia);
+        $scope.TotalContriIndianIndustry = $scope.indianIndus;
+        $scope.TotalContriIndianAcademia = $scope.indianAcademia;
+        $scope.TotalContriGermanIndustry = $scope.germanIndus;
+        $scope.TotalContriGermanAcademia = $scope.germanAcademia;
+    };
+    
+    // Function to load all applicant details for financial totals calculation
+    $scope.getApplicantDetailsForTotals = function () {
+        ApplicantPortal_Contoller.getProjectDetailsDetails($rootScope.proposalId, function (result, event) {
+            if (event.status && result != null) {
+                $scope.applicantDetails = result;
+                $scope.calculateFinancialTotals();
+                $scope.$apply();
+            }
+        }, { escape: true });
+    };
+    
     $scope.getExpenseRecords();
+    // Load applicant details to calculate financial contribution totals
+    $scope.getApplicantDetailsForTotals();
     
     // NEW METHOD: Get expense records from Expense_Head__c and Expense_Line_Item__c
     $scope.getExpenseHeadLineItems = function () {
@@ -237,7 +305,7 @@ angular.module('cp_app').controller('ExpenseDeclaration', function ($scope, $roo
                     $scope.outsourcing.push({ Description__c: '', Year1_Expense__c: 0, Year2_Expense__c: 0, Year3_Expense__c: 0, Total_Expense__c: 0 });
                 }
                 
-                $scope.calculateGrandTotals();
+                $scope.updateTotals();
                 $scope.$apply();
             }
         }, { escape: true });
@@ -252,6 +320,17 @@ angular.module('cp_app').controller('ExpenseDeclaration', function ($scope, $roo
                 $scope.expenseTempList.push()
             }
         }
+        
+        // First try to load expense line items from new structure
+        // If apaId exists, load from new Expense_Line_Item__c structure and skip old expenseList processing
+        if ($rootScope.apaId) {
+            $scope.getExpenseHeadLineItems();
+            // Return early to skip old expenseList processing
+            // getExpenseHeadLineItems will populate the arrays asynchronously
+            return;
+        }
+        
+        // Fallback to old structure processing if apaId not available
         $scope.manPowerRecords = [];
         $scope.consumables = [];
         $scope.Equipment = [];

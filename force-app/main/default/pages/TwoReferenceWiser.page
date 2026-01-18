@@ -8,25 +8,26 @@
 
 
 <apex:page sidebar="false" showHeader="false" standardStylesheets="false">
-<html>
-     <div ng-controller="twoReferencePageCtrl">
-          <head>
+    <html>
+    <div ng-controller="twoReferencePageCtrl">
+
+        <head>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
             <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-               <style>
-                   .ta-editor {
-                       min-height: 300px;
-                       height: auto;
-                       overflow: auto;
-                       font-family: inherit;
-                       font-size: 100%;
-                   }
-               </style>
-               <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
-           </head>
+            <style>
+                .ta-editor {
+                    min-height: 300px;
+                    height: auto;
+                    overflow: auto;
+                    font-family: inherit;
+                    font-size: 100%;
+                }
+            </style>
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+        </head>
 
-           <body>
+        <body>
 
             <div class="container mt-5">
                 <div class="row mx-5">
@@ -36,24 +37,25 @@
                                 <div class="progress-success w-100"></div>
                             </div>
                             <ul>
+                                <!-- Pair Project Details -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('HostProjectDetails')">
+                                        <div class="icon-circle">
+                                            <!-- <i class="far fa-address-card"></i> -->
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Paired Project Details</span>
+                                    </a>
+                                </li>
 
                                 <!-- Not Confirmed Yet -->
                                 <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
                                         <div class="icon-circle">
-                                            <i class="fa fa-home"></i>
-                                        </div>
-                                        <span>Pairing Details</span>
-                                    </a>
-                                </li>
-
-                                <!-- Pair Project Details -->
-                                <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('HostProjectDetails')">
-                                        <div class="icon-circle">
+                                            <!-- <i class="fa fa-home"></i> -->
                                             <i class="far fa-address-card"></i>
                                         </div>
-                                        <span>Paired Project Details</span>
+                                        <span>Pairing Details</span>
                                     </a>
                                 </li>
 
@@ -77,6 +79,15 @@
                                     </a>
                                 </li>
 
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('CV_Wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li>
+
                                 <!-- Financial Details -->
                                 <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('FinancialOverview_wiser')">
@@ -86,50 +97,9 @@
                                         <span>Financial Overview</span>
                                     </a>
                                 </li>
-
-                                <!-- <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('WiserApplicationPage')">
-                                        <div class="icon-circle">
-                                            <i class="fas fa-user-alt"></i>
-                                        </div>
-                                        <span>Applicant Details</span>
-                                    </a>
-                                </li>
-                                
-                                <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('HostInfoApplicationPage')">
-                                        <div class="icon-circle">
-                                            <i class="fas fa-file-invoice"></i>
-                                        </div>
-                                        <span>Pair Details</span>
-                                    </a>
-                                </li>
-                                <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
-                                        <div class="icon-circle">
-                                            <i class="fa fa-home"></i>
-                                        </div>
-                                        <span>Applicant Project Details</span>
-                                    </a>
-                                </li>
-                                <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('FinancialOverview_wiser')">
-                                        <div class="icon-circle">
-                                            <i class="fas fa-chart-line"></i>
-                                        </div>
-                                        <span>Financial Overview</span>
-                                    </a>
-                                </li>
-                                <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('HostProjectDetails')">
-                                        <div class="icon-circle">
-                                            <i class="far fa-address-card"></i>
-                                        </div>
-                                        <span>Pair Project Details</span>
-                                    </a>
-                                </li>    -->
                             </ul>
                         </div>
+
                         <div class="tab-link" ng-hide="proposalStage">
                             <div class="progress">
                                 <div class="progress-success w-100"></div>
@@ -141,7 +111,7 @@
                                         <div class="icon-circle">
                                             <i class="far fa-address-card"></i>
                                         </div>
-                                        <span>Pairing Details</span>
+                                        <span>Paired Project Details</span>
                                     </a>
                                 </li>
 
@@ -150,7 +120,7 @@
                                         <div class="icon-circle">
                                             <i class="fas fa-user-alt"></i>
                                         </div>
-                                        <span>Paired Project Details</span>
+                                        <span>Pairing Details</span>
                                     </a>
                                 </li>
                                 <!-- <li >
@@ -169,6 +139,16 @@
                                         <span>Applicant Details</span>
                                     </a>
                                 </li>
+
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li>
+
                                 <li class="active">
                                     <a>
                                         <div class="icon-circle">
@@ -177,7 +157,7 @@
                                         <span>Financial Overview</span>
                                     </a>
                                 </li>
-                                
+
                                 <!-- <li class="active">
                                     <a>
                                         <div class="icon-circle">
@@ -220,115 +200,118 @@
                                 </li> -->
                             </ul>
                         </div>
-                        </div>
                     </div>
-    
-                    <div class="row mx-5">
-                        <div class="col-md-12">
-                            <div class="tab-link" ng-show="proposalStage">
-                                <div class="progress">
-                                    <div class="progress-success w-100"></div>
-                                </div>
-                                <ul>
-                                    <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('TwoReferenceWiser')">
-                                            <div class="icon-circle">
-                                                <i class="fas fa-user-friends"></i>
-                                            </div>
-                                            <span>References</span>
-                                        </a>
-                                    </li>
-                                    
-                                    <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('ExistingGrantWISER')">
-                                            <div class="icon-circle">
-                                                <i class="fas fa-money-bill"></i>
-                                            </div>
-                                            <span>Grant Details</span>
-                                        </a>
-                                    </li>
-                                    
-                                    <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('AttachmentsInWiser')">
-                                            <div class="icon-circle">
-                                                <i class="fas fa-upload"></i>
-                                            </div>
-                                            <span>Attachments</span>
-                                        </a>
-                                    </li>
+                </div>
 
-                                    <li class="active pb-cursor">
+                <div class="row mx-5">
+                    <div class="col-md-12">
+                        <div class="tab-link" ng-show="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ExistingGrantWISER')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-money-bill"></i>
+                                        </div>
+                                        <span>Other Grants</span>
+                                    </a>
+                                </li>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('TwoReferenceWiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-friends"></i>
+                                        </div>
+                                        <span>References</span>
+                                    </a>
+                                </li>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('AttachmentsInWiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-upload"></i>
+                                        </div>
+                                        <span>Attachments</span>
+                                    </a>
+                                </li>
+
+                                <!-- <li class="active pb-cursor">
                                         <a ng-click="redirectPageURL('CV_Wiser')">
                                             <div class="icon-circle">
                                                 <i class="fa-solid fa-address-book"></i>
                                             </div>
                                             <span>Curriculum Vitae</span>
                                         </a>
-                                    </li>
+                                    </li> -->
 
-                                    <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('Declaration_Wiser')">
-                                            <div class="icon-circle">
-                                                <i class="fas fa-check"></i>
-                                            </div>
-                                            <span>Declaration</span>
-                                        </a>
-                                    </li>
-                                </ul>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Declaration_Wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                        <span>Declaration</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="tab-link" ng-hide="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success wp-4"></div>
                             </div>
-                            <div class="tab-link" ng-hide="proposalStage">
-                                <div class="progress">
-                                    <div class="progress-success wp-1"></div>
-                                </div>
-                                <ul>
-                                    <li class="active">
-                                        <a>
-                                            <div class="icon-circle">
-                                                <i class="fas fa-user-friends"></i>
-                                            </div>
-                                            <span>References</span>
-                                        </a>
-                                    </li>
-                                    
-                                    <li>
-                                        <a>
-                                            <div class="icon-circle">
-                                                <i class="fas fa-money-bill"></i>
-                                            </div>
-                                            <span>Grant Details</span>
-                                        </a>
-                                    </li>
+                            <ul>
 
-                                    <li>
-                                        <a>
-                                            <div class="icon-circle">
-                                                <i class="fas fa-upload"></i>
-                                            </div>
-                                            <span>Attachments</span>
-                                        </a>
-                                    </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-money-bill"></i>
+                                        </div>
+                                        <span>Other Grants</span>
+                                    </a>
+                                </li>
 
-                                    <li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-friends"></i>
+                                        </div>
+                                        <span>References</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-upload"></i>
+                                        </div>
+                                        <span>Attachments</span>
+                                    </a>
+                                </li>
+
+                                <!-- <li>
                                         <a>
                                             <div class="icon-circle">
                                                 <i class="fa-solid fa-address-book"></i>
                                             </div>
                                             <span>Curriculum Vitae</span>
                                         </a>
-                                    </li>
-                                    
-                                    <li>
-                                        <a>
-                                            <div class="icon-circle">
-                                                <i class="fas fa-check"></i>
-                                            </div>
-                                            <span>Declaration</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            </div>
+                                    </li> -->
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                        <span>Declaration</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
+                    </div>
+                </div>
 
                 <div class="row mt-5 mx-5">
                     <div class="col-md-12">
@@ -351,20 +334,33 @@
                                     <th style="width:24%;">Email
                                         <span class="required-asterisk" style="color:red;">*</span>
                                     </th>
-                                    <th ng-hide="proposalStage" class="text-center"><i class="fas fa-plus-circle icon" ng-click="addRowsWorkPackage()" style="width:3%;"></i></th>
+                                    <th ng-hide="proposalStage" class="text-center"><i class="fas fa-plus-circle icon"
+                                            ng-click="addRowsWorkPackage()" style="width:3%;"></i></th>
                                 </tr>
                             </thead>
 
                             <tbody>
                                 <tr class="font-tbl" ng-repeat="applicnt in ParticipantList">
                                     <td>{{$index+1}}</td>
-                                    <td><input ng-focus="removeClass('name',$index)" id="name{{$index}}" type="text" class="form-control" ng-model="applicnt.Name" ng-disabled="proposalStage" /></td>
-                                    <td><input ng-focus="removeClass('designation',$index)" id="designation{{$index}}" type="text" class="form-control" ng-model="applicnt.Designation__c" ng-disabled="proposalStage" /></td>
-                                    <td><input ng-focus="removeClass('organisation',$index)" id="organisation{{$index}}" type="text" class="form-control" ng-model="applicnt.Organisation_Institute__c" ng-disabled="proposalStage" /></td>
-                                    <td><input ng-focus="removeClass('phone',$index)" id="phone{{$index}}" type="text" class="form-control" ng-model="applicnt.Phone__c" ng-disabled="proposalStage" /></td>
-                                    <td><input ng-focus="removeClass('email',$index)" id="email{{$index}}" type="email" class="form-control" ng-model="applicnt.Email__c" ng-disabled="proposalStage" /></td>
+                                    <td><input ng-focus="removeClass('name',$index)" id="name{{$index}}" type="text"
+                                            class="form-control" ng-model="applicnt.Name" ng-disabled="proposalStage" />
+                                    </td>
+                                    <td><input ng-focus="removeClass('designation',$index)" id="designation{{$index}}"
+                                            type="text" class="form-control" ng-model="applicnt.Designation__c"
+                                            ng-disabled="proposalStage" /></td>
+                                    <td><input ng-focus="removeClass('organisation',$index)" id="organisation{{$index}}"
+                                            type="text" class="form-control"
+                                            ng-model="applicnt.Organisation_Institute__c" ng-disabled="proposalStage" />
+                                    </td>
+                                    <td><input ng-focus="removeClass('phone',$index)" id="phone{{$index}}" type="text"
+                                            class="form-control" ng-model="applicnt.Phone__c"
+                                            ng-disabled="proposalStage" /></td>
+                                    <td><input ng-focus="removeClass('email',$index)" id="email{{$index}}" type="email"
+                                            class="form-control" ng-model="applicnt.Email__c"
+                                            ng-disabled="proposalStage" /></td>
                                     <!-- <td><input ng-focus="removeClass('email',$index)" id="email{{$index}}" type="email" class="form-control" ng-model="applicnt.Email__c" ng-disabled="proposalStage" ng-change="checkEmail(applicnt.Email__c,applicnt.Id)" ng-paste="checkEmail(applicnt.Email__c,applicnt.Id)" /></td> -->
-                                    <td ng-if="!proposalStage"><i class="fa-solid fa-circle-xmark fa-2x text-danger" ng-click="deleteRowsWorkPackage($index)"></i></td>
+                                    <td ng-if="!proposalStage"><i class="fa-solid fa-circle-xmark fa-2x text-danger"
+                                            ng-click="deleteRowsWorkPackage($index)"></i></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -378,9 +374,110 @@
                     </div>
                 </div>
 
+                <!-- ********************** Signatory Details *********************** -->
+                <div class="row mx-5 mt-5 px-2 py-5 box-shadow-2">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4 class="pb-3 color-theme">
+                                <b>Signatory Details</b>
+                            </h4>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mt-3">
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="font-if" for="txtName">Salutation
+                                    <span class="text-danger me-2">*</span>
+                                </label>
+                                <input type="text" class="form-control" ng-disabled="proposalStage"
+                                    ng-model="objContact.Contact__r.Salutation"
+                                    ng-focus="removeClass('signatorySalutation')" id="signSalutation" />
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="font-if" for="txtName">Signatory First Name
+                                    <span class="text-danger me-2">*</span>
+                                </label>
+                                <input type="text" class="form-control" ng-disabled="proposalStage"
+                                    ng-model="objContact.Contact__r.Signatory_First_Name__c"
+                                    ng-focus="removeClass('signatoryFirstName')" id="signFirstName" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="font-if" for="txtName">Signatory Last Name
+                                    <span class="text-danger me-2">*</span>
+                                </label>
+                                <input type="text" class="form-control" ng-disabled="proposalStage"
+                                    ng-model="objContact.Contact__r.Signatory_Last_Name__c"
+                                    ng-focus="removeClass('signatoryLastName')" id="signLastName" />
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-4 mt-3">
+                                <label class="font-if">Signatory Institution
+                                    <span class="text-danger me-2">*</span>
+                                </label>
+                                <input type="text" class="form-control" ng-disabled="proposalStage"
+                                    ng-model="objContact.Contact__r.Signatory_Institution__c"
+                                    ng-focus="removeClass('signatoryInstitution')" id="signInstitution" />
+                            </div>
+
+                            <div class="col-md-4 mt-3">
+                                <label class="font-if">Signatory Designation
+                                    <span class="text-danger me-2">*</span>
+                                </label>
+                                <input type="text" class="form-control" ng-disabled="proposalStage"
+                                    ng-model="objContact.Contact__r.Signatory_Designation__c"
+                                    ng-focus="removeClass('signatoryDesignation')" id="signDesignation" />
+                            </div>
+
+                            <!-- <div class="col-md-4 mt-3">
+                                <label class="font-if">Signatory Emailst Name
+                                    <span class="text-danger me-2">*</span>
+                                </label>
+                                <input type="text" class="form-control" ng-disabled="proposalStage"
+                                    ng-model="objContact.Email" ng-focus="removeClass('signatoryEmail')"
+                                    id="signEmail" />
+                            </div> -->
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-4 mt-3">
+                                <label class="font-if">Institution
+                                    <span class="text-danger me-2">*</span>
+                                </label>
+                                <input type="text" class="form-control" ng-disabled="proposalStage"
+                                    ng-model="objContact.Contact__r.Institution_Name__c"
+                                    ng-focus="removeClass('signatoryInstitution2')" id="signInstitution2" />
+                            </div>
+
+                            <div class="col-md-4 mt-3">
+                                <label class="font-if">Designation
+                                    <span class="text-danger me-2">*</span>
+                                </label>
+                                <input type="text" class="form-control" ng-disabled="proposalStage"
+                                    ng-model="objContact.Contact__r.Designation__c"
+                                    ng-focus="removeClass('signatoryDesignation')" id="signDesignation" />
+                            </div>
+
+                            <!-- <div class="col-md-4 mt-3">
+                                <label class="font-if">Email
+                                    <span class="text-danger me-2">*</span>
+                                </label>
+                                <input class="form-control" type="text" ng-model="objContact.Email" id="txtEmail1"
+                                    ng-disabled="proposalStage" ng-focus="removeClass('txtEmail1')"
+                                    ng-change="checkEmail(objContact.Email,objContact.Id)" />
+                            </div> -->
+                        </div>
+
+                    </div>
+                </div>
             </div>
 
-               <!-- <div class="container px-4">
+            <!-- <div class="container px-4">
                     <div class="card h-100 m-5">
                       
                          <div class="card-header">
@@ -425,9 +522,10 @@
             </div>
                </div>
                 </div> -->
-                <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-           </body>
-     </div>
-</html>
+            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        </body>
+    </div>
+
+    </html>
 
 </apex:page>

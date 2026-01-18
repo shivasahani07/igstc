@@ -7,6 +7,9 @@ angular.module('cp_app').controller('WISERgrant_ctrl', function ($scope, $rootSc
     $scope.disableGrants = [];
     var statusLoginHas = 0;
     $scope.pickListCurrency = $rootScope.currencyPickList;
+    $scope.grantsHandledValue = ''; // Current selected value from Grants_Handled__c
+    $scope.grantsHandledPickList = []; // Picklist values for Grants_Handled__c
+    $scope.showGrantsTable = false; // Controls table visibility
 
 
 
@@ -43,204 +46,346 @@ angular.module('cp_app').controller('WISERgrant_ctrl', function ($scope, $rootSc
             }, { escape: true });
         }
     }
-
     $scope.getProposalStage();
 
-
-    $scope.getApplicantDetails = function () {
-        ApplicantPortal_Contoller.getApplicantDetailsForGrantWISER($rootScope.contactId, function (result, event) {
-            if (event.status) {
-                debugger;
-                $scope.applicantDetails = result;
-                $scope.grants = [];
-                for (var i = 0; i < $scope.applicantDetails.length; i++) {
-                    statusLoginHas = 0;
-                    if ($scope.applicantDetails[i].Contacts != undefined) {
-                        for (j = 0; j < $scope.applicantDetails[i].Contacts.length; j++) {
-                            if ($scope.applicantDetails[i].Contacts[j].Login_Hash_Code__c == $rootScope.candidateId) {
-                                $scope.input.push($scope.applicantDetails[i]);
-                                statusLoginHas = 1;
-                            }
-                        }
-                    }
-                    if (statusLoginHas == 0) {
-                        $scope.disableGrants.push($scope.applicantDetails[i]);
-                    }
-                }
-                for (var i = 0; i < $scope.input.length; i++) {
-                    if ($scope.input[i].Existing_Grants__r == undefined) {
-                        var rec = {
-                            'Account__r.Name': $scope.input[i].Name,
-                            'Title__c': '',
-                            'Funding_Agency__c': '',
-                            'Role_in_the_Project__c': '',
-                            'Budget__c': '',
-                            'Starting_Date__c': '',
-                            'End_Date__c': '',
-                            'Account__c': $scope.input[i].Id,
-                            'Application__c': $rootScope.proposalId
-                        };
-                        $scope.input[i].Existing_Grants__r = [];
-                        debugger;
-                        $scope.input[i].Existing_Grants__r.push(rec);
-                    } else {
-                        for (var j = 0; j < $scope.input[i].Existing_Grants__r.length; j++) {
-                            if ($scope.input[i].Existing_Grants__r[j].Title__c != undefined || $scope.input[i].Existing_Grants__r[j].Title__c != '') {
-                                $scope.input[i].Existing_Grants__r[j].Title__c = $scope.input[i].Existing_Grants__r[j].Title__c ? $scope.input[i].Existing_Grants__r[j].Title__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.input[i].Existing_Grants__r[j].Title__c;
-                            }
-                            if ($scope.input[i].Existing_Grants__r[j].Funding_Agency__c != undefined || $scope.input[i].Existing_Grants__r[j].Funding_Agency__c != '') {
-                                $scope.input[i].Existing_Grants__r[j].Funding_Agency__c = $scope.input[i].Existing_Grants__r[j].Funding_Agency__c ? $scope.input[i].Existing_Grants__r[j].Funding_Agency__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.input[i].Existing_Grants__r[j].Funding_Agency__c;
-                            }
-                            if ($scope.input[i].Existing_Grants__r[j].Role_in_the_Project__c != undefined || $scope.input[i].Existing_Grants__r[j].Role_in_the_Project__c != '') {
-                                $scope.input[i].Existing_Grants__r[j].Role_in_the_Project__c = $scope.input[i].Existing_Grants__r[j].Role_in_the_Project__c ? $scope.input[i].Existing_Grants__r[j].Role_in_the_Project__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.input[i].Existing_Grants__r[j].Role_in_the_Project__c;
-                            }
-                        }
-                    }
-                }
-                //         for(var i=0;i<$scope.disableGrants.length;i++){
-                //             if($scope.disableGrants[i].Existing_Grants__r != undefined){
-                //               for(var j=0;j<$scope.disableGrants[i].Existing_Grants__r.length;j++){
-                //                 if($scope.disableGrants[i].Existing_Grants__r[j].Starting_Date__c != undefined){
-                //                     var date = new Date($scope.disableGrants[i].Existing_Grants__r[j].Starting_Date__c);
-                //                     var year = date.getUTCFullYear();
-                //                     var month = date.getMonth()+1;
-                //                     var day = date.getDate();
-                //                     $scope.disableGrants[i].Existing_Grants__r[j].Starting_Date__c   = year.toString()+'-'+month.toString()+'-'+day.toString();
-                //             }
-                //         }
-                //     }
-                // }
-
-                var existingGrant = [{ "title": "", "fundingagency": "", "Account": "", "AccountName": "", "role": "", "budget": "", "id": "", "startDate": "", "endDate": "", "Application": "" }];
-                $scope.grants.push(existingGrant);
-                $scope.$apply();
+    // Get Grants_Handled__c picklist values from Salesforce
+    $scope.getGrantsHandledPicklistValues = function () {
+        ApplicantPortal_Contoller.getGrantsHandledPicklistValues(function (result, event) {
+            if (event.status && result) {
+                $scope.grantsHandledPickList = result;
+                $scope.$applyAsync();
             }
-        },
-            { escape: true }
-        )
-    }
+        }, { escape: true });
+    };
+    $scope.getGrantsHandledPicklistValues();
 
-    $scope.getApplicantDetails();
+    $scope.getExistingGrants = function () {
+        ApplicantPortal_Contoller.getExistingGrantsRecords(
+            $rootScope.apaId,
+            function (result, event) {
+                if (event.status && result) {
+                    $scope.existingGrants = result;
+
+                    // Extract Grants_Handled__c from the first record (if exists)
+                    if ($scope.existingGrants.length > 0 && $scope.existingGrants[0].Applicant_Proposal_Association__r) {
+                        $scope.grantsHandledValue = $scope.existingGrants[0].Applicant_Proposal_Association__r.Grants_Handled__c || '';
+                        // Show table if Grants_Handled__c is 'Yes'
+                        $scope.showGrantsTable = ($scope.grantsHandledValue === 'Yes');
+                        $scope.$applyAsync();
+                    } else {
+                        // No grants records - fetch APA directly to get Grants_Handled__c value
+                        $scope.fetchAPAGrantsHandled();
+                    }
+                }
+            },
+            { escape: true }
+        );
+    };
+
+    // Fallback method to get Grants_Handled__c when no grants exist
+    $scope.fetchAPAGrantsHandled = function () {
+        if ($rootScope.apaId) {
+            ApplicantPortal_Contoller.getAPAGrantsHandled($rootScope.apaId, function (result, event) {
+                if (event.status && result) {
+                    $scope.grantsHandledValue = result.Grants_Handled__c || '';
+                    // Show table if Grants_Handled__c is 'Yes'
+                    $scope.showGrantsTable = ($scope.grantsHandledValue === 'Yes');
+
+                    // If need to show table but no grants exist, add one empty row
+                    if ($scope.showGrantsTable && (!$scope.existingGrants || $scope.existingGrants.length === 0)) {
+                        $scope.existingGrants = [{
+                            Title__c: '',
+                            Funding_Agency__c: '',
+                            Currency__c: '',
+                            Budget__c: '',
+                            Starting_Date__c: '',
+                            End_Date__c: '',
+                            Role_in_the_Project__c: '',
+                            Application__c: $rootScope.proposalId
+                        }];
+                    }
+                    $scope.$applyAsync();
+                }
+            }, { escape: true });
+        }
+    };
+
+    // Handle change in Grants Handled picklist
+    $scope.onGrantsHandledChange = function () {
+        debugger;
+        $scope.showGrantsTable = ($scope.grantsHandledValue === 'Yes');
+
+        // If user selects 'Yes' and no grants exist, add an empty row
+        if ($scope.showGrantsTable && (!$scope.existingGrants || $scope.existingGrants.length === 0)) {
+            $scope.existingGrants = [{
+                Title__c: '',
+                Funding_Agency__c: '',
+                Currency__c: '',
+                Budget__c: '',
+                Starting_Date__c: '',
+                End_Date__c: '',
+                Role_in_the_Project__c: '',
+                Application__c: $rootScope.proposalId
+            }];
+        }
+    };
+
+    $scope.getExistingGrants();
+
+
+    // $scope.getApplicantDetails = function () {
+    //     ApplicantPortal_Contoller.getApplicantDetailsForGrantWISER($rootScope.apaId, function (result, event) {
+    //         if (event.status) {
+    //             debugger;
+    //             $scope.grantDetails = result;
+    //             $scope.grants = [];
+
+    //             for (var i = 0; i < $scope.grantDetails.length; i++) {
+    //                 statusLoginHas = 0;
+
+    //                 if ($scope.grantDetails[i].Contacts != undefined) {
+    //                     for (j = 0; j < $scope.grantDetails[i].Contacts.length; j++) {
+    //                         if ($scope.grantDetails[i].Contacts[j].Login_Hash_Code__c == $rootScope.candidateId) {
+    //                             $scope.input.push($scope.grantDetails[i]);
+    //                             statusLoginHas = 1;
+    //                         }
+    //                     }
+    //                 }
+    //                 if (statusLoginHas == 0) {
+    //                     $scope.disableGrants.push($scope.grantDetails[i]);
+    //                 }
+    //             }
+
+    //             for (var i = 0; i < $scope.input.length; i++) {
+    //                 if ($scope.input[i].Existing_Grants__r == undefined) {
+    //                     var rec = {
+    //                         'Account__r.Name': $scope.input[i].Name,
+    //                         'Title__c': '',
+    //                         'Funding_Agency__c': '',
+    //                         'Role_in_the_Project__c': '',
+    //                         'Budget__c': '',
+    //                         'Starting_Date__c': '',
+    //                         'End_Date__c': '',
+    //                         'Account__c': $scope.input[i].Id,
+    //                         'Application__c': $rootScope.proposalId
+    //                     };
+    //                     $scope.input[i].Existing_Grants__r = [];
+    //                     debugger;
+    //                     $scope.input[i].Existing_Grants__r.push(rec);
+    //                 } else {
+    //                     for (var j = 0; j < $scope.input[i].Existing_Grants__r.length; j++) {
+    //                         if ($scope.input[i].Existing_Grants__r[j].Title__c != undefined || $scope.input[i].Existing_Grants__r[j].Title__c != '') {
+    //                             $scope.input[i].Existing_Grants__r[j].Title__c = $scope.input[i].Existing_Grants__r[j].Title__c ? $scope.input[i].Existing_Grants__r[j].Title__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.input[i].Existing_Grants__r[j].Title__c;
+    //                         }
+    //                         if ($scope.input[i].Existing_Grants__r[j].Funding_Agency__c != undefined || $scope.input[i].Existing_Grants__r[j].Funding_Agency__c != '') {
+    //                             $scope.input[i].Existing_Grants__r[j].Funding_Agency__c = $scope.input[i].Existing_Grants__r[j].Funding_Agency__c ? $scope.input[i].Existing_Grants__r[j].Funding_Agency__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.input[i].Existing_Grants__r[j].Funding_Agency__c;
+    //                         }
+    //                         if ($scope.input[i].Existing_Grants__r[j].Role_in_the_Project__c != undefined || $scope.input[i].Existing_Grants__r[j].Role_in_the_Project__c != '') {
+    //                             $scope.input[i].Existing_Grants__r[j].Role_in_the_Project__c = $scope.input[i].Existing_Grants__r[j].Role_in_the_Project__c ? $scope.input[i].Existing_Grants__r[j].Role_in_the_Project__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.input[i].Existing_Grants__r[j].Role_in_the_Project__c;
+    //                         }
+    //                     }
+    //                 }
+    //             }
+
+    //             var existingGrant = [{ "title": "", "fundingagency": "", "Account": "", "AccountName": "", "role": "", "budget": "", "id": "", "startDate": "", "endDate": "", "Application": "" }];
+    //             $scope.grants.push(existingGrant);
+    //             $scope.$apply();
+    //         }
+    //     },
+    //         { escape: true }
+    //     )
+    // }
+    // $scope.getApplicantDetails();
+
+    // $scope.getApplicantDetails = function () {
+    // ApplicantPortal_Contoller.getApplicantDetailsForGrantWISER($rootScope.contactId, function (result, event) {
+    //         if (event.status) {
+    //             debugger;
+    //             $scope.applicantDetails = result;
+    //             $scope.grants = [];
+
+    //             for (var i = 0; i < $scope.applicantDetails.length; i++) {
+    //                 statusLoginHas = 0;
+
+    //                 if ($scope.applicantDetails[i].Contacts != undefined) {
+    //                     for (j = 0; j < $scope.applicantDetails[i].Contacts.length; j++) {
+    //                         if ($scope.applicantDetails[i].Contacts[j].Login_Hash_Code__c == $rootScope.candidateId) {
+    //                             $scope.input.push($scope.applicantDetails[i]);
+    //                             statusLoginHas = 1;
+    //                         }
+    //                     }
+    //                 }
+    //                 if (statusLoginHas == 0) {
+    //                     $scope.disableGrants.push($scope.applicantDetails[i]);
+    //                 }
+    //             }
+
+    //             for (var i = 0; i < $scope.input.length; i++) {
+    //                 if ($scope.input[i].Existing_Grants__r == undefined) {
+    //                     var rec = {
+    //                         'Account__r.Name': $scope.input[i].Name,
+    //                         'Title__c': '',
+    //                         'Funding_Agency__c': '',
+    //                         'Role_in_the_Project__c': '',
+    //                         'Budget__c': '',
+    //                         'Starting_Date__c': '',
+    //                         'End_Date__c': '',
+    //                         'Account__c': $scope.input[i].Id,
+    //                         'Application__c': $rootScope.proposalId
+    //                     };
+    //                     $scope.input[i].Existing_Grants__r = [];
+    //                     debugger;
+    //                     $scope.input[i].Existing_Grants__r.push(rec);
+    //                 } else {
+    //                     for (var j = 0; j < $scope.input[i].Existing_Grants__r.length; j++) {
+    //                         if ($scope.input[i].Existing_Grants__r[j].Title__c != undefined || $scope.input[i].Existing_Grants__r[j].Title__c != '') {
+    //                             $scope.input[i].Existing_Grants__r[j].Title__c = $scope.input[i].Existing_Grants__r[j].Title__c ? $scope.input[i].Existing_Grants__r[j].Title__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.input[i].Existing_Grants__r[j].Title__c;
+    //                         }
+    //                         if ($scope.input[i].Existing_Grants__r[j].Funding_Agency__c != undefined || $scope.input[i].Existing_Grants__r[j].Funding_Agency__c != '') {
+    //                             $scope.input[i].Existing_Grants__r[j].Funding_Agency__c = $scope.input[i].Existing_Grants__r[j].Funding_Agency__c ? $scope.input[i].Existing_Grants__r[j].Funding_Agency__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.input[i].Existing_Grants__r[j].Funding_Agency__c;
+    //                         }
+    //                         if ($scope.input[i].Existing_Grants__r[j].Role_in_the_Project__c != undefined || $scope.input[i].Existing_Grants__r[j].Role_in_the_Project__c != '') {
+    //                             $scope.input[i].Existing_Grants__r[j].Role_in_the_Project__c = $scope.input[i].Existing_Grants__r[j].Role_in_the_Project__c ? $scope.input[i].Existing_Grants__r[j].Role_in_the_Project__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.input[i].Existing_Grants__r[j].Role_in_the_Project__c;
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //             //         for(var i=0;i<$scope.disableGrants.length;i++){
+    //             //             if($scope.disableGrants[i].Existing_Grants__r != undefined){
+    //             //               for(var j=0;j<$scope.disableGrants[i].Existing_Grants__r.length;j++){
+    //             //                 if($scope.disableGrants[i].Existing_Grants__r[j].Starting_Date__c != undefined){
+    //             //                     var date = new Date($scope.disableGrants[i].Existing_Grants__r[j].Starting_Date__c);
+    //             //                     var year = date.getUTCFullYear();
+    //             //                     var month = date.getMonth()+1;
+    //             //                     var day = date.getDate();
+    //             //                     $scope.disableGrants[i].Existing_Grants__r[j].Starting_Date__c   = year.toString()+'-'+month.toString()+'-'+day.toString();
+    //             //             }
+    //             //         }
+    //             //     }
+    //             // }
+
+    //             var existingGrant = [{ "title": "", "fundingagency": "", "Account": "", "AccountName": "", "role": "", "budget": "", "id": "", "startDate": "", "endDate": "", "Application": "" }];
+    //             $scope.grants.push(existingGrant);
+    //             $scope.$apply();
+    //         }
+    //     },
+    //         { escape: true }
+    //     )
+    // }
+    // $scope.getApplicantDetails();
 
     $scope.submitExistingGrants = function () {
         debugger;
-        // for(var i=0;i<$scope.input.length;i++){
-        //     for(var j=0;j<$scope.input[i].Existing_Grants__r.length;j++){
 
-        //         if($scope.input[i].Existing_Grants__r[j].Title__c == undefined || $scope.input[i].Existing_Grants__r[j].Title__c == ""){
-        //             swal("Existing Grants", "Please Enter Title.");
-        //             $("#title"+j+"").addClass('border-theme');
-        //             return;
-        //         }
-        //         if($scope.input[i].Existing_Grants__r[j].Funding_Agency__c == undefined || $scope.input[i].Existing_Grants__r[j].Funding_Agency__c == ""){
-        //             swal("Existing Grants", "Please Enter Funding Agency.");
-        //             $("#funding"+i+"").addClass('border-theme');
-        //             return;
-        //         }
-        //         if($scope.input[i].Existing_Grants__r[j].Budget__c == undefined || $scope.input[i].Existing_Grants__r[j].Budget__c == ""){
-        //             swal("Existing Grants", "Please Enter Budget.");
-        //             $("#budget"+i+"").addClass('border-theme');
-        //             return;
-        //         }
-        //         if($scope.input[i].Existing_Grants__r[j].Starting_Date__c == undefined || $scope.input[i].Existing_Grants__r[j].Starting_Date__c == ""){
-        //             swal("Existing Grants", "Please Enter Starting Date.");
-        //             $("#startDate"+i+"").addClass('border-theme');
-        //             return;
-        //         }
-        //         if($scope.input[i].Existing_Grants__r[j].Role_in_the_Project__c == undefined || $scope.input[i].Existing_Grants__r[j].Role_in_the_Project__c == ""){
-        //             swal("Existing Grants", "Please Enter role(Number in months).");
-        //             $("#role"+i+"").addClass('border-theme');
-        //             return;
-        //         }
-        //     }
-        // }
-        $scope.grantList = [];
-        for (let i = 0; i < $scope.grants.length; i++) {
-            delete ($scope.grants[i]['Name']);
-            delete ($scope.grants[i]['$$hashKey']);
+        // First, update the Grants_Handled__c value on APA
+        ApplicantPortal_Contoller.updateAPAGrantsHandled($rootScope.apaId, $scope.grantsHandledValue, function (result, event) {
+            if (event.status && result === 'SUCCESS') {
+                console.log("APA Grants Handled updated successfully");
 
-            for (let j = 0; j < $scope.input[i].Existing_Grants__r.length; j++) {
-                // if($scope.input[i].Existing_Grants__r[j].Budget__c == undefined || $scope.input[i].Existing_Grants__r[j].Budget__c == ""){
-                //     $scope.input[i].Existing_Grants__r[j].Budget__c = 0;
-                //     // Number('$scope.applicantDetails[i].Existing_Grants__r[j].Budget__c');
-                // }
-                // if($scope.input[i].Existing_Grants__r[j].Role_in_the_Project__c == undefined || $scope.input[i].Existing_Grants__r[j].Role_in_the_Project__c == ""){
-                //     $scope.input[i].Existing_Grants__r[j].Role_in_the_Project__c = 0;
-                //     // Number('$scope.applicantDetails[i].Existing_Grants__r[j].Role_in_the_Project__c'); 
-                // }
-                var grantApplication = { "title": "", "fundingagency": "", "Account": $scope.input[i].Id, "AccountName": $scope.input[i].Name, "role": "", currencyPick: "", "budget": "", "id": "", "startDate": "", "endDate": "", "Application": "" };
-                grantApplication.Account = $scope.input[i].Id;
-                grantApplication.Application = $rootScope.proposalId;
-                grantApplication.AccountName = $scope.input[i].Name;
-                grantApplication.id = $scope.input[i].Existing_Grants__r[j].Id == undefined ? null : $scope.input[i].Existing_Grants__r[j].Id;
-                grantApplication.title = $scope.input[i].Existing_Grants__r[j].Title__c;
-                grantApplication.fundingagency = $scope.input[i].Existing_Grants__r[j].Funding_Agency__c;
-                grantApplication.role = $scope.input[i].Existing_Grants__r[j].Role_in_the_Project__c;
-                grantApplication.budget = $scope.input[i].Existing_Grants__r[j].Budget__c;
-                grantApplication.currencyPick = $scope.input[i].Existing_Grants__r[j].Currency__c;
-                grantApplication.startDate = $scope.input[i].Existing_Grants__r[j].Starting_Date__c;
-                grantApplication.endDate = $scope.input[i].Existing_Grants__r[j].End_Date__c;
-                $scope.grantList.push(grantApplication);
+                // If user selected 'No', skip saving grants and navigate
+                if ($scope.grantsHandledValue !== 'Yes') {
+                    swal({
+                        title: "Success",
+                        text: 'Your selection has been saved successfully.',
+                        icon: "success",
+                        button: "ok!",
+                    });
+                    $scope.redirectPageURL('TwoReferenceWiser');
+                    return;
+                }
 
-                // if($scope.input[i].Existing_Grants__r[j].Starting_Date__c != undefined && $scope.input[i].Existing_Grants__r[j].Starting_Date__c != ""){
-                //     grantApplication.startingyear = $scope.input[i].Existing_Grants__r[j].Starting_Date__c.getUTCFullYear();
-                //     grantApplication.startingmonth = $scope.input[i].Existing_Grants__r[j].Starting_Date__c.getUTCMonth()+1;
-                //     grantApplication.startingday = $scope.input[i].Existing_Grants__r[j].Starting_Date__c.getDate();
-                // }else{
-                //     delete ($scope.input[i].Existing_Grants__r[j].Starting_Date__c);     
-                // }
+                // If user selected 'Yes', save the grant records
+                $scope.grantList = [];
 
-                // delete ($scope.input[i].Existing_Grants__r[j].Starting_Date__c);
-            }
-        }
-        ApplicantPortal_Contoller.insertExistingGrantsWISER($scope.grantList, function (result, event) {
-            if (event.status && result != null) {
-                console.log("Result ::" + result);
+                for (let i = 0; i < $scope.existingGrants.length; i++) {
+                    var grant = $scope.existingGrants[i];
 
+                    // Format dates to string if they are Date objects
+                    var startDate = grant.Starting_Date__c;
+                    var endDate = grant.End_Date__c;
 
-                swal({
-                    title: "Success",
-                    text: 'Your Existing Grant details have been saved successfully.',
-                    icon: "success",
-                    button: "ok!",
+                    if (startDate instanceof Date) {
+                        startDate = startDate.toISOString().split('T')[0];
+                    }
+                    if (endDate instanceof Date) {
+                        endDate = endDate.toISOString().split('T')[0];
+                    }
+
+                    var grantApplication = {
+                        "title": grant.Title__c || "",
+                        "fundingagency": grant.Funding_Agency__c || "",
+                        "Account": grant.Account__c || null,
+                        "AccountName": "",
+                        "role": grant.Role_in_the_Project__c || "",
+                        "currencyPick": grant.Currency__c || "",
+                        "budget": grant.Budget__c || "",
+                        "id": grant.Id || null,
+                        "startDate": startDate || "",
+                        "endDate": endDate || "",
+                        "Application": $rootScope.proposalId,
+                        "apaId": $rootScope.apaId
+                    };
+
+                    $scope.grantList.push(grantApplication);
+                }
+
+                ApplicantPortal_Contoller.insertExistingGrantsWISER($scope.grantList, function (result, event) {
+                    if (event.status && result != null) {
+                        console.log("Result ::" + result);
+
+                        swal({
+                            title: "Success",
+                            text: 'Your Existing Grant details have been saved successfully.',
+                            icon: "success",
+                            button: "ok!",
+                        });
+                        $scope.redirectPageURL('TwoReferenceWiser');
+                    } else {
+                        swal({
+                            title: "Error",
+                            text: "Exception!",
+                            icon: "error",
+                            button: "ok!",
+                        });
+                    }
                 });
-                // $scope.redirectPageURL('CV_Wiser');
-                $scope.redirectPageURL('AttachmentsInWiser');
-
-                // window.location.replace('https://dev-igstc.cs114.force.com/ApplicantDashboard/ApplicantPortal?id='+$rootScope.userId+'#/AttachmentsInWiser');
             } else {
                 swal({
                     title: "Error",
-                    text: "Exception!",
+                    text: "Failed to save selection!",
                     icon: "error",
                     button: "ok!",
                 });
             }
-        })
+        }, { escape: true });
     }
 
-    $scope.addRow = function (index) {
+    $scope.addRow = function () {
         debugger;
         var rec = {
-            'Account__r.Name': $scope.input[index].Name,
-            'Title__c': '',
-            'Funding_Agency__c': '',
-            'Role_in_the_Project__c': '',
-            'Budget__c': '',
-            'Starting_Date__c': '',
-            'Account__c': $scope.input[index].Id,
-            'Application__c': $rootScope.proposalId
+            Title__c: '',
+            Funding_Agency__c: '',
+            Currency__c: '',
+            Budget__c: '',
+            Starting_Date__c: '',
+            End_Date__c: '',
+            Role_in_the_Project__c: '',
+            Application__c: $rootScope.proposalId
         };
-        $scope.input[index].Existing_Grants__r.push(rec);
+        $scope.existingGrants.push(rec);
     }
 
-    $scope.deleteRow = function (param1, param2) {
+    $scope.deleteRow = function (index) {
         debugger;
-        if ($scope.input[param1].Existing_Grants__r.length > 1) {
-            if ($scope.input[param1].Id != undefined) {
-                $scope.deleteGrants($scope.input[param1].Existing_Grants__r[param2].Id);
+        if ($scope.existingGrants.length > 1) {
+            var grant = $scope.existingGrants[index];
+            if (grant.Id != undefined && grant.Id != null) {
+                $scope.deleteGrants(grant.Id);
             }
-            $scope.input[param1].Existing_Grants__r.splice(param2, 1);
+            $scope.existingGrants.splice(index, 1);
+        } else {
+            // Keep at least one empty row
+            swal("Info", "At least one row is required.");
         }
     }
 
@@ -271,7 +416,7 @@ angular.module('cp_app').controller('WISERgrant_ctrl', function ($scope, $rootSc
     $scope.previousPage = function () {
         debugger;
         //   $scope.redirectPageURL('TwoReferenceWiser');
-        $scope.redirectPageURL('ExistingGrantWISER');
+        $scope.redirectPageURL('FinancialOverview_wiser');
         // window.location.replace(window.location.origin+'/ApplicantDashboard/ApplicantPortal?id='+$rootScope.userId+'#/TwoReferenceWiser');
     }
 

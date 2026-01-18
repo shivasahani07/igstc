@@ -1,31 +1,34 @@
 <apex:page sidebar="false" showHeader="false" standardStylesheets="false">
-<html>
+    <html>
+
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-            <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
     </head>
     <div ng-controller="declarationwiser_ctrl">
+
         <body>
 
             <div class="container mt-5">
                 <div class="row mx-5">
                     <div class="col-md-12">
+
                         <div class="tab-link" ng-show="proposalStage">
                             <div class="progress">
                                 <div class="progress-success w-100"></div>
                             </div>
-                            <ul>
 
-                                
+                            <ul>
                                 <!-- Pair Project Details -->
                                 <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('HostProjectDetails')">
                                         <div class="icon-circle">
-                                            <i class="far fa-address-card"></i>
+                                            <!-- <i class="far fa-address-card"></i> -->
+                                            <i class="fas fa-file-invoice"></i>
                                         </div>
-                                        <span>Pair Project Details</span>
+                                        <span>Paired Project Details</span>
                                     </a>
                                 </li>
 
@@ -33,11 +36,13 @@
                                 <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
                                         <div class="icon-circle">
-                                            <i class="fa fa-home"></i>
+                                            <!-- <i class="fa fa-home"></i> -->
+                                            <i class="far fa-address-card"></i>
                                         </div>
                                         <span>Pairing Details</span>
                                     </a>
                                 </li>
+
 
                                 <!-- Pair Details -->
                                 <!-- <li class="active pb-cursor">
@@ -59,6 +64,15 @@
                                     </a>
                                 </li>
 
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('CV_Wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li>
+
                                 <!-- Financial Details -->
                                 <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('FinancialOverview_wiser')">
@@ -68,51 +82,9 @@
                                         <span>Financial Overview</span>
                                     </a>
                                 </li>
-
-
-                                <!-- <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('WiserApplicationPage')">
-                                        <div class="icon-circle">
-                                            <i class="fas fa-user-alt"></i>
-                                        </div>
-                                        <span>Applicant Details</span>
-                                    </a>
-                                </li>
-                                
-                                <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('HostInfoApplicationPage')">
-                                        <div class="icon-circle">
-                                            <i class="fas fa-file-invoice"></i>
-                                        </div>
-                                        <span>Pair Details</span>
-                                    </a>
-                                </li>
-                                <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
-                                        <div class="icon-circle">
-                                            <i class="fa fa-home"></i>
-                                        </div>
-                                        <span>Applicant Project Details</span>
-                                    </a>
-                                </li>
-                                <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('FinancialOverview_wiser')">
-                                        <div class="icon-circle">
-                                            <i class="fas fa-chart-line"></i>
-                                        </div>
-                                        <span>Financial Overview</span>
-                                    </a>
-                                </li>
-                                <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('HostProjectDetails')">
-                                        <div class="icon-circle">
-                                            <i class="far fa-address-card"></i>
-                                        </div>
-                                        <span>Pair Project Details</span>
-                                    </a>
-                                </li>    -->
                             </ul>
                         </div>
+
                         <div class="tab-link" ng-hide="proposalStage">
                             <div class="progress">
                                 <div class="progress-success w-100"></div>
@@ -124,7 +96,7 @@
                                         <div class="icon-circle">
                                             <i class="fas fa-user-alt"></i>
                                         </div>
-                                        <span>Pair Project Details</span>
+                                        <span>Paired Project Details</span>
                                     </a>
                                 </li>
 
@@ -153,6 +125,16 @@
                                         <span>Applicant Details</span>
                                     </a>
                                 </li>
+
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li>
+
                                 <li class="active">
                                     <a>
                                         <div class="icon-circle">
@@ -204,218 +186,228 @@
                                 </li> -->
                             </ul>
                         </div>
+                    </div>
+                </div>
+
+                <div class="row mx-5">
+                    <div class="col-md-12">
+                        <div class="tab-link" ng-show="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ExistingGrantWISER')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-money-bill"></i>
+                                        </div>
+                                        <span>Grant Details</span>
+                                    </a>
+                                </li>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('TwoReferenceWiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-friends"></i>
+                                        </div>
+                                        <span>References</span>
+                                    </a>
+                                </li>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('AttachmentsInWiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-upload"></i>
+                                        </div>
+                                        <span>Attachments</span>
+                                    </a>
+                                </li>
+
+                                <!-- <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('CV_Wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li> -->
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Declaration_Wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                        <span>Declaration</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-link" ng-hide="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-money-bill"></i>
+                                        </div>
+                                        <span>Grant Details</span>
+                                    </a>
+                                </li>
+
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-friends"></i>
+                                        </div>
+                                        <span>References</span>
+                                    </a>
+                                </li>
+
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-upload"></i>
+                                        </div>
+                                        <span>Attachments</span>
+                                    </a>
+                                </li>
+
+                                <!-- <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li> -->
+
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                        <span>Declaration</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-    
-                    <div class="row mx-5">
-                        <div class="col-md-12">
-                            <div class="tab-link" ng-show="proposalStage">
-                                <div class="progress">
-                                    <div class="progress-success w-100"></div>
-                                </div>
-                                <ul>
-                                    <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('TwoReferenceWiser')">
-                                            <div class="icon-circle">
-                                                <i class="fas fa-user-friends"></i>
-                                            </div>
-                                            <span>References</span>
-                                        </a>
-                                    </li>
-                                    
-                                    <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('ExistingGrantWISER')">
-                                            <div class="icon-circle">
-                                                <i class="fas fa-money-bill"></i>
-                                            </div>
-                                            <span>Grant Details</span>
-                                        </a>
-                                    </li>
-                                    
-                                    <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('AttachmentsInWiser')">
-                                            <div class="icon-circle">
-                                                <i class="fas fa-upload"></i>
-                                            </div>
-                                            <span>Attachments</span>
-                                        </a>
-                                    </li>
+                </div>
 
-                                    <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('CV_Wiser')">
-                                            <div class="icon-circle">
-                                                <i class="fa-solid fa-address-book"></i>
-                                            </div>
-                                            <span>Curriculum Vitae</span>
-                                        </a>
-                                    </li>
-
-                                    <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('Declaration_Wiser')">
-                                            <div class="icon-circle">
-                                                <i class="fas fa-check"></i>
-                                            </div>
-                                            <span>Declaration</span>
-                                        </a>
-                                    </li>
-                                </ul>
+                <div class="modal" id="filePreview">
+                    <div class="modal-dialog" style="min-width:120rem">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">
+                                    <div class="d-flex" style="background:unset;">
+                                        <h3 style="text-align: center">
+                                            <b>{{selectedFile.userDocument.Name}}</b>
+                                        </h3>
+                                    </div>
+                                </h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
-                            <div class="tab-link" ng-hide="proposalStage">
-                                <div class="progress">
-                                    <div class="progress-success w-100"></div>
-                                </div>
-                                <ul>
-                                    <li class="active">
-                                        <a>
-                                            <div class="icon-circle">
-                                                <i class="fas fa-user-friends"></i>
-                                            </div>
-                                            <span>References</span>
-                                        </a>
-                                    </li>
-                                    
-                                    <li class="active">
-                                        <a>
-                                            <div class="icon-circle">
-                                                <i class="fas fa-money-bill"></i>
-                                            </div>
-                                            <span>Grant Details</span>
-                                        </a>
-                                    </li>
-
-                                    <li class="active">
-                                        <a>
-                                            <div class="icon-circle">
-                                                <i class="fas fa-upload"></i>
-                                            </div>
-                                            <span>Attachments</span>
-                                        </a>
-                                    </li>
-
-                                    <li class="active">
-                                        <a>
-                                            <div class="icon-circle">
-                                                <i class="fa-solid fa-address-book"></i>
-                                            </div>
-                                            <span>Curriculum Vitae</span>
-                                        </a>
-                                    </li>
-                                    
-                                    <li class="active">
-                                        <a>
-                                            <div class="icon-circle">
-                                                <i class="fas fa-check"></i>
-                                            </div>
-                                            <span>Declaration</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+                            <div class="modal-body">
+                                <iframe style="width:100%;height:75vh;border: 0px;border-radius: 10px;" id="file_frame" title="File"></iframe>
                             </div>
                         </div>
-
-                        <div class="modal" id="filePreview">
-                            <div class="modal-dialog" style="min-width:120rem">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4 class="modal-title">
-                                            <div class="d-flex" style="background:unset;">
-                                                <h3 style="text-align: center"><b>{{selectedFile.userDocument.Name}}</b></h3>
-                                            </div>
-                                        </h4>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                </div>
+                <div class="modal" id="filePreview2">
+                    <div class="modal-dialog" style="min-width:120rem">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">
+                                    <div class="d-flex" style="background:unset;">
+                                        <!-- <h3 style="text-align: center"><b>{{selectedFile.userDocument.Name}}</b></h3> -->
                                     </div>
-                                    <div class="modal-body">
-                                        <iframe style="width:100%;height:75vh;border: 0px;border-radius: 10px;" id="file_frame" title="File"></iframe>
-                                    </div>
-                                </div>
+                                </h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <iframe id="myIframe" ng-src="{{fileUrl}}" style="width:100%;height:100vh;border: 0px;border-radius: 10px;"></iframe>
                             </div>
                         </div>
-                        <div class="modal" id="filePreview2">
-                            <div class="modal-dialog" style="min-width:120rem">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4 class="modal-title">
-                                            <div class="d-flex" style="background:unset;">
-                                                <!-- <h3 style="text-align: center"><b>{{selectedFile.userDocument.Name}}</b></h3> -->
-                                            </div>
-                                        </h4>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <iframe id="myIframe" ng-src="{{fileUrl}}" style="width:100%;height:100vh;border: 0px;border-radius: 10px;"></iframe>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-5 mx-5">
-                            <div class="col-md-12 alert bg-color-list" role="alert">
-                                <ul class="font-if">  
-                                  <li><i class="fa-solid fa-circle text-success me-3"></i>Click on upload button to upload the signature</li>
-                                </ul>
-                            </div>
-                        </div>
+                    </div>
+                </div>
+                <div class="row mt-5 mx-5">
+                    <div class="col-md-12 alert bg-color-list" role="alert">
+                        <ul class="font-if">
+                            <li>
+                                <i class="fa-solid fa-circle text-success me-3"></i>Click on upload button to upload the signature</li>
+                        </ul>
+                    </div>
+                </div>
 
                 <div class="row mx-5 mt-3">
-                            <div class="col-md-12">
-                                <h4 class="color-theme"><b>DECLARATION</b></h4>
-                            </div>
-                        </div>
+                    <div class="col-md-12">
+                        <h4 class="color-theme">
+                            <b>DECLARATION</b>
+                        </h4>
+                    </div>
+                </div>
 
-                        <div class="row mx-5 mt-3">
-                            <div class="col-md-12">
-                                <p class="ps-5 ms-5 font-if">
-                                    I <b>{{decDetails.Name}}</b> hereby declare that the information furnished above is true, complete and correct to the
-                                    best of my knowledge and belief. I understand that in the event of the information given by me found false or 
-                                    incorrect at any stage, my application/proposal shall be liable to cancellation without notice or any
-                                    compensation in lieu thereof.
-                                </p>
-                            </div>
-                        </div>
+                <div class="row mx-5 mt-3">
+                    <div class="col-md-12">
+                        <p class="ps-5 ms-5 font-if">
+                            I
+                            <b>{{decDetails.Name}}</b> hereby declare that the information furnished above is true, complete
+                            and correct to the best of my knowledge and belief. I understand that in the event of the information
+                            given by me found false or incorrect at any stage, my application/proposal shall be liable to
+                            cancellation without notice or any compensation in lieu thereof.
+                        </p>
+                    </div>
+                </div>
 
-                        <div class="row mx-5 mt-5">
-                            <div class="col-md-5">
-                                <Label class="font-if">Date:</Label> <input type="date" disabled="disabled" ng-model="SignDate" class="form-control w-50"/>
-                            </div>
-                            <div class="col-md-7">
-                                <div class="row">
-                                    
+                <div class="row mx-5 mt-5">
+                    <div class="col-md-5">
+                        <Label class="font-if">Date:</Label>
+                        <input type="date" disabled="disabled" ng-model="SignDate" class="form-control w-50" />
+                    </div>
+                    <div class="col-md-7">
+                        <div class="row">
+
                             <div class="col-md-7">
                                 <div ng-hide="proposalStage" style="margin-right: -60px;">
-                                <label class="font-if pt-2">{{doc.userDocument.Name}} (jpg/jpeg, 5 kb-30 kb)</label>
-                                <div class="input-group input-group-lg float-end">
-                                <input type="file" accept=".jpg,.jpeg" ng-disabled="proposalStage" id="{{doc.userDocument.Name}}" class="form-control float-end"/>
-                                <span class="input-group-btn" ng-hide="proposalStage">
-                                  <button class="btn btn-success" ng-click="uploadFile(doc.userDocument.Name,doc.userDocument.Id,'','30720','5120')" type="button">Upload</button>
-                                </span>
+                                    <label class="font-if pt-2">{{doc.userDocument.Name}} (jpg/jpeg, 5 kb-30 kb)</label>
+                                    <div class="input-group input-group-lg float-end">
+                                        <input type="file" accept=".jpg,.jpeg" ng-disabled="proposalStage" id="{{doc.userDocument.Name}}" class="form-control float-end"
+                                        />
+                                        <span class="input-group-btn" ng-hide="proposalStage">
+                                            <button class="btn btn-success" ng-click="uploadFile(doc.userDocument.Name,doc.userDocument.Id,'','30720','5120')" type="button">Upload</button>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
+                            <div class="col-md-5">
+                                <div ng-show="doc.userDocument.Status__c=='Uploaded'">
+                                    <a class="blue-btn float-end mt-5 py-3" ng-click="filePreviewHandler(doc)">View</a>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-5">
-                            <div ng-show="doc.userDocument.Status__c=='Uploaded'">
-                                <a class="blue-btn float-end mt-5 py-3"  ng-click="filePreviewHandler(doc)">View</a>
-                            </div>
-                        </div>
-                              </div>
-                              </div>
-                        </div>
+                    </div>
+                </div>
 
-                        <div class="row m-5" ng-if="!proposalStage">
-                            <div class="col-md-12">
-                                <button class="blue-btn float-end" ng-click="finalSubmitWiser()" type="button">
-                                    <i class="fa-solid fa-check me-2"></i>Submit</button>
-                                    <button class="blue-btn float-end me-2" ng-click="insertWiserDraft()" type="button">
-                                        <i class="fa-solid fa-check me-2"></i>Save as Draft</button>
-                                        <!-- <button class="blue-btn float-end me-2" id="btnPreview" ng-click="reviewApp()" type="button">
+                <div class="row m-5" ng-if="!proposalStage">
+                    <div class="col-md-12">
+                        <button class="blue-btn float-end" ng-click="finalSubmitWiser()" type="button">
+                            <i class="fa-solid fa-check me-2"></i>Submit</button>
+                        <button class="blue-btn float-end me-2" ng-click="insertWiserDraft()" type="button">
+                            <i class="fa-solid fa-check me-2"></i>Save &amp; Next</button>
+                        <!-- <button class="blue-btn float-end me-2" id="btnPreview" ng-click="reviewApp()" type="button">
                                             <i class="fa-solid fa-eye me-2"></i>Review</button> -->
-                                <button class="blue-bordered-btn float-end me-2" ng-click="redirectPageURL('CV_Wiser')" type="button">
-                                    <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
-                                
-                            </div>
-                        </div>
+                        <button class="blue-bordered-btn float-end me-2" ng-click="redirectPageURL('AttachmentsInWiser')" type="button">
+                            <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+
+                    </div>
+                </div>
             </div>
             <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         </body>
     </div>
-</html>
+
+    </html>
 </apex:page>

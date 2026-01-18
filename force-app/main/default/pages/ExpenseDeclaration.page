@@ -243,10 +243,20 @@
                 </div>
                 <div class="row mx-5 mt-5">
                     <div class="alert bg-color-list font-if" role="alert">
-                        <li class="ps-4"><i class="fa-solid fa-circle text-success me-3"></i>Indian Partner(s) should enter amount in INR</li>
-                        <li class="ps-4"><i class="fa-solid fa-circle text-success me-3"></i>German Partner(s) should enter amount in EUR</li>
-                        <!-- <li class="ps-4"><i class="fa-solid fa-circle text-success me-3"></i>Industry Partners should fill "Own Contribution" for each heads</li> -->
-                  </div>
+                        <li class="ps-4">
+                            <i class="fa-solid fa-circle text-success me-3"></i>Indian Partner(s) should enter amount in INR</li>
+                        <li class="ps-4">
+                            <i class="fa-solid fa-circle text-success me-3"></i>German Partner(s) should enter amount in euro</li>
+                        <li class="ps-4">
+                            <i class="fa-solid fa-circle text-success me-3"></i>For German Industry and Academia, IGSTC Contribution can not be greater than
+                            <i class="fa-solid fa-euro-sign"></i> 5,00,000</li>
+                        <li class="ps-4">
+                            <i class="fa-solid fa-circle text-success me-3"></i>For Indian Industry, IGSTC Contribution can not be greater than
+                            <i class="fa-solid fa-indian-rupee-sign"></i> 1.5cr.</li>
+                        <li class="ps-4">
+                            <i class="fa-solid fa-circle text-success me-3"></i>For Indian Academia, IGSTC Contribution can not be greater than
+                            <i class="fa-solid fa-indian-rupee-sign"></i> 3.5cr - Indian Industry IGSTC contribution.</li>
+                    </div>
                 </div>
                 <div class="container-fluid mt-5">
                     <div class="row px-4">
@@ -270,6 +280,45 @@
                                 </div>
                             </div>
                             <div ng-show="expenseDetails">
+                                <div class="row box-shadow-2 mt-3 mx-5">
+
+                                    <div class="row mt-5 ms-5">
+                                        <h4 class="label-rtf">
+                                            <b>Financial Contribution</b>
+                                        </h4>
+                                    </div>
+
+                                    <div class="row mt-5 mb-5">
+                                        <div class="col-md-6">
+                                            <h4 class="label-rtf ms-5">Indian IGSTC Funding:</h4>
+                                            <div class="row box-shadow-2 mt-3 ms-5">
+                                                <p style="font-size: 15px;">
+                                                    <i class="fa fa-money me-3 ms-3 mt-3"></i>Total Funding Requested By Indian Partners :
+                                                    <i class="fa-solid fa-indian-rupee-sign"></i> {{TotalIndianContribution | inrCurrency}}</p>
+                                                <p style="font-size: 15px;">
+                                                    <i class="fa fa-money me-3 ms-3 mt-3"></i>Indian Industy Partner(s) :
+                                                    <i class="fa-solid fa-indian-rupee-sign"></i> {{TotalContriIndianIndustry | inrCurrency}}</p>
+                                                <p style="font-size: 15px;">
+                                                    <i class="fa fa-money me-3 ms-3 mt-3 mb-3"></i>Indian Academia Partner(s) :
+                                                    <i class="fa-solid fa-indian-rupee-sign"></i> {{TotalContriIndianAcademia | inrCurrency}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h4 class="label-rtf">German IGSTC Funding:</h4>
+                                            <div class="row box-shadow-2 mt-3 ms-1 mx-2">
+                                                <p style="font-size: 15px;">
+                                                    <i class="fa fa-money me-3 ms-3 mt-3"></i>Total Funding Requested By German Partners :
+                                                    <i class="fa-solid fa-euro-sign"></i> {{TotalGermanContribution | euroCurrency}}</p>
+                                                <p style="font-size: 15px;">
+                                                    <i class="fa fa-money me-3 ms-3 mt-3"></i>German Industy Partner(s) :
+                                                    <i class="fa-solid fa-euro-sign"></i> {{TotalContriGermanIndustry | euroCurrency}}</p>
+                                                <p style="font-size: 15px;">
+                                                    <i class="fa fa-money me-3 ms-3 mt-3 mb-3"></i>German Academia Partner(s) :
+                                                    <i class="fa-solid fa-euro-sign"></i> {{TotalContriGermanAcademia | euroCurrency}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <table class="expense-table">
                                     <thead>
                                         <tr>

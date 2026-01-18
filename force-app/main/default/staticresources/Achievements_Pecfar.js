@@ -56,7 +56,7 @@ angular.module('cp_app').controller('achievements_ctrl', function($scope,$rootSc
                     icon: "success",
                     button: "ok!",
                   }).then((value) => {
-                    $scope.redirectPageURL('Attachments_Pecfar');
+                    $scope.redirectPageURL('Fellowship_Details');
                       });
                 
                 $scope.$apply();

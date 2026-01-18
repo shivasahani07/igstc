@@ -66,7 +66,8 @@ angular.module('cp_app').controller('AchievementsIF_Ctrl', function($scope,$root
                     'Your achievement details have been saved successfully.',
                     'success'
                 );
-                $scope.redirectPageURL('AttachmentsIF');
+                //$scope.redirectPageURL('AttachmentsIF');//Commented By Karthik
+                $scope.redirectPageURL('FellowshipDetailsIF');
                 $scope.$apply();
             }
         },
@@ -76,7 +77,8 @@ angular.module('cp_app').controller('AchievementsIF_Ctrl', function($scope,$root
     $scope.clickPreviousAchievements=function(){
         var link=document.createElement("a");
         link.id = 'someLink'; //give it an ID!
-        link.href="#/ProjectDetailIF";
+        //link.href="#/ProjectDetailIF";//Commented By Karthik
+         link.href="#/EmploymentDetailsIF";
         link.click();
     }
 });

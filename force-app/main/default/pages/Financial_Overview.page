@@ -310,19 +310,20 @@
 
                 <div class="row mx-4 mt-5">
                     <div class="col-md-12">
-                        <table class="tablefinance" cellpadding="4">
+                        <div style="overflow-x: auto;">
+                        <table class="tablefinance" cellpadding="4" style="width:100%; min-width:1400px;">
                             <thead>
                                 <tr>
-                                    <th style="width:15%;">Organization Name</th>
-                                    <th style="width:0%;">Country</th>
-                                    <th style="width:0%;">Type</th>
-                                    <th style="width:0%;">Currency</th>
-                                    <th style="width:10%;">IGSTC Funding</th>
-                                    <th style="width:0%;">Own Contribution</th>
-                                    <th style="width:10%;">Budget for Capital Expenditure</th>
-                                    <th style="width:10%;">Budget for Recurring Expenditure</th>
-                                    <th style="width:10%;">Total</th>
-                                    <th style="width:10%;">% Funding Requested from IGSTC</th>
+                                    <th style="width:12%; min-width:150px;">Organization Name</th>
+                                    <th style="width:6%; min-width:80px;">Country</th>
+                                    <th style="width:6%; min-width:80px;">Type</th>
+                                    <th style="width:5%; min-width:70px;">Currency</th>
+                                    <th style="width:9%; min-width:120px;">IGSTC Funding</th>
+                                    <th style="width:9%; min-width:120px;">Own Contribution</th>
+                                    <th style="width:12%; min-width:160px;">Budget for Capital Expenditure</th>
+                                    <th style="width:12%; min-width:160px;">Budget for Recurring Expenditure</th>
+                                    <th style="width:9%; min-width:120px;">Total</th>
+                                    <th style="width:10%; min-width:140px;">% Funding Requested from IGSTC</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -361,7 +362,7 @@
 
                                     <td>
                                         <input ng-focus="removeClass('total',$index)" id="total{{$index}}" type="text" class="form-control" ng-disabled="disabled"
-                                            ng-model="x.Financial_Contribution__r[0].Total__c" size="5" />
+                                            ng-model="x.Financial_Contribution__r[0].Total__c" style="width:100%;" />
                                     </td>
                                     <td>
                                         <input ng-focus="removeClass('percentage',$index)" id="percentage{{$index}}" type="text" class="form-control" ng-disabled="disabled"
@@ -370,6 +371,7 @@
                                 </tr>
                             </tbody>
                         </table>
+                        </div>
                     </div>
                 </div>
 

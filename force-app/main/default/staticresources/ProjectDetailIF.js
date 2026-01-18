@@ -7,10 +7,41 @@ angular.module('cp_app').controller('ProjectDetailIF_Ctrl', function ($scope, $s
   $scope.objIndFell = {};
   $rootScope.proposalId;
   $scope.doc = {};
-  $scope.objRtf = [{ charCount: 0, maxCharLimit: 400, errorStatus: false }];
+  $scope.objRtf = [{ charCount: 0, maxCharLimit: 1200, errorStatus: false }];
   $scope.objRtf.push({ charCount: 0, maxCharLimit: 500, errorStatus: false });
   $scope.objRtf.push({ charCount: 0, maxCharLimit: 2000, errorStatus: false });
   $scope.objRtf.push({ charCount: 0, maxCharLimit: 400, errorStatus: false });
+
+   $scope.objKeyword = [];
+   $scope.objKeyword1 = [];
+
+  // ----------------- Add and Remove Keyword Functionality By Karthik------------------ //
+  $scope.addKeyword = function () {
+    debugger;
+    if ($scope.objKeyword.length <= 3) {
+      $scope.objKeyword.push({ keyword: "" });
+    }
+  }
+
+  $scope.removeKeyword = function (index) {
+    if ($scope.objKeyword.length > 1) {
+      $scope.objKeyword.splice(index, 1);
+    }
+  }
+//---------------------------------------------//
+  $scope.addKeyword1 = function () {
+    debugger;
+    if ($scope.objKeyword1.length <= 5) {
+      $scope.objKeyword1.push({ keyword: "" });
+    }
+  }
+
+  $scope.removeKeyword1 = function (index) {
+    if ($scope.objKeyword1.length > 1) {
+      $scope.objKeyword1.splice(index, 1);
+    }
+  }
+  // ----------------- End Keyword Functionality ------------------ //
 	
   // Fetching the proposalId from Local Storage
     if (localStorage.getItem('proposalId')) {
@@ -292,6 +323,34 @@ angular.module('cp_app').controller('ProjectDetailIF_Ctrl', function ($scope, $s
         result.Applicant_Proposal_Associations__r[0].Proposals__r.Expected_Deliverables__c = result.Applicant_Proposal_Associations__r[0].Proposals__r.Expected_Deliverables__c ? result.Applicant_Proposal_Associations__r[0].Proposals__r.Expected_Deliverables__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : result.Applicant_Proposal_Associations__r[0].Proposals__r.Expected_Deliverables__c;
       }
 
+
+
+      // ------------------------- Keyword Functionality added By Karthik------------------------------ //
+                    if (result.Applicant_Proposal_Associations__r[0].Proposals__r.Research_Approach_Objectives__c != undefined && result.Applicant_Proposal_Associations__r[0].Proposals__r.Research_Approach_Objectives__c != '') {
+                         var keyword = result.Applicant_Proposal_Associations__r[0].Proposals__r.Research_Approach_Objectives__c.split(';');
+                         $scope.objKeyword.splice(0, 1);
+                         for (var k = 0; k < keyword.length; k++) {
+                              $scope.objKeyword.push({ "keyword": keyword[k] });
+                         }
+                    }
+                    else {
+                         $scope.objKeyword.push({ "keyword": "" });
+                    }
+
+      //--------------------------------------------------------------------//
+
+                     if (result.Applicant_Proposal_Associations__r[0].Proposals__r.Expected_Deliverables__c != undefined && result.Applicant_Proposal_Associations__r[0].Proposals__r.Expected_Deliverables__c != '') {
+                         var keyword1 = result.Applicant_Proposal_Associations__r[0].Proposals__r.Expected_Deliverables__c.split(';');
+                         $scope.objKeyword1.splice(0, 1);
+                         for (var k = 0; k < keyword1.length; k++) {
+                              $scope.objKeyword1.push({ "keyword": keyword1[k] });
+                         }
+                    }
+                    else {
+                         $scope.objKeyword1.push({ "keyword": "" });
+                    }
+      // ------------------------- Keyword Functionality added By Karthik ------------------------------ //
+
     }, { escape: true });
   }
   $scope.setAddressSameAs = function () {
@@ -391,27 +450,30 @@ angular.module('cp_app').controller('ProjectDetailIF_Ctrl', function ($scope, $s
       // div.innerHTML = $scope.objProposal.Brief_Statement_of_Purpose__c;
       // let brief = div.innerText.replace(/(\r\n\t|\t|\n|\r)/gm, "");
       // brief = brief.replaceAll(' ','');
-      if ($scope.objRtf[0].charCount > 400) {
-        swal('info', 'Max character limit for Brief Statement of Purpose is 400 only', 'info');
+      if ($scope.objRtf[0].charCount > 1200) {
+        swal('info', 'Max character limit for Brief Statement of Purpose is 1200 only', 'info');
         return;
       }
     }
 
-    if ($scope.objProposal.Research_Approach_Objectives__c == undefined || $scope.objProposal.Research_Approach_Objectives__c == null || $scope.objProposal.Research_Approach_Objectives__c == '') {
+    // ---------------------------------Build keyword string for Objectives of the work Added BY Karthik----------//
+    var keyword = ""; 
+    for (var i = 0; i < $scope.objKeyword.length; i++) {
+      if ($scope.objKeyword[i].keyword != '' && $scope.objKeyword[i].keyword != undefined) {
+        if (i == 0)
+          keyword = $scope.objKeyword[i].keyword;
+        else
+          keyword = keyword + ';' + $scope.objKeyword[i].keyword;
+      }
+    }
+    
+    if (keyword == undefined || keyword == null || keyword == '') {
       swal('info', 'Please enter objective of the work', 'info');
       return;
     }
+    $scope.objProposal.Research_Approach_Objectives__c = keyword;
+     //---------------------------------- Build keyword string for Objectives of the work Added By Karthik---------------//
 
-    if ($scope.objProposal.Research_Approach_Objectives__c != undefined || $scope.objProposal.Research_Approach_Objectives__c != "") {
-      // var div = document.createElement("div");
-      // div.innerHTML = $scope.objProposal.Research_Approach_Objectives__c;
-      // let research = div.innerText.replace(/(\r\n\t|\t|\n|\r)/gm, "");
-      // research = research.replaceAll(' ','');
-      if ($scope.objRtf[1].charCount > 500) {
-        swal('info', 'Max character limit for Objectives of the work is 500 only', 'info');
-        return;
-      }
-    }
 
     if ($scope.objProposal.Work_plan__c == undefined || $scope.objProposal.Work_plan__c == null || $scope.objProposal.Work_plan__c == '') {
       swal('info', 'Please enter work plan', 'info');
@@ -429,21 +491,25 @@ angular.module('cp_app').controller('ProjectDetailIF_Ctrl', function ($scope, $s
       }
     }
 
-    if ($scope.objProposal.Expected_Deliverables__c == undefined || $scope.objProposal.Expected_Deliverables__c == null || $scope.objProposal.Expected_Deliverables__c == '') {
+    //------------------------------------- Build keyword string for Expected outcomes Added BY Karthik---------------//
+    var keyword1 = ""; 
+    for (var i = 0; i < $scope.objKeyword1.length; i++) {
+      if ($scope.objKeyword1[i].keyword != '' && $scope.objKeyword1[i].keyword != undefined) {
+        if (i == 0)
+          keyword1 = $scope.objKeyword1[i].keyword;
+        else
+          keyword1 = keyword1 + ';' + $scope.objKeyword1[i].keyword;
+      }
+    }
+    
+    if (keyword1 == undefined || keyword1 == null || keyword1 == '') {
       swal('info', 'Please enter Expected outcomes', 'info');
       return;
     }
+    $scope.objProposal.Expected_Deliverables__c = keyword1;
 
-    if ($scope.objProposal.Expected_Deliverables__c != undefined || $scope.objProposal.Expected_Deliverables__c != "") {
-      // var div = document.createElement("div");
-      // div.innerHTML = $scope.objProposal.Expected_Deliverables__c;
-      // let expected = div.innerText.replace(/(\r\n\t|\t|\n|\r)/gm, "");
-      // expected = expected.replaceAll(' ','');
-      if ($scope.objRtf[3].charCount > 400) {
-        swal('info', 'Max character limit for Expected outcomes is 400 only', 'info');
-        return;
-      }
-    }
+    // ----------------------------------Build keyword string for Expected outcomes Added BY Karthik---------------//
+
 
     $scope.objContactList.push($scope.objContact1);
     $scope.objContactList.push($scope.objContacts__r);
@@ -463,6 +529,7 @@ angular.module('cp_app').controller('ProjectDetailIF_Ctrl', function ($scope, $s
       console.log('Apex callback executed======>', result, event);
       debugger;
       if ($rootScope.proposalStage) {
+        //$scope.redirectPageURL('AchievementsIF');//Commented By Karthik
         $scope.redirectPageURL('AttachmentsIF');
         return;
       }
@@ -478,7 +545,8 @@ angular.module('cp_app').controller('ProjectDetailIF_Ctrl', function ($scope, $s
           icon: "success",
           button: "ok!",
         }).then((value) => {
-          $scope.redirectPageURL('AchievementsIF');
+          //$scope.redirectPageURL('AchievementsIF');//Commented By Karthik
+          $scope.redirectPageURL('AttachmentsIF');
         });
       }
       else {

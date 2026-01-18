@@ -36,6 +36,14 @@
                                         <span>Personal Information</span>
                                     </a>
                                 </li>
+                                 <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ParentOrganization')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-building"></i>
+                                        </div>
+                                        <span>Parent Organization Details</span>
+                                    </a>
+                                </li>        
                                 <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('Education_Qualification')">
                                         <div class="icon-circle">
@@ -52,14 +60,7 @@
                                         <span>Employment Details</span>
                                     </a>
                                 </li>
-                                <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('ParentOrganization')">
-                                        <div class="icon-circle">
-                                            <i class="fas fa-building"></i>
-                                        </div>
-                                        <span>Parent Organization Details</span>
-                                    </a>
-                                </li>   
+                                  
                             </ul>
                         </div>
                         <div class="tab-link" ng-hide="proposalStage">
@@ -86,6 +87,14 @@
                                 <li class="active">
                                     <a>
                                         <div class="icon-circle">
+                                            <i class="fas fa-building"></i>
+                                        </div>
+                                        <span>Parent Organization Details</span>
+                                    </a>
+                                </li>        
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
                                             <i class="fas fa-user-graduate"></i>
                                         </div>
                                         <span>Educational Qualifications</span>
@@ -99,14 +108,7 @@
                                         <span>Employment Details</span>
                                     </a>
                                 </li>
-                                <li class="active">
-                                    <a>
-                                        <div class="icon-circle">
-                                            <i class="fas fa-building"></i>
-                                        </div>
-                                        <span>Parent Organization Details</span>
-                                    </a>
-                                </li>
+                                
                             </ul>
                         </div>
                         </div>
@@ -120,6 +122,14 @@
                                 </div>
                                 <ul>
                                     <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Achievements_Pecfar')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-trophy"></i>
+                                            </div>
+                                            <span>Achievements</span>
+                                        </a>
+                                    </li>    
+                                    <li class="active pb-cursor">
                                         <a ng-click="redirectPageURL('Fellowship_Details')">
                                             <div class="icon-circle">
                                                 <i class="fa fa-home"></i>
@@ -128,14 +138,7 @@
                                         </a>
                                     </li>
                                     
-                                    <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('Achievements_Pecfar')">
-                                            <div class="icon-circle">
-                                                <i class="fas fa-trophy"></i>
-                                            </div>
-                                            <span>Achievements</span>
-                                        </a>
-                                    </li>
+                                    
                                     <li class="active pb-cursor">
                                         <a ng-click="redirectPageURL('Attachments_Pecfar')">
                                             <div class="icon-circle">
@@ -170,20 +173,21 @@
                                     <li class="active">
                                         <a>
                                             <div class="icon-circle">
+                                                <i class="fas fa-trophy"></i>
+                                            </div>
+                                            <span>Achievements</span>
+                                        </a>
+                                    </li>    
+                                    <li class="active">
+                                        <a>
+                                            <div class="icon-circle">
                                                 <i class="fa fa-home"></i>
                                             </div>
                                             <span>Fellowship Details</span>
                                         </a>
                                     </li>
                                     
-                                    <li class="active">
-                                        <a>
-                                            <div class="icon-circle">
-                                                <i class="fas fa-trophy"></i>
-                                            </div>
-                                            <span>Achievements</span>
-                                        </a>
-                                    </li>
+                                    
                                     <li class="active">
                                         <a>
                                             <div class="icon-circle">

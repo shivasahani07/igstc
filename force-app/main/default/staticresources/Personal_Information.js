@@ -265,7 +265,7 @@ angular.module('cp_app').controller('personalInfo_ctrl', function($scope,$rootSc
                   icon: "success",
                   button: "ok!",
                 }).then((value) => {
-                    $scope.redirectPageURL('Education_Qualification');
+                    $scope.redirectPageURL('ParentOrganization');
                     });
                 // Swal.fire(
                 //     'SUCCESS',

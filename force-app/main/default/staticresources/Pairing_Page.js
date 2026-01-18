@@ -581,7 +581,8 @@ angular.module('cp_app').controller('pairing_ctrl', function($scope,$rootScope){
     }
     $scope.redirectToApplicantPortal = function() {
     window.location.href = 'https://indo-germansciencetechnologycentre--newdevutil.sandbox.my.salesforce-sites.com/ApplicantDashboard/ApplicantPortal?id=%27 + $rootScope.candidateId'
-};
+
+    };
  
     $scope.addParticipant=function(){
         debugger;

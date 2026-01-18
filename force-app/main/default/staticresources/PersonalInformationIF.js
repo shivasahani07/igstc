@@ -522,7 +522,7 @@ $scope.redirectPageURL=function(URL){
 
 $scope.updatePersonalInfoIF=function(){
   if($rootScope.proposalStage){
-    $scope.redirectPageURL('FellowshipDetailsIF');
+    $scope.redirectPageURL('Parent_Organization');
     return; 
 }
 debugger
@@ -752,7 +752,9 @@ debugger
               icon: "success",
               button: "ok!",
             }).then((value) => {
-                  $scope.redirectPageURL('FellowshipDetailsIF');
+                 // $scope.redirectPageURL('FellowshipDetailsIF');//Commented By Karthik
+                  $scope.redirectPageURL('Parent_Organization');
+
                 });
           }
           else

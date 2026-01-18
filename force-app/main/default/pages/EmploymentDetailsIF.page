@@ -22,6 +22,7 @@
     
             <body>
                 <div class="container mt-5">
+                    
                     <div class="row mx-5">
                         <div class="col-md-12">
                             <div class="tab-link" ng-show="proposalStage">
@@ -47,21 +48,13 @@
                                         </a>
                                     </li>
                                     <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('FellowshipDetailsIF')">
-                                            <div class="icon-circle">
-                                                <i class="fas fa-user-edit"></i>
-                                            </div>
-                                            <span>Host Details</span>
-                                        </a>
-                                    </li>
-                                    <li class="active pb-cursor">
                                         <a ng-click="redirectPageURL('Parent_Organization')">
                                             <div class="icon-circle">
                                                 <i class="fas fa-user-graduate"></i>
                                             </div>
                                             <span>Parent Organisation Details</span>
                                         </a>
-                                    </li>
+                                    </li>                                            
                                     <li class="active pb-cursor">
                                         <a ng-click="redirectPageURL('EduQualificationIF')">
                                             <div class="icon-circle">
@@ -69,7 +62,15 @@
                                             </div>
                                             <span>Education Details</span>
                                         </a>
-                                    </li>   
+                                    </li> 
+                                     <li class="active pb-cursor">
+                                            <a ng-click="redirectPageURL('EmploymentDetailsIF')">
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-trophy"></i>
+                                                </div>
+                                                <span>Employment Details</span>
+                                            </a>
+                                        </li>  
                                 </ul>
                             </div>
                             <div class="tab-link" ng-hide="proposalStage">
@@ -96,19 +97,12 @@
                                     <li class="active">
                                         <a>
                                             <div class="icon-circle">
-                                                <i class="fas fa-user-edit"></i>
-                                            </div>
-                                            <span>Host Details</span>
-                                        </a>
-                                    </li>
-                                    <li class="active">
-                                        <a>
-                                            <div class="icon-circle">
                                                 <i class="fas fa-user-graduate"></i>
                                             </div>
                                             <span>Parent Organisation Details</span>
                                         </a>
                                     </li>
+                                
                                     <li class="active">
                                         <a>
                                             <div class="icon-circle">
@@ -117,35 +111,27 @@
                                             <span>Education Details</span>
                                         </a>
                                     </li>
+                                    <li class="active">
+                                            <a>
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-trophy"></i>
+                                                </div>
+                                                <span>Employment Details</span>
+                                            </a>
+                                    </li>
                                 </ul>
                             </div>
                             </div>
-                        </div>
+                    </div>
     
-                        <div class="row mx-5">
+                        
+                    <div class="row mx-5">
                             <div class="col-md-12">
                                 <div class="tab-link" ng-show="proposalStage">
                                     <div class="progress">
                                         <div class="progress-success w-100"></div>
                                     </div>
                                     <ul>
-                                        
-                                        <li class="active pb-cursor">
-                                            <a ng-click="redirectPageURL('EmploymentDetailsIF')">
-                                                <div class="icon-circle">
-                                                    <i class="fas fa-trophy"></i>
-                                                </div>
-                                                <span>Employment Details</span>
-                                            </a>
-                                        </li>
-                                        <li class="active pb-cursor">
-                                            <a ng-click="redirectPageURL('ProjectDetailIF')">
-                                                <div class="icon-circle">
-                                                    <i class="fa fa-paperclip"></i>
-                                                </div>
-                                                <span>Project Details</span>
-                                            </a>
-                                        </li>
                                         <li class="active pb-cursor">
                                             <a ng-click="redirectPageURL('AchievementsIF')">
                                                 <div class="icon-circle">
@@ -154,6 +140,24 @@
                                                 <span>Achievements</span>
                                             </a>
                                         </li>
+                                        <li class="active pb-cursor">
+                                            <a ng-click="redirectPageURL('FellowshipDetailsIF')">
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-user-edit"></i>
+                                                </div>
+                                                <span>Host Details</span>
+                                            </a>
+                                        </li>                                        
+                                       
+                                        <li class="active pb-cursor">
+                                            <a ng-click="redirectPageURL('ProjectDetailIF')">
+                                                <div class="icon-circle">
+                                                    <i class="fa fa-paperclip"></i>
+                                                </div>
+                                                <span>Project Details</span>
+                                            </a>
+                                        </li>
+                                        
                                         <li class="active pb-cursor">
                                             <a ng-click="redirectPageURL('AttachmentsIF')">
                                                 <div class="icon-circle">
@@ -174,32 +178,32 @@
                                 </div>
                                 <div class="tab-link" ng-hide="proposalStage">
                                     <div class="progress">
-                                        <div class="progress-success wp-1"></div>
+                                        <div class="progress-success wp-0"></div>
                                     </div>
                                     <ul>
-                                        
-                                        <li class="active">
-                                            <a>
-                                                <div class="icon-circle">
-                                                    <i class="fas fa-trophy"></i>
-                                                </div>
-                                                <span>Employment Details</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a>
-                                                <div class="icon-circle">
-                                                    <i class="fa fa-paperclip"></i>
-                                                </div>
-                                                <span>Project Details</span>
-                                            </a>
-                                        </li>
                                         <li>
                                             <a>
                                                 <div class="icon-circle">
                                                     <i class="fa fa-home"></i>
                                                 </div>
                                                 <span>Achievements</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a>
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-user-edit"></i>
+                                                </div>
+                                                <span>Host Details</span>
+                                            </a>
+                                        </li>                                        
+                                        
+                                        <li>
+                                            <a>
+                                                <div class="icon-circle">
+                                                    <i class="fa fa-paperclip"></i>
+                                                </div>
+                                                <span>Project Details</span>
                                             </a>
                                         </li>
                                         <li>
@@ -221,7 +225,7 @@
                                     </ul>
                                 </div>
                                 </div>
-                            </div>
+                    </div>
 
                             <div class="row mt-5 mx-5">
                                 <div class="col-md-12 alert bg-color-list" role="alert">

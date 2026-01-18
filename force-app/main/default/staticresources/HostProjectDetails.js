@@ -66,10 +66,11 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
      $scope.getContactHostInfo();
      $scope.previousPage = function () {
           debugger;
-          $scope.redirectPageURL('FinancialOverview_wiser');
+          // $scope.redirectPageURL('FinancialOverview_wiser');
           // window.location.replace(window.location.origin+'/ApplicantDashboard/ApplicantPortal?id='+$rootScope.userId+'#/FinancialOverview_wiser');
-
+          window.location.href = 'https://indo-germansciencetechnologycentre--newdevutil.sandbox.my.salesforce-sites.com/ApplicantDashboard/ApplicantPortal?id=' + $rootScope.candidateId;
      }
+
      $scope.readCharacter = function (event, index) {
           debugger
           try {
@@ -248,13 +249,13 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
                     if (event.status) {
                          swal({
                               title: "SUCCESS",
-                              text: 'Pair Project Details have been saved successfully.',
+                              text: 'Paired Project Details have been saved successfully.',
                               icon: "success",
                               button: "ok!",
                          });
 
                          // Fetch documents
-                         $scope.getProjectDetails();
+                         // $scope.getProjectDetails();
                          // $scope.redirectPageURL('TwoReferenceWiser');
                          $scope.redirectPageURL('ProjectDetailsInWiserPage');
                          // $scope.redirectPageURL('WiserApplicationPage');
@@ -418,25 +419,25 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
      };
 
      // --------------------- PROJECT PROPOSAL UPLOAD FUNCTIONALITY ----------------------- //
-     $scope.getProjectdetils = function () {
-          debugger;
-          ApplicantPortal_Contoller.getAllUserDoc($rootScope.proposalId, function (result, event) {
-               debugger;
-               console.log('result : ', result);
-               if (event.status) {
-                    $scope.allDocs = result;
-                    for (var i = 0; i < $scope.allDocs.length; i++) {
-                         if ($scope.allDocs[i].userDocument.Name == 'project Description') {
-                              $scope.doc = $scope.allDocs[i];
-                         }
-                    }
-                    $scope.$apply();
-               }
-          }, {
-               escape: true
-          })
-     }
-     $scope.getProjectdetils();
+     // $scope.getProjectDetails = function () {
+     //      debugger;
+     //      ApplicantPortal_Contoller.getAllUserDoc($rootScope.proposalId, function (result, event) {
+     //           debugger;
+     //           console.log('result : ', result);
+     //           if (event.status) {
+     //                $scope.allDocs = result;
+     //                for (var i = 0; i < $scope.allDocs.length; i++) {
+     //                     if ($scope.allDocs[i].userDocument.Name == 'project Description') {
+     //                          $scope.doc = $scope.allDocs[i];
+     //                     }
+     //                }
+     //                $scope.$apply();
+     //           }
+     //      }, {
+     //           escape: true
+     //      })
+     // }
+     //$scope.getProjectdetils();
 
      $scope.uploadFile = function (type, userDocId, good, fileId, fileSizeFun) {
           debugger;
@@ -599,7 +600,7 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
                                    'success'
                               )
 
-                              $scope.getProjectdetils();
+                              //$scope.getProjectdetils();
                               // $scope.disableSubmit = false;
 
                          }
@@ -617,6 +618,20 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
           );
      };
 
+     // $scope.filePreviewHandler = function (fileContent) {
+     //      debugger;
+     //      $scope.selectedFile = fileContent;
+
+     //      console.log('selectedFile---', $scope.selectedFile);
+
+     //      $('#file_frame').attr('src', $scope.selectedFile.ContentDistribution.DistributionPublicUrl);
+
+     //      var myModal = new bootstrap.Modal(document.getElementById('filePreview'))
+     //      myModal.show('slow');
+     //      $scope.$apply();
+
+     //      ContentDistribution.DistributionPublicUrl
+     // }
 
      $scope.filePreviewHandler = function (fileContent) {
           debugger;
@@ -625,8 +640,8 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
           console.log('selectedFile---', $scope.selectedFile);
           var jhj = $scope.selectedFile.userDocument.Attachments[0].Id;
           console.log(jhj);
-          $scope.filesrec = $sce.trustAsResourceUrl(window.location.origin + '/ApplicantDashboard/servlet/servlet.FileDownload?file=' + $scope.selectedFile.userDocument.Attachments[0].Id);
-          //$scope.filesrec = window.location.origin +'/ApplicantDashboard/servlet/servlet.FileDownload?file='+$scope.selectedFile.userDocument.Attachments[0].Id;
+          // $scope.filesrec = $sce.trustAsResourceUrl(window.location.origin + '/ApplicantDashboard/servlet/servlet.FileDownload?file=' + $scope.selectedFile.userDocument.Attachments[0].Id);
+          $scope.filesrec = window.location.origin + '/ApplicantDashboard/servlet/servlet.FileDownload?file=' + $scope.selectedFile.userDocument.Attachments[0].Id;
           // $('#file_frame').attr('src', $scope.selectedFile.ContentDistribution.DistributionPublicUrl);
           $('#file_frame').attr('src', $scope.filesrec);
 
@@ -636,4 +651,24 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
 
           //.ContentDistribution.DistributionPublicUrl
      }
+
+     // $scope.filePreviewHandler = function (fileContent) {
+     //      debugger;
+     //      $scope.selectedFile = fileContent;
+
+     //      console.log('selectedFile---', $scope.selectedFile);
+     //      var jhj = $scope.selectedFile.userDocument.Attachments[0].Id;
+     //      console.log(jhj);
+     //      $scope.filesrec = $sce.trustAsResourceUrl(window.location.origin + '/ApplicantDashboard/servlet/servlet.FileDownload?file=' + $scope.selectedFile.userDocument.Attachments[0].Id);
+     //      //$scope.filesrec = window.location.origin +'/ApplicantDashboard/servlet/servlet.FileDownload?file='+$scope.selectedFile.userDocument.Attachments[0].Id;
+     //      // $('#file_frame').attr('src', $scope.selectedFile.ContentDistribution.DistributionPublicUrl);
+     //      // $('#file_frame').attr('src', $scope.filesrec);
+
+     //      // var myModal = new bootstrap.Modal(document.getElementById('filePreview'))
+     //      // myModal.show('slow');
+     //      //$scope.$apply();
+
+     //      //.ContentDistribution.DistributionPublicUrl
+     // }
+
 })

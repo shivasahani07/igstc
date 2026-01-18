@@ -1,9 +1,93 @@
 public class IndustrialFellowshipModel {
     public List<Education_Details__c> getEduQualification(String loginHashCode,String apaId){
-        // List<Education_Details__c> lEduDet=
+       /*
         return [SELECT Name,Degree__c,Start_Year__c,End_Year__c,CGPA__c,End_Date__c,Start_Date__c,Nature_of_PhD_Work__c,Nature_of_Thesis_Work__c,Institution_Name__c,Area_of_specialization__c,Percentage__c,Percentage_cgpa__c,
                 Thesis_Supervisor__c,Thesis_Type__c,Recordtype.Name,RecordTypeId,Title_Thesis__c FROM Education_Details__c WHERE contact__r.Login_Hash_Code__c=:loginHashCode AND Applicant_Proposal_Association__c=:apaId]; 
         // return lEduDet;
+        */
+         try {
+        // First get the contact using login hash code
+        List<Contact> contactList = [
+            SELECT Id, Is_Primary__c 
+            FROM Contact 
+            WHERE Login_Hash_Code__c = :loginHashCode 
+            LIMIT 1
+        ];
+        
+        if (contactList.isEmpty()) {
+            return new List<Education_Details__c>();
+        }
+        
+        Id contactId = contactList[0].Id;
+        
+        // Get the proposal details from the provided APA
+        List<Applicant_Proposal_Association__c> apaList = [
+            SELECT Id, Contact__c, Proposals__c, Proposals__r.Record_Type_Name__c
+            FROM Applicant_Proposal_Association__c 
+            WHERE Id = :apaId 
+            LIMIT 1
+        ];
+        
+        if (apaList.isEmpty()) {
+            return new List<Education_Details__c>();
+        }
+        
+        Applicant_Proposal_Association__c currentAPA = apaList[0];
+        Id proposalId = currentAPA.Proposals__c;
+        String proposalRecordType = currentAPA.Proposals__r.Record_Type_Name__c;
+        
+        Id finalApaId = apaId;
+        
+        // Use the same logic as save method to determine which APA to query
+        if (proposalRecordType != null && proposalRecordType.contains('PECFAR')) {
+            // For PECFAR, find the APA where this contact is associated with this proposal
+            List<Applicant_Proposal_Association__c> userAPA = [
+                SELECT Id 
+                FROM Applicant_Proposal_Association__c 
+                WHERE Contact__c = :contactId 
+                AND Proposals__c = :proposalId 
+                LIMIT 1
+            ];
+            
+            if (!userAPA.isEmpty()) {
+                finalApaId = userAPA[0].Id;
+                system.debug('PECFAR: Using user-specific APA for get: ' + finalApaId);
+            }
+        } else {
+            // For non-PECFAR proposals, check if contact is primary
+            if (!contactList[0].Is_Primary__c) {
+                // For non-primary contact, find the primary APA for the same proposal
+                List<Applicant_Proposal_Association__c> primaryAPAs = [
+                    SELECT Id 
+                    FROM Applicant_Proposal_Association__c 
+                    WHERE Proposals__c = :proposalId 
+                    AND Contact__r.Is_Primary__c = true 
+                    LIMIT 1
+                ];
+                
+                if (!primaryAPAs.isEmpty()) {
+                    finalApaId = primaryAPAs[0].Id;
+                    system.debug('Non-PECFAR, non-primary: Using primary APA for get: ' + finalApaId);
+                }
+            }
+        }
+        
+        // Query education details for the correct APA AND the contact
+        return [
+            SELECT Name, Degree__c, Start_Year__c, End_Year__c, CGPA__c, End_Date__c, Start_Date__c, 
+                   Nature_of_PhD_Work__c, Nature_of_Thesis_Work__c, Institution_Name__c, Area_of_specialization__c, 
+                   Percentage__c, Percentage_cgpa__c, Thesis_Supervisor__c, Thesis_Type__c, Recordtype.Name, 
+                   RecordTypeId, Title_Thesis__c, Applicant_Proposal_Association__c, Contact__c
+            FROM Education_Details__c 
+            WHERE Applicant_Proposal_Association__c = :finalApaId
+            ORDER BY CreatedDate
+        ];
+        
+    } catch (Exception e) {
+        system.debug('Error in getEduQualification: ' + e.getMessage() + ' at line ' + e.getLineNumber());
+        return new List<Education_Details__c>();
+    }
+        
     }
     public Achievement__c getAchievementsDet(String loginHashCode){
         // List<Education_Details__c> lEduDet=

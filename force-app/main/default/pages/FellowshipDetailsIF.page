@@ -11,206 +11,210 @@
 
         <body>
             <div class="container mt-5">
+               
                 <div class="row mx-5">
-                    <div class="col-md-12">
-                        <div class="tab-link" ng-show="proposalStage">
-                            <div class="progress">
-                                <div class="progress-success w-100"></div>
-                            </div>
-                            <ul>
-                                <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('Dashboard_IF')">
-                                        <div class="icon-circle">
-                                            <i class="fas fa-user-friends"></i>
-                                        </div>
-                                        <span>Basic Details</span>
-                                    </a>
-                                </li>
-                                
-                                <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('PersonalInformationIF')">
-                                        <div class="icon-circle">
-                                            <i class="fas fa-user-alt"></i>
-                                        </div>
-                                        <span>Personal Information</span>
-                                    </a>
-                                </li>
-                                <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('FellowshipDetailsIF')">
-                                        <div class="icon-circle">
-                                            <i class="fas fa-user-edit"></i>
-                                        </div>
-                                        <span>Mentor/Host Details</span>
-                                    </a>
-                                </li>
-                                <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('Parent_Organization')">
-                                        <div class="icon-circle">
-                                            <i class="fas fa-user-graduate"></i>
-                                        </div>
-                                        <span>Parent Organisation Details</span>
-                                    </a>
-                                </li>
-                                <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('EduQualificationIF')">
-                                        <div class="icon-circle">
-                                            <i class="fas fa-building"></i>
-                                        </div>
-                                        <span>Education Details</span>
-                                    </a>
-                                </li>   
-                            </ul>
-                        </div>
-                        <div class="tab-link" ng-hide="proposalStage">
-                            <div class="progress">
-                                <div class="progress-success wp-5"></div>
-                            </div>
-                            <ul>
-                                <li class="active">
-                                    <a>
-                                        <div class="icon-circle">
-                                            <i class="fas fa-user-friends"></i>
-                                        </div>
-                                        <span>Basic Details</span>
-                                    </a>
-                                </li>
-                                <li class="active">
-                                    <a>
-                                        <div class="icon-circle">
-                                            <i class="fas fa-user-alt"></i>
-                                        </div>
-                                        <span>Personal Information</span>
-                                    </a>
-                                </li>
-                                <li class="active">
-                                    <a>
-                                        <div class="icon-circle">
-                                            <i class="fas fa-user-edit"></i>
-                                        </div>
-                                        <span>Host Details</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a>
-                                        <div class="icon-circle">
-                                            <i class="fas fa-user-graduate"></i>
-                                        </div>
-                                        <span>Parent Organisation Details</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a>
-                                        <div class="icon-circle">
-                                            <i class="fas fa-building"></i>
-                                        </div>
-                                        <span>Education Details</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        </div>
-                    </div>
-
-                    <div class="row mx-5">
                         <div class="col-md-12">
                             <div class="tab-link" ng-show="proposalStage">
                                 <div class="progress">
                                     <div class="progress-success w-100"></div>
                                 </div>
                                 <ul>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Dashboard_IF')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-user-friends"></i>
+                                            </div>
+                                            <span>Basic Details</span>
+                                        </a>
+                                    </li>
                                     
                                     <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('EmploymentDetailsIF')">
+                                        <a ng-click="redirectPageURL('PersonalInformationIF')">
                                             <div class="icon-circle">
-                                                <i class="fas fa-trophy"></i>
+                                                <i class="fas fa-user-alt"></i>
                                             </div>
-                                            <span>Employment Details</span>
+                                            <span>Personal Information</span>
                                         </a>
                                     </li>
                                     <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('ProjectDetailIF')">
+                                        <a ng-click="redirectPageURL('Parent_Organization')">
                                             <div class="icon-circle">
-                                                <i class="fa fa-paperclip"></i>
+                                                <i class="fas fa-user-graduate"></i>
                                             </div>
-                                            <span>Project Details</span>
+                                            <span>Parent Organisation Details</span>
                                         </a>
-                                    </li>
+                                    </li>                                            
                                     <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('AchievementsIF')">
+                                        <a ng-click="redirectPageURL('EduQualificationIF')">
                                             <div class="icon-circle">
-                                                <i class="fa fa-home"></i>
+                                                <i class="fas fa-building"></i>
                                             </div>
-                                            <span>Achievements</span>
+                                            <span>Education Details</span>
                                         </a>
-                                    </li>
-                                    <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('AttachmentsIF')">
-                                            <div class="icon-circle">
-                                                <i class="fas fa-check"></i>
-                                            </div>
-                                            <span>Attachments</span>
-                                        </a>
-                                    </li>
-                                    <li class="active pb-cursor">
-                                        <a ng-click="redirectPageURL('ReviewAndSubmitIF')">
-                                            <div class="icon-circle">
-                                                <i class="fas fa-file-signature"></i>
-                                            </div>
-                                            <span>Review/Submit</span>
-                                        </a>
-                                    </li>
+                                    </li> 
+                                     <li class="active pb-cursor">
+                                            <a ng-click="redirectPageURL('EmploymentDetailsIF')">
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-trophy"></i>
+                                                </div>
+                                                <span>Employment Details</span>
+                                            </a>
+                                        </li>  
                                 </ul>
                             </div>
                             <div class="tab-link" ng-hide="proposalStage">
                                 <div class="progress">
-                                    <div class="progress-success wp-0"></div>
+                                    <div class="progress-success w-100"></div>
                                 </div>
                                 <ul>
-                                    
-                                    <li>
+                                    <li class="active">
                                         <a>
                                             <div class="icon-circle">
-                                                <i class="fas fa-trophy"></i>
+                                                <i class="fas fa-user-friends"></i>
                                             </div>
-                                            <span>Employment Details</span>
+                                            <span>Basic Details</span>
                                         </a>
                                     </li>
-                                    <li>
+                                    <li class="active">
                                         <a>
                                             <div class="icon-circle">
-                                                <i class="fa fa-paperclip"></i>
+                                                <i class="fas fa-user-alt"></i>
                                             </div>
-                                            <span>Project Details</span>
+                                            <span>Personal Information</span>
                                         </a>
                                     </li>
-                                    <li>
+                                    <li class="active">
                                         <a>
                                             <div class="icon-circle">
-                                                <i class="fa fa-home"></i>
+                                                <i class="fas fa-user-graduate"></i>
                                             </div>
-                                            <span>Achievements</span>
+                                            <span>Parent Organisation Details</span>
                                         </a>
                                     </li>
-                                    <li>
+                                
+                                    <li class="active">
                                         <a>
                                             <div class="icon-circle">
-                                                <i class="fas fa-check"></i>
+                                                <i class="fas fa-building"></i>
                                             </div>
-                                            <span>Attachments</span>
+                                            <span>Education Details</span>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a>
-                                            <div class="icon-circle">
-                                                <i class="fas fa-file-signature"></i>
-                                            </div>
-                                            <span>Review/Submit</span>
-                                        </a>
+                                    <li class="active">
+                                            <a>
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-trophy"></i>
+                                                </div>
+                                                <span>Employment Details</span>
+                                            </a>
                                     </li>
                                 </ul>
                             </div>
                             </div>
-                        </div>
+                </div>
+
+                    
+                <div class="row mx-5">
+                            <div class="col-md-12">
+                                <div class="tab-link" ng-show="proposalStage">
+                                    <div class="progress">
+                                        <div class="progress-success w-100"></div>
+                                    </div>
+                                    <ul>
+                                        <li class="active pb-cursor">
+                                            <a ng-click="redirectPageURL('AchievementsIF')">
+                                                <div class="icon-circle">
+                                                    <i class="fa fa-home"></i>
+                                                </div>
+                                                <span>Achievements</span>
+                                            </a>
+                                        </li>
+                                        <li class="active pb-cursor">
+                                            <a ng-click="redirectPageURL('FellowshipDetailsIF')">
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-user-edit"></i>
+                                                </div>
+                                                <span>Host Details</span>
+                                            </a>
+                                        </li>                                        
+                                       
+                                        <li class="active pb-cursor">
+                                            <a ng-click="redirectPageURL('ProjectDetailIF')">
+                                                <div class="icon-circle">
+                                                    <i class="fa fa-paperclip"></i>
+                                                </div>
+                                                <span>Project Details</span>
+                                            </a>
+                                        </li>
+                                        
+                                        <li class="active pb-cursor">
+                                            <a ng-click="redirectPageURL('AttachmentsIF')">
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-check"></i>
+                                                </div>
+                                                <span>Attachments</span>
+                                            </a>
+                                        </li>
+                                        <li class="active pb-cursor">
+                                            <a ng-click="redirectPageURL('ReviewAndSubmitIF')">
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-file-signature"></i>
+                                                </div>
+                                                <span>Review/Submit</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="tab-link" ng-hide="proposalStage">
+                                    <div class="progress">
+                                        <div class="progress-success wp-3"></div>
+                                    </div>
+                                    <ul>
+                                        <li class="active">
+                                            <a>
+                                                <div class="icon-circle">
+                                                    <i class="fa fa-home"></i>
+                                                </div>
+                                                <span>Achievements</span>
+                                            </a>
+                                        </li>
+                                        <li class="active">
+                                            <a>
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-user-edit"></i>
+                                                </div>
+                                                <span>Host Details</span>
+                                            </a>
+                                        </li>                                        
+                                        
+                                        <li>
+                                            <a>
+                                                <div class="icon-circle">
+                                                    <i class="fa fa-paperclip"></i>
+                                                </div>
+                                                <span>Project Details</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a>
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-check"></i>
+                                                </div>
+                                                <span>Attachments</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a>
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-file-signature"></i>
+                                                </div>
+                                                <span>Review/Submit</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                </div>
+                </div>
 
                         <!-- <div class="row mt-5 mx-5">
                             <div class="col-md-12 alert bg-color-list" role="alert">

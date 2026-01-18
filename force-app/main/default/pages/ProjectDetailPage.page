@@ -393,14 +393,14 @@
                                 type="date" ng-model="tentitiveStartDate | date:'dd-MMM-yyyy'" id="TSD" ng-focus="removeClass2('TSD')"
                                 ng-disabled="proposalStage" /> -->
                         </div> 
-                    </div>
+ </div>
                     <div class="row mt-5">
                         <div class="col-md-4">
                             <label class="ps-3 pt-1 color-theme">
                                 <b>Keywords<span class="required-asterisk" style="color:red;">*</span> (Max. 6) <i>(To add click plus sign)</i></b>                                
                             </label>
                         </div>
-                        <div class="col-md-1">
+                        <div class="col-md-1">     
                             <div>
                                 <i ng-click="addKeyword()" class="fa-solid fa-2x text-primary fa-circle-plus" ng-if="!proposalStage"></i>
                             </div>

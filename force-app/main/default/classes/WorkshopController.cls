@@ -518,9 +518,14 @@ public without sharing class WorkshopController {
     
     //************************************** WORK PACKAGE **********************************************************
     
-    @RemoteAction
+   /* @RemoteAction
     public static List<Work_Package__c> getWPDetails(string applicantHashCode){
         return Proposal_Controller.getWPDetails(applicantHashCode);
+    }*/
+    
+    @RemoteAction
+    public static List<Work_Package__c> getWPDetails(String proposalId, String proposalStage){
+        return Proposal_Controller.getWPDetails(proposalId, proposalStage);
     }
     @RemoteAction
     public static List<Account> getProposalAccounts(String ProposalId){
@@ -553,15 +558,25 @@ public without sharing class WorkshopController {
     
     //************************************** Grant Application **********************************************************
     
-    @RemoteAction
+    /*@RemoteAction
     public static  List<Account> getApplicantDetailsForGrant(string applicantHashCode){
         return Proposal_Controller.getApplicantDetailsForGrant(applicantHashCode);
+    }*/
+     @RemoteAction
+    public static List<Account> getApplicantDetailsForGrant(String apaId, String proposalId){
+        return Proposal_Controller.getApplicantDetailsForGrant(apaId, proposalId);
     }
     
-    @RemoteAction
+    /*@RemoteAction
     public static String insertExistingGrants(List<Proposal_Controller.ExistingGrantsWrapper> grantList){
         system.debug('grantList ---> '+grantList);
         return Proposal_Controller.insertExistingGrants(grantList);
+    }*/
+    
+     @RemoteAction
+    public static String insertExistingGrants(List<Proposal_Controller.ExistingGrantsWrapper> grantList, String apaId){
+        system.debug('grantList ---> '+grantList);
+        return Proposal_Controller.insertExistingGrants(grantList, apaId);
     }
     
     @RemoteAction
@@ -1248,9 +1263,13 @@ return Proposal_Controller.insertParticipants(allParticipantDetails);
         update New Contact(id=conId,Profile_Pic_Attachment_Id__c=attId);
         return 'success';
     }
-    @RemoteAction
+   /* @RemoteAction
     public static Contact getFellowshipDetails(string applicantHashCode){
         return Proposal_Controller.getFellowshipDetails(applicantHashCode);
+    }*/
+     @RemoteAction
+    public static Contact getFellowshipDetails(string applicantHashCode, string proposalId){
+        return Proposal_Controller.getFellowshipDetails(applicantHashCode, proposalId);
     }
     // @RemoteAction
     // public static String doCUploadAttachmentReviewer(String attachmentBody, String attachmentName, string cvId, String udId) {

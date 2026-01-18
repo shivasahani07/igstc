@@ -196,7 +196,7 @@ angular.module('cp_app').controller('POrg_ctrl', function($scope,$rootScope) {
                     'Your Parent Organization details have been saved successfully.',
                     'success'
                 );
-                $scope.redirectPageURL('EduQualificationIF');
+               $scope.redirectPageURL('EduQualificationIF');
                 $scope.accDetails.Account = result;
                 $scope.$apply();
             }

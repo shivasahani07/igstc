@@ -436,7 +436,13 @@ angular.module('cp_app').controller('AttachmentsIF_Ctrl', function ($scope, $sce
                     return;
                 }
             }
+           
         }
+        Swal.fire(
+                    'Success',
+                    'Your Attachments have been saved successfully.',
+                    'success'
+                );
 
         $scope.redirectPageURL('ReviewAndSubmitIF');
     }

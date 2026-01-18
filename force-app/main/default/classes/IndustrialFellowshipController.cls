@@ -12,6 +12,12 @@ public withOut sharing class IndustrialFellowshipController {
         IndustrialFellowshipHelper instanceIFH=new IndustrialFellowshipHelper();
         return instanceIFH.saveEduDetailIF(loginHashCode,instanceEduDet,dateList,apaId);
     }
+    // Pecfar method added by Rukasar
+    @RemoteAction
+    public static String saveEduDetailPecfar(String loginHashCode,List<Education_Details__c> instanceEduDet,List<IndustrialFellowshipHelper.WrapperDate> dateList,String apaId){
+        IndustrialFellowshipHelper instanceIFH=new IndustrialFellowshipHelper();
+        return instanceIFH.saveEduDetailPecfar(loginHashCode,instanceEduDet,dateList,apaId);
+    }
     @RemoteAction
     public static Achievement__c getAchievementsDet(String loginHashCode){ 
         IndustrialFellowshipModel instanceIFM=new IndustrialFellowshipModel();
@@ -92,7 +98,7 @@ public static String saveApplicantPortalSingh(String loginHashCode,Contact con,A
     }
    // Wiser 1
     @RemoteAction 
-    public static String saveApplicantPortalWiser(contact conRec,Account acc,integer birthYear,integer birthMonth,integer birthDay, string campaignId){
+    public static String saveApplicantPortalWiser(contact conRec,Account acc, integer birthYear,integer birthMonth,integer birthDay, string campaignId){
         IndustrialFellowshipHelper instanceIFM = new IndustrialFellowshipHelper();
         return instanceIFM.insertApplicantDetails(conRec, acc, birthYear, birthMonth, birthDay, campaignId);
     }

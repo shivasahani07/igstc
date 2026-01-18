@@ -7,8 +7,8 @@
             <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
             <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.5.16/textAngular.css"
-                crossorigin="anonymous" />
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.5.16/textAngular.css" crossorigin="anonymous"
+            />
             <script>
                 var userId = '{!$CurrentPage.parameters.id}';
             </script>
@@ -62,10 +62,19 @@
                                 <!-- Applicant Details -->
                                 <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('WiserApplicationPage')">
-                                        <div c-lass="icon-circle">
+                                        <div class="icon-circle">
                                             <i class="fas fa-user-alt"></i>
                                         </div>
                                         <span>Applicant Details</span>
+                                    </a>
+                                </li>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('CV_Wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
                                     </a>
                                 </li>
 
@@ -83,7 +92,7 @@
 
                         <div class="tab-link" ng-hide="proposalStage">
                             <div class="progress">
-                                <div class="progress-success wp-2"></div>
+                                <div class="progress-success wp-1"></div>
                             </div>
                             <ul>
 
@@ -124,6 +133,16 @@
                                         <span>Applicant Details</span>
                                     </a>
                                 </li>
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li>
+
                                 <li>
                                     <a>
                                         <div class="icon-circle">
@@ -252,6 +271,16 @@
                                 <div class="progress-success w-100"></div>
                             </div>
                             <ul>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ExistingGrantWISER')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-money-bill"></i>
+                                        </div>
+                                        <span>Other Grants</span>
+                                    </a>
+                                </li>
+
                                 <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('TwoReferenceWiser')">
                                         <div class="icon-circle">
@@ -261,14 +290,7 @@
                                     </a>
                                 </li>
 
-                                <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('ExistingGrantWISER')">
-                                        <div class="icon-circle">
-                                            <i class="fas fa-money-bill"></i>
-                                        </div>
-                                        <span>Grant Details</span>
-                                    </a>
-                                </li>
+
 
                                 <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('AttachmentsInWiser')">
@@ -279,14 +301,14 @@
                                     </a>
                                 </li>
 
-                                <li class="active pb-cursor">
+                                <!-- <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('CV_Wiser')">
                                         <div class="icon-circle">
                                             <i class="fa-solid fa-address-book"></i>
                                         </div>
                                         <span>Curriculum Vitae</span>
                                     </a>
-                                </li>
+                                </li> -->
 
                                 <li class="active pb-cursor">
                                     <a ng-click="redirectPageURL('Declaration_Wiser')">
@@ -298,11 +320,20 @@
                                 </li>
                             </ul>
                         </div>
+
                         <div class="tab-link" ng-hide="proposalStage">
                             <div class="progress">
                                 <div class="progress-success wp-0"></div>
                             </div>
                             <ul>
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-money-bill"></i>
+                                        </div>
+                                        <span>Other Grants</span>
+                                    </a>
+                                </li>
                                 <li>
                                     <a>
                                         <div class="icon-circle">
@@ -315,29 +346,20 @@
                                 <li>
                                     <a>
                                         <div class="icon-circle">
-                                            <i class="fas fa-money-bill"></i>
-                                        </div>
-                                        <span>Grant Details</span>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a>
-                                        <div class="icon-circle">
                                             <i class="fas fa-upload"></i>
                                         </div>
                                         <span>Attachments</span>
                                     </a>
                                 </li>
 
-                                <li>
+                                <!-- <li>
                                     <a>
                                         <div class="icon-circle">
                                             <i class="fa-solid fa-address-book"></i>
                                         </div>
                                         <span>Curriculum Vitae</span>
                                     </a>
-                                </li>
+                                </li> -->
 
                                 <li>
                                     <a>
@@ -356,8 +378,7 @@
                     <div class="col-md-12 alert bg-color-list" role="alert">
                         <ul class="font-if">
                             <li>
-                                <i class="fa-solid fa-circle text-success me-3"></i>Pair project details pertain to the
-                                project with which the applicant will engage in collaboration.
+                                <i class="fa-solid fa-circle text-success me-3"></i>Pair project details pertain to the project with which the applicant will engage in collaboration.
                                 This provides brief about collaborating partner’s proposed project and the complementary
                                 objectives.
                             </li>
@@ -403,8 +424,7 @@
                                     <b>Title of project</b> (Max. characters 600)
                                     <span class="required-asterisk text-danger">*</span>
                                 </label>
-                                <input class="form-control" type="text" ng-model="objContact.Title_Of__c"
-                                    ng-disabled="proposalStage" id="titleOfProposal"
+                                <input class="form-control" type="text" ng-model="objContact.Title_Of__c" ng-disabled="proposalStage" id="titleOfProposal"
                                     ng-change="checkCharLimit(objContact, 'Title_Of__c', 600)" />
 
                                 <small class="text-danger" ng-if="objContact._charLimitMap &&
@@ -418,8 +438,7 @@
                                     <b>Broad area of research</b> (Max. characters 255)
                                     <span class="required-asterisk text-danger">*</span>
                                 </label>
-                                <input class="form-control" type="text" ng-model="objContact.Broad_area_of_research__c"
-                                    ng-disabled="proposalStage" id="areaOfResearch"
+                                <input class="form-control" type="text" ng-model="objContact.Broad_area_of_research__c" ng-disabled="proposalStage" id="areaOfResearch"
                                     ng-change="checkCharLimit(objContact, 'Broad_area_of_research__c', 255)" />
 
                                 <small class="text-danger" ng-if="objContact._charLimitMap &&
@@ -439,8 +458,7 @@
                                     <b>Layman title of project</b> (Max. 600 chars)
                                     <span class="required-asterisk text-danger">*</span>
                                 </label>
-                                <input class="form-control" type="text" ng-model="objContact.Layman_title_of_project__c"
-                                    ng-disabled="proposalStage" id="laymanTitle"
+                                <input class="form-control" type="text" ng-model="objContact.Layman_title_of_project__c" ng-disabled="proposalStage" id="laymanTitle"
                                     ng-change="checkCharLimit(objContact, 'Layman_title_of_project__c', 600)" />
 
                                 <small class="text-danger" ng-if="objContact._charLimitMap &&
@@ -454,10 +472,9 @@
                                     <b>Layman abstract of proposed work</b> (Max. 600 chars)
                                     <span class="required-asterisk text-danger">*</span>
                                 </label>
-                                <input class="form-control" type="text"
-                                    ng-model="objContact.Layman_abstract_of_proposed_work__c"
-                                    ng-disabled="proposalStage" id="laymanabstract"
-                                    ng-change="checkCharLimit(objContact, 'Layman_abstract_of_proposed_work__c', 600)" />
+                                <input class="form-control" type="text" ng-model="objContact.Layman_abstract_of_proposed_work__c" ng-disabled="proposalStage"
+                                    id="laymanabstract" ng-change="checkCharLimit(objContact, 'Layman_abstract_of_proposed_work__c', 600)"
+                                />
 
                                 <small class="text-danger" ng-if="objContact._charLimitMap &&
                                         objContact._charLimitMap.Layman_abstract_of_proposed_work__c">
@@ -479,13 +496,11 @@
                                 <span class="required-asterisk" style="color:red;">*</span>
 
                                 <form name="formPrjDet">
-                                    <input name="duration" type="number" class="form-control"
-                                        placeholder="Min 24 months and Max 36 months"
-                                        ng-model="objContact.Duration_In_Months_Max_36__c" ng-disabled="proposalStage"
-                                        min="24" max="36" id="txtDuration" ng-focus="removeClass2('txtDuration')" />
+                                    <input name="duration" type="number" class="form-control" placeholder="Min 24 months and Max 36 months" ng-model="objContact.Duration_In_Months_Max_36__c"
+                                        ng-disabled="proposalStage" min="24" max="36" id="txtDuration" ng-focus="removeClass2('txtDuration')"
+                                    />
 
-                                    <span class="text-danger"
-                                        ng-show="formPrjDet.duration.$error.min || formPrjDet.duration.$error.max">
+                                    <span class="text-danger" ng-show="formPrjDet.duration.$error.min || formPrjDet.duration.$error.max">
                                         Duration must be between 24 and 36 months
                                     </span>
                                 </form>
@@ -503,23 +518,19 @@
                                         </b>
                                     </label>
 
-                                    <i class="fa-solid fa-circle-plus fa-2x text-primary ms-3" ng-click="addKeyword()"
-                                        ng-if="!proposalStage" style="cursor:pointer;"></i>
+                                    <i class="fa-solid fa-circle-plus fa-2x text-primary ms-3" ng-click="addKeyword()" ng-if="!proposalStage" style="cursor:pointer;"></i>
                                 </div>
 
                                 <!-- Keywords inputs -->
                                 <div ng-repeat="item in objKeyword track by $index" class="row mb-2">
 
                                     <div class="col-md-10">
-                                        <input type="text" ng-model="item.keyword" class="form-control" maxlength="255"
-                                            ng-disabled="proposalStage" ng-focus="removeClass2('keywords')"
+                                        <input type="text" ng-model="item.keyword" class="form-control" maxlength="255" ng-disabled="proposalStage" ng-focus="removeClass2('keywords')"
                                             id="keywords" />
                                     </div>
 
                                     <div class="col-md-2 d-flex align-items-center">
-                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger"
-                                            ng-click="removeKeyword($index)" ng-if="!proposalStage"
-                                            style="cursor:pointer;"></i>
+                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger" ng-click="removeKeyword($index)" ng-if="!proposalStage" style="cursor:pointer;"></i>
                                     </div>
 
                                 </div>
@@ -555,66 +566,59 @@
                     </div>
                     </div> -->
 
-                    <div class="col-md-12 mt-5"> 
+                    <div class="col-md-12 mt-5">
                         <div class="row">
                             <div class="col-md-12">
-                                <label class="font-if color-theme">Abstract (max 700 characters without
-                                    space)</label>
+                                <label class="font-if color-theme">Abstract (max 700 characters without space)
+                                </label>
                                 <span class="required-asterisk" style="color:red;">*</span>
                                 <br />
                                 <small class="label-rtf">
-                                    <b>To use RTF more efficiently, make sure you write your content in word
-                                        document first and then copy paste here</b>
+                                    <b>To use RTF more efficiently, make sure you write your content in word document first
+                                        and then copy paste here</b>
                                 </small>
-                                <ng-ckeditor name="ckEditor2" maxlength="600"
-                                    ng-change="readCharacter(objContact.Host_Abstract_Of_Project__c,0)"
-                                    ng-model="objContact.Host_Abstract_Of_Project__c" ng-config="config"></ng-ckeditor>
+                                <ng-ckeditor name="ckEditor2" maxlength="600" ng-change="readCharacter(objContact.Host_Abstract_Of_Project__c,0)" ng-model="objContact.Host_Abstract_Of_Project__c"
+                                    ng-config="config"></ng-ckeditor>
                                 <span>Total characters : {{objRtf[0].charCount}}</span>
-                                <span class="text-danger" ng-if="objRtf[0].errorStatus">maximum character limit is
-                                    700</span>
+                                <span class="text-danger" ng-if="objRtf[0].errorStatus">maximum character limit is 700
+                                </span>
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- PROJECT PROPOSAL ATTACHMENT -->
-                    <div class="col-md-12 mt-5">
+                    <!-- <div class="col-md-12 mt-5">
                         <div class="row">
 
                             <div class="col-md-6">
-                                <label class="font-if"> Upload the project proposal in pdf format with a min size of
-                                    30Kb and max size of 1Mb.
+                                <label class="font-if"> Upload the project proposal in pdf format with a min size of 30Kb and max size of 1Mb.
                                     <span class="text-danger me-2">*</span>
                                 </label>
-                                <div class="col-md-9 mt-4"
-                                    style="padding-left: 0px !important; padding-right: 0px !important">
+                                <div class="col-md-9 mt-4" style="padding-left: 0px !important; padding-right: 0px !important">
                                     <div class="input-group input-group-lg">
-                                        <input type="file" accept=".pdf" ng-disabled="proposalStage"
-                                            id="{{doc.userDocument.Name}}" class="form-control " />
+                                        <input type="file" accept=".pdf" ng-disabled="proposalStage" id="{{doc.userDocument.Name}}" class="form-control " />
                                         <span class="input-group-btn" ng-hide="proposalStage">
-                                            <button class="btn btn-success"
-                                                ng-click="uploadFile(doc.userDocument.Name,doc.userDocument.Id,'','1048576','1048576')"
-                                                type="button">Upload</button>
+                                            <button class="btn btn-success" ng-click="uploadFile(doc.userDocument.Name,doc.userDocument.Id,'','1048576','1048576')" type="button">Upload</button>
                                         </span>
                                     </div>
                                 </div>
 
                                 <div class="col-md-3" ng-show="doc.userDocument.Status__c=='Uploaded'">
                                     <a class="blue-btn float-end mt-4 py-3" ng-click="filePreviewHandler(doc)">View</a>
-                                    <!-- <a class="blue-btn float-end mt-4 py-3" href="{{doc.ContentDistribution.DistributionPublicUrl}}" target="_blank">View</a> -->
+                                    <!-- <a class="blue-btn float-end mt-4 py-3" href="{{doc.ContentDistribution.DistributionPublicUrl}}" target="_blank">View</a>
                                 </div>
                             </div>
 
                         </div>
-                    </div>
+                    </div> -->
 
                 </div>
-                
-                
+
+
 
                 <div class="row m-5" ng-if="!proposalStage">
                     <div class="col-md-12">
-                        <button class="blue-btn float-end" ng-click="saveApplicationPortalHostInformation()"
-                            type="button">
+                        <button class="blue-btn float-end" ng-click="saveApplicationPortalHostInformation()" type="button">
                             <i class="fa-solid fa-check me-2"></i>Save and Next</button>
                         <button class="blue-bordered-btn float-end me-2" ng-click="previousPage()" type="button">
                             <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>

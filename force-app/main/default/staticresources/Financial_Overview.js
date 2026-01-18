@@ -50,6 +50,12 @@ angular.module('cp_app').controller('financialCtrl', function ($scope, $rootScop
                         if (result[i].Financial_Contribution__r[0].IGSTC_Contribution__c == 'NaN' || result[i].Financial_Contribution__r[0].IGSTC_Contribution__c == '' || result[i].Financial_Contribution__r[0].IGSTC_Contribution__c == undefined) {
                             result[i].Financial_Contribution__r[0].IGSTC_Contribution__c = 0;
                         }
+                        if (result[i].Financial_Contribution__r[0].Budget_for_Capital_Expenditure__c == 'NaN' || result[i].Financial_Contribution__r[0].Budget_for_Capital_Expenditure__c == '' || result[i].Financial_Contribution__r[0].Budget_for_Capital_Expenditure__c == undefined) {
+                            result[i].Financial_Contribution__r[0].Budget_for_Capital_Expenditure__c = 0;
+                        }
+                        if (result[i].Financial_Contribution__r[0].Budget_for_Recurring_Expenditure__c == 'NaN' || result[i].Financial_Contribution__r[0].Budget_for_Recurring_Expenditure__c == '' || result[i].Financial_Contribution__r[0].Budget_for_Recurring_Expenditure__c == undefined) {
+                            result[i].Financial_Contribution__r[0].Budget_for_Recurring_Expenditure__c = 0;
+                        }
                     }
                     else {
                         result[i].Financial_Contribution__r = [];
@@ -197,8 +203,19 @@ angular.module('cp_app').controller('financialCtrl', function ($scope, $rootScop
             }
         }
         $scope.validateFinacialDet(index);
-        $scope.input[index].Financial_Contribution__r[0].Total__c = Number($scope.input[index].Financial_Contribution__r[0].IGSTC_Contribution__c) + Number($scope.input[index].Financial_Contribution__r[0].Own_Contribution__c);
-        $scope.input[index].Financial_Contribution__r[0].Asked_From_IGSTC__c = (Number($scope.input[index].Financial_Contribution__r[0].IGSTC_Contribution__c) / (Number($scope.input[index].Financial_Contribution__r[0].IGSTC_Contribution__c) + Number($scope.input[index].Financial_Contribution__r[0].Own_Contribution__c))) * 100;
+        
+        // Calculate Total from IGSTC + Own Contribution
+        var totalFromContributions = Number($scope.input[index].Financial_Contribution__r[0].IGSTC_Contribution__c || 0) + Number($scope.input[index].Financial_Contribution__r[0].Own_Contribution__c || 0);
+        
+        // Set Total to the contribution total (IGSTC + Own)
+        $scope.input[index].Financial_Contribution__r[0].Total__c = totalFromContributions;
+        
+        // Calculate percentage
+        if (totalFromContributions > 0) {
+            $scope.input[index].Financial_Contribution__r[0].Asked_From_IGSTC__c = (Number($scope.input[index].Financial_Contribution__r[0].IGSTC_Contribution__c || 0) / totalFromContributions) * 100;
+        } else {
+            $scope.input[index].Financial_Contribution__r[0].Asked_From_IGSTC__c = 0;
+        }
     }
     $scope.validateFinacialDet = function (index) {
         debugger
@@ -605,6 +622,36 @@ angular.module('cp_app').controller('financialCtrl', function ($scope, $rootScop
                             $("#igstc" + i).addClass('border-theme');
                             return;
                         }
+                    }
+
+                    // Validate Budget fields are not empty
+                    if (contribution.Budget_for_Capital_Expenditure__c == undefined || contribution.Budget_for_Capital_Expenditure__c === "") {
+                        swal("Financial Details", "Please Enter Budget for Capital Expenditure.");
+                        $("#capital" + i).addClass('border-theme');
+                        return;
+                    }
+
+                    if (contribution.Budget_for_Recurring_Expenditure__c == undefined || contribution.Budget_for_Recurring_Expenditure__c === "") {
+                        swal("Financial Details", "Please Enter Budget for Recurring Expenditure.");
+                        $("#recurring" + i).addClass('border-theme');
+                        return;
+                    }
+
+                    // Validate that Total = IGSTC + Own = Capital + Recurring
+                    var totalFromContributions = Number(contribution.IGSTC_Contribution__c || 0) + Number(contribution.Own_Contribution__c || 0);
+                    var totalFromBudget = Number(contribution.Budget_for_Capital_Expenditure__c || 0) + Number(contribution.Budget_for_Recurring_Expenditure__c || 0);
+
+                    if (Math.abs(totalFromContributions - totalFromBudget) > 0.01) {
+                        swal("Financial Details", 
+                            "Total (IGSTC Funding + Own Contribution) must equal (Budget for Capital Expenditure + Budget for Recurring Expenditure).\n\n" +
+                            "Current values:\n" +
+                            "IGSTC Funding + Own Contribution = " + totalFromContributions.toLocaleString() + "\n" +
+                            "Capital + Recurring Expenditure = " + totalFromBudget.toLocaleString());
+                        $("#igstc" + i).addClass('border-theme');
+                        $("#own" + i).addClass('border-theme');
+                        $("#capital" + i).addClass('border-theme');
+                        $("#recurring" + i).addClass('border-theme');
+                        return;
                     }
                 }
             }

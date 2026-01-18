@@ -255,7 +255,8 @@ $scope.callRTF=function(){
                   'Your Host details have been saved successfully.',
                   'success'
               );
-              $scope.redirectPageURL('Parent_Organization');
+              //$scope.redirectPageURL('Parent_Organization');//Commented By Karthik
+               $scope.redirectPageURL('ProjectDetailIF');
               $scope.accDetails = result;
               $scope.$apply();
           }
@@ -274,7 +275,8 @@ $scope.callRTF=function(){
   $scope.clickPreviousFellowshipDetails=function(){
     var link=document.createElement("a");
         link.id = 'someLink'; //give it an ID!
-        link.href="#/PersonalInformationIF";
+        //link.href="#/PersonalInformationIF";//Commented By Karthik
+        link.href="#/AchievementsIF";
         link.click();
 }
 

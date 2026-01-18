@@ -166,7 +166,7 @@ angular.module('cp_app').controller('parengOrg_ctrl', function($scope,$rootScope
                     icon: "success",
                     button: "ok!",
                   }).then((value) => {
-                    $scope.redirectPageURL('Fellowship_Details');
+                    $scope.redirectPageURL('Education_Qualification');
                     $scope.accDetails = result;
                       });
                 
