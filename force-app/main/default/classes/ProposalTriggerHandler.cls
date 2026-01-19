@@ -1699,9 +1699,46 @@ public class ProposalTriggerHandler {
                            FROM Applicant_Proposal_Association__c
                            WHERE Proposals__c IN :proposalIds];
 
+            // Query existing Annual_Expense__c and Yearly_Expense__c records to prevent duplicates
+            Map<Id, Set<String>> existingAnnualExpenses = new Map<Id, Set<String>>();
+            Map<Id, Set<String>> existingYearlyExpenses = new Map<Id, Set<String>>();
+            
             if (!relatedAPA.isEmpty()) {
                 for (Applicant_Proposal_Association__c apa : relatedAPA) {
                     apaIds.add(apa.Id);
+                }
+                
+                // Query existing Annual_Expense__c records
+                List<Annual_Expense__c> existingAE = [
+                    SELECT Id, Name, Applicant_Proposal_Association__c
+                    FROM Annual_Expense__c
+                    WHERE Applicant_Proposal_Association__c IN :apaIds
+                ];
+                
+                for (Annual_Expense__c ae : existingAE) {
+                    if (!existingAnnualExpenses.containsKey(ae.Applicant_Proposal_Association__c)) {
+                        existingAnnualExpenses.put(ae.Applicant_Proposal_Association__c, new Set<String>());
+                    }
+                    existingAnnualExpenses.get(ae.Applicant_Proposal_Association__c).add(ae.Name);
+                }
+                
+                // Query existing Yearly_Expense__c records
+                List<Yearly_Expense__c> existingYE = [
+                    SELECT Id, Year__c, Applicant_Proposal_Association__c
+                    FROM Yearly_Expense__c
+                    WHERE Applicant_Proposal_Association__c IN :apaIds
+                ];
+                
+                for (Yearly_Expense__c ye : existingYE) {
+                    if (!existingYearlyExpenses.containsKey(ye.Applicant_Proposal_Association__c)) {
+                        existingYearlyExpenses.put(ye.Applicant_Proposal_Association__c, new Set<String>());
+                    }
+                    if (ye.Year__c != null) {
+                        existingYearlyExpenses.get(ye.Applicant_Proposal_Association__c).add(ye.Year__c);
+                    }
+                }
+                
+                for (Applicant_Proposal_Association__c apa : relatedAPA) {
                     // Calculate number of years based on Duration_In_Months_Max_36__c
                     // 36 months = 3 years, 24 months = 2 years, 12 months = 1 year
                     Integer numberOfYears = 3; // Default to 3 years
@@ -1716,22 +1753,41 @@ public class ProposalTriggerHandler {
                     // Store numberOfYears for later use
                     apaIdXnumberOfYears.put(apa.Id, numberOfYears);
                     
-                    for (Integer i = 1; i <= numberOfYears; i++) {
-                        Annual_Expense__c ae = new Annual_Expense__c();
-                        ae.Name = 'Year ' + i;
-                        ae.Applicant_Proposal_Association__c = apa.Id;
-                        aeToInsert.add(ae);
+                    // Check existing Annual_Expense__c records before creating
+                    Set<String> existingAENames = existingAnnualExpenses.get(apa.Id);
+                    if (existingAENames == null) {
+                        existingAENames = new Set<String>();
                     }
                     
-                    // Create Yearly_Expense__c records (new model)
                     for (Integer i = 1; i <= numberOfYears; i++) {
-                        Yearly_Expense__c ye = new Yearly_Expense__c();
-                        // ye.Name = 'Year ' + i;
-                        ye.Year__c = string.valueOf(i);
-                        ye.Applicant_Proposal_Association__c = apa.Id;
-                        ye.Account__c = apa.Contact__r.AccountId;
-                        ye.Proposals__c = apa.Proposals__c;
-                        yeListToInsert.add(ye);
+                        String yearName = 'Year ' + i;
+                        // Only create if it doesn't already exist
+                        if (!existingAENames.contains(yearName)) {
+                            Annual_Expense__c ae = new Annual_Expense__c();
+                            ae.Name = yearName;
+                            ae.Applicant_Proposal_Association__c = apa.Id;
+                            aeToInsert.add(ae);
+                        }
+                    }
+                    
+                    // Check existing Yearly_Expense__c records before creating (new model)
+                    Set<String> existingYEYears = existingYearlyExpenses.get(apa.Id);
+                    if (existingYEYears == null) {
+                        existingYEYears = new Set<String>();
+                    }
+                    
+                    for (Integer i = 1; i <= numberOfYears; i++) {
+                        String yearStr = string.valueOf(i);
+                        // Only create if it doesn't already exist
+                        if (!existingYEYears.contains(yearStr)) {
+                            Yearly_Expense__c ye = new Yearly_Expense__c();
+                            // ye.Name = 'Year ' + i;
+                            ye.Year__c = yearStr;
+                            ye.Applicant_Proposal_Association__c = apa.Id;
+                            ye.Account__c = apa.Contact__r.AccountId;
+                            ye.Proposals__c = apa.Proposals__c;
+                            yeListToInsert.add(ye);
+                        }
                     }
                 }
             }

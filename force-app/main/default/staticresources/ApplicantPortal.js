@@ -147,6 +147,7 @@ app.controller('cp_dashboard_ctrl', function ($scope, $rootScope, $timeout, $win
     $rootScope.states = states;
     $rootScope.signDate = signDate;
     $rootScope.secondStage = false;
+    $rootScope.isCurrentUserSubmitted = false;
 
     $scope.applicantAssociationListData;
     $scope.contactName;
@@ -586,7 +587,7 @@ app.controller('cp_dashboard_ctrl', function ($scope, $rootScope, $timeout, $win
                     name: item?.Proposals__r?.Campaign__r?.Name ?? "",
                     PropName: item?.Proposals__r?.Name ?? "",
                     desc: item?.Proposals__r?.Campaign__r?.Description ?? "",
-                   // titleOfProject: item?.Contact__r?.Title_Of_Project__c ?? "",
+                    // titleOfProject: item?.Contact__r?.Title_Of_Project__c ?? "",
                     titleOfProject: item?.Proposals__r?.Title_Of__c ?? "",
                     deadline: item.Proposals__r?.yearly_Call__r?.Campaign_End_Date__c ?
                         new Date(item.Proposals__r?.yearly_Call__r?.Campaign_End_Date__c).toLocaleDateString('en-GB', {
@@ -602,7 +603,7 @@ app.controller('cp_dashboard_ctrl', function ($scope, $rootScope, $timeout, $win
                     yearlyCallId: item?.Proposals__r?.yearly_Call__c ?? "",
                     proposalStage: item?.Proposals__r?.Proposal_Stages__c ?? "",
                     category: 'applied'
-                 
+
                 })) : [];
 
                 // Simple helper for YearlyCall__c → Campaign data              
@@ -788,8 +789,8 @@ app.controller('cp_dashboard_ctrl', function ($scope, $rootScope, $timeout, $win
             }
             $scope.$apply();
         });
-    };
-   */
+     };
+     */
         $scope.isLoading = true;
         ApplicantPortal_Contoller.LogoutApplicant($rootScope.candidateId, function (result, event) {
             debugger;
@@ -809,6 +810,32 @@ app.controller('cp_dashboard_ctrl', function ($scope, $rootScope, $timeout, $win
         });
     };
 
+    if (localStorage.getItem('apaId')) {
+        $rootScope.apaId = localStorage.getItem('apaId');
+        console.log('Loaded proposalId from localStorage:', $rootScope.apaId);
+    }
+
+    $scope.getApplicantStatusFromAPA = function () {
+        debugger;
+
+
+        ApplicantPortal_Contoller.fetchApplicantStatus($rootScope.apaId, function (result, event) {
+            debugger;
+
+            console.log('result return onload :: ');
+            console.log(result);
+            console.log('event:', event);
+
+            if (event.status) {
+                $rootScope.isCurrentUserSubmitted = result;
+            } else {
+                console.log('Error in fetchApplicantStatus:', event.message);
+            }
+        }, {
+            escape: true
+        });
+    }
+    $scope.getApplicantStatusFromAPA();
 
 });
 

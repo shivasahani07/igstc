@@ -205,6 +205,97 @@ angular.module('cp_app').controller('twoReferencePageCtrl', function ($scope, $r
           }
      }
 
+     $scope.valid = function (value) {
+          if (value != undefined) {
+               var x = value;
+               var atpos = x.indexOf("@");
+               var dotpos = x.lastIndexOf(".");
+               if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= x.length) {
+
+                    return true;
+               }
+               return false;
+          }
+     }
+
+     $scope.redirectPageURL = function (pageName) {
+          debugger;
+          var link = document.createElement("a");
+          link.id = 'someLink'; //give it an ID!
+          link.href = "#/" + pageName;
+          link.click();
+     }
+
+     $scope.removeClass = function (controlid, index) {
+
+          var controlIdfor = controlid + "" + index;
+
+          $("#" + controlIdfor + "").removeClass('border-theme');
+     }
+
+
+     // CALLING APEX TO GET THE SIGNATORY SALUTATION VALUES
+     $scope.signatorySalutationList = [];
+
+     $scope.loadSignatorySalutations = function () {
+          ApplicantPortal_Contoller.getSignatorySalutationPicklist(
+               function (result, event) {
+                    if (event.status && result) {
+                         $scope.signatorySalutationList = result;
+                         $scope.$applyAsync();
+                    }
+               }
+          );
+     };
+     $scope.loadSignatorySalutations();
+
+     // Get Signatory Contact Details
+     $scope.getContactWiser = function () {
+          debugger;
+
+          ApplicantPortal_Contoller.getSignatoryContactAPADetails($rootScope.proposalId, function (result, event) {
+               debugger;
+               console.log("result ::", result);
+
+               if (event.status && result) {
+
+                    $scope.objContact = result;
+
+                    if (result.Contact__r.Signatory_Salutation__c != undefined || result.Contact__r.Signatory_Salutation__c != '') {
+                         $scope.objContact.Contact__r.Signatory_Salutation__c = $scope.objContact.Contact__r.Signatory_Salutation__c ? $scope.objContact.Contact__r.Signatory_Salutation__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.objContact.Contact__r.Signatory_Salutation__c;
+                    }
+                    if (result.Contact__r.Signatory_First_Name__c != undefined || result.Contact__r.Signatory_First_Name__c != '') {
+                         $scope.objContact.Contact__r.Signatory_First_Name__c = $scope.objContact.Contact__r.Signatory_First_Name__c ? $scope.objContact.Contact__r.Signatory_First_Name__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.objContact.Contact__r.Signatory_First_Name__c;
+                    }
+                    if (result.Contact__r.Signatory_Last_Name__c != undefined || result.Contact__r.Signatory_Last_Name__c != '') {
+                         $scope.objContact.Contact__r.Signatory_Last_Name__c = $scope.objContact.Contact__r.Signatory_Last_Name__c ? $scope.objContact.Contact__r.Signatory_Last_Name__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.objContact.Contact__r.Signatory_Last_Name__c;
+                    }
+                    if (result.Contact__r.Signatory_Institution__c != undefined || result.Contact__r.Signatory_Institution__c != '') {
+                         $scope.objContact.Contact__r.Signatory_Institution__c = $scope.objContact.Contact__r.Signatory_Institution__c ? $scope.objContact.Contact__r.Signatory_Institution__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.objContact.Contact__r.Signatory_Institution__c;
+                    }
+                    if (result.Contact__r.Signatory_Designation__c != undefined || result.Contact__r.Signatory_Designation__c != '') {
+                         $scope.objContact.Contact__r.Signatory_Designation__c = $scope.objContact.Contact__r.Signatory_Designation__c ? $scope.objContact.Contact__r.Signatory_Designation__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.objContact.Contact__r.Signatory_Designation__c;
+                    }
+                    if (result.Contact__r.Email != undefined || result.Contact__r.Email != '') {
+                         $scope.objContact.Contact__r.Email = $scope.objContact.Contact__r.Email ? $scope.objContact.Contact__r.Email.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.objContact.Contact__r.Email;
+                    }
+                    if (result.Contact__r.Institution_Name__c != undefined || result.Contact__r.Institution_Name__c != '') {
+                         $scope.objContact.Contact__r.Institution_Name__c = $scope.objContact.Contact__r.Institution_Name__c ? $scope.objContact.Contact__r.Institution_Name__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.objContact.Contact__r.Institution_Name__c;
+                    }
+                    if (result.Contact__r.Designation__c != undefined || result.Contact__r.Designation__c != '') {
+                         $scope.objContact.Contact__r.Designation__c = $scope.objContact.Contact__r.Designation__c ? $scope.objContact.Contact__r.Designation__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.objContact.Contact__r.Designation__c;
+                    }
+                    if (result.Contact__r.Account.Name != undefined || result.Contact__r.Account.Name != '') {
+                         $scope.objContact.Contact__r.Account.Name = $scope.objContact.Contact__r.Account.Name ? $scope.objContact.Contact__r.Account.Name.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.objContact.Contact__r.Account.Name;
+                    }
+
+                    $scope.$apply();
+               }
+          });
+     };
+     $scope.getContactWiser();
+
+     // METHOD TO SAVE REFERENCES AND SIGNATORY CONTACT
      $scope.saveParticipants = function () {
           debugger;
           //var ind = indexNum-1;
@@ -279,7 +370,12 @@ angular.module('cp_app').controller('twoReferencePageCtrl', function ($scope, $r
           // })
 
           // ------------ METHOD UPDATED TO SAVE SIGNATORY DETAILS ALSO ------------ //
-          ApplicantPortal_Contoller.insertParticipantsReferences($scope.ParticipantList, $rootScope.proposalId, $scope.objContact, $rootScope.accountId, function (result, event) {
+          delete ($scope.objContact['Contact__c']);
+          delete ($scope.objContact['Is_Signatory__c']);
+
+          var signatoryAPAId = $scope.objContact && $scope.objContact.Id ? $scope.objContact.Id : null;
+
+          ApplicantPortal_Contoller.insertParticipantsReferences($scope.ParticipantList, $rootScope.proposalId, $scope.objContact.Contact__r, signatoryAPAId, $rootScope.accountId, function (result, event) {
 
                if (event.status && result != null) {
                     console.log('Result ::' + result);
@@ -304,125 +400,4 @@ angular.module('cp_app').controller('twoReferencePageCtrl', function ($scope, $r
                }
           });
      }
-
-     $scope.valid = function (value) {
-          if (value != undefined) {
-               var x = value;
-               var atpos = x.indexOf("@");
-               var dotpos = x.lastIndexOf(".");
-               if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= x.length) {
-
-                    return true;
-               }
-               return false;
-          }
-     }
-
-     $scope.redirectPageURL = function (pageName) {
-          debugger;
-          var link = document.createElement("a");
-          link.id = 'someLink'; //give it an ID!
-          link.href = "#/" + pageName;
-          link.click();
-     }
-
-     $scope.removeClass = function (controlid, index) {
-
-          var controlIdfor = controlid + "" + index;
-
-          $("#" + controlIdfor + "").removeClass('border-theme');
-     }
-
-
-     // ---------------- FUNCTIONALITY TO ADD SIGNATORY DETAILS ---------------- //
-
-     // Get Contact's Account Details
-
-
-
-
-     // Get Signatory Contact Details
-     $scope.getContactWiser = function () {
-          debugger;
-
-          ApplicantPortal_Contoller.getSignatoryContactAPADetails($rootScope.proposalId, function (result, event) {
-               debugger;
-               console.log("result ::", result);
-
-               if (event.status && result) {
-
-                    $scope.objContact = result;
-
-                    if (result.Contact__r.Salutation != undefined || result.Contact__r.Salutation != '') {
-                         $scope.objContact.Contact__r.Salutation = $scope.objContact.Contact__r.Salutation ? $scope.objContact.Contact__r.Salutation.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.objContact.Contact__r.Salutation;
-                    }
-                    if (result.Contact__r.Signatory_First_Name__c != undefined || result.Contact__r.Signatory_First_Name__c != '') {
-                         $scope.objContact.Contact__r.Signatory_First_Name__c = $scope.objContact.Contact__r.Signatory_First_Name__c ? $scope.objContact.Contact__r.Signatory_First_Name__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.objContact.Contact__r.Signatory_First_Name__c;
-                    }
-                    if (result.Contact__r.Signatory_Last_Name__c != undefined || result.Contact__r.Signatory_Last_Name__c != '') {
-                         $scope.objContact.Contact__r.Signatory_Last_Name__c = $scope.objContact.Contact__r.Signatory_Last_Name__c ? $scope.objContact.Contact__r.Signatory_Last_Name__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.objContact.Contact__r.Signatory_Last_Name__c;
-                    }
-                    if (result.Contact__r.Signatory_Institution__c != undefined || result.Contact__r.Signatory_Institution__c != '') {
-                         $scope.objContact.Contact__r.Signatory_Institution__c = $scope.objContact.Contact__r.Signatory_Institution__c ? $scope.objContact.Contact__r.Signatory_Institution__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.objContact.Contact__r.Signatory_Institution__c;
-                    }
-                    if (result.Contact__r.Signatory_Designation__c != undefined || result.Contact__r.Signatory_Designation__c != '') {
-                         $scope.objContact.Contact__r.Signatory_Designation__c = $scope.objContact.Contact__r.Signatory_Designation__c ? $scope.objContact.Contact__r.Signatory_Designation__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.objContact.Contact__r.Signatory_Designation__c;
-                    }
-                    if (result.Contact__r.Email != undefined || result.Contact__r.Email != '') {
-                         $scope.objContact.Contact__r.Email = $scope.objContact.Contact__r.Email ? $scope.objContact.Contact__r.Email.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.objContact.Contact__r.Email;
-                    }
-                    if (result.Contact__r.Contact__r.Institution_Name__c != undefined || result.Contact__r.Contact__r.Institution_Name__c != '') {
-                         $scope.objContact.Contact__r.Institution_Name__c = $scope.objContact.Contact__r.Institution_Name__c ? $scope.objContact.Contact__r.Institution_Name__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.objContact.Contact__r.Institution_Name__c;
-                    }
-                    if (result.Contact__r.Designation__c != undefined || result.Contact__r.Designation__c != '') {
-                         $scope.objContact.Contact__r.Designation__c = $scope.objContact.Contact__r.Designation__c ? $scope.objContact.Contact__r.Designation__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.objContact.Contact__r.Designation__c;
-                    }
-                    if (result.Contact__r.Account.Name != undefined || result.Contact__r.Account.Name != '') {
-                         $scope.objContact.Contact__r.Account.Name = $scope.objContact.Contact__r.Account.Name ? $scope.objContact.Contact__r.Account.Name.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.objContact.Contact__r.Account.Name;
-                    }
-
-                    $scope.$apply();
-               }
-          });
-     };
-
-     // Only fetch signatory data if APA Id exists
-     // if ($rootScope.signatoryAPAId) {
-     $scope.getContactWiser();
-     // }
-
-     // Save Signatory Contact Details
-
-     // $scope.saveApplicantPortalWiser = function () {
-
-     //      debugger;
-
-     //      $scope.accDet = $scope.objContact.Account;
-     //      IndustrialFellowshipController.saveApplicantPortalWiser($scope.objContact, $rootScope.accountId, $rootScope.proposalId, function (result, event) {
-     //           debugger;
-     //           if (event.status && result != null) {
-     //                $rootScope.projectId = result;
-     //                console.log(result);
-
-     //                swal({
-     //                     title: "SUCCESS",
-     //                     text: 'Signatory Details have been Saved Successfully.',
-     //                     icon: "success",
-     //                     button: "ok!",
-     //                });
-     //                $scope.redirectPageURL('CV_Wiser');
-
-     //           }
-     //           else {
-     //                swal({
-     //                     title: "ERROR",
-     //                     text: "Exception!",
-     //                     icon: "error",
-     //                     button: "ok!",
-     //                });
-     //           }
-     //      });
-
-     // }
-     // }
 });

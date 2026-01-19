@@ -115,7 +115,8 @@ angular.module('cp_app').controller('WiserApplicantInformation_Ctrl', function (
 
 			console.log("result ::", result);
 
-			localStorage.setItem('accountId', result.Account.Name);
+			localStorage.setItem('accountId', result.AccountId);
+			localStorage.setItem('accountName', result.Account.Name);
 
 			if (event.status && result) {
 				if (result.Birthdate != undefined) {

@@ -1562,29 +1562,112 @@ return appProposal;
         }
     }
     
-    public static string finalSubmitWiser(string projectId, string conId, integer day, integer month, integer year){
-        try{
-            Contact con = New Contact();
-            Application_Proposal__c applicantDetails = New Application_Proposal__c();
-            if(day==0 && month==0 && year==0){
+    // public static string finalSubmitWiser(string projectId, string conId, integer day, integer month, integer year){
+    //     try{
+    //         Contact con = New Contact();
+    //         Application_Proposal__c applicantDetails = New Application_Proposal__c();
+    //         if(day==0 && month==0 && year==0){
                 
-            }else{
-                Date newDate=Date.newInstance(year,month,day);
-                con.Id = conId;
-                con.Declaration_Sign_Date__c=newDate;
-                applicantDetails.Proposed_Date__c = Date.newInstance(year, month, day);    
-            }
-            applicantDetails.Id = projectId;
-            applicantDetails.Proposal_Stages__c = 'Submitted';
-            applicantDetails.Submitted__c = true;
-            upsert applicantDetails;
-            upsert con;
-            return 'success';
+    //         }else{
+    //             Date newDate=Date.newInstance(year,month,day);
+    //             con.Id = conId;
+    //             con.Declaration_Sign_Date__c=newDate;
+    //             applicantDetails.Proposed_Date__c = Date.newInstance(year, month, day);    
+    //         }
+    //         applicantDetails.Id = projectId;
+    //         applicantDetails.Proposal_Stages__c = 'Submitted';
+    //         applicantDetails.Submitted__c = true;
+    //         upsert applicantDetails;
+    //         upsert con;
+    //         return 'success';
             
-        }catch(Exception e){
-            return e.getMessage() + e.getLineNumber();
+    //     }catch(Exception e){
+    //         return e.getMessage() + e.getLineNumber();
+    //     }
+    // }
+
+    // =================== METHOD UPDATED =================== //
+    public class FinalSubmitResponse {
+        @AuraEnabled public Boolean isCurrentUserSubmitted;
+        @AuraEnabled public Boolean isProposalCompleted;
+        @AuraEnabled public String message;
+    }
+
+    public static FinalSubmitResponse finalSubmitWiser(
+        String proposalId,
+        String conId,
+        String apaId,
+        Integer day,
+        Integer month,
+        Integer year
+    ) {
+        FinalSubmitResponse resp = new FinalSubmitResponse();
+
+        try {
+            Date proposedDate;
+
+            if (day != 0 && month != 0 && year != 0) {
+                proposedDate = Date.newInstance(year, month, day);
+
+                update new Contact(
+                    Id = conId,
+                    Declaration_Sign_Date__c = proposedDate
+                );
+            }
+
+            // Updating current APA to Submitted
+            update new Applicant_Proposal_Association__c(
+                Id = apaId,
+                Applicant_Status__c = 'Submitted',
+                Proposed_Date__c = proposedDate
+            );
+
+            resp.isCurrentUserSubmitted = true;
+
+            // Fetching all NON-SIGNATORY APAs for the proposal
+            List<Applicant_Proposal_Association__c> apaList = [
+                SELECT Id, Applicant_Status__c
+                FROM Applicant_Proposal_Association__c
+                WHERE Proposals__c = :proposalId
+                AND Is_Signatory__c = false
+            ];
+
+            // Checking if all are submitted
+            Boolean allSubmitted = true;
+            for (Applicant_Proposal_Association__c apa : apaList) {
+                if (apa.Applicant_Status__c != 'Submitted') {
+                    allSubmitted = false;
+                    break;
+                }
+            }
+
+            // Updating proposal ONLY if all non-signatory APAs are submitted
+            if (allSubmitted && !apaList.isEmpty()) {
+                update new Application_Proposal__c(
+                    Id = proposalId,
+                    Proposal_Stages__c = 'Submitted',
+                    Submitted__c = true,
+                    Proposed_Date__c = proposedDate
+                );
+
+                resp.isProposalCompleted = true;
+                resp.message = 'COMPLETED: All applicants have submitted';
+
+            } else {
+                resp.isProposalCompleted = false;
+                resp.message = 'PARTIAL_SUBMIT: Waiting for other applicants to submit';
+            }
+
+            return resp;
+
+        } catch (Exception e) {
+            resp.message = 'ERROR : ' + e.getMessage();
+            return resp;
         }
     }
+
+
+
     
     public static  void deleteGrants(string grantstId){
         delete new Existing_Grants__c(id=grantstId);
@@ -4921,12 +5004,43 @@ return null;
 
 
     //***********************************NEW METHOD ADDED BY KARTHIK for pairing page
-     public static List<Contact> getPairingDetailsinWiser(String hashcode, String proposalId){
+    // public static List<Contact> getPairingDetailsinWiser(String hashcode, String proposalId){
+    //     // Get the contact by hashcode
+    //     Contact conRec = [SELECT Id, FirstName, LastName, Email, AccountId, Account.Name,MailingCountry, Is_Primary__c, Birthdate FROM Contact WHERE Login_Hash_Code__c = :hashcode  LIMIT 1];
+        
+    //     // Query if contact has any junction records
+    //     List<Applicant_Proposal_Association__c> associations = [SELECT Id,Proposals__c FROM Applicant_Proposal_Association__c WHERE Contact__c = :conRec.Id And Proposals__c=:proposalId LIMIT 1];
+        
+    //     List<Contact> conList;
+    //     if (!associations.isEmpty()) {
+    //         // Existing proposal from junction
+    //         //Id proposalId = associations[0].Proposals__c;
+            
+    //         // Query contacts linked via junction for that proposal
+    //         conList = [SELECT Id, FirstName, LastName, Email, AccountId, Account.Name, MailingCountry, Is_Primary__c, Birthdate 
+    //                    FROM Contact WHERE Id IN (SELECT Contact__c FROM Applicant_Proposal_Association__c WHERE Proposals__c = :proposalId)];
+    //     } else {       
+    //         // Return only the single contact just linked newly
+    //         conList = new List<Contact>{conRec};
+    //             }
+        
+    //     return conList;
+    // }
+    ////********************************************************** */
+    
+    public static List<Contact> getPairingDetailsinWiser(String hashcode, String proposalId){
         // Get the contact by hashcode
         Contact conRec = [SELECT Id, FirstName, LastName, Email, AccountId, Account.Name,MailingCountry, Is_Primary__c, Birthdate FROM Contact WHERE Login_Hash_Code__c = :hashcode  LIMIT 1];
-        
+        System.debug('conRec : ' + conRec);
+
         // Query if contact has any junction records
-        List<Applicant_Proposal_Association__c> associations = [SELECT Id,Proposals__c FROM Applicant_Proposal_Association__c WHERE Contact__c = :conRec.Id And Proposals__c=:proposalId LIMIT 1];
+        List<Applicant_Proposal_Association__c> associations = [
+            SELECT Id, Name, Proposals__c, Is_Signatory__c, Contact__c, Contact__r.Name
+            FROM Applicant_Proposal_Association__c 
+            WHERE Proposals__c =: proposalId
+            AND Is_Signatory__c = false
+        ];
+        System.debug('associations : ' + associations);
         
         List<Contact> conList;
         if (!associations.isEmpty()) {
@@ -4934,17 +5048,18 @@ return null;
             //Id proposalId = associations[0].Proposals__c;
             
             // Query contacts linked via junction for that proposal
-            conList = [SELECT Id, FirstName, LastName, Email, AccountId, Account.Name, MailingCountry, Is_Primary__c, Birthdate 
-                       FROM Contact WHERE Id IN (SELECT Contact__c FROM Applicant_Proposal_Association__c WHERE Proposals__c = :proposalId)];
+            conList = [
+                SELECT Id, FirstName, LastName, Email, AccountId, Account.Name, MailingCountry, Is_Primary__c, Birthdate 
+                       FROM Contact 
+                       WHERE Id IN (SELECT Contact__c FROM Applicant_Proposal_Association__c WHERE Proposals__c = :proposalId AND Is_Signatory__c = false)];
         } else {       
             // Return only the single contact just linked newly
             conList = new List<Contact>{conRec};
-                }
+        }
+        System.debug('conList : ' + conList);
         
         return conList;
     }
-    ////********************************************************** */
-    
     /*  public static List<Contact> getPairingDetails(string hashcode, string campaignId){
 Contact conRec = [SELECT Id,FirstName,LastName,Email,AccountId,Proposals__r.Yearly_Call__r.Pecfar_age_limit__c,Proposals__r.Yearly_Call__r.Date_of_Birth_PECFAR__c,Account.Name,Account.Proposals__c,MailingCountry,Is_Primary__c,Birthdate,Proposals__c,Proposals__r.Campaign__r.Result_Announcement_Date__c FROM Contact WHERE Login_Hash_Code__c=: hashcode];
 Application_Proposal__c app = New Application_Proposal__c();

@@ -366,35 +366,38 @@
                         </table>
                     </div>
 
-                    <div class="col-md-12 my-4" ng-if="!proposalStage">
-                        <button class="blue-btn float-end" ng-click="saveParticipants()" type="button">
-                            <i class="fa-solid fa-check me-2"></i>Save and Next</button>
-                        <button class="blue-bordered-btn float-end me-2" ng-click="previousPage()" type="button">
-                            <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
-                    </div>
                 </div>
 
                 <!-- ********************** Signatory Details *********************** -->
                 <div class="row mx-5 mt-5 px-2 py-5 box-shadow-2">
 
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 mb-4">
                             <h4 class="pb-3 color-theme">
                                 <b>Signatory Details</b>
                             </h4>
+                            <i>“The Signatory is an authorised representative of the applicant’s parent institution
+                                (e.g., Registrar/Dean/HOD/Research Administration authority) who is empowered to
+                                approve, sign, and oversee administrative matters related to the WISER grant.”</i>
                         </div>
                     </div>
+                    <hr />
 
-                    <div class="col-md-12 mt-3">
+                    <div class="col-md-12 mt-4">
 
                         <div class="row">
                             <div class="col-md-4">
-                                <label class="font-if" for="txtName">Salutation
-                                    <span class="text-danger me-2">*</span>
+                                <label class="font-if">
+                                    Salutation <span class="text-danger me-2">*</span>
                                 </label>
-                                <input type="text" class="form-control" ng-disabled="proposalStage"
-                                    ng-model="objContact.Contact__r.Salutation"
-                                    ng-focus="removeClass('signatorySalutation')" id="signSalutation" />
+
+                                <select class="form-control" ng-disabled="proposalStage"
+                                    ng-model="objContact.Contact__r.Signatory_Salutation__c"
+                                    ng-options="item for item in signatorySalutationList"
+                                    ng-focus="removeClass('signatorySalutation')">
+
+                                    <option value="">-- Select Salutation --</option>
+                                </select>
                             </div>
 
                             <div class="col-md-4">
@@ -434,14 +437,14 @@
                                     ng-focus="removeClass('signatoryDesignation')" id="signDesignation" />
                             </div>
 
-                            <!-- <div class="col-md-4 mt-3">
-                                <label class="font-if">Signatory Emailst Name
+                            <div class="col-md-4 mt-3">
+                                <label class="font-if">Email
                                     <span class="text-danger me-2">*</span>
                                 </label>
                                 <input type="text" class="form-control" ng-disabled="proposalStage"
-                                    ng-model="objContact.Email" ng-focus="removeClass('signatoryEmail')"
+                                    ng-model="objContact.Contact__r.Email" ng-focus="removeClass('signatoryEmail')"
                                     id="signEmail" />
-                            </div> -->
+                            </div>
                         </div>
 
                         <div class="row mt-4">
@@ -463,19 +466,29 @@
                                     ng-focus="removeClass('signatoryDesignation')" id="signDesignation" />
                             </div>
 
-                            <!-- <div class="col-md-4 mt-3">
-                                <label class="font-if">Email
+                            <div class="col-md-4 mt-3">
+                                <label class="font-if">Signatory Emailst Name
                                     <span class="text-danger me-2">*</span>
                                 </label>
-                                <input class="form-control" type="text" ng-model="objContact.Email" id="txtEmail1"
-                                    ng-disabled="proposalStage" ng-focus="removeClass('txtEmail1')"
-                                    ng-change="checkEmail(objContact.Email,objContact.Id)" />
-                            </div> -->
+                                <input class="form-control" type="text" ng-model="" id="signEmailistName"
+                                    ng-disabled="proposalStage" ng-focus="removeClass('signatoryEmailistName')" />
+                            </div>
                         </div>
 
                     </div>
                 </div>
+
+                <div class="row mt-5 mx-5">
+                    <div class="col-md-12 my-4" ng-if="!proposalStage">
+                        <button class="blue-btn float-end" ng-click="saveParticipants()" type="button">
+                            <i class="fa-solid fa-check me-2"></i>Save and Next</button>
+                        <button class="blue-bordered-btn float-end me-2" ng-click="previousPage()" type="button">
+                            <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+                    </div>
+                </div>
             </div>
+
+
 
             <!-- <div class="container px-4">
                     <div class="card h-100 m-5">

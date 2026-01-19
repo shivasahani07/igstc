@@ -424,8 +424,8 @@
                                     <b>Title of project</b> (Max. characters 600)
                                     <span class="required-asterisk text-danger">*</span>
                                 </label>
-                                <input class="form-control" type="text" ng-model="objContact.Title_Of__c" ng-disabled="proposalStage" id="titleOfProposal"
-                                    ng-change="checkCharLimit(objContact, 'Title_Of__c', 600)" />
+                                <input class="form-control" type="text" ng-model="objContact.Title_Of__c" ng-disabled="isCurrentUserSubmitted || proposalStage"
+                                    id="titleOfProposal" ng-change="checkCharLimit(objContact, 'Title_Of__c', 600)" />
 
                                 <small class="text-danger" ng-if="objContact._charLimitMap &&
                                         objContact._charLimitMap.Title_Of__c">
@@ -479,6 +479,42 @@
                                 <small class="text-danger" ng-if="objContact._charLimitMap &&
                                         objContact._charLimitMap.Layman_abstract_of_proposed_work__c">
                                     Maximum 600 characters allowed
+                                </small>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mt-5">
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <label class="font-if color-theme">
+                                    <b>Non Technical Title Of Project</b> (Max. 300 chars)
+                                    <span class="required-asterisk text-danger">*</span>
+                                </label>
+                                <input class="form-control" type="text" ng-model="objContact.Non_Technical_Title_Of_Project__c" ng-disabled="proposalStage"
+                                    id="nonTechnicalTitle" ng-change="checkCharLimit(objContact, 'Non_Technical_Title_Of_Project__c', 300)"
+                                />
+
+                                <small class="text-danger" ng-if="objContact._charLimitMap &&
+                                        objContact._charLimitMap.Non_Technical_Title_Of_Project__c">
+                                    Maximum 300 characters allowed
+                                </small>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="font-if color-theme">
+                                    <b>Non Technical Abstract Of Proposed Work</b> (Max. 300 chars)
+                                    <span class="required-asterisk text-danger">*</span>
+                                </label>
+                                <input class="form-control" type="text" ng-model="objContact.Non_Technical_Abstract_Of_Proposed_Work__c" ng-disabled="proposalStage"
+                                    id="nonTechnicalAbstract" ng-change="checkCharLimit(objContact, 'Non_Technical_Abstract_Of_Proposed_Work__c', 300)"
+                                />
+
+                                <small class="text-danger" ng-if="objContact._charLimitMap &&
+                                        objContact._charLimitMap.Non_Technical_Abstract_Of_Proposed_Work__c">
+                                    Maximum 300 characters allowed
                                 </small>
                             </div>
 

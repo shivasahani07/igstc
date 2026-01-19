@@ -1376,9 +1376,14 @@ public static List<YealyCall__c> getActiveCampaignIf(String yearlyCallId) {
         return Proposal_Controller.insertWiserDraft(projectId, day, month, year);
     }
     
+    // @RemoteAction
+    // public static string finalSubmitWiser(string projectId, string conId, integer day, integer month, integer year){
+    //     return Proposal_Controller.finalSubmitWiser(projectId, conId, day, month, year);
+    // }
+
     @RemoteAction
-    public static string finalSubmitWiser(string projectId, string conId, integer day, integer month, integer year){
-        return Proposal_Controller.finalSubmitWiser(projectId, conId, day, month, year);
+    public static Proposal_Controller.FinalSubmitResponse finalSubmitWiser(String proposalId, String conId, String apaId, Integer day, Integer month, Integer year){
+        return Proposal_Controller.finalSubmitWiser(proposalId, conId, apaId, day, month, year);
     }
     
     @RemoteAction
@@ -2424,20 +2429,23 @@ public static WrapperProposalDet getPECFARProposalDetails(string proposalId){
 
     // ------------ METHOD UPDATED TO SAVE SIGNATORY DETAILS ------------ //
     @RemoteAction
-    public static String insertParticipantsReferences(List<References__c> insertParticipantsList, String proposalId, Contact signatoryContact, String accountId){
+    public static String insertParticipantsReferences(List<References__c> insertParticipantsList, String proposalId, Contact signatoryContact, String signatoryAPAId, String accountId){
         try{
             upsert insertParticipantsList;
 
             System.debug('Contact : ' + signatoryContact);
             System.debug('Account Id : ' + accountId);
+            System.debug('Contact Account Id : '+ signatoryContact.AccountId);
             System.debug('Proposal Id : ' + proposalId);
 
-            signatoryContact.AccountId = accountId;
+            signatoryContact.AccountId = signatoryContact.AccountId;
+            signatoryContact.FirstName = signatoryContact.Signatory_First_Name__c;
             signatoryContact.LastName = signatoryContact.Signatory_Last_Name__c;
             upsert signatoryContact;
             System.debug('Contact Inserted Successfully : ' + signatoryContact.Id);
 
             Applicant_Proposal_Association__c signatoryAPA = new Applicant_Proposal_Association__c(
+                Id = signatoryAPAId,
                 Contact__c = signatoryContact.Id,
                 Proposals__c = proposalId,
                 Is_Signatory__c = true
@@ -2445,7 +2453,7 @@ public static WrapperProposalDet getPECFARProposalDetails(string proposalId){
             upsert signatoryAPA;
             System.debug('APA Inserted Successfully : ' + signatoryAPA.Id);
             
-            return 'signatoryAPA.Id';
+            return signatoryAPA.Id;
         }catch(DmlException e){
             return e.getMessage()+e.getLineNumber();
         }catch(Exception e){
@@ -2457,7 +2465,7 @@ public static WrapperProposalDet getPECFARProposalDetails(string proposalId){
     @RemoteAction
     public static Applicant_Proposal_Association__c getSignatoryContactAPADetails(String proposalId){
         Applicant_Proposal_Association__c signatoryAPA = [
-            SELECT Id, Contact__r.Salutation, Contact__r.Institution_Name__c, Contact__r.LastName, 
+            SELECT Id, Contact__r.Salutation, Contact__r.Signatory_Salutation__c, Contact__r.Institution_Name__c, Contact__r.LastName, 
             Contact__r.Institute_Name__c, Contact__r.Department, Contact__r.Designation__c, Contact__r.Email, 
             Contact__r.Account.Name, Contact__r.AccountId, Contact__r.Signatory_First_Name__c, Contact__r.Signatory_Last_Name__c, 
             Contact__r.Signatory_Institution__c, Contact__r.Signatory_Designation__c, Is_Signatory__c, Proposals__c
@@ -2466,6 +2474,21 @@ public static WrapperProposalDet getPECFARProposalDetails(string proposalId){
             AND Proposals__c =: proposalId
         ];
         return signatoryAPA;
+    }
+
+    // -------------- METHOD TO GET THE SIGNATORY SALUTATION PICKLIST VALUES --------------- //
+    @RemoteAction
+    public static List<String> getSignatorySalutationPicklist() {
+        List<String> values = new List<String>();
+
+        Schema.DescribeFieldResult dfr =
+            Contact.Signatory_Salutation__c.getDescribe();
+
+        for (Schema.PicklistEntry ple : dfr.getPicklistValues()) {
+            values.add(ple.getValue());
+        }
+
+        return values;
     }
     
     @RemoteAction
@@ -3053,4 +3076,23 @@ public static void updateProposalStage(Id proposalId) {
         return conRec;
     }
     
+    @RemoteAction
+    public static Boolean fetchApplicantStatus(String apaId){
+        Applicant_Proposal_Association__c apa = [
+                SELECT Id, Applicant_Status__c
+                FROM Applicant_Proposal_Association__c
+                WHERE Id =: apaId
+                AND Is_Signatory__c = false
+                LIMIT 1
+        ];
+
+        Boolean result;
+        if(apa.Applicant_Status__c == 'Submitted'){
+            result = true;
+        }else{
+            result = false;
+        }
+
+        return result;
+    }
 }

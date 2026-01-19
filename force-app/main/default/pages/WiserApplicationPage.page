@@ -412,8 +412,8 @@ roup' )
                                     <label class="font-if" for="txtName">Salutation
                                         <span class="text-danger me-2">*</span>
                                     </label>
-                                    <input type="text" class="form-control" ng-disabled="proposalStage" ng-model="objContact.Salutation" ng-focus="removeClass('salutation')"
-                                        id="salutation" />
+                                    <input type="text" class="form-control" ng-disabled="proposalStage || isCurrentUserSubmitted " ng-model="objContact.Salutation"
+                                        ng-focus="removeClass('salutation')" id="salutation" />
                                 </div>
 
                                 <div class="col-md-5">
