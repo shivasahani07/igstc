@@ -14,14 +14,14 @@
             <div class="container mt-5">
                 <div class="row mx-5">
                     <div class="col-md-12">
-                        <div class="tab-link" ng-show="proposalStage">
+                        <div class="tab-link" ng-show="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success w-100"></div>
                             </div>
                             <ul>
                                 <!-- Not Confirmed Yet -->
                                 <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
+                                    <a ng-click="redirectPageURL('HostProjectDetails')">
                                         <div class="icon-circle">
                                             <!-- <i class="fa fa-home"></i> -->
                                             <i class="fas fa-file-invoice"></i>
@@ -32,7 +32,7 @@
 
                                 <!-- Pair Project Details -->
                                 <li class="active pb-cursor">
-                                    <a ng-click="redirectPageURL('HostProjectDetails')">
+                                    <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
                                         <div class="icon-circle">
                                             <i class="far fa-address-card"></i>
                                         </div>
@@ -82,7 +82,7 @@
 
                             </ul>
                         </div>
-                        <div class="tab-link" ng-hide="proposalStage">
+                        <div class="tab-link" ng-hide="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success w-100"></div>
                             </div>
@@ -153,7 +153,7 @@
 
                 <div class="row mx-5">
                     <div class="col-md-12">
-                        <div class="tab-link" ng-show="proposalStage">
+                        <div class="tab-link" ng-show="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success w-100"></div>
                             </div>
@@ -207,7 +207,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="tab-link" ng-hide="proposalStage">
+                        <div class="tab-link" ng-hide="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success wp-0"></div>
                             </div>
@@ -289,10 +289,9 @@
                     </div>
                 </div>
 
+                <!--
                 <div class="row mt-5 mx-5">
                     <div class="col-md-3 py-3 ms-3 box-shadow-1">
-                        <!-- <i ng-if="appli.accRec.Country_Type__c=='India'"><apex:image url="{!$Resource.indiaFlag}" styleClass="img-fluid" style="max-width:30px;" /></i>
-                        <i ng-if="appli.accRec.Country_Type__c=='Germany'"><apex:image url="{!$Resource.germanyFlag}" styleClass="img-fluid" style="max-width:30px;" /></i> -->
                         <h4 class="pb-3 color-theme w-75 float-end" style="font-weight:800">{{accDetails.Name}}</h4>
                     </div>
                 </div>
@@ -367,7 +366,6 @@
                                 <th class="pb-3 color-theme" style="width:18%;">Year-1 Expense</th>
                                 <th class="pb-3 color-theme" style="width:18%;" ng-show="Showyear2">Year-2 Expense</th>
                                 <th class="pb-3 color-theme" ng-show="Showyear3">Year-3 Expense</th>
-                                <!-- <th style="width:5%;"><i style="width:3%; font-size: 24px;"></i></th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -398,8 +396,7 @@
                                 <td ng-show="Showyear3">
                                     <input class="form-control" ng-model="year3" ng-disabled="true" />
                                 </td>
-                                <!-- <td></td> -->
-                            </tr>
+                          </tr>
                             <tr ng-hide="accDetails.Contacts[0].MailingCountry == 'India'">
                                 <td>Total</td>
                                 <td>All total Expenses</td>
@@ -412,13 +409,364 @@
                                 <td ng-show="Showyear3">
                                     <input class="form-control" ng-model="year3Germany" ng-disabled="true" />
                                 </td>
-                                <!-- <td></td> -->
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                -->
+
+                <div>
+                    <table class="budget-table">
+                        <thead>
+                            <tr>
+                                <th class="head-col">Expense Head</th>
+                                <th class="desc-col">Description</th>
+                                <th class="desc-col"></th>
+                                <th>Year 1
+                                    <br/>
+                                </th>
+                                <th ng-show="Showyear2">Year 2
+                                    <br/>
+                                </th>
+                                <th ng-show="Showyear3">Year 3
+                                    <br/>
+                                </th>
+                                <th class="total-col">Total
+                                    <br/>
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <!-- Research Stay -->
+                            <tr>
+                                <td class="section-title" rowspan="2">
+                                    Research stay (India/Germany)
+                                    <br/>
+                                    <span class="sub-text">(per diem @ € 2300/month)</span>
+                                </td>
+                                <td></td>
+                                <td class="orange-text">No. of days</td>
+                                <td>
+                                    <input type="number" class="tbl-input" ng-model="budgetResearchStay.daysYear1" ng-change="recalculateAll()" ng-disabled="proposalStage || isCurrentUserSubmitted"
+                                    />
+                                    <span class="text-danger" ng-if="researchStayError.year1">
+                                        Stay must be between 10–{{proposalDurationMonths === 24 ? 50 : 80}} days
+                                    </span>
+                                </td>
+                                <td ng-show="Showyear2">
+                                    <input type="number" class="tbl-input" ng-model="budgetResearchStay.daysYear2" ng-change="recalculateAll()" ng-disabled="proposalStage || isCurrentUserSubmitted"
+                                    />
+                                    <span class="text-danger" ng-if="researchStayError.year2">
+                                        Stay must be between 10–{{proposalDurationMonths === 24 ? 50 : 80}} days
+                                    </span>
+                                </td>
+                                <td ng-show="Showyear3">
+                                    <input type="number" class="tbl-input" ng-model="budgetResearchStay.daysYear3" ng-change="recalculateAll()" ng-disabled="proposalStage || isCurrentUserSubmitted"
+                                    />
+                                    <span class="text-danger" ng-if="researchStayError.year3">
+                                        Stay must be between 10–{{proposalDurationMonths === 24 ? 50 : 80}} days
+                                    </span>
+                                </td>
+                                <td class="orange-text">
+                                    {{budgetResearchStay.totalDays}}
+                                    <div class="text-danger" ng-if="researchStayError.total">
+                                        Total stay:{{proposalDurationMonths === 24 ? 20 : 30}} – {{proposalDurationMonths === 24 ? 60 : 90}} days allowed.
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td></td>
+                                <td class="orange-text">Research Stay Per diem cost</td>
+                                <td class="orange-text">{{budgetResearchStay.costYear1 | number:2}}</td>
+                                <td class="orange-text" ng-show="Showyear2">{{budgetResearchStay.costYear2 | number:2}}</td>
+                                <td class="orange-text" ng-show="Showyear3">{{budgetResearchStay.costYear3 | number:2}}</td>
+                                <td class="orange-text">{{budgetResearchStay.totalCost | number:2}}</td>
+                            </tr>
+
+                            <tr>
+                                <td class="section-title">Travel to Host Country (India/Germany)</td>
+                                <td></td>
+                                <td class="orange-text">Travel cost per visit</td>
+                                <td class="orange-text">{{budgetTravel.costYear1 | number:2}}</td>
+                                <td class="orange-text" ng-show="Showyear2">{{budgetTravel.costYear2 | number:2}}</td>
+                                <td class="orange-text" ng-show="Showyear3">{{budgetTravel.costYear3 | number:2}}</td>
+                                <td class="orange-text">{{budgetTravel.totalCost | number:2}}</td>
+                            </tr>
+
+
+                            <tr class="subtotal">
+                                <td class="bold">Total Research stay and Travel to host</td>
+                                <td></td>
+                                <td></td>
+                                <td class="orange-text">{{researchStayTravelTotal.year1}}</td>
+                                <td class="orange-text" ng-show="Showyear2">{{researchStayTravelTotal.year2}}</td>
+                                <td class="orange-text" ng-show="Showyear3">{{researchStayTravelTotal.year3}}</td>
+                                <td class="orange-text">{{researchStayTravelTotal.total | number:2}}</td>
+                            </tr>
+
+                            <tr class="gray-row">
+                                <td class="bold">Total Research Amount</td>
+                                <td></td>
+                                <td></td>
+                                <td>{{totalResearchAmount.year1}}</td>
+                                <td ng-show="Showyear2">{{totalResearchAmount.year2}}</td>
+                                <td ng-show="Showyear3">{{totalResearchAmount.year3}}</td>
+                                <td>{{totalResearchAmount.total | number:2}}</td>
+                            </tr>
+
+                            <!-- Overheads -->
+                            <tr>
+                                <td class="bold">Overheads
+                                    <span class="sub-text">(max 10%)</span>
+                                </td>
+                                <td></td>
+                                <td>Percentage of Overheads</td>
+                                <td>
+                                    <input type="number" class="tbl-input" ng-model="budgetOverhead.percentageYear1" ng-change="onOverheadChange(1)" ng-disabled="proposalStage || isCurrentUserSubmitted"
+                                        min="0" max="10" ng-model-options="{ allowInvalid: true }" />
+
+                                    <small class="text-danger" ng-if="budgetOverhead.percentageYear1 > 10">
+                                        Maximum allowed overhead is 10%
+                                    </small>
+                                </td>
+                                <td ng-show="Showyear2">
+                                    <input type="number" class="tbl-input" ng-model="budgetOverhead.percentageYear2" ng-change="onOverheadChange(2)" ng-disabled="proposalStage || isCurrentUserSubmitted"
+                                        min="0" max="10" ng-model-options="{ allowInvalid: true }" />
+
+                                    <small class="text-danger" ng-if="budgetOverhead.percentageYear2 > 10">
+                                        Maximum allowed overhead is 10%
+                                    </small>
+
+                                </td>
+                                <td ng-show="Showyear3">
+                                    <input type="number" class="tbl-input" ng-model="budgetOverhead.percentageYear3" ng-change="onOverheadChange(3)" ng-disabled="proposalStage || isCurrentUserSubmitted"
+                                        min="0" max="10" ng-model-options="{ allowInvalid: true }" />
+
+                                    <small class="text-danger" ng-if="budgetOverhead.percentageYear3 > 10">
+                                        Maximum allowed overhead is 10%
+                                    </small>
+
+                                </td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td class="orange-text">Overheads Amount</td>
+                                <td class="orange-text">{{budgetOverhead.amountYear1}}</td>
+                                <td class="orange-text" ng-show="Showyear2">{{budgetOverhead.amountYear2}}</td>
+                                <td class="orange-text" ng-show="Showyear3">{{budgetOverhead.amountYear3}}</td>
+                                <td class="orange-text">{{budgetOverhead.totalAmount | number:2}}</td>
+                            </tr>
+
+                            <tr class="bold">
+                                <td>Remaining Amount for Research Heads</td>
+                                <td></td>
+                                <td></td>
+                                <td class="orange-text">{{remainingForResearch.year1}}</td>
+                                <td class="orange-text" ng-show="Showyear2">{{remainingForResearch.year2}}</td>
+                                <td class="orange-text" ng-show="Showyear3">{{remainingForResearch.year3}}</td>
+                                <td class="orange-text">{{remainingForResearch.total | number:2}}</td>
+                            </tr>
+
+                            <!-- Research Staff (Multiple records support) -->
+                            <!-- Add Staff Button Row -->
+                            <tr ng-if="!proposalStage && !isCurrentUserSubmitted">
+                                <td colspan="{{Showyear3 ? 7 : (Showyear2 ? 6 : 5)}}" style="padding: 10px;">
+                                    <button type="button" class="btn btn-success" ng-click="addResearchStaff()" title="Add New Research Staff Record">
+                                        <i class="fa fa-plus"></i> Add Research Staff
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <tr ng-repeat="row in researchStaffRows track by (row.index + '-' + row.rowType)">
+                                <td class="section-title" ng-if="row.index === 0 && row.rowType === 'positions'" rowspan="{{budgetResearchStaffList.length * 4}}">
+                                    Research staff
+                                </td>
+                                <!-- <td ng-if="row.index !== 0 || row.rowType !== 'positions'"></td> -->
+                                <td></td>
+                                <td>
+                                    <span ng-if="row.rowType === 'positions'">No. of positions</span>
+                                    <span ng-if="row.rowType === 'cost'">Cost</span>
+                                    <span ng-if="row.rowType === 'hours'">Number of hour/week/days/month</span>
+                                    <span ng-if="row.rowType === 'total'" class="orange-text bold">Total Amount for Research Staff {{row.index + 1}}</span>
+                                </td>
+                                <td>
+                                    <input ng-if="row.rowType === 'positions'" type="number" class="tbl-input" ng-model="row.staff.positionsYear1" ng-change="recalculateAll()"
+                                        ng-disabled="proposalStage || isCurrentUserSubmitted" />
+                                    <input ng-if="row.rowType === 'cost'" type="number" class="tbl-input" ng-model="row.staff.costYear1" ng-change="recalculateAll()"
+                                        ng-disabled="proposalStage || isCurrentUserSubmitted" />
+                                    <input ng-if="row.rowType === 'hours'" type="number" class="tbl-input" ng-model="row.staff.hoursYear1" ng-change="recalculateAll()"
+                                        ng-disabled="proposalStage || isCurrentUserSubmitted" />
+                                    <span ng-if="row.rowType === 'total'" class="orange-text">{{row.staff.totalYear1 | number:2}}</span>
+                                </td>
+                                <td ng-show="Showyear2">
+                                    <input ng-if="row.rowType === 'positions'" type="number" class="tbl-input" ng-model="row.staff.positionsYear2" ng-change="recalculateAll()"
+                                        ng-disabled="proposalStage || isCurrentUserSubmitted" />
+                                    <input ng-if="row.rowType === 'cost'" type="number" class="tbl-input" ng-model="row.staff.costYear2" ng-change="recalculateAll()"
+                                        ng-disabled="proposalStage || isCurrentUserSubmitted" />
+                                    <input ng-if="row.rowType === 'hours'" type="number" class="tbl-input" ng-model="row.staff.hoursYear2" ng-change="recalculateAll()"
+                                        ng-disabled="proposalStage || isCurrentUserSubmitted" />
+                                    <span ng-if="row.rowType === 'total'" class="orange-text">{{row.staff.totalYear2 | number:2}}</span>
+                                </td>
+                                <td ng-show="Showyear3">
+                                    <input ng-if="row.rowType === 'positions'" type="number" class="tbl-input" ng-model="row.staff.positionsYear3" ng-change="recalculateAll()"
+                                        ng-disabled="proposalStage || isCurrentUserSubmitted" />
+                                    <input ng-if="row.rowType === 'cost'" type="number" class="tbl-input" ng-model="row.staff.costYear3" ng-change="recalculateAll()"
+                                        ng-disabled="proposalStage || isCurrentUserSubmitted" />
+                                    <input ng-if="row.rowType === 'hours'" type="number" class="tbl-input" ng-model="row.staff.hoursYear3" ng-change="recalculateAll()"
+                                        ng-disabled="proposalStage || isCurrentUserSubmitted" />
+                                    <span ng-if="row.rowType === 'total'" class="orange-text">{{row.staff.totalYear3 | number:2}}</span>
+                                </td>
+                                <td>
+                                    <span ng-if="row.rowType === 'total'" class="orange-text">{{row.staff.totalAmount | number:2}}</span>
+                                    <button ng-if="row.rowType === 'positions' && !proposalStage && !isCurrentUserSubmitted && budgetResearchStaffList.length > 1"
+                                        type="button" class="btn btn-sm btn-danger" ng-click="removeResearchStaff(row.index)"
+                                        title="Remove Research Staff" style="padding: 2px 6px;">
+                                        <i class="fa fa-times"></i> Remove
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Total for all Research Staff -->
+                            <tr ng-if="budgetResearchStaffList.length > 0">
+                                <td></td>
+                                <td></td>
+                                <td class="orange-text bold">Total Amount for All Research Staff</td>
+                                <td class="orange-text">{{budgetResearchStaff.totalYear1 | number:2}}</td>
+                                <td class="orange-text" ng-show="Showyear2">{{budgetResearchStaff.totalYear2 | number:2}}</td>
+                                <td class="orange-text" ng-show="Showyear3">{{budgetResearchStaff.totalYear3 | number:2}}</td>
+                                <td class="orange-text">{{budgetResearchStaff.totalAmount | number:2}}</td>
+                            </tr>
+
+                            <!-- Other Heads -->
+                            <tr>
+                                <td class="bold">Consumables</td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <input type="number" class="tbl-input" ng-model="budgetConsumables.year1" ng-change="recalculateAll()" ng-disabled="proposalStage || isCurrentUserSubmitted"
+                                    />
+                                </td>
+                                <td ng-show="Showyear2">
+                                    <input type="number" class="tbl-input" ng-model="budgetConsumables.year2" ng-change="recalculateAll()" ng-disabled="proposalStage || isCurrentUserSubmitted"
+                                    />
+                                </td>
+                                <td ng-show="Showyear3">
+                                    <input type="number" class="tbl-input" ng-model="budgetConsumables.year3" ng-change="recalculateAll()" ng-disabled="proposalStage || isCurrentUserSubmitted"
+                                    />
+                                </td>
+                                <td class="orange-text bold">{{budgetConsumables.total}}</td>
+                            </tr>
+
+                            <tr>
+                                <td class="bold">Minor equipment</td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <input type="number" class="tbl-input" ng-model="minorEquipment.year1" ng-change="recalculateAll()" ng-disabled="proposalStage || isCurrentUserSubmitted"
+                                    />
+                                </td>
+                                <td ng-show="Showyear2">
+                                    <input type="number" class="tbl-input" ng-model="minorEquipment.year2" ng-change="recalculateAll()" ng-disabled="proposalStage || isCurrentUserSubmitted"
+                                    />
+                                </td>
+                                <td ng-show="Showyear3">
+                                    <input type="number" class="tbl-input" ng-model="minorEquipment.year3" ng-change="recalculateAll()" ng-disabled="proposalStage || isCurrentUserSubmitted"
+                                    />
+                                </td>
+                                <td class="orange-text bold">{{minorEquipment.total}}</td>
+                            </tr>
+
+                            <tr>
+                                <td class="bold">Contingency and Miscellaneous
+                                    <br/>
+                                    <span class="sub-text">
+                                        <i>(max. 15% of Remaining Amount for Research Heads)</i>
+                                    </span>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <input type="number" class="tbl-input" ng-model="budgetContingency.year1" ng-change="recalculateAll()" ng-disabled="proposalStage || isCurrentUserSubmitted"
+                                    />
+
+                                    <span class="text-danger" ng-if="contingencyError.year1">
+                                        Max allowed:
+                                        <b>{{maxContingency.year1}}</b>
+                                    </span>
+                                </td>
+                                <td ng-show="Showyear2">
+                                    <input type="number" class="tbl-input" ng-model="budgetContingency.year2" ng-change="recalculateAll()" ng-disabled="proposalStage || isCurrentUserSubmitted"
+                                    />
+
+                                    <span class="text-danger" ng-if="contingencyError.year2">
+                                        Max allowed:
+                                        <b>{{maxContingency.year2}}</b>
+                                    </span>
+                                </td>
+                                <td ng-show="Showyear3">
+                                    <input type="number" class="tbl-input" ng-model="budgetContingency.year3" ng-change="recalculateAll()" ng-disabled="proposalStage || isCurrentUserSubmitted"
+                                    />
+
+                                    <span class="text-danger" ng-if="contingencyError.year3">
+                                        Max allowed:
+                                        <b>{{maxContingency.year3}}</b>
+                                    </span>
+                                </td>
+                                <td class="orange-text bold">{{budgetContingency.total}}</td>
+                            </tr>
+
+                            <tr class="final-total">
+                                <td class="bold">Total Research Heads</td>
+                                <td></td>
+                                <td></td>
+                                <td class="orange-text">{{totalResearchHeads.year1 | number:2}}</td>
+                                <td class="orange-text" ng-show="Showyear2">{{totalResearchHeads.year2 | number:2}}</td>
+                                <td class="orange-text" ng-show="Showyear3">{{totalResearchHeads.year3 | number:2}}</td>
+                                <td class="orange-text">{{totalResearchHeads.total | number:2}}</td>
+                            </tr>
+
+                            <tr class="final-total">
+                                <td class="bold">Total</td>
+                                <td></td>
+                                <td></td>
+
+                                <td class="orange-text" ng-class="{'text-danger': grandTotalError.year1}">
+                                    {{grandTotal.year1 | number:2}}
+                                </td>
+
+                                <td class="orange-text" ng-show="Showyear2" ng-class="{'text-danger': grandTotalError.year2}">
+                                    {{grandTotal.year2 | number:2}}
+                                </td>
+
+                                <td class="orange-text" ng-show="Showyear3" ng-class="{'text-danger': grandTotalError.year3}">
+                                    {{grandTotal.year3 | number:2}}
+                                </td>
+
+                                <td class="orange-text">
+                                    {{grandTotal.total | number:2}}
+                                </td>
+                            </tr>
+
+                            <tr ng-if="grandTotalError.any">
+                                <td colspan="{{Showyear3 ? 7 : (Showyear2 ? 6 : 5)}}" class="text-danger text-center fw-bold">
+                                    ⚠️ Grand Total cannot exceed €16,000 per year
+                                </td>
+                            </tr>
+
+
+                            <tr class="note-row">
+                                <td colspan="{{Showyear3 ? 7 : (Showyear2 ? 6 : 5)}}">Max € 16,000/year</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <div class="mx-5 mt-2 mb-3" ng-if="!proposalStage">
+                <div class="mx-5 mt-2 mb-3" ng-if="!proposalStage && !isCurrentUserSubmitted">
                     <button class="blue-btn float-end" ng-click="saveExpenceLineitems()" type="button">
                         <i class="fa-solid fa-check me-2"></i>Save and Next</button>
                     <button class="blue-bordered-btn float-end me-2" ng-click="redirectPageURL('CV_Wiser')" type="button">

@@ -70,7 +70,6 @@ angular.module('cp_app').controller('ProjectDetailInWiserCtrl', function ($scope
         }
         if (localStorage.getItem('apaId')) {
             $rootScope.apaId = localStorage.getItem('apaId');
-            $scope.apaId = $rootScope.apaId;
         }
         if (localStorage.getItem('proposalId')) {
             $rootScope.proposalId = localStorage.getItem('proposalId');
@@ -81,7 +80,6 @@ angular.module('cp_app').controller('ProjectDetailInWiserCtrl', function ($scope
             $scope.contactId = $rootScope.contactId;
         }
     }
-
     $scope.getDataFromLocalStorage();
 
     $scope.getProposalStage = function () {
@@ -157,7 +155,7 @@ angular.module('cp_app').controller('ProjectDetailInWiserCtrl', function ($scope
         //new Lines 
         var inputElement = document.getElementById(type);
         if (!inputElement || !inputElement.files || inputElement.files.length === 0) {
-            swal('info', 'Please select a file before uploading.', 'info');
+            swal('Info', 'Please select a file before uploading.', 'info');
             return;
         }
         var file = inputElement.files[0];
@@ -168,7 +166,7 @@ angular.module('cp_app').controller('ProjectDetailInWiserCtrl', function ($scope
         if (typeOfFile[lengthOfType - 1] == "pdf" || typeOfFile[lengthOfType - 1] == "PDF") {
 
         } else {
-            swal('info', 'Please choose pdf file only.', 'info');
+            swal('Info', 'Please choose pdf file only.', 'info');
             return;
         }
         console.log(file);
@@ -197,19 +195,19 @@ angular.module('cp_app').controller('ProjectDetailInWiserCtrl', function ($scope
                     if (fileSize < maxStringSize) {
                         $scope.uploadAttachment(type, userDocId, null);
                     } else {
-                        swal("info", "Base 64 Encoded file is too large.  Maximum size is " + maxStringSize + " your file is " + fileSize + ".", "info");
+                        swal("Info", "Base 64 Encoded file is too large.  Maximum size is " + maxStringSize + " your file is " + fileSize + ".", "info");
                         return;
                         //   alert("Base 64 Encoded file is too large.  Maximum size is " + maxStringSize + " your file is " + fileSize + ".");
                     }
 
                 }
                 fileReader.onerror = function (e) {
-                    swal("info", "There was an error reading the file.  Please try again.", "info");
+                    swal("Info", "There was an error reading the file.  Please try again.", "info");
                     return;
                     //   alert("There was an error reading the file.  Please try again.");
                 }
                 fileReader.onabort = function (e) {
-                    swal("info", "There was an error reading the file.  Please try again.", "info");
+                    swal("Info", "There was an error reading the file.  Please try again.", "info");
                     return;
                     //   alert("There was an error reading the file.  Please try again.");
                 }
@@ -217,13 +215,13 @@ angular.module('cp_app').controller('ProjectDetailInWiserCtrl', function ($scope
                 fileReader.readAsBinaryString(file);  //Read the body of the file
 
             } else {
-                swal("info", "File must be under 1 Mb in size.  Your file is too large.  Please try again.", "info");
+                swal("Info", "File must be under 1 Mb in size.  Your file is too large.  Please try again.", "info");
                 return;
                 //   alert("File must be 1 MB in size.  Your file is too large.  Please try again.");
                 //   $scope.showSpinnereditProf = false;
             }
         } else {
-            swal("info", "You must choose a file before trying to upload it", "info");
+            swal("Info", "You must choose a file before trying to upload it", "info");
             return;
             //   alert("You must choose a file before trying to upload it");
             //   $scope.showSpinnereditProf = false;
@@ -436,26 +434,14 @@ angular.module('cp_app').controller('ProjectDetailInWiserCtrl', function ($scope
 
         if ($scope.pairingDetails != undefined) {
 
-            if ($scope.pairingDetails.FirstName == undefined || $scope.pairingDetails.FirstName == "") {
-                swal("info", "Please Enter First Name.");
-                $("#txtIndFN").addClass('border-theme');
-                return;
-            }
-
-            if ($scope.pairingDetails.LastName == undefined || $scope.pairingDetails.LastName == "") {
-                swal("info", "Please Enter Last Name.");
-                $("#txtIndLN").addClass('border-theme');
-                return;
-            }
-
             if ($scope.pairingDetails.Email == undefined || $scope.pairingDetails.Email == "") {
-                swal("info", "Please Enter Email.");
+                swal("Info", "Please Enter Email.");
                 $("#txtIndEmail").addClass('border-theme');
                 return;
             } else {
                 if ($scope.valid($scope.pairingDetails.Email)) {
                     swal(
-                        'info',
+                        'Info',
                         'Check Your Registered Email.',
                         'info'
                     )
@@ -464,50 +450,60 @@ angular.module('cp_app').controller('ProjectDetailInWiserCtrl', function ($scope
                 }
             }
 
-            if ($scope.pairingDetails.Account == undefined || $scope.pairingDetails.Account == "") {
-                swal("info", "Please Enter Institution / Organization Name.");
+            if ($scope.pairingDetails.FirstName == undefined || $scope.pairingDetails.FirstName == "") {
+                swal("Info", "Please Enter First Name.");
+                $("#txtIndFN").addClass('border-theme');
+                return;
+            }
+
+            if ($scope.pairingDetails.LastName == undefined || $scope.pairingDetails.LastName == "") {
+                swal("Info", "Please Enter Last Name.");
+                $("#txtIndLN").addClass('border-theme');
+                return;
+            }
+
+            // if ($scope.pairingDetails.Account == undefined || $scope.pairingDetails.Account == "") {
+            //     swal("Info", "Please Enter Institution / Organization Name.");
+            //     $("#txtIndOrg").addClass('border-theme');
+            //     return;
+            // }
+
+            if (
+                !$scope.pairingDetails ||
+                !$scope.pairingDetails.Account ||
+                !$scope.pairingDetails.Account.Name ||
+                !$scope.pairingDetails.Account.Name.trim()
+            ) {
+                swal("Info", "Please Enter Institution / Organization Name.");
                 $("#txtIndOrg").addClass('border-theme');
                 return;
             }
 
             if ($scope.pairingDetails.Account != undefined) {
                 if ($scope.pairingDetails.Account.Name == undefined) {
-                    swal("info", "Please Enter Institution / Organization Name.");
+                    swal("Info", "Please Enter Institution / Organization Name.");
                     $("#txtIndOrg").addClass('border-theme');
                     return;
                 }
             }
 
             if ($scope.pairingDetails.Birthdate == undefined || $scope.pairingDetails.Birthdate == "") {
-                swal("info", "Please Enter BirthDate.");
+                swal("Info", "Please Enter BirthDate.");
                 $("#txtIndBD").addClass('border-theme');
                 return;
             }
         }
 
-
-
         if ($scope.pairList != undefined) {
-            if ($scope.pairList.FirstName == undefined || $scope.pairList.FirstName == "") {
-                swal("info", "Please Enter First Name.");
-                $("#txtGerFN").addClass('border-theme');
-                return;
-            }
-
-            if ($scope.pairList.LastName == undefined || $scope.pairList.LastName == "") {
-                swal("info", "Please Enter Last Name.");
-                $("#txtGerLn").addClass('border-theme');
-                return;
-            }
 
             if ($scope.pairList.Email == undefined || $scope.pairList.Email == "") {
-                swal("info", "Please Enter Email.");
+                swal("Info", "Please Enter Email.");
                 $("#txtGerEmail").addClass('border-theme');
                 return;
             } else {
                 if ($scope.valid($scope.pairList.Email)) {
                     swal(
-                        'info',
+                        'Info',
                         'Check Your Registered Email.',
                         'info'
                     )
@@ -516,22 +512,31 @@ angular.module('cp_app').controller('ProjectDetailInWiserCtrl', function ($scope
                 }
             }
 
-            if ($scope.pairList.Account == undefined || $scope.pairList.Account == "") {
-                swal("info", "Please Enter Institution / Organization Name.");
+            if ($scope.pairList.FirstName == undefined || $scope.pairList.FirstName == "") {
+                swal("Info", "Please Enter First Name.");
+                $("#txtGerFN").addClass('border-theme');
+                return;
+            }
+
+            if ($scope.pairList.LastName == undefined || $scope.pairList.LastName == "") {
+                swal("Info", "Please Enter Last Name.");
+                $("#txtGerLn").addClass('border-theme');
+                return;
+            }
+
+            if (
+                !$scope.pairList ||
+                !$scope.pairList.Account ||
+                !$scope.pairList.Account.Name ||
+                !$scope.pairList.Account.Name.trim()
+            ) {
+                swal("Info", "Please Enter Institution / Organization Name.");
                 $("#txtGerOrg").addClass('border-theme');
                 return;
             }
 
-            if ($scope.pairList.Account != undefined) {
-                if ($scope.pairList.Account.Name == undefined) {
-                    swal("info", "Please Enter Institution / Organization Name.");
-                    $("#txtGerOrg").addClass('border-theme');
-                    return;
-                }
-            }
-
             if ($scope.pairList.Birthdate == undefined || $scope.pairList.Birthdate == "") {
-                swal("info", "Please Enter BirthDate.");
+                swal("Info", "Please Enter BirthDate.");
                 $("#txtGerBD").addClass('border-theme');
                 return;
             }
@@ -560,16 +565,14 @@ angular.module('cp_app').controller('ProjectDetailInWiserCtrl', function ($scope
 
             }
 
-            for (var i = 0; i < $scope.detailedList.length; i++) {
-                delete ($scope.detailedList[i].Birthdate);
-            }
+            // for (var i = 0; i < $scope.detailedList.length; i++) {
+            //     delete ($scope.detailedList[i].Birthdate);
+            // }
 
-            ApplicantPortal_Contoller.insertPairingDetailsinWiser($scope.conList, $rootScope.campaignId, $rootScope.yearlyCallId, function (result, event) {
+            ApplicantPortal_Contoller.insertPairingDetailsinWiser($scope.conList, $rootScope.campaignId, $rootScope.yearlyCallId, $rootScope.proposalId, function (result, event) {
                 if (event.status) {
                     debugger;
-                    // Saving the ProposalId in Local Storage
-                    localStorage.setItem('proposalId', result.proposalId);
-                    localStorage.setItem('apaId', result.apa.Id);
+
                     swal({
                         title: "Pairing Details",
                         text: 'Pairing details have been successfully saved.',
@@ -677,26 +680,26 @@ angular.module('cp_app').controller('ProjectDetailInWiserCtrl', function ($scope
         debugger;
 
         if (!$scope.isPdfUploded) {
-            swal('info', 'Please upload the PDF file.', 'info');
+            swal('Info', 'Please upload the PDF file.', 'info');
         }
         else {
             $scope.applicantDetails.Campaign__c = $rootScope.campaignId;
             debugger;
 
             if ($scope.applicantDetails.Title_Of__c == undefined || $scope.applicantDetails.Title_Of__c == "") {
-                swal("info", "Please Enter Title of proposal.", "info");
+                swal("Info", "Please Enter Title of proposal.", "info");
                 $("#txtTitle").addClass('border-theme');
                 return;
             }
 
             if ($scope.applicantDetails.Broad_area_of_research__c == undefined || $scope.applicantDetails.Broad_area_of_research__c == "") {
-                swal("info", "Please Enter Broad Area of Reasearch.", "info");
+                swal("Info", "Please Enter Broad Area of Reasearch.", "info");
                 $("#txtResearch").addClass('border-theme');
                 return;
             }
 
             if ($scope.applicantDetails.Duration_In_Months_Max_36__c == undefined || $scope.applicantDetails.Duration_In_Months_Max_36__c == "") {
-                swal("info", "Please Enter Project Duration.", "info");
+                swal("Info", "Please Enter Project Duration.", "info");
                 $("#txtDuration").addClass('border-theme');
                 return;
             }
@@ -719,13 +722,13 @@ angular.module('cp_app').controller('ProjectDetailInWiserCtrl', function ($scope
             $scope.applicantDetails.KeyWords__c = keyword;
 
             if ($scope.applicantDetails.KeyWords__c == undefined || $scope.applicantDetails.KeyWords__c == "") {
-                swal("info", "Please Enter Keyword.", "info");
+                swal("Info", "Please Enter Keyword.", "info");
                 $("#txtKeyword").addClass('border-theme');
                 return;
             }
 
             if ($scope.applicantDetails.Abstract_of_proposed_work__c == undefined || $scope.applicantDetails.Abstract_of_proposed_work__c == "") {
-                swal("info", "Please Enter Abstract of proposed work.", "info");
+                swal("Info", "Please Enter Abstract of proposed work.", "info");
                 return;
             } else {
                 //    var div = document.createElement("div");
@@ -738,7 +741,7 @@ angular.module('cp_app').controller('ProjectDetailInWiserCtrl', function ($scope
 
 
                 if ($scope.objRtf[0].charCount > 600) {
-                    swal("info", "Abstract of proposed work maxlength will be 600 characters only.", "info");
+                    swal("Info", "Abstract of proposed work maxlength will be 600 characters only.", "info");
                     return;
                 }
             }
@@ -892,6 +895,43 @@ angular.module('cp_app').controller('ProjectDetailInWiserCtrl', function ($scope
         $scope.dobErrors[fieldName] = !(age > 26 && age < 55);
     };
 
+    $scope.getApplicantStatusFromAPA = function () {
+        debugger;
+
+        if (!$rootScope.apaId) {
+            console.log('APA Id not available yet, skipping fetchApplicantStatus call');
+            return;
+        }
+
+        ApplicantPortal_Contoller.fetchApplicantStatus(
+            $rootScope.apaId,
+            function (result, event) {
+                debugger;
+
+                if (event.status) {
+                    $rootScope.isCurrentUserSubmitted = result;
+
+                    // 🔐 Lock editor condition
+                    $scope.isEditorLocked = ($scope.proposalStage || result);
+
+                    // 🔒 Apply lock to CKEditor
+                    $scope.toggleCkEditorReadOnly($scope.isEditorLocked);
+                }
+            },
+            { escape: true }
+        );
+    };
+    $scope.getApplicantStatusFromAPA();
+
+    $scope.toggleCkEditorReadOnly = function (isReadOnly) {
+        setTimeout(function () {
+            if (CKEDITOR.instances) {
+                Object.keys(CKEDITOR.instances).forEach(function (instanceName) {
+                    CKEDITOR.instances[instanceName].setReadOnly(isReadOnly);
+                });
+            }
+        }, 0);
+    };
 
 
 })

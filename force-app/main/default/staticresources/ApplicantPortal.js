@@ -10,6 +10,8 @@ var profilePicURL;
 var isCoordinator;
 var partnerSubmission;
 
+
+
 var app = angular.module('cp_app');
 debugger;
 var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard';    // ======================>
@@ -148,6 +150,7 @@ app.controller('cp_dashboard_ctrl', function ($scope, $rootScope, $timeout, $win
     $rootScope.signDate = signDate;
     $rootScope.secondStage = false;
     $rootScope.isCurrentUserSubmitted = false;
+    $rootScope.apaSubmittedFromAPA;
 
     $scope.applicantAssociationListData;
     $scope.contactName;
@@ -810,32 +813,28 @@ app.controller('cp_dashboard_ctrl', function ($scope, $rootScope, $timeout, $win
         });
     };
 
-    if (localStorage.getItem('apaId')) {
-        $rootScope.apaId = localStorage.getItem('apaId');
-        console.log('Loaded proposalId from localStorage:', $rootScope.apaId);
-    }
+    // if (localStorage.getItem('apaId')) {
+    //     $rootScope.apaId = localStorage.getItem('apaId');
+    //     console.log('Loaded proposalId from localStorage:', $rootScope.apaId);
+    // }
 
-    $scope.getApplicantStatusFromAPA = function () {
-        debugger;
+    // $scope.init = function () {
+    //     ApplicantPortal_Contoller.fetchApplicantStatus(
+    //         $rootScope.apaId,
+    //         function (result, event) {
+    //             if (event.status) {
+    //                 $scope.isCurrentUserSubmitted = result;
+    //                 localStorage.setItem('apaSubmitted', $scope.isCurrentUserSubmitted);
+    //                 $scope.$apply();
+    //             }
+    //         },
+    //         { escape: true }
+    //     );
+    // };
 
+    // // Call on load
+    // $scope.init();
 
-        ApplicantPortal_Contoller.fetchApplicantStatus($rootScope.apaId, function (result, event) {
-            debugger;
-
-            console.log('result return onload :: ');
-            console.log(result);
-            console.log('event:', event);
-
-            if (event.status) {
-                $rootScope.isCurrentUserSubmitted = result;
-            } else {
-                console.log('Error in fetchApplicantStatus:', event.message);
-            }
-        }, {
-            escape: true
-        });
-    }
-    $scope.getApplicantStatusFromAPA();
 
 });
 

@@ -954,7 +954,18 @@ public static List<YealyCall__c> getActiveCampaignIf(String yearlyCallId) {
     @RemoteAction
     public static string SaveWorkshopContactDetails2(Contact conDataList, List<Education_Details__c> eduDetails, List<Employment_Details__c> empDetails){
         try{
-            conDataList.MailingState = conDataList.State__c; //Added by Aman on 29 Aug'23. Put back the value of MailingState from State__c and see if it retains the value.
+            // Preserve MailingState: Only update it if State__c has a value, otherwise keep existing value
+            if(String.isNotBlank(conDataList.State__c)){
+                conDataList.MailingState = conDataList.State__c; //Added by Aman on 29 Aug'23. Put back the value of MailingState from State__c and see if it retains the value.
+            } else {
+                // If State__c is blank, preserve existing MailingState by querying it from database
+                if(String.isBlank(conDataList.MailingState) && conDataList.Id != null){
+                    Contact existingContact = [SELECT Id, MailingState FROM Contact WHERE Id = :conDataList.Id LIMIT 1];
+                    if(existingContact != null && String.isNotBlank(existingContact.MailingState)){
+                        conDataList.MailingState = existingContact.MailingState;
+                    }
+                }
+            }
             upsert conDataList;
             upsert eduDetails;
             upsert empDetails;
@@ -1081,6 +1092,23 @@ public static List<YealyCall__c> getActiveCampaignIf(String yearlyCallId) {
     public static String createExpenseWithHeadAndLineItems(List<Expense_Line_Item__c> expenseLineItems, String apaId, Applicant_Proposal_Association__c updatedApa) {
         return Proposal_Controller.createExpenseWithHeadAndLineItems(expenseLineItems, apaId, updatedApa);
     }
+
+    @RemoteAction
+    public static String createExpenseWithHeadAndLineItemsForWiser(List<Expense_Line_Item__c> expenseLineItems, String apaId, Applicant_Proposal_Association__c updatedApa) {
+        return Proposal_Controller.createExpenseWithHeadAndLineItemsForWiser(expenseLineItems, apaId, updatedApa);
+    }
+    
+    // Wrapper class for returning save result
+    public class SaveExpenseResultWrapper {
+        public String status;
+        public Map<String, List<String>> researchStaffHeadIds;
+    }
+    
+    // NEW METHOD: Delete Research Staff records by IDs
+    @RemoteAction
+    public static String deleteResearchStaffByIds(List<String> expenseHeadIds) {
+        return Proposal_Controller.deleteResearchStaffByIds(expenseHeadIds);
+    }
     
     // NEW METHOD: Get expense records from Expense_Head__c and Expense_Line_Item__c
     @RemoteAction
@@ -1097,7 +1125,112 @@ public static List<YealyCall__c> getActiveCampaignIf(String yearlyCallId) {
     public static Proposal_Controller.edWrapper getExpenseRecords(String ProposalId, String ContactId) {
         return Proposal_Controller.getExpenseDetails(ProposalId, ContactId);
     }
+
+    public class YearlyExpenseWrapper {
+        public Id id;
+        public String year;
+        public List<ExpenseHeadWrapper> expenseHeads = new List<ExpenseHeadWrapper>();
+    }
+
+    public class ExpenseHeadWrapper {
+        public Id id;
+        public String name;
+        public List<Expense_Line_Item__c> lineItems = new List<Expense_Line_Item__c>();
+    }
+
     
+    @RemoteAction
+    public static Map<String, Object> getYearlyExpenseHierarchy(Id apaId) {
+
+        Map<String, Object> response = new Map<String, Object>();
+
+        /* ===============================
+        1️⃣ Fetch Yearly Expenses
+        =============================== */
+        List<Yearly_Expense__c> yearlyExpenses = [
+            SELECT Id, Year__c
+            FROM Yearly_Expense__c
+            WHERE Applicant_Proposal_Association__c = :apaId
+            ORDER BY Year__c
+        ];
+
+        if (yearlyExpenses.isEmpty()) {
+            response.put('yearlyExpenses', new List<YearlyExpenseWrapper>());
+            return response;
+        }
+
+        /* ===============================
+        2️⃣ Fetch Expense Heads
+        =============================== */
+        List<Expense_Head__c> heads = [
+            SELECT Id, Name, Yearly_Expense__c
+            FROM Expense_Head__c
+            WHERE Yearly_Expense__c IN :yearlyExpenses
+        ];
+
+        /* ===============================
+        3️⃣ Fetch Line Items
+        =============================== */
+        List<Expense_Line_Item__c> lineItems = [
+            SELECT Id, Description__c, Index__c,
+                Year1_Expense__c, Year2_Expense__c, Year3_Expense__c,
+                Expense_Type__c, Expense_Head__c
+            FROM Expense_Line_Item__c
+            WHERE Expense_Head__c IN :heads
+        ];
+
+        /* ===============================
+        4️⃣ Map Line Items → Head
+        =============================== */
+        Map<Id, List<Expense_Line_Item__c>> headToLines = new Map<Id, List<Expense_Line_Item__c>>();
+        for (Expense_Line_Item__c li : lineItems) {
+            if (!headToLines.containsKey(li.Expense_Head__c)) {
+                headToLines.put(li.Expense_Head__c, new List<Expense_Line_Item__c>());
+            }
+            headToLines.get(li.Expense_Head__c).add(li);
+        }
+
+        /* ===============================
+        5️⃣ Map Heads → Yearly Expense
+        =============================== */
+        Map<Id, List<ExpenseHeadWrapper>> yearlyToHeads = new Map<Id, List<ExpenseHeadWrapper>>();
+        for (Expense_Head__c h : heads) {
+
+            ExpenseHeadWrapper hw = new ExpenseHeadWrapper();
+            hw.id = h.Id;
+            hw.name = h.Name;
+            hw.lineItems = headToLines.containsKey(h.Id)
+                ? headToLines.get(h.Id)
+                : new List<Expense_Line_Item__c>();
+
+            if (!yearlyToHeads.containsKey(h.Yearly_Expense__c)) {
+                yearlyToHeads.put(h.Yearly_Expense__c, new List<ExpenseHeadWrapper>());
+            }
+            yearlyToHeads.get(h.Yearly_Expense__c).add(hw);
+        }
+
+        /* ===============================
+        6️⃣ Build Final Hierarchy
+        =============================== */
+        List<YearlyExpenseWrapper> result = new List<YearlyExpenseWrapper>();
+
+        for (Yearly_Expense__c ye : yearlyExpenses) {
+            YearlyExpenseWrapper yw = new YearlyExpenseWrapper();
+            yw.id = ye.Id;
+            yw.year = ye.Year__c;
+            yw.expenseHeads = yearlyToHeads.containsKey(ye.Id)
+                ? yearlyToHeads.get(ye.Id)
+                : new List<ExpenseHeadWrapper>();
+
+            result.add(yw);
+        }
+
+        response.put('yearlyExpenses', result);
+        return response;
+    }
+
+
+
     // NEW CODE - RETURNING CUSTOM TYPE
     @RemoteAction
     public static Proposal_Controller.ProposalWithContactsDTO getConsentCheckbox(string proposalId){
@@ -1169,8 +1302,8 @@ public static List<YealyCall__c> getActiveCampaignIf(String yearlyCallId) {
 
 
     @RemoteAction
-    public static Proposal_Controller.insertPairingWrapperinWiser insertPairingDetailsinWiser(List<Proposal_Controller.wrapperPairing> contactList,String campaignId,String yearlyCall){
-        return Proposal_Controller.insertPairingDetailsinWiser(contactList,campaignId,yearlyCall);
+    public static Proposal_Controller.insertPairingWrapperinWiser insertPairingDetailsinWiser(List<Proposal_Controller.wrapperPairing> contactList,String campaignId,String yearlyCall, String proposalId){
+        return Proposal_Controller.insertPairingDetailsinWiser(contactList,campaignId,yearlyCall, proposalId);
     }
     ////////////////////////////New Method aaded by Karthik 
     
@@ -2400,18 +2533,34 @@ public static WrapperProposalDet getPECFARProposalDetails(string proposalId){
         // Integer startingyear;
     }
     
+    // @RemoteAction
+    // public Static List<References__c> getProposalDetailsReferences(String proposalId){
+    //     try{
+    //         List<References__c> getParticipantList = [SELECT Id,Name,Email__c,Phone__c,Proposals__c,Organisation_Institute__c,Designation__c FROM References__c WHERE Proposals__c =:proposalId];
+    //         System.debug('getParticipantList ::'+getParticipantList);
+    //         return getParticipantList;
+    //     }catch(Exception e){
+    //         System.debug('The Error '+e.getMessage()+' Line'+e.getLineNumber());
+    //         return null;
+    //     }
+    // }
+    
     @RemoteAction
-    public Static List<References__c> getProposalDetailsReferences(String proposalId){
+    public Static List<References__c> getProposalDetailsReferences(String proposalId, String apaId){
         try{
-            List<References__c> getParticipantList = [SELECT Id,Name,Email__c,Phone__c,Proposals__c,Organisation_Institute__c,Designation__c FROM References__c WHERE Proposals__c =:proposalId];
-            System.debug('getParticipantList ::'+getParticipantList);
+            List<References__c> getParticipantList = [
+                SELECT Id, Name, Email__c, Phone__c, Proposals__c, Organisation_Institute__c, Designation__c, Applicant_Proposal_Association__c
+                FROM References__c 
+                WHERE Applicant_Proposal_Association__c =: apaId];
+
+            System.debug('getParticipantList ::' + getParticipantList);
             return getParticipantList;
         }catch(Exception e){
             System.debug('The Error '+e.getMessage()+' Line'+e.getLineNumber());
             return null;
         }
     }
-    
+
     @RemoteAction
     public static void deleteParticipantsReferences(string partcpntId){
         delete New References__c(Id=partcpntId);
@@ -2429,26 +2578,36 @@ public static WrapperProposalDet getPECFARProposalDetails(string proposalId){
 
     // ------------ METHOD UPDATED TO SAVE SIGNATORY DETAILS ------------ //
     @RemoteAction
-    public static String insertParticipantsReferences(List<References__c> insertParticipantsList, String proposalId, Contact signatoryContact, String signatoryAPAId, String accountId){
+    public static String insertParticipantsReferences(List<References__c> insertParticipantsList, String proposalId, String apaId, Contact signatoryContact, Applicant_Proposal_Association__c apaRecord, String signatoryAPAId, String accountId){
         try{
-            upsert insertParticipantsList;
+            if(! insertParticipantsList.isEmpty()){
 
+                for(References__c ref : insertParticipantsList){
+                    if(ref.Applicant_Proposal_Association__c == null)
+                        ref.Applicant_Proposal_Association__c = apaId;
+                }
+                upsert insertParticipantsList;
+            }
+            
             System.debug('Contact : ' + signatoryContact);
             System.debug('Account Id : ' + accountId);
             System.debug('Contact Account Id : '+ signatoryContact.AccountId);
             System.debug('Proposal Id : ' + proposalId);
+            System.debug('APA Id : ' + apaId);
 
-            signatoryContact.AccountId = signatoryContact.AccountId;
+            signatoryContact.AccountId = accountId;
             signatoryContact.FirstName = signatoryContact.Signatory_First_Name__c;
             signatoryContact.LastName = signatoryContact.Signatory_Last_Name__c;
+            // signatoryContact.Signatory_Emailist_Name__c = signatoryContact.Signatory_Emailist_Name__c;
             upsert signatoryContact;
             System.debug('Contact Inserted Successfully : ' + signatoryContact.Id);
 
             Applicant_Proposal_Association__c signatoryAPA = new Applicant_Proposal_Association__c(
                 Id = signatoryAPAId,
                 Contact__c = signatoryContact.Id,
-                Proposals__c = proposalId,
-                Is_Signatory__c = true
+                // Proposals__c = proposalId,
+                Is_Signatory__c = true,
+                Signatory_Emailist_Name__c = apaRecord.Signatory_Emailist_Name__c
             );
             upsert signatoryAPA;
             System.debug('APA Inserted Successfully : ' + signatoryAPA.Id);
@@ -2463,15 +2622,16 @@ public static WrapperProposalDet getPECFARProposalDetails(string proposalId){
 
     // ------------ METHOD UPDATED TO SAVE SIGNATORY DETAILS ------------ //
     @RemoteAction
-    public static Applicant_Proposal_Association__c getSignatoryContactAPADetails(String proposalId){
+    public static Applicant_Proposal_Association__c getSignatoryContactAPADetails(String proposalId, String apaId, String accountId){
         Applicant_Proposal_Association__c signatoryAPA = [
             SELECT Id, Contact__r.Salutation, Contact__r.Signatory_Salutation__c, Contact__r.Institution_Name__c, Contact__r.LastName, 
             Contact__r.Institute_Name__c, Contact__r.Department, Contact__r.Designation__c, Contact__r.Email, 
             Contact__r.Account.Name, Contact__r.AccountId, Contact__r.Signatory_First_Name__c, Contact__r.Signatory_Last_Name__c, 
-            Contact__r.Signatory_Institution__c, Contact__r.Signatory_Designation__c, Is_Signatory__c, Proposals__c
+            Contact__r.Signatory_Institution__c, Contact__r.Signatory_Designation__c, Is_Signatory__c, Proposals__c, Signatory_Emailist_Name__c
             FROM Applicant_Proposal_Association__c 
             WHERE Is_Signatory__c = true
-            AND Proposals__c =: proposalId
+            AND  Contact__r.AccountId =: accountId
+            LIMIT 1
         ];
         return signatoryAPA;
     }
@@ -3078,21 +3238,48 @@ public static void updateProposalStage(Id proposalId) {
     
     @RemoteAction
     public static Boolean fetchApplicantStatus(String apaId){
-        Applicant_Proposal_Association__c apa = [
-                SELECT Id, Applicant_Status__c
-                FROM Applicant_Proposal_Association__c
-                WHERE Id =: apaId
-                AND Is_Signatory__c = false
-                LIMIT 1
+        List<Applicant_Proposal_Association__c> apaList = [
+            SELECT Applicant_Status__c, Contact__c, Contact__r.Is_Primary__c, Proposals__c, Proposals__r.Duration_In_Months_Max_36__c
+            FROM Applicant_Proposal_Association__c
+            WHERE Id = :apaId
+            AND Is_Signatory__c = false
+            LIMIT 1
         ];
 
-        Boolean result;
-        if(apa.Applicant_Status__c == 'Submitted'){
-            result = true;
-        }else{
-            result = false;
+        if (!apaList.isEmpty() && apaList[0].Applicant_Status__c == 'Submitted') {
+            return true;
+        }
+        return false;
+    }
+
+    @RemoteAction
+    public static ApplicantStatusWrapper fetchApplicantStatusWithDuration(String apaId) {
+
+        ApplicantStatusWrapper res = new ApplicantStatusWrapper();
+
+        List<Applicant_Proposal_Association__c> apaList = [
+            SELECT Applicant_Status__c,
+                Proposals__r.Duration_In_Months_Max_36__c
+            FROM Applicant_Proposal_Association__c
+            WHERE Id = :apaId
+            AND Is_Signatory__c = false
+            LIMIT 1
+        ];
+
+        if (!apaList.isEmpty()) {
+            res.applicantStatus = apaList[0].Applicant_Status__c;
+            res.durationInMonths = (Integer) apaList[0]
+                .Proposals__r
+                .Duration_In_Months_Max_36__c;
         }
 
-        return result;
+        return res;
     }
+
+    public class ApplicantStatusWrapper {
+        @AuraEnabled public String applicantStatus;
+        @AuraEnabled public Integer durationInMonths;
+    }
+
+
 }

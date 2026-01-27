@@ -33,7 +33,7 @@ roup' )
             <div class="container mt-5">
                 <div class="row mx-5">
                     <div class="col-md-12">
-                        <div class="tab-link" ng-show="proposalStage">
+                        <div class="tab-link" ng-show="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success w-100"></div>
                             </div>
@@ -147,7 +147,7 @@ roup' )
                             </ul> -->
                         </div>
 
-                        <div class="tab-link" ng-hide="proposalStage">
+                        <div class="tab-link" ng-hide="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success wp-5"></div>
                             </div>
@@ -258,7 +258,7 @@ roup' )
 
                 <div class="row mx-5">
                     <div class="col-md-12">
-                        <div class="tab-link" ng-show="proposalStage">
+                        <div class="tab-link" ng-show="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success w-100"></div>
                             </div>
@@ -311,7 +311,7 @@ roup' )
                                 </li>
                             </ul>
                         </div>
-                        <div class="tab-link" ng-hide="proposalStage">
+                        <div class="tab-link" ng-hide="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success wp-0"></div>
                             </div>
@@ -397,9 +397,9 @@ roup' )
                             </small>
                             <div class="custom-file-upload">
                                 <div class="input-group input-group-lg">
-                                    <input class="form-control" type="file" accept=".jpg,.jpeg" id="profilePic" ng-disabled="proposalStage" ng-file-select="onFileSelect($files)"
-                                        ng-model="imageSrc" />
-                                    <span class="input-group-btn" ng-hide="proposalStage">
+                                    <input class="form-control" type="file" accept=".jpg,.jpeg" id="profilePic" ng-disabled="proposalStage || isCurrentUserSubmitted"
+                                        ng-file-select="onFileSelect($files)" ng-model="imageSrc" />
+                                    <span class="input-group-btn" ng-hide="proposalStage || isCurrentUserSubmitted">
                                         <button type="button" class="btn btn-success" ng-click="uploadFile(docU.userDocument.Name,docU.userDocument.Id,'','512000','30720')">Upload</button>
                                     </span>
                                 </div>
@@ -412,7 +412,7 @@ roup' )
                                     <label class="font-if" for="txtName">Salutation
                                         <span class="text-danger me-2">*</span>
                                     </label>
-                                    <input type="text" class="form-control" ng-disabled="proposalStage || isCurrentUserSubmitted " ng-model="objContact.Salutation"
+                                    <input type="text" class="form-control" ng-disabled="proposalStage || isCurrentUserSubmitted" ng-model="objContact.Salutation"
                                         ng-focus="removeClass('salutation')" id="salutation" />
                                 </div>
 
@@ -420,15 +420,15 @@ roup' )
                                     <label class="font-if" for="txtName">First Name
                                         <span class="text-danger me-2">*</span>
                                     </label>
-                                    <input type="text" class="form-control" ng-disabled="proposalStage" ng-model="objContact.FirstName" ng-focus="removeClass('txtFirstName')"
-                                        id="txtFirstName" />
+                                    <input type="text" class="form-control" ng-disabled="proposalStage || isCurrentUserSubmitted" ng-model="objContact.FirstName"
+                                        ng-focus="removeClass('txtFirstName')" id="txtFirstName" />
                                 </div>
                                 <div class="col-md-5">
                                     <label class="font-if" for="txtName">Last Name
                                         <span class="text-danger me-2">*</span>
                                     </label>
-                                    <input type="text" class="form-control" ng-disabled="proposalStage" ng-model="objContact.LastName" ng-focus="removeClass('txtLastName')"
-                                        id="txtLastName" />
+                                    <input type="text" class="form-control" ng-disabled="proposalStage || isCurrentUserSubmitted" ng-model="objContact.LastName"
+                                        ng-focus="removeClass('txtLastName')" id="txtLastName" />
                                 </div>
                             </div>
 
@@ -439,7 +439,7 @@ roup' )
                                         <span class="text-danger me-2">*</span>
                                     </label>
                                     <!-- <md-datepicker ng-disabled="proposalStage" ng-model="objContact.Birthdate" ng-focus="removeClass('txtDOB')" id="txtDOB" md-placeholder="Birthdate" class="form-control" md-current-view="year"></md-datepicker> -->
-                                    <input type="date" class="form-control" ng-focus="removeClass('txtDOB')" id="txtDOB" ng-model="objContact.Birthdate" ng-disabled="proposalStage"
+                                    <input type="date" class="form-control" ng-focus="removeClass('txtDOB')" id="txtDOB" ng-model="objContact.Birthdate" ng-disabled="proposalStage || isCurrentUserSubmitted"
                                     />
                                 </div>
 
@@ -447,8 +447,8 @@ roup' )
                                     <label class="font-if">Nationality
                                         <span class="text-danger me-2">*</span>
                                     </label>
-                                    <select type="select" id="selectNatinality" ng-disabled="proposalStage" ng-focus="removeClass('selectNatinality')" class="form-control"
-                                        ng-model="objContact.Nationality__c">
+                                    <select type="select" id="selectNatinality" ng-disabled="proposalStage || isCurrentUserSubmitted" ng-focus="removeClass('selectNatinality')"
+                                        class="form-control" ng-model="objContact.Nationality__c">
                                         <option ng-selected="{{item==objContact.Nationality__c}}" ng-repeat="item in nationality" value="{{item}}">{{item}}</option>
                                     </select>
                                 </div>
@@ -467,7 +467,7 @@ roup' )
                                     <label class="font-if">Phone No.
                                         <span class="text-danger me-2">*</span>
                                     </label>
-                                    <input class="form-control" type="text" ng-focus="removeClass('txtPhone')" id="txtPhone" ng-model="objContact.Phone" ng-disabled="proposalStage"
+                                    <input class="form-control" type="text" ng-focus="removeClass('txtPhone')" id="txtPhone" ng-model="objContact.Phone" ng-disabled="proposalStage || isCurrentUserSubmitted"
                                     />
                                 </div>
 
@@ -475,8 +475,9 @@ roup' )
                                     <label class="font-if">Email
                                         <span class="text-danger me-2">*</span>
                                     </label>
-                                    <input class="form-control" type="text" ng-model="objContact.Email" id="txtEmail1" ng-disabled="proposalStage" ng-focus="removeClass('txtEmail1')"
-                                        ng-change="checkEmail(objContact.Email,objContact.Id)" />
+                                    <input class="form-control" type="text" ng-model="objContact.Email" id="txtEmail1" ng-disabled="proposalStage || isCurrentUserSubmitted"
+                                        ng-focus="removeClass('txtEmail1')" ng-change="checkEmail(objContact.Email,objContact.Id)"
+                                    />
                                 </div>
                             </div>
 
@@ -485,13 +486,13 @@ roup' )
                                 <div class="col-md-6 mt-3">
                                     <label class="font-if">Homepage URL</label>
                                     <input type="text" class="form-control" ng-focus="removeClass('txtHomePage')" id="txtHomePage" ng-model="objContact.Homepage_URL__c"
-                                        ng-disabled="proposalStage" />
+                                        ng-disabled="proposalStage || isCurrentUserSubmitted" />
                                 </div>
 
                                 <div class="col-md-6 mt-3">
                                     <label class="font-if">Passport No.</label>
                                     <input type="text" class="form-control" ng-focus="removeClass('txtHomePage')" id="txtHomePage" ng-model="objContact.PassportNo__c"
-                                        ng-disabled="proposalStage" />
+                                        ng-disabled="proposalStage || isCurrentUserSubmitted" />
                                 </div>
 
                             </div>
@@ -504,7 +505,7 @@ roup' )
                                 <span class="text-danger me-2">*</span>
                             </label>
                             <input class="form-control" type="text" ng-focus="removeClass('txtInstitiute')" id="txtInstitiute" ng-model="objContact.Account.Name"
-                                ng-disabled="proposalStage" />
+                                ng-disabled="proposalStage || isCurrentUserSubmitted" />
                         </div>
 
                         <div class="col-md-4 mt-3">
@@ -512,7 +513,7 @@ roup' )
                                 <span class="text-danger me-2">*</span>
                             </label>
                             <input class="form-control" type="text" ng-focus="removeClass('txtDepartment')" id="txtDepartment" ng-model="objContact.Department"
-                                ng-disabled="proposalStage" />
+                                ng-disabled="proposalStage || isCurrentUserSubmitted" />
                         </div>
 
                         <div class="col-md-4 mt-3">
@@ -520,7 +521,7 @@ roup' )
                                 <span class="text-danger me-2">*</span>
                             </label>
                             <input class="form-control" type="text" ng-focus="removeClass('txtDesignation')" id="txtDesignation" ng-model="objContact.Designation__c"
-                                ng-disabled="proposalStage" />
+                                ng-disabled="proposalStage || isCurrentUserSubmitted" />
                         </div>
                     </div>
 
@@ -537,7 +538,7 @@ roup' )
                                 <label class="font-if">Line 1
                                     <span class="text-danger me-2">*</span>
                                 </label>
-                                <input type="text" class="form-control" ng-focus="removeClass('txtStreet')" id="txtStreet" ng-model="MailingStreet1" ng-disabled="proposalStage"
+                                <input type="text" class="form-control" ng-focus="removeClass('txtStreet')" id="txtStreet" ng-model="MailingStreet1" ng-disabled="proposalStage || isCurrentUserSubmitted"
                                 />
                             </div>
                         </div>
@@ -545,7 +546,7 @@ roup' )
                         <div class="row mt-5">
                             <div class="col-md-12 mt-3">
                                 <label class="font-if">Line 2</label>
-                                <input type="text" class="form-control" ng-model="MailingStreet2" ng-disabled="proposalStage" />
+                                <input type="text" class="form-control" ng-model="MailingStreet2" ng-disabled="proposalStage || isCurrentUserSubmitted" />
                             </div>
                         </div>
 
@@ -555,8 +556,8 @@ roup' )
                                     <span class="text-danger me-2">*</span>
                                 </label>
                                 <select class="form-control" aria-label="Default select example" ng-focus="removeClass('txtCountry')" id="txtCountry" ng-model="objContact.MailingCountry"
-                                    ng-disabled="proposalStage" ng-change="onCountryChange()">
-                                    <option ng-repeat="staff in countrytype">{{staff}}</option>
+                                    ng-disabled="proposalStage || isCurrentUserSubmitted" ng-change="onCountryChange()">
+                                    <option ng-repeat="staff in countrytype" value="{{staff}}">{{staff}}</option>
                                 </select>
                                 <!-- <input type="text" class="form-control" ng-model="objContact.MailingCountry" ng-disabled="proposalStage" /> -->
                             </div>
@@ -566,8 +567,9 @@ roup' )
                                     <span class="text-danger me-2">*</span>
                                 </label>
                                 <select class="form-control" ng-cloak="true" aria-label="Default select example" ng-focus="removeClass('txtState')" id="txtState"
-                                    ng-model="objContact.MailingState" ng-disabled="proposalStage" ng-change="onStateChange()">
-                                    <option ng-cloak="true" ng-repeat="staff in objContact.stateList">{{staff}}</option>
+                                    ng-model="objContact.MailingState" ng-disabled="proposalStage || isCurrentUserSubmitted"
+                                    ng-change="onStateChange()">
+                                    <option ng-cloak="true" ng-repeat="staff in objContact.stateList" value="{{staff}}">{{staff}}</option>
                                 </select>
                                 <!-- <input type="text" class="form-control" ng-model="objContact.MailingState" ng-disabled="proposalStage" /> -->
                             </div>
@@ -580,7 +582,7 @@ roup' )
                                     <span class="text-danger me-2">*</span>
                                 </label>
                                 <input type="text" class="form-control" ng-focus="removeClass('txtCity')" id="txtCity" ng-model="objContact.MailingCity"
-                                    ng-disabled="proposalStage" />
+                                    ng-disabled="proposalStage || isCurrentUserSubmitted" />
                             </div>
 
                             <!-- <div class="col-md-6 mt-3">
@@ -602,7 +604,7 @@ roup' )
                                     <span class="text-danger me-2">*</span>
                                 </label>
                                 <input type="text" class="form-control" ng-focus="removeClass('txtPincode')" id="txtPincode" ng-model="objContact.MailingPostalCode"
-                                    ng-disabled="proposalStage" />
+                                    ng-disabled="proposalStage || isCurrentUserSubmitted" />
                             </div>
 
                             <!-- <div class="col-md-6 mt-3" ng-show="objContact.MailingCountry == undefined || objContact.MailingCountry == 'Germany'">
@@ -612,7 +614,7 @@ roup' )
                         </div>
                     </div>
 
-                    <div class="row mt-5 mx-5 mb-3" ng-if="!proposalStage">
+                    <div class="row mt-5 mx-5 mb-3" ng-if="!proposalStage && !isCurrentUserSubmitted">
                         <div class="col-md-12">
                             <button class="blue-btn float-end" ng-click="saveApplicantPortalWiser()" type="button">
                                 <i class="fa-solid fa-check me-2"></i>Save and Next</button>
@@ -754,11 +756,11 @@ roup' )
                     </div>
             </div> -->
             <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-            <script>
+            <!-- <script>
                 $(function () {
                     $('.selectpicker').selectpicker();
                 });
-            </script>
+            </script> -->
         </body>
     </div>
 

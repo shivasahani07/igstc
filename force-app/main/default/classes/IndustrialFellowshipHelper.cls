@@ -1174,17 +1174,25 @@ public string saveApplicantPortalWiser(String loginHashCode, Contact con){
                 upsert proposalRec;
  
                 // Find Primary APA
-                for(Applicant_Proposal_Association__c apa : [
-                    SELECT Id, Contact__c, Contact__r.Is_Primary__c
-                    FROM Applicant_Proposal_Association__c
-                    WHERE Proposals__c = :proposalId
-                    AND Contact__c IN :conIds
-                ]){
-                    if(apa.Contact__r.Is_Primary__c == true){
-                        primaryAPA = apa;
-                        break;
-                    }
-                }
+                // for(Applicant_Proposal_Association__c apa : [
+                //     SELECT Id, Contact__c, Contact__r.Is_Primary__c
+                //     FROM Applicant_Proposal_Association__c
+                //     WHERE Proposals__c = :proposalId
+                //     AND Contact__c IN :conIds
+                // ]){
+                //     if(apa.Contact__r.Is_Primary__c == true){
+                //         primaryAPA = apa;
+                //         break;
+                //     }
+                // }
+                Applicant_Proposal_Association__c apa = [
+                    SELECT Id, Contact__c, Contact__r.Name, Contact__r.Login_Hash_Code__c, Proposals__c, Proposals__r.Name 
+                    FROM Applicant_Proposal_Association__c 
+                    WHERE Proposals__c =: proposalId 
+                    AND Contact__r.Login_Hash_Code__c =: candidateId
+                ];
+
+                primaryAPA = apa;
             }
             // =================================================
             // CASE 2: PROPOSAL DOES NOT EXIST
@@ -1220,8 +1228,15 @@ public string saveApplicantPortalWiser(String loginHashCode, Contact con){
                     RecordTypeId = workshopRecordTypeId,
                     Campaign__c = camp.Id,
                     yearly_Call__c = yearlyCallId,
+                    Host_Project_Title__c = hostDetails.Host_Project_Title__c,
                     Host_Abstract_Of_Project__c = hostDetails.Host_Abstract_Of_Project__c,
-                    Host_Project_Title__c = hostDetails.Host_Project_Title__c
+                    Broad_area_of_research__c = hostDetails.Broad_area_of_research__c,
+                    Duration_In_Months_Max_36__c = hostDetails.Duration_In_Months_Max_36__c,
+                    Layman_title_of_project__c = hostDetails.Layman_title_of_project__c,
+                    Layman_abstract_of_proposed_work__c = hostDetails.Layman_abstract_of_proposed_work__c,
+                    Non_Technical_Title_Of_Project__c = hostDetails.Non_Technical_Title_Of_Project__c,
+                    Non_Technical_Abstract_Of_Proposed_Work__c = hostDetails.Non_Technical_Abstract_Of_Proposed_Work__c,
+                    KeyWords__c = hostDetails.KeyWords__c
                     //Actual_Application_Start_Date__c = Date.newInstance(sYear,sMonth,sDate)
                 );
                 upsert proposalRec;
@@ -1233,19 +1248,20 @@ public string saveApplicantPortalWiser(String loginHashCode, Contact con){
                         Proposals__c = proposalRec.Id
                     ));
                 }
-                insert apaList;
- 
+                upsert apaList;
+                primaryAPA = apaList[0];
+
                 // Find Primary APA
-                for(Applicant_Proposal_Association__c apa : [
-                    SELECT Id, Contact__r.Is_Primary__c
-                    FROM Applicant_Proposal_Association__c
-                    WHERE Proposals__c = :proposalRec.Id
-                ]){
-                    if(apa.Contact__r.Is_Primary__c == true){
-                        primaryAPA = apa;
-                        break;
-                    }
-                }
+                // for(Applicant_Proposal_Association__c apa : [
+                //     SELECT Id, Contact__r.Is_Primary__c
+                //     FROM Applicant_Proposal_Association__c
+                //     WHERE Proposals__c = :proposalRec.Id
+                // ]){
+                //     if(apa.Contact__r.Is_Primary__c == true){
+                //         primaryAPA = apa;
+                //         break;
+                //     }
+                // }
             }
  
             // ---------------- WRAPPER RESPONSE ----------------
@@ -2106,7 +2122,7 @@ public String upsertConsortiaAccountDet(Account instanceAcc, String projectId){
             WHERE Id = :apa.Contact__r.AccountId
         ];
         
-        return new ProposalAccountWrapper(acc[0], apa.Proposals__r.Duration_In_Months_Max_36__c);
+        return new ProposalAccountWrapper(acc[0], apa.Proposals__r.Duration_In_Months_Max_36__c, apa.Id);
     }
     
     public class ProposalAccountWrapper {
@@ -2116,9 +2132,13 @@ public String upsertConsortiaAccountDet(Account instanceAcc, String projectId){
         @AuraEnabled
         public Decimal durationInMonths { get; set; }
         
-        public ProposalAccountWrapper(Account acc, Decimal duration) {
+        @AuraEnabled
+        public String apaId { get; set; }
+        
+        public ProposalAccountWrapper(Account acc, Decimal duration, String apaIdValue) {
             this.accountDetail = acc;
             this.durationInMonths = duration;
+            this.apaId = apaIdValue;
         }
     }
 
@@ -2207,6 +2227,99 @@ public String upsertConsortiaAccountDet(Account instanceAcc, String projectId){
             }
         }
         return null;
+    }
+
+    // New methods for expense table in FinancialOverview_Wiser
+    public static ExpenseTableWrapperWiser getExpenseTableDataWiser(String proposalId, String candidateId){
+        ExpenseTableWrapperWiser wrapper = new ExpenseTableWrapperWiser();
+        try {
+            // Get account details
+            List<Account> accList = [
+                SELECT Id, Name, Country_Type__c, 
+                    (SELECT Id, Name, MailingCountry FROM Contacts)
+                FROM Account 
+                WHERE Proposals__c = :proposalId 
+                LIMIT 1
+            ];
+            
+            if(accList.isEmpty()) {
+                return wrapper;
+            }
+            
+            wrapper.accountDetail = accList[0];
+            
+            // Get proposal duration
+            List<Application_Proposal__c> proposals = [
+                SELECT Id, Duration_In_Months_Max_36__c 
+                FROM Application_Proposal__c 
+                WHERE Id = :proposalId 
+                LIMIT 1
+            ];
+            
+            if(!proposals.isEmpty()) {
+                wrapper.durationInMonths = proposals[0].Duration_In_Months_Max_36__c;
+            }
+            
+            // Get expense heads with line items
+            List<Expense_Head__c> expenseHeads = [
+                SELECT Id, Name, Proposals__c,
+                    (SELECT Id, Name, Description__c, Expense_Head__c, Expense_Type__c,
+                            Year1_Expense__c, Year2_Expense__c, Year3_Expense__c,
+                            Total_Expense__c, Position__c, Person_Month__c, Salary_Month__c,
+                            Number__c, Unit_Price__c, Multiplier__c, Index__c
+                     FROM Expense_Line_Items__r
+                     ORDER BY Index__c ASC)
+                FROM Expense_Head__c 
+                WHERE Proposals__c = :proposalId
+                ORDER BY Name ASC
+            ];
+            
+            wrapper.expenseHeads = expenseHeads;
+            
+            return wrapper;
+        } catch(Exception e) {
+            System.debug('Error in getExpenseTableDataWiser: ' + e.getMessage() + ' at Line: ' + e.getLineNumber());
+            return wrapper;
+        }
+    }
+
+    public static String saveExpenseTableDataWiser(List<Expense_Line_Item__c> expenseLineItems, String proposalId, String totalSum){
+        try {
+            if(expenseLineItems != null && !expenseLineItems.isEmpty()) {
+                // Upsert expense line items
+                upsert expenseLineItems;
+                
+                // Update proposal total funding if provided
+                if(String.isNotBlank(totalSum)) {
+                    Application_Proposal__c proposal = new Application_Proposal__c(
+                        Id = proposalId,
+                        Total_funding_requested_from_IGSTC__c = totalSum
+                    );
+                    update proposal;
+                }
+                
+                return 'success';
+            }
+            return 'No data to save';
+        } catch(Exception e) {
+            System.debug('Error in saveExpenseTableDataWiser: ' + e.getMessage() + ' at Line: ' + e.getLineNumber());
+            return 'error: ' + e.getMessage();
+        }
+    }
+
+    public class ExpenseTableWrapperWiser {
+        @AuraEnabled
+        public Account accountDetail { get; set; }
+        
+        @AuraEnabled
+        public Decimal durationInMonths { get; set; }
+        
+        @AuraEnabled
+        public List<Expense_Head__c> expenseHeads { get; set; }
+        
+        public ExpenseTableWrapperWiser() {
+            this.expenseHeads = new List<Expense_Head__c>();
+        }
     }
     public String UploadDocuments(String attachmentBody, String attachmentName, string cvId, String udId,string docName,string contactId,string proposalId,string CreateTask,string TaskSubject) {
         system.debug('attachmentBody---'+attachmentName+'---attachmentId---'+cvId+'---cvId---'+udId);

@@ -15,7 +15,7 @@
                 <div class="row mx-5">
                     <div class="col-md-12">
 
-                        <div class="tab-link" ng-show="proposalStage">
+                        <div class="tab-link" ng-show="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success w-100"></div>
                             </div>
@@ -85,7 +85,7 @@
                             </ul>
                         </div>
 
-                        <div class="tab-link" ng-hide="proposalStage">
+                        <div class="tab-link" ng-hide="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success w-100"></div>
                             </div>
@@ -191,7 +191,7 @@
 
                 <div class="row mx-5">
                     <div class="col-md-12">
-                        <div class="tab-link" ng-show="proposalStage">
+                        <div class="tab-link" ng-show="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success w-100"></div>
                             </div>
@@ -243,7 +243,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="tab-link" ng-hide="proposalStage">
+                        <div class="tab-link" ng-hide="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success w-100"></div>
                             </div>
@@ -374,9 +374,9 @@
                                 <div ng-hide="proposalStage" style="margin-right: -60px;">
                                     <label class="font-if pt-2">{{doc.userDocument.Name}} (jpg/jpeg, 5 kb-30 kb)</label>
                                     <div class="input-group input-group-lg float-end">
-                                        <input type="file" accept=".jpg,.jpeg" ng-disabled="proposalStage" id="{{doc.userDocument.Name}}" class="form-control float-end"
-                                        />
-                                        <span class="input-group-btn" ng-hide="proposalStage">
+                                        <input type="file" accept=".jpg,.jpeg" ng-disabled="proposalStage || isCurrentUserSubmitted" id="{{doc.userDocument.Name}}"
+                                            class="form-control float-end" />
+                                        <span class="input-group-btn" ng-hide="proposalStage || isCurrentUserSubmitted">
                                             <button class="btn btn-success" ng-click="uploadFile(doc.userDocument.Name,doc.userDocument.Id,'','30720','5120')" type="button">Upload</button>
                                         </span>
                                     </div>
@@ -391,7 +391,7 @@
                     </div>
                 </div>
 
-                <div class="row m-5" ng-if="!proposalStage">
+                <div class="row m-5" ng-if="!proposalStage && !isCurrentUserSubmitted">
                     <div class="col-md-12">
                         <button class="blue-btn float-end" ng-click="finalSubmitWiser()" type="button">
                             <i class="fa-solid fa-check me-2"></i>Submit</button>

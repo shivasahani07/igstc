@@ -17,7 +17,7 @@
             <div class="container mt-5">
                 <div class="row mx-5">
                     <div class="col-md-12">
-                        <div class="tab-link" ng-show="proposalStage">
+                        <div class="tab-link" ng-show="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success w-100"></div>
                             </div>
@@ -125,7 +125,7 @@
                                     </li>    -->
                             </ul>
                         </div>
-                        <div class="tab-link" ng-hide="proposalStage">
+                        <div class="tab-link" ng-hide="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success wp-7"></div>
                             </div>
@@ -231,7 +231,7 @@
 
                 <div class="row mx-5">
                     <div class="col-md-12">
-                        <div class="tab-link" ng-show="proposalStage">
+                        <div class="tab-link" ng-show="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success w-100"></div>
                             </div>
@@ -285,7 +285,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="tab-link" ng-hide="proposalStage">
+                        <div class="tab-link" ng-hide="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success wp-0"></div>
                             </div>
@@ -413,7 +413,10 @@
                                                 <th class="pb-3 color-theme">End Year
                                                     <span class="required-asterisk" style="color:red;">*</span>
                                                 </th>
-                                                <th ng-hide="proposalStage" class="text-center">
+                                                <!-- <th ng-hide="proposalStage || isCurrentUserSubmitted" class="text-center">
+                                                    <i class="fas fa-plus-circle icon" ng-click="addEducationRow()"></i>
+                                                </th> -->
+                                                <th ng-if="!(proposalStage || isCurrentUserSubmitted)" class="text-center">
                                                     <i class="fas fa-plus-circle icon" ng-click="addEducationRow()"></i>
                                                 </th>
                                             </tr>
@@ -421,7 +424,7 @@
                                         <tbody>
                                             <tr ng-repeat="row in contactData.Education_Details__r">
                                                 <td>
-                                                    <input ng-focus="removeClass('degree',$index)" id="degree{{$index}}" ng-model="row.Degree__c" ng-disabled="proposalStage"
+                                                    <input ng-focus="removeClass('degree',$index)" id="degree{{$index}}" ng-model="row.Degree__c" ng-disabled="proposalStage || isCurrentUserSubmitted"
                                                         class="form-control" type="text" />
                                                     <!-- <select class="form-control" aria-label="Default select example" ng-focus="removeClass('degree',$index)" id="degree{{$index}}" ng-model="row.Degree__c" ng-disabled="proposalStage">
                                                             <option ng-repeat="staff in degree">{{staff}}</option>
@@ -429,12 +432,14 @@
                                                 </td>
                                                 <td>
                                                     <input type="text" ng-focus="removeClass('institution',$index)" id="institution{{$index}}" ng-model="row.Institution_Name__c"
-                                                        class="form-control" ng-disabled="proposalStage" />
+                                                        class="form-control" ng-disabled="proposalStage || isCurrentUserSubmitted"
+                                                    />
                                                 </td>
 
                                                 <td>
                                                     <input ng-focus="removeClass('specialization',$index)" id="specialization{{$index}}" ng-model="row.Area_of_specialization__c"
-                                                        ng-disabled="proposalStage" class="form-control" type="text" />
+                                                        ng-disabled="proposalStage || isCurrentUserSubmitted" class="form-control"
+                                                        type="text" />
                                                     <!-- <select class="form-control" aria-label="Default select example" ng-focus="removeClass('specialization',$index)" id="specialization{{$index}}" ng-model="row.Specialization__c" required="true" ng-disabled="proposalStage">
                                                             <option ng-repeat="staff in specialization">{{staff}}</option>
                                                             </select> -->
@@ -442,15 +447,19 @@
 
                                                 <td>
                                                     <input type="text" ng-focus="removeClass('zipCode1',$index)" ng-model="row.Start_Year__c" id="zipCode1{{$index}}" class="form-control"
-                                                        ng-disabled="proposalStage" />
+                                                        ng-disabled="proposalStage || isCurrentUserSubmitted" />
                                                 </td>
 
                                                 <td>
                                                     <input type="text" ng-focus="removeClass('zipCode2',$index)" ng-model="row.End_Year__c" id="zipCode2{{$index}}" class="form-control"
-                                                        ng-disabled="proposalStage" />
+                                                        ng-disabled="proposalStage || isCurrentUserSubmitted" />
                                                 </td>
 
-                                                <td ng-show="!proposalStage" class="text-center">
+                                                <!-- <td ng-show="!proposalStage && !isCurrentUserSubmitted" class="text-center">
+                                                    <i class="fa-sharp fa-solid fa-circle-xmark fa-2x text-danger" ng-click="removeEducationRow($index)"></i>
+                                                </td> -->
+
+                                                <td ng-if="!(proposalStage || isCurrentUserSubmitted)" class="text-center">
                                                     <i class="fa-sharp fa-solid fa-circle-xmark fa-2x text-danger" ng-click="removeEducationRow($index)"></i>
                                                 </td>
                                             </tr>
@@ -489,7 +498,10 @@
                                                 <th class="pb-3 color-theme">End Year
                                                     <span class="required-asterisk" style="color:red;">*</span>
                                                 </th>
-                                                <th ng-hide="proposalStage" class="text-center">
+                                                <!-- <th ng-hide="proposalStage || isCurrentUserSubmitted" class="text-center">
+                                                    <i class="fas fa-plus-circle icon" ng-click="addEmploymentRow()"></i>
+                                                </th> -->
+                                                <th ng-if="!(proposalStage || isCurrentUserSubmitted)" class="text-center">
                                                     <i class="fas fa-plus-circle icon" ng-click="addEmploymentRow()"></i>
                                                 </th>
                                             </tr>
@@ -498,23 +510,27 @@
                                             <tr ng-repeat="row in contactData.Employment_Details__r">
                                                 <td>
                                                     <input type="text" ng-focus="removeClass('org',$index)" id="org{{$index}}" ng-model="row.Organization_Name__c" class="form-control"
-                                                        ng-disabled="proposalStage" />
+                                                        ng-disabled="proposalStage || isCurrentUserSubmitted" />
                                                 </td>
                                                 <td>
                                                     <input type="text" ng-focus="removeClass('position',$index)" id="position{{$index}}" ng-model="row.Position__c" class="form-control"
-                                                        ng-disabled="proposalStage" />
+                                                        ng-disabled="proposalStage || isCurrentUserSubmitted" />
                                                 </td>
                                                 <td>
                                                     <input type="text" ng-focus="removeClass('zipCode11',$index)" ng-model="row.Start_Year__c" id="zipCode11{{$index}}" class="form-control"
-                                                        ng-disabled="proposalStage" />
+                                                        ng-disabled="proposalStage || isCurrentUserSubmitted" />
                                                 </td>
                                                 <td>
                                                     <input type="text" ng-focus="removeClass('zipCode22',$index)" ng-model="row.End_Year__c" id="zipCode22{{$index}}" class="form-control"
-                                                        ng-disabled="proposalStage" />
+                                                        ng-disabled="proposalStage || isCurrentUserSubmitted" />
                                                 </td>
-                                                <td ng-show="!proposalStage" class="text-center">
+                                                <!-- <td ng-show="!proposalStage || !isCurrentUserSubmitted" class="text-center">
+                                                    <i class="fa-sharp fa-solid fa-circle-xmark fa-2x text-danger" ng-click="removeEmploymentRow($index)"></i>
+                                                </td> -->
+                                                <td ng-if="!(proposalStage || isCurrentUserSubmitted)" class="text-center">
                                                     <i class="fa-sharp fa-solid fa-circle-xmark fa-2x text-danger" ng-click="removeEmploymentRow($index)"></i>
                                                 </td>
+
                                             </tr>
                                         </tbody>
                                     </table>
@@ -616,7 +632,7 @@
                         </div>
 
 
-                        <div class="row mb-3" ng-if="!proposalStage">
+                        <div class="row mb-3" ng-if="!proposalStage && !isCurrentUserSubmitted">
                             <div class="col-md-12">
                                 <button class="blue-btn float-end" ng-click="saveAllDetails()" type="button">
                                     <i class="fa-solid fa-check me-2"></i>Save and Next</button>

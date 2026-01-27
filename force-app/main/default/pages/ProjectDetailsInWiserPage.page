@@ -23,7 +23,7 @@
             <div class="container mt-5">
                 <div class="row mx-5">
                     <div class="col-md-12">
-                        <div class="tab-link" ng-show="proposalStage">
+                        <div class="tab-link" ng-show="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success w-100"></div>
                             </div>
@@ -132,7 +132,7 @@
                                 </li>    -->
                             </ul>
                         </div>
-                        <div class="tab-link" ng-hide="proposalStage">
+                        <div class="tab-link" ng-hide="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success wp-3"></div>
                             </div>
@@ -242,7 +242,7 @@
 
                 <div class="row mx-5">
                     <div class="col-md-12">
-                        <div class="tab-link" ng-show="proposalStage">
+                        <div class="tab-link" ng-show="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success w-100"></div>
                             </div>
@@ -296,7 +296,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="tab-link" ng-hide="proposalStage">
+                        <div class="tab-link" ng-hide="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success wp-0"></div>
                             </div>
@@ -588,7 +588,7 @@
                                         Email<span class="required-asterisk" style="color:red;">*</span></label>
                                     <input type="text" class="form-control" ng-model="pairingDetails.Email"
                                         ng-focus="removeClass('txtIndEmail')" id="txtIndEmail"
-                                        ng-disabled="proposalStage || primary"
+                                        ng-disabled="proposalStage || primary || isCurrentUserSubmitted"
                                         ng-change="checkEmail(pairingDetails.Email,pairingDetails.Id)" />
                                 </div>
                                 <div class="col-md-12 mt-5">
@@ -596,14 +596,14 @@
                                         First Name<span class="required-asterisk" style="color:red;">*</span></label>
                                     <input type="text" class="form-control" ng-focus="removeClass('txtIndFN')"
                                         id="txtIndFN" ng-model="pairingDetails.FirstName"
-                                        ng-disabled="proposalStage || primary" />
+                                        ng-disabled="proposalStage || primary || isCurrentUserSubmitted" />
                                 </div>
                                 <div class="col-md-12 mt-5">
                                     <label class="font-if">Last Name<span class="required-asterisk"
                                             style="color:red;">*</span></label>
                                     <input type="text" class="form-control" ng-focus="removeClass('txtIndLN')"
                                         id="txtIndLN" ng-model="pairingDetails.LastName"
-                                        ng-disabled="proposalStage || primary" />
+                                        ng-disabled="proposalStage || primary || isCurrentUserSubmitted" />
                                 </div>
                                 <div class="col-md-12 mt-5">
                                     <label class="font-if">
@@ -611,7 +611,7 @@
                                             style="color:red;">*</span></label>
                                     <input type="text" class="form-control" ng-focus="removeClass('txtIndOrg')"
                                         id="txtIndOrg" ng-model="pairingDetails.Account.Name"
-                                        ng-disabled="proposalStage || primary" />
+                                        ng-disabled="proposalStage || primary || isCurrentUserSubmitted" />
                                 </div>
                                 <!-- <div class="col-md-12 mt-5 mb-5">
                                     <label class="font-if">Date of Birth
@@ -630,7 +630,7 @@
 
                                     <input type="date" class="form-control" name="dobPrimary" id="txtIndBD"
                                         ng-model="pairingDetails.Birthdate" ng-focus="removeClass('txtIndBD')"
-                                        ng-disabled="proposalStage || primary"
+                                        ng-disabled="proposalStage || primary || isCurrentUserSubmitted"
                                         ng-change="validateDOB(pairingDetails.Birthdate, 'dobPrimary')"
                                         required="true" />
 
@@ -670,27 +670,27 @@
                                     <label class="font-if">
                                         Email<span class="required-asterisk" style="color:red;">*</span></label>
                                     <input type="text" class="form-control" ng-focus="removeClass('txtGerEmail')"
-                                        id="txtGerEmail" ng-model="pairList.Email" ng-disabled="proposalStage"
+                                        id="txtGerEmail" ng-model="pairList.Email" ng-disabled="proposalStage || isCurrentUserSubmitted"
                                         ng-change="checkEmail(pairList.Email,pairList.Id)" />
                                 </div>
                                 <div class="col-md-12 mt-5">
                                     <label class="font-if">
                                         First Name<span class="required-asterisk" style="color:red;">*</span></label>
                                     <input type="text" class="form-control" ng-focus="removeClass('txtGerFN')"
-                                        id="txtGerFN" ng-model="pairList.FirstName" ng-disabled="proposalStage" />
+                                        id="txtGerFN" ng-model="pairList.FirstName" ng-disabled="proposalStage || isCurrentUserSubmitted" />
                                 </div>
                                 <div class="col-md-12 mt-5">
                                     <label class="font-if">Last Name<span class="required-asterisk"
                                             style="color:red;">*</span></label>
                                     <input type="text" class="form-control" ng-focus="removeClass('txtGerLn')"
-                                        id="txtGerLn" ng-model="pairList.LastName" ng-disabled="proposalStage" />
+                                        id="txtGerLn" ng-model="pairList.LastName" ng-disabled="proposalStage || isCurrentUserSubmitted" />
                                 </div>
                                 <div class="col-md-12 mt-5">
                                     <label class="font-if">
                                         Institution / Organization<span class="required-asterisk"
                                             style="color:red;">*</span></label>
                                     <input type="text" class="form-control" ng-focus="removeClass('txtGerOrg')"
-                                        id="txtGerOrg" ng-model="pairList.Account.Name" ng-disabled="proposalStage" />
+                                        id="txtGerOrg" ng-model="pairList.Account.Name" ng-disabled="proposalStage || isCurrentUserSubmitted" />
                                 </div>
 
                                 <!-- <div class="col-md-12 mt-5 mb-5">
@@ -712,7 +712,7 @@
 
                                     <input type="date" class="form-control" name="dobSecondary" id="txtGerBD"
                                         ng-model="pairList.Birthdate" ng-focus="removeClass('txtGerBD')"
-                                        ng-disabled="proposalStage || primary"
+                                        ng-disabled="proposalStage || primary || isCurrentUserSubmitted"
                                         ng-change="validateDOB(pairList.Birthdate, 'dobSecondary')" required="true" />
 
                                     <!-- Error message -->
@@ -725,7 +725,7 @@
 
                         </div>
 
-                        <div class="col-md-12 my-4 mb-5 mt-5" ng-if="!proposalStage">
+                        <div class="col-md-12 my-4 mb-5 mt-5" ng-if="!proposalStage && !isCurrentUserSubmitted">
                             <button class="blue-btn float-end" ng-click="insertPairingDetailsinWiser()" type="button">
                                 <i class="fa-solid fa-check me-2"></i>Save and Next</button>
                             <button class="blue-bordered-btn float-end me-2" ng-click="redirectToApplicantPortal()"

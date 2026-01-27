@@ -22,8 +22,57 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
           console.log('Loaded yearlyCallId from localStorage:', $rootScope.yearlyCallId);
      }
 
+     if (localStorage.getItem('apaId')) {
+          $rootScope.apaId = localStorage.getItem('apaId');
+          console.log('Loaded proposalId from localStorage:', $rootScope.apaId);
+     }
+
+     $scope.getApplicantStatusFromAPA = function () {
+          debugger;
+
+          if (!$rootScope.apaId) {
+               console.log('APA Id not available yet, skipping fetchApplicantStatus call');
+               return;
+          }
+
+          ApplicantPortal_Contoller.fetchApplicantStatus(
+               $rootScope.apaId,
+               function (result, event) {
+                    debugger;
+
+                    if (event.status) {
+                         $rootScope.isCurrentUserSubmitted = result;
+
+                         // 🔐 Lock editor condition
+                         $scope.isEditorLocked = ($scope.proposalStage || result);
+
+                         // 🔒 Apply lock to CKEditor
+                         $scope.toggleCkEditorReadOnly($scope.isEditorLocked);
+                    }
+               },
+               { escape: true }
+          );
+     };
+     $scope.getApplicantStatusFromAPA();
+
+     $scope.toggleCkEditorReadOnly = function (isReadOnly) {
+          setTimeout(function () {
+               if (CKEDITOR.instances) {
+                    Object.keys(CKEDITOR.instances).forEach(function (instanceName) {
+                         CKEDITOR.instances[instanceName].setReadOnly(isReadOnly);
+                    });
+               }
+          }, 0);
+     };
+
      $scope.getContactHostInfo = function () {
           debugger;
+
+          if (!$rootScope.proposalId) {
+               console.log('Proposal Id not available yet, skipping getHostProjectDetails call');
+               return;
+          }
+
           $scope.pairingDetails = [];
           // IndustrialFellowshipController.getHostProjectDetails($rootScope.candidateId, function (result, event) {
           IndustrialFellowshipController.getHostProjectDetails($rootScope.proposalId, function (result, event) {
@@ -79,7 +128,6 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
      }
 
      $scope.readCharacter = function (event, index) {
-          debugger
           try {
                var rtfString = event.toString().replace(/<[^>]*>|\s/g, '').replace(/\s+/g, '').replace(/&ndash;/g, '-').replace(/&euro;/g, '1').replace(/&amp;/g, '1').replace(/&#39;/g, '1').replace(/&quot;/g, '1').replace(/&nbsp;/g, '').replace(/&mdash;/g, '-').replace(/&gt;/g, '>').replace(/&lt;/g, '<').replace(/&bull;/g, '');
                charLength = rtfString.length;
@@ -101,33 +149,33 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
      $scope.saveApplicationPortalHostInformation = function () {
 
           debugger;
-          if ($scope.objContact.Host_Project_Title__c == undefined || $scope.objContact.Host_Project_Title__c == "") {
-               swal("info", "Please Enter Project Title.", "info");
-               $("#txtTitle").addClass('border-theme');
-               return;
-          }
+          // if ($scope.objContact.Host_Project_Title__c == undefined || $scope.objContact.Host_Project_Title__c == "") {
+          //      swal("Info", "Please Enter Project Title.", "info");
+          //      $("#txtTitle").addClass('border-theme');
+          //      return;
+          // }
 
           if ($scope.objContact.Title_Of__c == undefined || $scope.objContact.Title_Of__c == "") {
-               swal("info", "Please Enter Title Of Project.", "info");
+               swal("Info", "Please Enter Title Of Project.", "info");
                $("#titleOfProposal").addClass('border-theme');
                return;
           }
 
           if ($scope.objContact.Broad_area_of_research__c == undefined || $scope.objContact.Broad_area_of_research__c == "") {
-               swal("info", "Please Enter Area Of Research.", "info");
+               swal("Info", "Please Enter Area Of Research.", "info");
                $("#areaOfResearch").addClass('border-theme');
                return;
           }
 
           if ($scope.objContact.Layman_title_of_project__c == undefined || $scope.objContact.Layman_title_of_project__c == "") {
-               swal("info", "Please Enter Layman Title Of Project.", "info");
+               swal("Info", "Please Enter Layman Title Of Project.", "info");
                $("#laymanTitle").addClass('border-theme');
                return;
           }
 
           if ($scope.objContact.Layman_title_of_project__c.length > 600) {
                swal(
-                    "info",
+                    "Info",
                     "Please Enter Layman Title Of Proposal.",
                     "info");
                //$("#laymanTitle").addClass('border-theme');
@@ -135,15 +183,45 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
           }
 
           if ($scope.objContact.Layman_abstract_of_proposed_work__c == undefined || $scope.objContact.Layman_abstract_of_proposed_work__c == "") {
-               swal("info", "Please Enter Layman Abstract Of Proposed Work.", "info");
+               swal("Info", "Please Enter Layman Abstract Of Proposed Work.", "info");
                $("#laymanabstract").addClass('border-theme');
                return;
           }
 
           if ($scope.objContact.Layman_abstract_of_proposed_work__c.length > 600) {
                swal(
-                    "info",
+                    "Info",
                     "Please Enter Layman Abstract Of Proposed Work.",
+                    "info");
+               //$("#laymanabstract").addClass('border-theme');
+               return;
+          }
+
+          if ($scope.objContact.Non_Technical_Title_Of_Project__c == undefined || $scope.objContact.Non_Technical_Title_Of_Project__c == "") {
+               swal("Info", "Please Enter Non Technical Title of Project.", "info");
+               $("#nonTechnicalTitle").addClass('border-theme');
+               return;
+          }
+
+          if ($scope.objContact.Non_Technical_Title_Of_Project__c.length > 300) {
+               swal(
+                    "Info",
+                    "Please Enter Non Technical Title of Project.",
+                    "info");
+               //$("#laymanabstract").addClass('border-theme');
+               return;
+          }
+
+          if ($scope.objContact.Non_Technical_Abstract_Of_Proposed_Work__c == undefined || $scope.objContact.Non_Technical_Abstract_Of_Proposed_Work__c == "") {
+               swal("Info", "Please Enter Non Technical Abstract of Proposed Work.", "info");
+               $("#nonTechnicalAbstract").addClass('border-theme');
+               return;
+          }
+
+          if ($scope.objContact.Non_Technical_Abstract_Of_Proposed_Work__c.length > 300) {
+               swal(
+                    "Info",
+                    "Please Enter Non Technical Abstract of Proposed Work.",
                     "info");
                //$("#laymanabstract").addClass('border-theme');
                return;
@@ -152,20 +230,16 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
           // if (
           //      $scope.objContact.Duration_In_Months_Max_36__c === null || $scope.objContact.Duration_In_Months_Max_36__c === undefined
           // ) {
-          //      swal("info", "Please Enter Project Duration.", "info");
+          //      swal("Info", "Please Enter Project Duration.", "info");
           //      //$("#txtDuration").addClass('border-theme');
           //      return;
           // }
 
           if ($scope.formPrjDet.$invalid) {
-               swal("info", "Duration must be between 24 and 36 months.", "info");
+               swal("Info", "Duration must be 24 or 36 months.", "info");
                $("#txtDuration").addClass('border-theme');
                return;
           }
-
-
-
-
 
           var keyword = ""; startDay
           for (var i = 0; i < $scope.objKeyword.length; i++) {
@@ -254,6 +328,10 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
                     debugger;
                     console.log("Result In saveApplicationPortalHostInformation ::", result);
                     if (event.status) {
+
+                         // Saving the ProposalId in Local Storage
+                         localStorage.setItem('proposalId', result.proposalId);
+                         localStorage.setItem('apaId', result.apa.Id);
                          swal({
                               title: "SUCCESS",
                               text: 'Paired Project Details have been saved successfully.',
@@ -311,10 +389,6 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
           link.click();
      }
 
-     $scope.removeClass = function (controlid) {
-          $("#" + controlid + "").removeClass('border-theme');
-     }
-
      // ----------------- Add and Remove Keyword Functionality ------------------ //
      $scope.objKeyword = [];
 
@@ -329,10 +403,6 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
           if ($scope.objKeyword.length > 1) {
                $scope.objKeyword.splice(index, 1);
           }
-     }
-
-     $scope.removeClass2 = function (controlid) {
-          $("#" + controlid + "").removeClass('border-theme');
      }
 
      $scope.checkCharLimit = function (obj, fieldName, limit) {
@@ -424,6 +494,14 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
                targetObj._charLimitMap[fieldName] = false;
           }
      };
+
+     $scope.removeClass = function (controlid) {
+          $("#" + controlid + "").removeClass('border-theme');
+     }
+
+     $scope.removeClass2 = function (controlid) {
+          $("#" + controlid + "").removeClass('border-theme');
+     }
 
      // --------------------- PROJECT PROPOSAL UPLOAD FUNCTIONALITY ----------------------- //
      // $scope.getProjectDetails = function () {
@@ -659,30 +737,7 @@ angular.module('cp_app').controller('HostProjectDetailInWiserCtrl', function ($s
           //.ContentDistribution.DistributionPublicUrl
      }
 
-     // if (localStorage.getItem('apaId')) {
-     //      $rootScope.apaId = localStorage.getItem('apaId');
-     //      console.log('Loaded proposalId from localStorage:', $rootScope.apaId);
-     // }
 
-     // $scope.getApplicantStatusFromAPA = function () {
-     //      debugger;
-     //      ApplicantPortal_Contoller.fetchApplicantStatus($rootScope.apaId, function (result, event) {
-     //           debugger;
-
-     //           console.log('result return onload :: ');
-     //           console.log(result);
-     //           console.log('event:', event);
-
-     //           if (event.status) {
-     //                $rootScope.isCurrentUserSubmitted = result;
-     //           } else {
-     //                console.log('Error in fetchApplicantStatus:', event.message);
-     //           }
-     //      }, {
-     //           escape: true
-     //      });
-     // }
-     // $scope.getApplicantStatusFromAPA();
 
      // $scope.filePreviewHandler = function (fileContent) {
      //      debugger;

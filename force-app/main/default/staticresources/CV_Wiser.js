@@ -22,8 +22,8 @@ angular.module('cp_app').controller('cv_wiser', function ($scope, $rootScope) {
             $scope.proposalId = $rootScope.proposalId;
         }
     }
-
     $scope.getDataFromLocalStorage();
+
 
     /**
      * Fetches proposal stage from Apex on page load
@@ -267,6 +267,13 @@ angular.module('cp_app').controller('cv_wiser', function ($scope, $rootScope) {
         delete ($scope.contactData['Employment_Details__r']);
         delete ($scope.contactData['Education_Details__r']);
 
+        // Preserve MailingState: Ensure State__c is set to MailingState if State__c is empty but MailingState has a value
+        // This ensures the backend can properly map State__c to MailingState
+        if (($scope.contactData.MailingState !== undefined && $scope.contactData.MailingState !== null && $scope.contactData.MailingState !== '')
+            && ($scope.contactData.State__c === undefined || $scope.contactData.State__c === null || $scope.contactData.State__c === '')) {
+            $scope.contactData.State__c = $scope.contactData.MailingState;
+        }
+
         for (var i = 0; i < $scope.educationDetails.length; i++) {
             delete ($scope.educationDetails[i]['$$hashKey']);
         }
@@ -427,4 +434,42 @@ angular.module('cp_app').controller('cv_wiser', function ($scope, $rootScope) {
             inputQuantity[$thisIndex] = val;
         });
     });
+
+    $scope.getApplicantStatusFromAPA = function () {
+        debugger;
+
+        if (!$rootScope.apaId) {
+            console.log('APA Id not available yet, skipping fetchApplicantStatus call');
+            return;
+        }
+
+        ApplicantPortal_Contoller.fetchApplicantStatus(
+            $rootScope.apaId,
+            function (result, event) {
+                debugger;
+
+                if (event.status) {
+                    $rootScope.isCurrentUserSubmitted = result;
+
+                    // 🔐 Lock editor condition
+                    $scope.isEditorLocked = ($scope.proposalStage || result);
+
+                    // 🔒 Apply lock to CKEditor
+                    $scope.toggleCkEditorReadOnly($scope.isEditorLocked);
+                }
+            },
+            { escape: true }
+        );
+    };
+    $scope.getApplicantStatusFromAPA();
+
+    $scope.toggleCkEditorReadOnly = function (isReadOnly) {
+        setTimeout(function () {
+            if (CKEDITOR.instances) {
+                Object.keys(CKEDITOR.instances).forEach(function (instanceName) {
+                    CKEDITOR.instances[instanceName].setReadOnly(isReadOnly);
+                });
+            }
+        }, 0);
+    };
 });

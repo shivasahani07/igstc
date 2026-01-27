@@ -19,7 +19,7 @@
             <div class="container mt-5">
                 <div class="row mx-5">
                     <div class="col-md-12">
-                        <div class="tab-link" ng-show="proposalStage">
+                        <div class="tab-link" ng-show="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success w-100"></div>
                             </div>
@@ -88,7 +88,7 @@
                             </ul>
                         </div>
 
-                        <div class="tab-link" ng-hide="proposalStage">
+                        <div class="tab-link" ng-hide="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success w-100"></div>
                             </div>
@@ -194,7 +194,7 @@
 
                 <div class="row mx-5">
                     <div class="col-md-12">
-                        <div class="tab-link" ng-show="proposalStage">
+                        <div class="tab-link" ng-show="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success w-100"></div>
                             </div>
@@ -248,7 +248,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="tab-link" ng-hide="proposalStage">
+                        <div class="tab-link" ng-hide="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success wp-7"></div>
                             </div>
@@ -344,8 +344,9 @@
                             </label>
                             <div class="col-md-9 mt-4" style="padding-left: 0px !important; padding-right: 0px !important">
                                 <div class="input-group input-group-lg">
-                                    <input type="file" accept=".pdf" ng-disabled="proposalStage" id="{{doc.userDocument.Name}}" class="form-control " />
-                                    <span class="input-group-btn" ng-hide="proposalStage">
+                                    <input type="file" accept=".pdf" ng-disabled="proposalStage || isCurrentUserSubmitted" id="{{doc.userDocument.Name}}" class="form-control "
+                                    />
+                                    <span class="input-group-btn" ng-hide="proposalStage || isCurrentUserSubmitted">
                                         <button class="btn btn-success" ng-click="uploadFile(doc.userDocument.Name,doc.userDocument.Id,'','1048576','')" type="button">Upload</button>
                                     </span>
                                 </div>
@@ -364,9 +365,9 @@
                             </label>
                             <div class="col-md-9 mt-4" style="padding-left: 0px !important; padding-right: 0px !important">
                                 <div class="input-group input-group-lg">
-                                    <input type="file" accept=".pdf" ng-disabled="proposalStage" id="{{noObjection.userDocument.Name}}" class="form-control "
-                                    />
-                                    <span class="input-group-btn" ng-hide="proposalStage">
+                                    <input type="file" accept=".pdf" ng-disabled="proposalStage || isCurrentUserSubmitted" id="{{noObjection.userDocument.Name}}"
+                                        class="form-control " />
+                                    <span class="input-group-btn" ng-hide="proposalStage || isCurrentUserSubmitted">
                                         <button class="btn btn-success" ng-click="uploadFile(noObjection.userDocument.Name,noObjection.userDocument.Id,'','1048576','')"
                                             type="button">Upload</button>
                                     </span>
@@ -385,9 +386,9 @@
                             </label>
                             <div class="col-md-9 mt-4" style="padding-left: 0px !important; padding-right: 0px !important">
                                 <div class="input-group input-group-lg">
-                                    <input type="file" accept=".pdf" ng-disabled="proposalStage" id="{{projectProposal.userDocument.Name}}" class="form-control "
-                                    />
-                                    <span class="input-group-btn" ng-hide="proposalStage">
+                                    <input type="file" accept=".pdf" ng-disabled="proposalStage || isCurrentUserSubmitted" id="{{projectProposal.userDocument.Name}}"
+                                        class="form-control " />
+                                    <span class="input-group-btn" ng-hide="proposalStage || isCurrentUserSubmitted">
                                         <button class="btn btn-success" ng-click="uploadFile(projectProposal.userDocument.Name,projectProposal.userDocument.Id,'','1048576','30720')"
                                             type="button">Upload</button>
                                     </span>
@@ -434,11 +435,13 @@
                                 
                             </div> -->
 
-                        <div class="col-md-12 mt-5">
-                            <button class="blue-btn float-end" ng-click="saveandNext()" type="button">
-                                <i class="fa-solid fa-check me-2"></i>Save and Next</button>
-                            <button class="blue-bordered-btn float-end me-2" ng-click="redirectPageURL('TwoReferenceWiser')" type="button">
-                                <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+                        <div class="col-md-12 mt-5 ">
+                            <div ng-if="!proposalStage && !isCurrentUserSubmitted">
+                                <button class="blue-btn float-end" ng-click="saveandNext()" type="button">
+                                    <i class="fa-solid fa-check me-2"></i>Save and Next</button>
+                                <button class="blue-bordered-btn float-end me-2" ng-click="redirectPageURL('TwoReferenceWiser')" type="button">
+                                    <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+                            </div>
                         </div>
                     </div>
                 </div>

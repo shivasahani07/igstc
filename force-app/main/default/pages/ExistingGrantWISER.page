@@ -16,7 +16,7 @@
             <div class="container mt-5">
                 <div class="row mx-5">
                     <div class="col-md-12">
-                        <div class="tab-link" ng-show="proposalStage">
+                        <div class="tab-link" ng-show="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success w-100"></div>
                             </div>
@@ -119,7 +119,7 @@
                         </div>
 
 
-                        <div class="tab-link" ng-hide="proposalStage">
+                        <div class="tab-link" ng-hide="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success w-100"></div>
                             </div>
@@ -171,7 +171,7 @@
 
                 <div class="row mx-5">
                     <div class="col-md-12">
-                        <div class="tab-link" ng-show="proposalStage">
+                        <div class="tab-link" ng-show="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success w-100"></div>
                             </div>
@@ -221,7 +221,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="tab-link" ng-hide="proposalStage">
+                        <div class="tab-link" ng-hide="proposalStage || isCurrentUserSubmitted">
                             <div class="progress">
                                 <div class="progress-success wp-2"></div>
                             </div>
@@ -288,8 +288,10 @@
                 <div class="row mt-4 mx-5">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label fw-bold">Grants Handled? <span class="text-danger">*</span></label>
-                            <select class="form-control" ng-model="grantsHandledValue" ng-change="onGrantsHandledChange()" ng-disabled="proposalStage">
+                            <label class="form-label fw-bold">Grants Handled?
+                                <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-control" ng-model="grantsHandledValue" ng-change="onGrantsHandledChange()" ng-disabled="proposalStage || isCurrentUserSubmitted">
                                 <option value="">-- Select --</option>
                                 <option ng-repeat="item in grantsHandledPickList" value="{{item}}">{{item}}</option>
                             </select>
@@ -320,7 +322,10 @@
                                         <br/>(DD/MM/YYYY)</th>
 
                                     <th style="width:26%; text-align: center">Role in the project</th>
-                                    <th ng-hide="proposalStage" class="text-center">
+                                    <!-- <th ng-hide="proposalStage" class="text-center">
+                                        <i class="fas fa-plus-circle icon" ng-click="addRow()" style="width:3%;"></i>
+                                    </th> -->
+                                    <th ng-if="!(proposalStage || isCurrentUserSubmitted)" class="text-center">
                                         <i class="fas fa-plus-circle icon" ng-click="addRow()" style="width:3%;"></i>
                                     </th>
                                 </tr>
@@ -370,15 +375,17 @@
                                     <td>{{$index + 1}}</td>
 
                                     <td>
-                                        <input type="text" class="form-control" ng-model="applicnt.Title__c" ng-disabled="proposalStage" />
+                                        <input type="text" class="form-control" ng-model="applicnt.Title__c" ng-disabled="proposalStage || isCurrentUserSubmitted"
+                                        />
                                     </td>
 
                                     <td>
-                                        <input type="text" class="form-control" ng-model="applicnt.Funding_Agency__c" ng-disabled="proposalStage" />
+                                        <input type="text" class="form-control" ng-model="applicnt.Funding_Agency__c" ng-disabled="proposalStage || isCurrentUserSubmitted"
+                                        />
                                     </td>
 
                                     <td>
-                                        <select ng-model="applicnt.Currency__c" class="form-control">
+                                        <select ng-model="applicnt.Currency__c" class="form-control" ng-disabled="proposalStage || isCurrentUserSubmitted">
                                             <option ng-repeat="item in pickListCurrency" value="{{item}}">
                                                 {{item}}
                                             </option>
@@ -386,24 +393,32 @@
                                     </td>
 
                                     <td>
-                                        <input type="text" class="form-control" ng-model="applicnt.Budget__c" ng-disabled="proposalStage" />
+                                        <input type="text" class="form-control" ng-model="applicnt.Budget__c" ng-disabled="proposalStage || isCurrentUserSubmitted"
+                                        />
                                     </td>
 
                                     <td>
-                                        <input type="text" class="form-control" ng-model="applicnt.Starting_Date__c" ng-disabled="proposalStage" />
+                                        <input type="text" class="form-control" ng-model="applicnt.Starting_Date__c" ng-disabled="proposalStage || isCurrentUserSubmitted"
+                                        />
                                     </td>
 
                                     <td>
-                                        <input type="text" class="form-control" ng-model="applicnt.End_Date__c" ng-disabled="proposalStage" />
+                                        <input type="text" class="form-control" ng-model="applicnt.End_Date__c" ng-disabled="proposalStage || isCurrentUserSubmitted"
+                                        />
                                     </td>
 
                                     <td>
-                                        <input type="text" class="form-control" ng-model="applicnt.Role_in_the_Project__c" ng-disabled="proposalStage" />
+                                        <input type="text" class="form-control" ng-model="applicnt.Role_in_the_Project__c" ng-disabled="proposalStage || isCurrentUserSubmitted"
+                                        />
                                     </td>
 
-                                    <td ng-if="!proposalStage" class="text-center">
+                                    <!-- <td ng-if="!proposalStage || !isCurrentUserSubmitted" class="text-center">
                                         <i class="fa-solid fa-circle-xmark fa-2x text-danger" style="cursor:pointer;" ng-click="deleteRow($index)">
                                         </i>
+                                    </td> -->
+
+                                    <td ng-if="!(proposalStage || isCurrentUserSubmitted)" class="text-center">
+                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger" style="cursor:pointer;" ng-click="deleteRow($index)"></i>
                                     </td>
                                 </tr>
                             </tbody>
@@ -414,7 +429,7 @@
 
                 <!-- Buttons Section - Always visible -->
                 <div class="row mt-4 mx-5">
-                    <div class="col-md-12 my-4" ng-if="!proposalStage">
+                    <div class="col-md-12 my-4" ng-if="!proposalStage && !isCurrentUserSubmitted">
                         <button class="blue-btn float-end" ng-click="submitExistingGrants()" type="button">
                             <i class="fa-solid fa-check me-2"></i>Save and Next</button>
                         <button class="blue-bordered-btn float-end me-2" ng-click="previousPage()" type="button">

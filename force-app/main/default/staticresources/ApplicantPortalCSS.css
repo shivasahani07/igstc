@@ -2664,3 +2664,88 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance: textfield;
 }
+
+
+.budget-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.budget-table th,
+.budget-table td {
+    border: 1px solid #555;
+    padding: 6px 8px;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.budget-table th {
+    background-color: #e5e5e5;
+    text-align: center;
+    font-weight: bold;
+}
+
+.head-col {
+    width: 22%;
+}
+
+.desc-col {
+    width: 18%;
+}
+
+.total-col {
+    background-color: #e6f2ff;
+}
+
+.section-title {
+    font-style: italic;
+    font-weight: bold;
+}
+
+/* .sub-text {
+    font-size: 12px;
+    font-style: italic;
+} */
+
+.bold {
+    font-weight: bold;
+}
+
+.orange-text {
+    color: #ff7a00;
+    font-weight: bold;
+}
+
+.gray-row {
+    background-color: #cfcfcf;
+    font-weight: bold;
+}
+
+.subtotal {
+    background-color: #f2f2f2;
+}
+
+.final-total {
+    background-color: #e6f2ff;
+    font-weight: bold;
+}
+
+.note-row td {
+    border-top: none;
+    font-style: italic;
+    padding-top: 10px;
+}
+
+.tbl-input {
+    width: 100%;
+    border: 1px solid #616062;
+    border-radius: 4px;
+    text-align: center;
+    padding: 2px;
+    font-size: 14px;
+}
+
+.tbl-input:focus {
+    outline: 1px solid #4a90e2;
+}

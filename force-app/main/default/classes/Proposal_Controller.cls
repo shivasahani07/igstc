@@ -3562,35 +3562,74 @@ return e.getMessage() + e.getLineNumber();
                                                              }
                                                          }
     
-    // NEW METHOD: Save expense data to Expense_Head__c and Expense_Line_Item__c
+        // NEW METHOD: Save expense data to Expense_Head__c and Expense_Line_Item__c
     // Uses Yearly_Expense__c which has lookup to Applicant_Proposal_Association__c
     public static String createExpenseWithHeadAndLineItems(List<Expense_Line_Item__c> expenseLineItems, String apaId, Applicant_Proposal_Association__c updatedApa) {
         System.debug('expenseLineItems::' + expenseLineItems);
         System.debug('apaId::' + apaId);
         
         try {
-            // Get Yearly_Expense__c records for this APA (Year 1, 2, 3)
+            // Get Proposal duration to determine number of years needed
+            Decimal durationMonths = null;
+            if(updatedApa != null && updatedApa.Proposals__r != null && updatedApa.Proposals__r.Duration_In_Months_Max_36__c != null) {
+                durationMonths = updatedApa.Proposals__r.Duration_In_Months_Max_36__c;
+            } else {
+                // Query Proposal if not provided in updatedApa
+                List<Applicant_Proposal_Association__c> apaRecords = [
+                    SELECT Id, Proposals__r.Duration_In_Months_Max_36__c 
+                    FROM Applicant_Proposal_Association__c 
+                    WHERE Id = :apaId 
+                    LIMIT 1
+                ];
+                if(!apaRecords.isEmpty() && apaRecords[0].Proposals__r != null) {
+                    durationMonths = apaRecords[0].Proposals__r.Duration_In_Months_Max_36__c;
+                }
+            }
+            
+            // Calculate number of years based on duration
+            Integer numberOfYears = 3; // Default to 3 years
+            if(durationMonths != null) {
+                numberOfYears = (Integer)Math.ceil(durationMonths / 12);
+                if(numberOfYears < 1) numberOfYears = 1;
+                if(numberOfYears > 3) numberOfYears = 3;
+            }
+            
+            // Get Yearly_Expense__c records for this APA
             List<Yearly_Expense__c> yearlyExpenseList = [SELECT Id, Year__c, Applicant_Proposal_Association__c 
                                                          FROM Yearly_Expense__c 
                                                          WHERE Applicant_Proposal_Association__c = :apaId 
                                                          ORDER BY Year__c ASC];
             
-            // Create Yearly_Expense__c records if they don't exist
-            if(yearlyExpenseList.isEmpty()) {
-                yearlyExpenseList = new List<Yearly_Expense__c>();
-                for(Integer i = 1; i <= 3; i++) {
-                    Yearly_Expense__c ye = new Yearly_Expense__c();
-                    ye.Year__c = String.valueOf(i);
-                    ye.Applicant_Proposal_Association__c = apaId;
-                    yearlyExpenseList.add(ye);
+            // Check which years already exist
+            Set<String> existingYears = new Set<String>();
+            for(Yearly_Expense__c ye : yearlyExpenseList) {
+                if(ye.Year__c != null) {
+                    existingYears.add(ye.Year__c);
                 }
-                insert yearlyExpenseList;
-                // Re-query to get IDs
-                yearlyExpenseList = [SELECT Id, Year__c, Applicant_Proposal_Association__c 
-                                     FROM Yearly_Expense__c 
-                                     WHERE Applicant_Proposal_Association__c = :apaId 
-                                     ORDER BY Year__c ASC];
             }
+            
+            // Create Yearly_Expense__c records only for missing years (up to numberOfYears)
+            List<Yearly_Expense__c> newYearlyExpenses = new List<Yearly_Expense__c>();
+            for(Integer i = 1; i <= numberOfYears; i++) {
+                String yearStr = String.valueOf(i);
+                if(!existingYears.contains(yearStr)) {
+                    Yearly_Expense__c ye = new Yearly_Expense__c();
+                    ye.Year__c = yearStr;
+                    ye.Applicant_Proposal_Association__c = apaId;
+                    newYearlyExpenses.add(ye);
+                }
+            }
+            
+            if(!newYearlyExpenses.isEmpty()) {
+                insert newYearlyExpenses;
+                yearlyExpenseList.addAll(newYearlyExpenses);
+            }
+            
+            // Re-query to get all IDs (including newly created ones)
+            yearlyExpenseList = [SELECT Id, Year__c, Applicant_Proposal_Association__c 
+                                 FROM Yearly_Expense__c 
+                                 WHERE Applicant_Proposal_Association__c = :apaId 
+                                 ORDER BY Year__c ASC];
             
             // Map year number to Yearly_Expense__c record
             Map<String, Yearly_Expense__c> yearToExpenseMap = new Map<String, Yearly_Expense__c>();
@@ -3778,6 +3817,682 @@ return e.getMessage() + e.getLineNumber();
         }
     }
     
+    // NEW METHOD: Save expense data to Expense_Head__c and Expense_Line_Item__c
+    // Uses Yearly_Expense__c which has lookup to Applicant_Proposal_Association__c
+    public static String createExpenseWithHeadAndLineItemsForWiser(List<Expense_Line_Item__c> expenseLineItems, String apaId, Applicant_Proposal_Association__c updatedApa) {
+        System.debug('expenseLineItems::' + expenseLineItems);
+        System.debug('apaId::' + apaId);
+        
+        try {
+            // Get Proposal duration to determine number of years needed
+            Decimal durationMonths = null;
+            if(updatedApa != null && updatedApa.Proposals__r != null && updatedApa.Proposals__r.Duration_In_Months_Max_36__c != null) {
+                durationMonths = updatedApa.Proposals__r.Duration_In_Months_Max_36__c;
+            } else {
+                // Query Proposal if not provided in updatedApa
+                List<Applicant_Proposal_Association__c> apaRecords = [
+                    SELECT Id, Proposals__r.Duration_In_Months_Max_36__c 
+                    FROM Applicant_Proposal_Association__c 
+                    WHERE Id = :apaId 
+                    LIMIT 1
+                ];
+                if(!apaRecords.isEmpty() && apaRecords[0].Proposals__r != null) {
+                    durationMonths = apaRecords[0].Proposals__r.Duration_In_Months_Max_36__c;
+                }
+            }
+            
+            // Calculate number of years based on duration
+            Integer numberOfYears = 3; // Default to 3 years
+            if(durationMonths != null) {
+                numberOfYears = (Integer)Math.ceil(durationMonths / 12);
+                if(numberOfYears < 1) numberOfYears = 1;
+                if(numberOfYears > 3) numberOfYears = 3;
+            }
+            
+            // Get Yearly_Expense__c records for this APA
+            List<Yearly_Expense__c> yearlyExpenseList = [SELECT Id, Year__c, Applicant_Proposal_Association__c 
+                                                         FROM Yearly_Expense__c 
+                                                         WHERE Applicant_Proposal_Association__c = :apaId 
+                                                         ORDER BY Year__c ASC];
+            
+            // Check which years already exist
+            Set<String> existingYears = new Set<String>();
+            for(Yearly_Expense__c ye : yearlyExpenseList) {
+                if(ye.Year__c != null) {
+                    existingYears.add(ye.Year__c);
+                }
+            }
+            
+            // Create Yearly_Expense__c records only for missing years (up to numberOfYears)
+            List<Yearly_Expense__c> newYearlyExpenses = new List<Yearly_Expense__c>();
+            for(Integer i = 1; i <= numberOfYears; i++) {
+                String yearStr = String.valueOf(i);
+                if(!existingYears.contains(yearStr)) {
+                    Yearly_Expense__c ye = new Yearly_Expense__c();
+                    ye.Year__c = yearStr;
+                    ye.Applicant_Proposal_Association__c = apaId;
+                    newYearlyExpenses.add(ye);
+                }
+            }
+            
+            if(!newYearlyExpenses.isEmpty()) {
+                insert newYearlyExpenses;
+                yearlyExpenseList.addAll(newYearlyExpenses);
+            }
+            
+            // Re-query to get all IDs (including newly created ones)
+            yearlyExpenseList = [SELECT Id, Year__c, Applicant_Proposal_Association__c 
+                                 FROM Yearly_Expense__c 
+                                 WHERE Applicant_Proposal_Association__c = :apaId 
+                                 ORDER BY Year__c ASC];
+            
+            // Map year number to Yearly_Expense__c record
+            Map<String, Yearly_Expense__c> yearToExpenseMap = new Map<String, Yearly_Expense__c>();
+            Set<Id> yearlyExpenseIds = new Set<Id>();
+            for(Yearly_Expense__c ye : yearlyExpenseList) {
+                yearToExpenseMap.put(ye.Year__c, ye);
+                yearlyExpenseIds.add(ye.Id);
+            }
+            
+            // Collect Expense_Head__c IDs that are provided in line items (for updates)
+            Set<Id> providedHeadIds = new Set<Id>();
+            for(Expense_Line_Item__c eli : expenseLineItems) {
+                if(eli.Expense_Head__c != null) {
+                    providedHeadIds.add(eli.Expense_Head__c);
+                }
+            }
+            
+            // Get existing Expense_Head__c records (including provided IDs)
+            // IMPORTANT: Query with Yearly_Expense__r relationship to get Year__c
+            List<Expense_Head__c> existingHeads = [SELECT Id, Name, Yearly_Expense__c, Yearly_Expense__r.Year__c 
+                                                   FROM Expense_Head__c 
+                                                   WHERE Yearly_Expense__c IN :yearlyExpenseIds
+                                                   OR Id IN :providedHeadIds];
+            
+            // Debug: Log all existing heads with their years
+            for(Expense_Head__c eh : existingHeads) {
+                System.debug('Existing Head: Id=' + eh.Id + ', Name=' + eh.Name + ', Yearly_Expense__c=' + eh.Yearly_Expense__c + ', Year=' + (eh.Yearly_Expense__r != null ? eh.Yearly_Expense__r.Year__c : 'NULL'));
+            }
+            
+            // Map: Year + Head Name -> Expense_Head__c
+            Map<String, Expense_Head__c> yearHeadMap = new Map<String, Expense_Head__c>();
+            // Map: Expense_Head__c Id -> Expense_Head__c (for direct ID lookup)
+            Map<Id, Expense_Head__c> headIdMap = new Map<Id, Expense_Head__c>();
+            for(Expense_Head__c eh : existingHeads) {
+                String key = eh.Yearly_Expense__c + '_' + eh.Name;
+                yearHeadMap.put(key, eh);
+                headIdMap.put(eh.Id, eh);
+            }
+            
+            // Collect unique expense types from line items (only for records without Expense_Head__c ID)
+            Set<String> expenseTypes = new Set<String>();
+            for(Expense_Line_Item__c eli : expenseLineItems) {
+                if(String.isNotBlank(eli.Expense_Type__c) && (eli.Expense_Head__c == null || String.isBlank(String.valueOf(eli.Expense_Head__c)))) {
+                    expenseTypes.add(eli.Expense_Type__c);
+                }
+            }
+            
+            // Create Expense_Head__c records only for new expense types (not provided with IDs)
+            List<Expense_Head__c> headsToUpsert = new List<Expense_Head__c>();
+            for(String expenseType : expenseTypes) {
+                for(String year : yearToExpenseMap.keySet()) {
+                    String key = yearToExpenseMap.get(year).Id + '_' + expenseType;
+                    if(!yearHeadMap.containsKey(key)) {
+                        Expense_Head__c newHead = new Expense_Head__c();
+                        newHead.Name = expenseType;
+                        newHead.Yearly_Expense__c = yearToExpenseMap.get(year).Id;
+                        headsToUpsert.add(newHead);
+                    }
+                }
+            }
+            
+            if(!headsToUpsert.isEmpty()) {
+                insert headsToUpsert;
+                // Re-query newly created heads with Year__c relationship
+                Set<Id> newHeadIds = new Set<Id>();
+                for(Expense_Head__c eh : headsToUpsert) {
+                    newHeadIds.add(eh.Id);
+                }
+                List<Expense_Head__c> newHeadsWithYear = [SELECT Id, Name, Yearly_Expense__c, Yearly_Expense__r.Year__c 
+                                                         FROM Expense_Head__c 
+                                                         WHERE Id IN :newHeadIds];
+                // Add newly created heads to existingHeads
+                existingHeads.addAll(newHeadsWithYear);
+                for(Expense_Head__c eh : newHeadsWithYear) {
+                    String key = eh.Yearly_Expense__c + '_' + eh.Name;
+                    yearHeadMap.put(key, eh);
+                    headIdMap.put(eh.Id, eh);
+                }
+            }
+            
+            // Rebuild map with all heads (including newly created ones)
+            Map<String, Expense_Head__c> yearNumHeadMap = new Map<String, Expense_Head__c>();
+            // Re-query all heads to ensure Year__c relationship is populated
+            // CRITICAL: This query MUST include the relationship to get Year__c
+            existingHeads = [SELECT Id, Name, Yearly_Expense__c, Yearly_Expense__r.Year__c 
+                            FROM Expense_Head__c 
+                            WHERE Yearly_Expense__c IN :yearlyExpenseIds
+                            OR Id IN :providedHeadIds];
+            
+            // Clear and rebuild headIdMap to ensure it has the relationship populated
+            headIdMap.clear();
+            for(Expense_Head__c eh : existingHeads) {
+                String key = eh.Yearly_Expense__c + '_' + eh.Name;
+                yearHeadMap.put(key, eh);
+                if(eh.Yearly_Expense__r != null && eh.Yearly_Expense__r.Year__c != null) {
+                    String yearKey = eh.Yearly_Expense__r.Year__c + '_' + eh.Name;
+                    yearNumHeadMap.put(yearKey, eh);
+                }
+                // CRITICAL: Rebuild headIdMap with heads that have relationship populated
+                headIdMap.put(eh.Id, eh);
+                System.debug('Rebuilt headIdMap: Id=' + eh.Id + ', Name=' + eh.Name + ', Year=' + (eh.Yearly_Expense__r != null ? eh.Yearly_Expense__r.Year__c : 'NULL'));
+            }
+            
+            // Get existing line items by head and index
+            Set<Id> headIds = new Set<Id>();
+            for(Expense_Head__c eh : existingHeads) {
+                headIds.add(eh.Id);
+            }
+            
+            List<Expense_Line_Item__c> existingLineItems = [SELECT Id, Expense_Head__c, Index__c 
+                                                            FROM Expense_Line_Item__c 
+                                                            WHERE Expense_Head__c IN :headIds];
+            
+            // Map: Head Id + Index -> Line Item Id
+            Map<String, Id> headIndexToLineItemId = new Map<String, Id>();
+            for(Expense_Line_Item__c eli : existingLineItems) {
+                String key = eli.Expense_Head__c + '_' + eli.Index__c;
+                headIndexToLineItemId.put(key, eli.Id);
+            }
+            
+            // Create line items for each year
+            List<Expense_Line_Item__c> lineItemsToUpsert = new List<Expense_Line_Item__c>();
+            // Set to track IDs already added to prevent duplicates
+            Set<Id> addedIds = new Set<Id>();
+            // Map to track new records by composite key (headId_index) to prevent duplicates
+            Map<String, Expense_Line_Item__c> newRecordsMap = new Map<String, Expense_Line_Item__c>();
+            
+            for(Expense_Line_Item__c eli : expenseLineItems) {
+                if(String.isBlank(eli.Expense_Type__c)) continue;
+                
+                // Check if Expense_Head__c ID is provided (for Research Staff updates)
+                Boolean hasExpenseHeadId = (eli.Expense_Head__c != null && String.isNotBlank(String.valueOf(eli.Expense_Head__c)) && headIdMap.containsKey(eli.Expense_Head__c));
+                
+                // Check if this is Research Staff
+                // Research Staff is identified by:
+                // 1. Expense_Type__c starts with "Research staff" AND Index__c is set, OR
+                // 2. Has Expense_Head__c ID AND Index__c is set (for updates)
+                Boolean isResearchStaff = false;
+                if(eli.Index__c != null) {
+                    if(hasExpenseHeadId) {
+                        // Has Expense_Head__c ID - this is Research Staff (update scenario)
+                        isResearchStaff = true;
+                    } else if(eli.Expense_Type__c != null && eli.Expense_Type__c.startsWith('Research staff')) {
+                        // Expense_Type__c starts with "Research staff" - this is Research Staff (create scenario)
+                        isResearchStaff = true;
+                    }
+                }
+                
+                if(isResearchStaff) {
+                    // RESEARCH STAFF: Handle both create (no Expense_Head__c ID) and update (has Expense_Head__c ID) scenarios
+                    Expense_Head__c targetHead = null;
+                    String targetYear = null;
+                    
+                    if(hasExpenseHeadId) {
+                        // UPDATE SCENARIO: Expense_Head__c ID is provided - use it directly
+                        targetHead = headIdMap.get(eli.Expense_Head__c);
+                        if(targetHead != null) {
+                            // CRITICAL: Get year from Expense_Head__c's Yearly_Expense__r relationship
+                            // The Expense_Head__c is already linked to a specific year, so we MUST use that year
+                            if(targetHead.Yearly_Expense__r != null && targetHead.Yearly_Expense__r.Year__c != null) {
+                                targetYear = targetHead.Yearly_Expense__r.Year__c;
+                            } else {
+                                // If relationship is not populated, re-query the head
+                                List<Expense_Head__c> requeryHeads = [SELECT Id, Yearly_Expense__r.Year__c 
+                                                                      FROM Expense_Head__c 
+                                                                      WHERE Id = :targetHead.Id 
+                                                                      LIMIT 1];
+                                if(!requeryHeads.isEmpty() && requeryHeads[0].Yearly_Expense__r != null) {
+                                    targetYear = requeryHeads[0].Yearly_Expense__r.Year__c;
+                                    // Update the headIdMap with the requeried head
+                                    targetHead = requeryHeads[0];
+                                    headIdMap.put(targetHead.Id, targetHead);
+                                } else {
+                                    // Last resort: determine year from which expense field has value in the line item
+                                    if(eli.Year1_Expense__c != null && eli.Year1_Expense__c != 0) {
+                                        targetYear = '1';
+                                    } else if(eli.Year2_Expense__c != null && eli.Year2_Expense__c != 0) {
+                                        targetYear = '2';
+                                    } else if(eli.Year3_Expense__c != null && eli.Year3_Expense__c != 0) {
+                                        targetYear = '3';
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        // CREATE SCENARIO: No Expense_Head__c ID provided - need to find or create Expense_Head__c based on Expense_Type__c and year
+                        // Determine year from which expense field has value in the line item
+                        if(eli.Year1_Expense__c != null && eli.Year1_Expense__c != 0) {
+                            targetYear = '1';
+                        } else if(eli.Year2_Expense__c != null && eli.Year2_Expense__c != 0) {
+                            targetYear = '2';
+                        } else if(eli.Year3_Expense__c != null && eli.Year3_Expense__c != 0) {
+                            targetYear = '3';
+                        }
+                        
+                        if(targetYear != null && eli.Expense_Type__c != null) {
+                            // Find or create Expense_Head__c for this Research Staff type and year
+                            String yearKey = targetYear + '_' + eli.Expense_Type__c;
+                            targetHead = yearNumHeadMap.get(yearKey);
+                            
+                            // If Expense_Head__c doesn't exist, create it
+                            if(targetHead == null) {
+                                Yearly_Expense__c yearlyExpense = yearToExpenseMap.get(targetYear);
+                                if(yearlyExpense != null) {
+                                    Expense_Head__c newHead = new Expense_Head__c();
+                                    newHead.Name = eli.Expense_Type__c;
+                                    newHead.Yearly_Expense__c = yearlyExpense.Id;
+                                    insert newHead;
+                                    
+                                    // Re-query to get the relationship
+                                    List<Expense_Head__c> newHeads = [SELECT Id, Name, Yearly_Expense__c, Yearly_Expense__r.Year__c 
+                                                                     FROM Expense_Head__c 
+                                                                     WHERE Id = :newHead.Id 
+                                                                     LIMIT 1];
+                                    if(!newHeads.isEmpty()) {
+                                        targetHead = newHeads[0];
+                                        // Add to maps
+                                        String key = targetHead.Yearly_Expense__c + '_' + targetHead.Name;
+                                        yearHeadMap.put(key, targetHead);
+                                        yearNumHeadMap.put(yearKey, targetHead);
+                                        headIdMap.put(targetHead.Id, targetHead);
+                                        existingHeads.add(targetHead);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    if(targetHead != null && targetYear != null) {
+                            Expense_Line_Item__c newELI = new Expense_Line_Item__c();
+                            newELI.Description__c = eli.Description__c;
+                            newELI.Position__c = eli.Position__c;
+                            newELI.Number__c = eli.Number__c;
+                            newELI.Person_Month__c = eli.Person_Month__c;
+                            newELI.Salary_Month__c = eli.Salary_Month__c;
+                            newELI.Unit_Price__c = eli.Unit_Price__c;
+                            newELI.Multiplier__c = eli.Multiplier__c;
+                            newELI.Expense_Head__c = targetHead.Id;
+                            newELI.Index__c = eli.Index__c;
+                            newELI.Expense_Type__c = eli.Expense_Type__c;
+                            
+                            // Set year-specific expense values based on the Expense_Head__c's year
+                            // Frontend sends: Year 1 line item has Year1_Expense__c populated, Year 2 has Year2_Expense__c, etc.
+                            // CRITICAL: Use the expense value that matches the target year from the line item
+                            Decimal expenseValue = 0;
+                            if(targetYear == '1') {
+                                // For Year 1 Expense_Head__c, use Year1_Expense__c from line item
+                                expenseValue = eli.Year1_Expense__c != null ? eli.Year1_Expense__c : 0;
+                                newELI.Year1_Expense__c = expenseValue;
+                                newELI.Year2_Expense__c = 0;
+                                newELI.Year3_Expense__c = 0;
+                                newELI.Total_Expense__c = eli.Total_Expense__c != null ? eli.Total_Expense__c : expenseValue;
+                                newELI.Year1_Approved_Amount__c = eli.Year1_Approved_Amount__c;
+                            } else if(targetYear == '2') {
+                                // For Year 2 Expense_Head__c, use Year2_Expense__c from line item
+                                expenseValue = eli.Year2_Expense__c != null ? eli.Year2_Expense__c : 0;
+                                newELI.Year1_Expense__c = 0;
+                                newELI.Year2_Expense__c = expenseValue;
+                                newELI.Year3_Expense__c = 0;
+                                newELI.Total_Expense__c = eli.Total_Expense__c != null ? eli.Total_Expense__c : expenseValue;
+                                newELI.Year2_Approved_Amount__c = eli.Year2_Approved_Amount__c;
+                            } else if(targetYear == '3') {
+                                // For Year 3 Expense_Head__c, use Year3_Expense__c from line item
+                                expenseValue = eli.Year3_Expense__c != null ? eli.Year3_Expense__c : 0;
+                                newELI.Year1_Expense__c = 0;
+                                newELI.Year2_Expense__c = 0;
+                                newELI.Year3_Expense__c = expenseValue;
+                                newELI.Total_Expense__c = eli.Total_Expense__c != null ? eli.Total_Expense__c : expenseValue;
+                                newELI.Year3_Approved_Amount__c = eli.Year3_Approved_Amount__c;
+                            }
+                            
+                            System.debug('Research Staff Line Item: Expense_Type__c=' + newELI.Expense_Type__c + ', Index__c=' + newELI.Index__c + ', Expense_Head__c=' + newELI.Expense_Head__c + ', Year=' + targetYear + ', ExpenseValue=' + expenseValue + ', Year1=' + eli.Year1_Expense__c + ', Year2=' + eli.Year2_Expense__c + ', Year3=' + eli.Year3_Expense__c);
+                            
+                            String key = targetHead.Id + '_' + newELI.Index__c;
+                            if(headIndexToLineItemId.containsKey(key)) {
+                                Id existingId = headIndexToLineItemId.get(key);
+                                if(!addedIds.contains(existingId)) {
+                                    newELI.Id = existingId;
+                                    lineItemsToUpsert.add(newELI);
+                                    addedIds.add(existingId);
+                                }
+                            } else {
+                                if(!newRecordsMap.containsKey(key)) {
+                                    newRecordsMap.put(key, newELI);
+                                }
+                            }
+                        } else {
+                            System.debug('ERROR: Could not determine year or Expense_Head__c for Research Staff line item: Expense_Type__c=' + eli.Expense_Type__c + ', Expense_Head__c=' + eli.Expense_Head__c + ', Year1=' + eli.Year1_Expense__c + ', Year2=' + eli.Year2_Expense__c + ', Year3=' + eli.Year3_Expense__c);
+                        }
+                } else {
+                    // CONSUMABLES, MINOR EQUIPMENT, CONTINGENCY, OVERHEAD, RESEARCH STAY, TRAVEL: Create separate line items per year
+                    // Each line item should only have the value for that specific year
+                    
+                    // Check if Expense_Head__c ID is provided (for updates)
+                    Boolean hasExpenseHeadIdForOther = (eli.Expense_Head__c != null && String.isNotBlank(String.valueOf(eli.Expense_Head__c)) && headIdMap.containsKey(eli.Expense_Head__c));
+                    
+                    Expense_Head__c targetHead = null;
+                    String targetYear = null;
+                    
+                    if(hasExpenseHeadIdForOther) {
+                        // UPDATE SCENARIO: Expense_Head__c ID is provided - use it directly
+                        targetHead = headIdMap.get(eli.Expense_Head__c);
+                        if(targetHead != null && targetHead.Yearly_Expense__r != null && targetHead.Yearly_Expense__r.Year__c != null) {
+                            targetYear = targetHead.Yearly_Expense__r.Year__c;
+                        }
+                    } else {
+                        // CREATE SCENARIO: Determine year from which expense field has value
+                        if(eli.Year1_Expense__c != null && eli.Year1_Expense__c != 0 && (eli.Year2_Expense__c == null || eli.Year2_Expense__c == 0) && (eli.Year3_Expense__c == null || eli.Year3_Expense__c == 0)) {
+                            targetYear = '1';
+                        } else if(eli.Year2_Expense__c != null && eli.Year2_Expense__c != 0 && (eli.Year1_Expense__c == null || eli.Year1_Expense__c == 0) && (eli.Year3_Expense__c == null || eli.Year3_Expense__c == 0)) {
+                            targetYear = '2';
+                        } else if(eli.Year3_Expense__c != null && eli.Year3_Expense__c != 0 && (eli.Year1_Expense__c == null || eli.Year1_Expense__c == 0) && (eli.Year2_Expense__c == null || eli.Year2_Expense__c == 0)) {
+                            targetYear = '3';
+                        }
+                        
+                        if(targetYear != null && eli.Expense_Type__c != null) {
+                            String yearKey = targetYear + '_' + eli.Expense_Type__c;
+                            targetHead = yearNumHeadMap.get(yearKey);
+                            
+                            // If Expense_Head__c doesn't exist, create it
+                            if(targetHead == null) {
+                                Yearly_Expense__c yearlyExpense = yearToExpenseMap.get(targetYear);
+                                if(yearlyExpense != null) {
+                                    Expense_Head__c newHead = new Expense_Head__c();
+                                    newHead.Name = eli.Expense_Type__c;
+                                    newHead.Yearly_Expense__c = yearlyExpense.Id;
+                                    insert newHead;
+                                    
+                                    // Re-query to get the relationship
+                                    List<Expense_Head__c> newHeads = [SELECT Id, Name, Yearly_Expense__c, Yearly_Expense__r.Year__c 
+                                                                     FROM Expense_Head__c 
+                                                                     WHERE Id = :newHead.Id 
+                                                                     LIMIT 1];
+                                    if(!newHeads.isEmpty()) {
+                                        targetHead = newHeads[0];
+                                        // Add to maps
+                                        String key = targetHead.Yearly_Expense__c + '_' + targetHead.Name;
+                                        yearHeadMap.put(key, targetHead);
+                                        yearNumHeadMap.put(yearKey, targetHead);
+                                        headIdMap.put(targetHead.Id, targetHead);
+                                        existingHeads.add(targetHead);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    if(targetHead != null && targetYear != null) {
+                        Expense_Line_Item__c newELI = new Expense_Line_Item__c();
+                        newELI.Description__c = eli.Description__c;
+                        newELI.Position__c = eli.Position__c;
+                        newELI.Number__c = eli.Number__c;
+                        newELI.Person_Month__c = eli.Person_Month__c;
+                        newELI.Salary_Month__c = eli.Salary_Month__c;
+                        newELI.Unit_Price__c = eli.Unit_Price__c;
+                        newELI.Multiplier__c = eli.Multiplier__c;
+                        newELI.Expense_Head__c = targetHead.Id;
+                        newELI.Index__c = eli.Index__c != null ? eli.Index__c : 1;
+                        newELI.Expense_Type__c = eli.Expense_Type__c;
+                        
+                        // Store only the year-specific value in this line item
+                        Decimal expenseValue = 0;
+                        if(targetYear == '1') {
+                            expenseValue = eli.Year1_Expense__c != null ? eli.Year1_Expense__c : 0;
+                            newELI.Year1_Expense__c = expenseValue;
+                            newELI.Year2_Expense__c = 0;
+                            newELI.Year3_Expense__c = 0;
+                            newELI.Total_Expense__c = eli.Total_Expense__c != null ? eli.Total_Expense__c : expenseValue;
+                            newELI.Year1_Approved_Amount__c = eli.Year1_Approved_Amount__c;
+                        } else if(targetYear == '2') {
+                            expenseValue = eli.Year2_Expense__c != null ? eli.Year2_Expense__c : 0;
+                            newELI.Year1_Expense__c = 0;
+                            newELI.Year2_Expense__c = expenseValue;
+                            newELI.Year3_Expense__c = 0;
+                            newELI.Total_Expense__c = eli.Total_Expense__c != null ? eli.Total_Expense__c : expenseValue;
+                            newELI.Year2_Approved_Amount__c = eli.Year2_Approved_Amount__c;
+                        } else if(targetYear == '3') {
+                            expenseValue = eli.Year3_Expense__c != null ? eli.Year3_Expense__c : 0;
+                            newELI.Year1_Expense__c = 0;
+                            newELI.Year2_Expense__c = 0;
+                            newELI.Year3_Expense__c = expenseValue;
+                            newELI.Total_Expense__c = eli.Total_Expense__c != null ? eli.Total_Expense__c : expenseValue;
+                            newELI.Year3_Approved_Amount__c = eli.Year3_Approved_Amount__c;
+                        }
+                        
+                        System.debug('Non-Research Staff Line Item: Expense_Type__c=' + newELI.Expense_Type__c + ', Index__c=' + newELI.Index__c + ', Expense_Head__c=' + newELI.Expense_Head__c + ', Year=' + targetYear + ', ExpenseValue=' + expenseValue);
+                        
+                        String key = targetHead.Id + '_' + newELI.Index__c;
+                        if(headIndexToLineItemId.containsKey(key)) {
+                            Id existingId = headIndexToLineItemId.get(key);
+                            if(!addedIds.contains(existingId)) {
+                                newELI.Id = existingId;
+                                lineItemsToUpsert.add(newELI);
+                                addedIds.add(existingId);
+                            }
+                        } else {
+                            if(!newRecordsMap.containsKey(key)) {
+                                newRecordsMap.put(key, newELI);
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Add new records from map
+            lineItemsToUpsert.addAll(newRecordsMap.values());
+            
+            if(!lineItemsToUpsert.isEmpty()) {
+                upsert lineItemsToUpsert;
+            }
+            
+            // Update Expense_Head__c totals for Research Staff records
+            // Extract year-specific totals from Description field of Index 1 line items
+            // Format: "No. of Positions|Y1Total:XXX|Y2Total:YYY|Y3Total:ZZZ"
+            List<Expense_Head__c> headsToUpdate = new List<Expense_Head__c>();
+            
+            // Re-query all Research Staff heads with their line items
+            List<Expense_Head__c> researchStaffHeads = [SELECT Id, Name, Yearly_Expense__c, Yearly_Expense__r.Year__c, ELI__c,
+                             (SELECT Id, Index__c, Description__c
+                              FROM Expense_Line_Items__r 
+                              WHERE Index__c = 1
+                              ORDER BY Index__c ASC)
+                             FROM Expense_Head__c 
+                             WHERE Yearly_Expense__c IN :yearlyExpenseIds
+                             AND Name LIKE 'Research staff%'];
+            
+            // Group Research Staff heads by name (e.g., "Research staff 1", "Research staff 2")
+            Map<String, Map<String, Expense_Head__c>> staffHeadsByTypeAndYear = new Map<String, Map<String, Expense_Head__c>>();
+            for(Expense_Head__c head : researchStaffHeads) {
+                if(!staffHeadsByTypeAndYear.containsKey(head.Name)) {
+                    staffHeadsByTypeAndYear.put(head.Name, new Map<String, Expense_Head__c>());
+                }
+                staffHeadsByTypeAndYear.get(head.Name).put(head.Yearly_Expense__r.Year__c, head);
+            }
+            
+            // Extract totals from Description and update Expense_Head__c records
+            for(String staffType : staffHeadsByTypeAndYear.keySet()) {
+                Map<String, Expense_Head__c> staffHeadsByYear = staffHeadsByTypeAndYear.get(staffType);
+                
+                // Get the Index 1 line item from any year (they all have the same totals)
+                Expense_Head__c anyYearHead = null;
+                for(Expense_Head__c head : staffHeadsByYear.values()) {
+                    if(head.Expense_Line_Items__r != null && !head.Expense_Line_Items__r.isEmpty()) {
+                        anyYearHead = head;
+                        break;
+                    }
+                }
+                
+                if(anyYearHead != null && anyYearHead.Expense_Line_Items__r != null && !anyYearHead.Expense_Line_Items__r.isEmpty()) {
+                    Expense_Line_Item__c positionsItem = anyYearHead.Expense_Line_Items__r[0];
+                    String description = positionsItem.Description__c;
+                    
+                    if(String.isNotBlank(description) && description.contains('|Y1Total:')) {
+                        // Parse year-specific totals from Description
+                        Decimal year1Total = 0;
+                        Decimal year2Total = 0;
+                        Decimal year3Total = 0;
+                        
+                        try {
+                            // Extract Y1Total value
+                            Integer y1Start = description.indexOf('|Y1Total:');
+                            Integer y2Start = description.indexOf('|Y2Total:');
+                            if(y1Start >= 0 && y2Start > y1Start) {
+                                String y1Value = description.substring(y1Start + 9, y2Start);
+                                year1Total = Decimal.valueOf(y1Value);
+                            }
+                            
+                            // Extract Y2Total value
+                            Integer y3Start = description.indexOf('|Y3Total:');
+                            if(y2Start >= 0 && y3Start > y2Start) {
+                                String y2Value = description.substring(y2Start + 9, y3Start);
+                                year2Total = Decimal.valueOf(y2Value);
+                            }
+                            
+                            // Extract Y3Total value
+                            if(y3Start >= 0) {
+                                String y3Value = description.substring(y3Start + 9);
+                                year3Total = Decimal.valueOf(y3Value);
+                            }
+                        } catch(Exception e) {
+                            System.debug('Error parsing totals from Description: ' + e.getMessage());
+                        }
+                        
+                        // Update each Expense_Head__c with its year-specific total
+                        if(staffHeadsByYear.containsKey('1')) {
+                            Expense_Head__c headToUpdate = new Expense_Head__c();
+                            headToUpdate.Id = staffHeadsByYear.get('1').Id;
+                            headToUpdate.ELI__c = year1Total;
+                            headsToUpdate.add(headToUpdate);
+                        }
+                        
+                        if(staffHeadsByYear.containsKey('2')) {
+                            Expense_Head__c headToUpdate = new Expense_Head__c();
+                            headToUpdate.Id = staffHeadsByYear.get('2').Id;
+                            headToUpdate.ELI__c = year2Total;
+                            headsToUpdate.add(headToUpdate);
+                        }
+                        
+                        if(staffHeadsByYear.containsKey('3')) {
+                            Expense_Head__c headToUpdate = new Expense_Head__c();
+                            headToUpdate.Id = staffHeadsByYear.get('3').Id;
+                            headToUpdate.ELI__c = year3Total;
+                            headsToUpdate.add(headToUpdate);
+                        }
+                    }
+                }
+            }
+            
+            // Update Expense_Head__c records with year-specific totals
+            if(!headsToUpdate.isEmpty()) {
+                update headsToUpdate;
+            }
+            
+            // Build map of Research Staff Expense_Head__c IDs to return
+            // Map: "Research staff 1" -> ["Year1HeadId", "Year2HeadId", "Year3HeadId"]
+            Map<String, List<String>> researchStaffHeadIdsMap = new Map<String, List<String>>();
+            
+            // Re-query all Research Staff Expense_Head__c records to get their IDs (including newly created ones)
+            List<Expense_Head__c> allResearchStaffHeads = [SELECT Id, Name, Yearly_Expense__c, Yearly_Expense__r.Year__c 
+                                                           FROM Expense_Head__c 
+                                                           WHERE Yearly_Expense__c IN :yearlyExpenseIds
+                                                           AND Name LIKE 'Research staff%'
+                                                           ORDER BY Name ASC, Yearly_Expense__r.Year__c ASC];
+            
+            for(Expense_Head__c head : allResearchStaffHeads) {
+                if(!researchStaffHeadIdsMap.containsKey(head.Name)) {
+                    researchStaffHeadIdsMap.put(head.Name, new List<String>{null, null, null});
+                }
+                String year = head.Yearly_Expense__r != null ? head.Yearly_Expense__r.Year__c : null;
+                List<String> staffHeadIds = researchStaffHeadIdsMap.get(head.Name);
+                if(year == '1') {
+                    staffHeadIds[0] = head.Id;
+                } else if(year == '2') {
+                    staffHeadIds[1] = head.Id;
+                } else if(year == '3') {
+                    staffHeadIds[2] = head.Id;
+                }
+            }
+            
+            // Update APA with funding details
+            if(updatedApa != null && updatedApa.Id != null) {
+                update updatedApa;
+            }
+            
+            // Return result with Research Staff Expense_Head__c IDs
+            SaveExpenseResultWrapper result = new SaveExpenseResultWrapper();
+            result.status = 'success';
+            result.researchStaffHeadIds = researchStaffHeadIdsMap;
+            
+            return JSON.serialize(result);
+        } catch(Exception e) {
+            System.debug('Error creating expense head and line items ===> ' + e.getMessage() + ' at Line ===> ' + e.getLineNumber() + ' stack Trace ===> ' + e.getStackTraceString());
+            return 'error: ' + e.getMessage();
+        }
+    }
+    
+    // NEW METHOD: Delete Research Staff records (Expense_Head__c and child Expense_Line_Item__c) by IDs
+    public static String deleteResearchStaffByIds(List<String> expenseHeadIds) {
+        try {
+            if(expenseHeadIds == null || expenseHeadIds.isEmpty()) {
+                return 'error: No Expense Head IDs provided';
+            }
+            
+            // Convert string IDs to Id type
+            List<Id> headIds = new List<Id>();
+            for(String headId : expenseHeadIds) {
+                if(String.isNotBlank(headId)) {
+                    headIds.add(headId);
+                }
+            }
+            
+            if(headIds.isEmpty()) {
+                return 'error: No valid Expense Head IDs provided';
+            }
+            
+            // Get all Expense_Head__c records with their line items
+            List<Expense_Head__c> researchStaffHeads = [SELECT Id, Name, Yearly_Expense__c,
+                                                         (SELECT Id FROM Expense_Line_Items__r)
+                                                         FROM Expense_Head__c 
+                                                         WHERE Id IN :headIds];
+            
+            if(researchStaffHeads.isEmpty()) {
+                return 'success: No records found to delete';
+            }
+            
+            // Collect all line item IDs to delete
+            List<Expense_Line_Item__c> lineItemsToDelete = new List<Expense_Line_Item__c>();
+            for(Expense_Head__c head : researchStaffHeads) {
+                if(head.Expense_Line_Items__r != null && !head.Expense_Line_Items__r.isEmpty()) {
+                    lineItemsToDelete.addAll(head.Expense_Line_Items__r);
+                }
+            }
+            
+            // Delete line items first (due to master-detail relationship)
+            if(!lineItemsToDelete.isEmpty()) {
+                delete lineItemsToDelete;
+            }
+            
+            // Delete Expense_Head__c records
+            delete researchStaffHeads;
+            
+            return 'success';
+        } catch(Exception e) {
+            System.debug('Error deleting Research Staff ===> ' + e.getMessage() + ' at Line ===> ' + e.getLineNumber() + ' stack Trace ===> ' + e.getStackTraceString());
+            return 'error: ' + e.getMessage();
+        }
+    }
+    
     // NEW METHOD: Get expense records from Expense_Head__c and Expense_Line_Item__c
     public static ExpenseHeadLineItemWrapper getExpenseHeadLineItems(String apaId) {
         ExpenseHeadLineItemWrapper wrapper = new ExpenseHeadLineItemWrapper();
@@ -3798,10 +4513,11 @@ return e.getMessage() + e.getLineNumber();
                 yearlyExpenseIds.add(ye.Id);
             }
             
-            // Get all Expense_Head__c records
+            // Get all Expense_Head__c records with Year information
             List<Expense_Head__c> expenseHeads = [SELECT Id, Name, Yearly_Expense__c, Yearly_Expense__r.Year__c 
                                                    FROM Expense_Head__c 
-                                                   WHERE Yearly_Expense__c IN :yearlyExpenseIds];
+                                                   WHERE Yearly_Expense__c IN :yearlyExpenseIds
+                                                   ORDER BY Name ASC, Yearly_Expense__r.Year__c ASC];
             
             Set<Id> headIds = new Set<Id>();
             for(Expense_Head__c eh : expenseHeads) {
@@ -3819,11 +4535,20 @@ return e.getMessage() + e.getLineNumber();
                                                      WHERE Expense_Head__c IN :headIds 
                                                      ORDER BY Index__c ASC];
             
-            // Consolidate line items by expense type and index (merge Year 1, 2, 3 into single records)
+            // Consolidate line items by expense type, index, and year
+            // For Research Staff, merge Year 1, 2, 3 into single records
+            // For other expense types, keep separate records per year
             Map<String, Expense_Line_Item__c> consolidatedMap = new Map<String, Expense_Line_Item__c>();
             
             for(Expense_Line_Item__c eli : lineItems) {
-                String key = eli.Expense_Head__r.Name + '_' + eli.Index__c;
+                String year = eli.Expense_Head__r.Yearly_Expense__r != null ? eli.Expense_Head__r.Yearly_Expense__r.Year__c : '';
+                Boolean isResearchStaff = (eli.Expense_Type__c != null && eli.Expense_Type__c.startsWith('Research staff'));
+                
+                // For Research Staff, consolidate by name and index (merge years)
+                // For other expense types, include year in key to keep them separate
+                String key = isResearchStaff ? 
+                    (eli.Expense_Head__r.Name + '_' + eli.Index__c) : 
+                    (eli.Expense_Head__r.Name + '_' + eli.Index__c + '_' + year);
                 
                 if(consolidatedMap.containsKey(key)) {
                     Expense_Line_Item__c existing = consolidatedMap.get(key);
@@ -3854,6 +4579,7 @@ return e.getMessage() + e.getLineNumber();
                     consolidated.Multiplier__c = eli.Multiplier__c;
                     consolidated.Index__c = eli.Index__c;
                     consolidated.Expense_Type__c = eli.Expense_Head__r.Name;
+                    consolidated.Expense_Head__c = eli.Expense_Head__c; // Preserve Expense_Head__c ID for frontend to determine year
                     
                     if(eli.Expense_Head__r.Yearly_Expense__r.Year__c == '1') {
                         consolidated.Year1_Expense__c = eli.Year1_Expense__c;
@@ -3900,6 +4626,17 @@ return e.getMessage() + e.getLineNumber();
             lineItems = new List<Expense_Line_Item__c>();
             expenseHeads = new List<Expense_Head__c>();
             yearlyExpenses = new List<Yearly_Expense__c>();
+        }
+    }
+    
+    // Wrapper class to return save result with created Expense_Head__c IDs
+    public class SaveExpenseResultWrapper {
+        public String status;
+        public Map<String, List<String>> researchStaffHeadIds; // Map: "Research staff 1" -> ["Year1HeadId", "Year2HeadId", "Year3HeadId"]
+        
+        public SaveExpenseResultWrapper() {
+            status = 'success';
+            researchStaffHeadIds = new Map<String, List<String>>();
         }
     }
     
@@ -5428,11 +6165,12 @@ public class insertPairingWrapper {
 //////**********************************New Method Added By Karthik For Pairing Page
 
 
-public static insertPairingWrapperinWiser insertPairingDetailsinWiser(List<wrapperPairing> contactList, String campaignId, String yearlyCall) {
+public static insertPairingWrapperinWiser insertPairingDetailsinWiser(List<wrapperPairing> contactList, String campaignId, String yearlyCall, String proposalId) {
     insertPairingWrapperinWiser dataWrapper = new insertPairingWrapperinWiser();
     
     try {
         system.debug('size ---> ' + contactList.size());
+        system.debug('proposalId passed ---> ' + proposalId);
         
         // Step 1: Upsert Accounts
         List<Account> accList = new List<Account>();
@@ -5476,7 +6214,7 @@ public static insertPairingWrapperinWiser insertPairingDetailsinWiser(List<wrapp
         List<Contact> newContacts = new List<Contact>();
         List<Contact> existingContacts = new List<Contact>();
         System.debug('$#newContacts=====>'+newContacts);
-        System.debug('$#newContacts=====>'+existingContacts);
+        System.debug('$#existingContacts=====>'+existingContacts);
         for(Contact c : contList) {
             if(c.Id == null) {
                 newContacts.add(c);
@@ -5496,90 +6234,107 @@ public static insertPairingWrapperinWiser insertPairingDetailsinWiser(List<wrapp
         Set<Id> contactIds = new Set<Id>();
         for(Contact c : newContacts) {
             contactIds.add(c.Id);
-            
         }
         for(Contact c : existingContacts) {
             contactIds.add(c.Id);
         }
         
-        // Step 3: Handle Proposal (PEC FAR logic)
+        // Step 3: Handle Proposal - Use existing proposal if provided, otherwise create/find one
         Id wiserRtTd = Utility.getProposalRecordType('WISER');
         Application_Proposal__c singleProposal;
         
-        List<Application_Proposal__c> existingProposalsViaJunction = new List<Application_Proposal__c>();
-        if(!contactIds.isEmpty()) {
-            system.debug('size contactIds---> '+contactIds);
-            existingProposalsViaJunction = [
-                SELECT Id, Campaign__c, RecordTypeId
-                FROM Application_Proposal__c
-                WHERE Id IN (
-                    SELECT Proposals__c 
-                    FROM Applicant_Proposal_Association__c 
-                    WHERE Contact__c IN :contactIds
-                )
-                AND Campaign__c = :campaignId
-                AND RecordTypeId = :wiserRtTd
-                LIMIT 1
-            ];
-        }
-        
-        if(!existingProposalsViaJunction.isEmpty()) {
-            singleProposal = existingProposalsViaJunction[0];
-            system.debug('Found existing proposal via junction: ' + singleProposal.Id);
-        } else {
-            singleProposal = new Application_Proposal__c();
-            singleProposal.RecordTypeId = wiserRtTd;
-            singleProposal.Campaign__c = campaignId;
-            singleProposal.yearly_Call__c = yearlyCall;
-            singleProposal.Proposal_Stages__c = 'Draft';
-            insert singleProposal;
-            system.debug('Created new proposal: ' + singleProposal.Id);
-        }
-        
-       
-        
-    Applicant_Proposal_Association__c association;
-    List<Applicant_Proposal_Association__c> assocToInsert = new List<Applicant_Proposal_Association__c>();
-
-    if (!contactIds.isEmpty()) {
-
-        // Fetch existing associations for all contacts for this proposal
-        Map<Id, Applicant_Proposal_Association__c> existingAssocMap = new Map<Id, Applicant_Proposal_Association__c>();
-
-        for (Applicant_Proposal_Association__c apa : [
-            SELECT Id, Contact__c, Proposals__c
-            FROM Applicant_Proposal_Association__c
-            WHERE Contact__c IN :contactIds
-            AND Proposals__c = :singleProposal.Id
-        ]) {
-            existingAssocMap.put(apa.Contact__c, apa);
-        }
-
-        // Create associations only if not already present
-        for (Id conId : contactIds) {
-            if (!existingAssocMap.containsKey(conId)) {
-                assocToInsert.add(new Applicant_Proposal_Association__c(
-                    Contact__c = conId,
-                    Proposals__c = singleProposal.Id
-                ));
+        // If proposalId is provided, use that proposal
+        if(String.isNotBlank(proposalId)) {
+            try {
+                singleProposal = [
+                    SELECT Id, Campaign__c, RecordTypeId
+                    FROM Application_Proposal__c
+                    WHERE Id = :proposalId
+                    LIMIT 1
+                ];
+                system.debug('Using provided proposal: ' + singleProposal.Id);
+            } catch(Exception e) {
+                system.debug('Proposal not found with provided ID: ' + proposalId + ', will create new one');
+                singleProposal = null;
             }
         }
-
-        // Insert missing associations
-        if (!assocToInsert.isEmpty()) {
-            insert assocToInsert;
-            System.debug('Created associations count: ' + assocToInsert.size());
-        }
-
-        // Maintain reference-style single association (first available)
-        if (!existingAssocMap.isEmpty()) {
-            association = existingAssocMap.values()[0];
-        } else if (!assocToInsert.isEmpty()) {
-            association = assocToInsert[0];
-        }
-    }
         
-        // Populate wrapper with results (EXACT reference pattern)
+        // If proposal not found or not provided, try to find existing via junction or create new
+        if(singleProposal == null) {
+            List<Application_Proposal__c> existingProposalsViaJunction = new List<Application_Proposal__c>();
+            if(!contactIds.isEmpty()) {
+                system.debug('size contactIds---> '+contactIds);
+                existingProposalsViaJunction = [
+                    SELECT Id, Campaign__c, RecordTypeId
+                    FROM Application_Proposal__c
+                    WHERE Id IN (
+                        SELECT Proposals__c 
+                        FROM Applicant_Proposal_Association__c 
+                        WHERE Contact__c IN :contactIds
+                    )
+                    AND Campaign__c = :campaignId
+                    AND RecordTypeId = :wiserRtTd
+                    LIMIT 1
+                ];
+            }
+            
+            if(!existingProposalsViaJunction.isEmpty()) {
+                singleProposal = existingProposalsViaJunction[0];
+                system.debug('Found existing proposal via junction: ' + singleProposal.Id);
+            } else {
+                singleProposal = new Application_Proposal__c();
+                singleProposal.RecordTypeId = wiserRtTd;
+                singleProposal.Campaign__c = campaignId;
+                singleProposal.yearly_Call__c = yearlyCall;
+                singleProposal.Proposal_Stages__c = 'Draft';
+                insert singleProposal;
+                system.debug('Created new proposal: ' + singleProposal.Id);
+            }
+        }
+        
+        // Step 4: Create APAs for both contacts (ensure two APAs are created)
+        Applicant_Proposal_Association__c association;
+        List<Applicant_Proposal_Association__c> assocToInsert = new List<Applicant_Proposal_Association__c>();
+
+        if (!contactIds.isEmpty()) {
+            // Fetch existing associations for all contacts for this proposal
+            Map<Id, Applicant_Proposal_Association__c> existingAssocMap = new Map<Id, Applicant_Proposal_Association__c>();
+
+            for (Applicant_Proposal_Association__c apa : [
+                SELECT Id, Contact__c, Proposals__c
+                FROM Applicant_Proposal_Association__c
+                WHERE Contact__c IN :contactIds
+                AND Proposals__c = :singleProposal.Id
+            ]) {
+                existingAssocMap.put(apa.Contact__c, apa);
+            }
+
+            // Create associations for contacts that don't have one yet
+            // This ensures both contacts get an APA
+            for (Id conId : contactIds) {
+                if (!existingAssocMap.containsKey(conId)) {
+                    assocToInsert.add(new Applicant_Proposal_Association__c(
+                        Contact__c = conId,
+                        Proposals__c = singleProposal.Id
+                    ));
+                }
+            }
+
+            // Insert missing associations (will create APAs for contacts that don't have one)
+            if (!assocToInsert.isEmpty()) {
+                insert assocToInsert;
+                System.debug('Created associations count: ' + assocToInsert.size());
+            }
+
+            // Maintain reference-style single association (first available) for backward compatibility
+            if (!existingAssocMap.isEmpty()) {
+                association = existingAssocMap.values()[0];
+            } else if (!assocToInsert.isEmpty()) {
+                association = assocToInsert[0];
+            }
+        }
+        
+        // Populate wrapper with results
         dataWrapper.proposalId = singleProposal.Id;
         dataWrapper.proposal = singleProposal;
         dataWrapper.apa = association;        
@@ -7735,7 +8490,7 @@ public static String insertFellowship_DetailsWithTheme(Contact proposalDetails, 
     
     public static Contact getCVDetailsForWiserApplicant(string userId,String apaId){
         try{
-            Contact conRec = [SELECT Id,Name,FirstName,LastName,Phone,Email,Publications_Patents__c,List_Of_Patents_Filed_Granted__c,Book_Chapters_Monographs__c,Any_Other_Notable_Achievements__c,Designation__c, Account.Name,
+            Contact conRec = [SELECT Id,Name,FirstName,LastName,Phone,Email,Publications_Patents__c,List_Of_Patents_Filed_Granted__c,Book_Chapters_Monographs__c,Any_Other_Notable_Achievements__c,Designation__c,MailingState,State__c, Account.Name,
                               (SELECT Id,Degree__c,End_Year__c,Start_Year__c,Institution_Name__c,Percentage__c,Percentage_cgpa__c,Area_of_specialization__c,Applicant_Proposal_Association__c FROM Education_Details__r WHERE Applicant_Proposal_Association__c =: apaId),
                               (SELECT Id,End_Year__c,Start_Year__c,Position__c,current_employement__c,Organization_Name__c,Nature_of_Job__c,Applicant_Proposal_Association__c FROM Employment_Details__r WHERE Applicant_Proposal_Association__c =: apaId) FROM Contact WHERE Login_Hash_Code__c=: userId];
             return conRec;

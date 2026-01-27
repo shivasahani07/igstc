@@ -326,6 +326,17 @@ public static String saveApplicantPortalSingh(String loginHashCode,Contact con,A
         return IndustrialFellowshipHelper.saveExpenceLineItemWISER(expLineItem,totalSum);
     }
 
+    // New methods for expense table in FinancialOverview_Wiser
+    @RemoteAction
+    public static IndustrialFellowshipHelper.ExpenseTableWrapperWiser getExpenseTableDataWiser(String proposalId, String candidateId){
+        return IndustrialFellowshipHelper.getExpenseTableDataWiser(proposalId, candidateId);
+    }
+
+    @RemoteAction
+    public static String saveExpenseTableDataWiser(List<Expense_Line_Item__c> expenseLineItems, String proposalId, String totalSum){
+        return IndustrialFellowshipHelper.saveExpenseTableDataWiser(expenseLineItems, proposalId, totalSum);
+    }
+
     @RemoteAction
     public static String updateIFDocStatus(Application_Proposal__c instanceProposal){
         IndustrialFellowshipHelper instanceIFH = new IndustrialFellowshipHelper();

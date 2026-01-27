@@ -17,6 +17,12 @@ angular.module('cp_app').controller('twoReferencePageCtrl', function ($scope, $r
           $rootScope.proposalId = localStorage.getItem('proposalId');
           console.log('Loaded proposalId from localStorage:', $rootScope.proposalId);
      }
+
+     if (localStorage.getItem('apaId')) {
+          $rootScope.apaId = localStorage.getItem('apaId');
+          console.log('Loaded proposalId from localStorage:', $rootScope.apaId);
+     }
+
      if (localStorage.getItem('signatoryAPAId')) {
           $rootScope.signatoryAPAId = localStorage.getItem('signatoryAPAId');
           console.log('Loaded signatoryAPAId from localStorage:', $rootScope.signatoryAPAId);
@@ -39,6 +45,27 @@ angular.module('cp_app').controller('twoReferencePageCtrl', function ($scope, $r
 
      var map = { "first": "1", "second": "2" };
      console.log(getKeyByValue(map, "2"));
+
+     $scope.getApplicantStatusFromAPA = function () {
+          debugger;
+          ApplicantPortal_Contoller.fetchApplicantStatus($rootScope.apaId, function (result, event) {
+               debugger;
+
+               console.log('result return onload :: ');
+               console.log(result);
+               console.log('event:', event);
+
+               if (event.status) {
+                    $rootScope.isCurrentUserSubmitted = result;
+                    CKEDITOR.config.readOnly = true;
+               } else {
+                    console.log('Error in fetchApplicantStatus:', event.message);
+               }
+          }, {
+               escape: true
+          });
+     }
+     $scope.getApplicantStatusFromAPA();
 
      $scope.checkEmail = function () {
           $scope.emailList = [];
@@ -132,7 +159,7 @@ angular.module('cp_app').controller('twoReferencePageCtrl', function ($scope, $r
 
      $scope.getTwoReferenceDetailsWiser = function () {
           // ApplicantPortal_Contoller.getProposalDetailsReferences($rootScope.projectId, function(result, event){
-          ApplicantPortal_Contoller.getProposalDetailsReferences($rootScope.proposalId, function (result, event) {
+          ApplicantPortal_Contoller.getProposalDetailsReferences($rootScope.proposalId, $rootScope.apaId, function (result, event) {
                debugger;
                if (event.status && result != null) {
                     if (result.length == 0) {
@@ -251,49 +278,51 @@ angular.module('cp_app').controller('twoReferencePageCtrl', function ($scope, $r
 
      // Get Signatory Contact Details
      $scope.getContactWiser = function () {
-          debugger;
 
-          ApplicantPortal_Contoller.getSignatoryContactAPADetails($rootScope.proposalId, function (result, event) {
-               debugger;
-               console.log("result ::", result);
+          ApplicantPortal_Contoller.getSignatoryContactAPADetails(
+               $rootScope.proposalId,
+               $rootScope.apaId,
+               // $rootScope.signatoryAPAId,
+               $rootScope.accountId,
+               function (result, event) {
 
-               if (event.status && result) {
+                    if (!event.status || !result) return;
+
+                    // 🔒 SAFE INITIALIZATION
+                    result.Contact__r = result.Contact__r || {};
+                    result.Contact__r.Account = result.Contact__r.Account || {};
 
                     $scope.objContact = result;
 
-                    if (result.Contact__r.Signatory_Salutation__c != undefined || result.Contact__r.Signatory_Salutation__c != '') {
-                         $scope.objContact.Contact__r.Signatory_Salutation__c = $scope.objContact.Contact__r.Signatory_Salutation__c ? $scope.objContact.Contact__r.Signatory_Salutation__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.objContact.Contact__r.Signatory_Salutation__c;
-                    }
-                    if (result.Contact__r.Signatory_First_Name__c != undefined || result.Contact__r.Signatory_First_Name__c != '') {
-                         $scope.objContact.Contact__r.Signatory_First_Name__c = $scope.objContact.Contact__r.Signatory_First_Name__c ? $scope.objContact.Contact__r.Signatory_First_Name__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.objContact.Contact__r.Signatory_First_Name__c;
-                    }
-                    if (result.Contact__r.Signatory_Last_Name__c != undefined || result.Contact__r.Signatory_Last_Name__c != '') {
-                         $scope.objContact.Contact__r.Signatory_Last_Name__c = $scope.objContact.Contact__r.Signatory_Last_Name__c ? $scope.objContact.Contact__r.Signatory_Last_Name__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.objContact.Contact__r.Signatory_Last_Name__c;
-                    }
-                    if (result.Contact__r.Signatory_Institution__c != undefined || result.Contact__r.Signatory_Institution__c != '') {
-                         $scope.objContact.Contact__r.Signatory_Institution__c = $scope.objContact.Contact__r.Signatory_Institution__c ? $scope.objContact.Contact__r.Signatory_Institution__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.objContact.Contact__r.Signatory_Institution__c;
-                    }
-                    if (result.Contact__r.Signatory_Designation__c != undefined || result.Contact__r.Signatory_Designation__c != '') {
-                         $scope.objContact.Contact__r.Signatory_Designation__c = $scope.objContact.Contact__r.Signatory_Designation__c ? $scope.objContact.Contact__r.Signatory_Designation__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.objContact.Contact__r.Signatory_Designation__c;
-                    }
-                    if (result.Contact__r.Email != undefined || result.Contact__r.Email != '') {
-                         $scope.objContact.Contact__r.Email = $scope.objContact.Contact__r.Email ? $scope.objContact.Contact__r.Email.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.objContact.Contact__r.Email;
-                    }
-                    if (result.Contact__r.Institution_Name__c != undefined || result.Contact__r.Institution_Name__c != '') {
-                         $scope.objContact.Contact__r.Institution_Name__c = $scope.objContact.Contact__r.Institution_Name__c ? $scope.objContact.Contact__r.Institution_Name__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.objContact.Contact__r.Institution_Name__c;
-                    }
-                    if (result.Contact__r.Designation__c != undefined || result.Contact__r.Designation__c != '') {
-                         $scope.objContact.Contact__r.Designation__c = $scope.objContact.Contact__r.Designation__c ? $scope.objContact.Contact__r.Designation__c.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.objContact.Contact__r.Designation__c;
-                    }
-                    if (result.Contact__r.Account.Name != undefined || result.Contact__r.Account.Name != '') {
-                         $scope.objContact.Contact__r.Account.Name = $scope.objContact.Contact__r.Account.Name ? $scope.objContact.Contact__r.Account.Name.replace(/&amp;/g, '&').replaceAll('&amp;amp;', '&').replaceAll('&amp;gt;', '>').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&') : $scope.objContact.Contact__r.Account.Name;
-                    }
+                    let c = $scope.objContact.Contact__r;
 
-                    $scope.$apply();
+                    c.Signatory_Salutation__c = decode(c.Signatory_Salutation__c);
+                    c.Signatory_First_Name__c = decode(c.Signatory_First_Name__c);
+                    c.Signatory_Last_Name__c = decode(c.Signatory_Last_Name__c);
+                    c.Signatory_Institution__c = decode(c.Signatory_Institution__c);
+                    c.Signatory_Designation__c = decode(c.Signatory_Designation__c);
+                    c.Email = decode(c.Email);
+                    c.Institution_Name__c = decode(c.Institution_Name__c);
+                    c.Designation__c = decode(c.Designation__c);
+                    c.Account.Name = decode(c.Account.Name);
+
+                    $scope.objContact.Signatory_Emailist_Name__c =
+                         decode($scope.objContact.Signatory_Emailist_Name__c);
+
+                    $scope.$applyAsync();
                }
-          });
+          );
      };
      $scope.getContactWiser();
+
+     function decode(val) {
+          if (!val) return val;
+          return val
+               .replace(/&amp;amp;/g, '&')
+               .replace(/&amp;/g, '&')
+               .replace(/&lt;/g, '<')
+               .replace(/&gt;/g, '>');
+     }
 
      // METHOD TO SAVE REFERENCES AND SIGNATORY CONTACT
      $scope.saveParticipants = function () {
@@ -347,6 +376,78 @@ angular.module('cp_app').controller('twoReferencePageCtrl', function ($scope, $r
                return;
           }
 
+
+          // Signatory Validations
+
+          let contact = $scope.objContact?.Contact__r;
+
+          // Salutation validation
+          if (!contact || !contact.Signatory_Salutation__c || contact.Signatory_Salutation__c === '' || contact.Signatory_Salutation__c === '-- Select Salutation --') {
+               swal("Info", "Please select Signatory Salutation.", "info");
+               angular.element('#signatorySalutation').addClass('error-border');
+               return;
+          }
+
+          // First Name validation
+          if (!contact.Signatory_First_Name__c || contact.Signatory_First_Name__c.trim() === '') {
+               swal("Info", "Please enter Signatory First Name.", "info");
+               angular.element('#signFirstName').addClass('error-border');
+               return;
+          }
+
+          // Last Name validation
+          if (!contact.Signatory_Last_Name__c || contact.Signatory_Last_Name__c.trim() === '') {
+               swal("Info", "Please enter Signatory Last Name.", "info");
+               angular.element('#signLastName').addClass('error-border');
+               return;
+          }
+
+          // Signatory_Institution__c validation
+          if (!contact.Signatory_Institution__c || contact.Signatory_Institution__c.trim() === '') {
+               swal("Info", "Please enter Signatory Institution.", "info");
+               angular.element('#signInstitution').addClass('error-border');
+               return;
+          }
+
+          // Signatory_Designation__c validation
+          if (!contact.Signatory_Designation__c || contact.Signatory_Designation__c.trim() === '') {
+               swal("Info", "Please enter Signatory Designation.", "info");
+               angular.element('#signDesignation').addClass('error-border');
+               return;
+          }
+
+          // Email validation
+          if (!contact.Email || contact.Email.trim() === '') {
+               swal("Info", "Please enter Signatory Email.", "info");
+               angular.element('#signatoryEmail').addClass('error-border');
+               return;
+          }
+
+          // Institution_Name__c validation
+          if (!contact.Institution_Name__c || contact.Institution_Name__c.trim() === '') {
+               swal("Info", "Please enter Institution.", "info");
+               angular.element('#signInstitution2').addClass('error-border');
+               return;
+          }
+
+          // Designation__c validation
+          if (!contact.Designation__c || contact.Designation__c.trim() === '') {
+               swal("Info", "Please enter Designation.", "info");
+               angular.element('#signDesignation2').addClass('error-border');
+               return;
+          }
+
+          // Signatory Emailst Name validation
+          if (!$scope.objContact.Signatory_Emailist_Name__c || $scope.objContact.Signatory_Emailist_Name__c.trim() === '') {
+               swal("Info", "Please enter Signatory Emailist Name.", "info");
+               angular.element('#signEmailistName').addClass('error-border');
+               return;
+          }
+
+
+
+
+
           // ApplicantPortal_Contoller.insertParticipantsReferences($scope.ParticipantList, $rootScope.projectId, function (result, event) {
 
           //      if (event.status && result != null) {
@@ -375,7 +476,7 @@ angular.module('cp_app').controller('twoReferencePageCtrl', function ($scope, $r
 
           var signatoryAPAId = $scope.objContact && $scope.objContact.Id ? $scope.objContact.Id : null;
 
-          ApplicantPortal_Contoller.insertParticipantsReferences($scope.ParticipantList, $rootScope.proposalId, $scope.objContact.Contact__r, signatoryAPAId, $rootScope.accountId, function (result, event) {
+          ApplicantPortal_Contoller.insertParticipantsReferences($scope.ParticipantList, $rootScope.proposalId, $rootScope.apaId, $scope.objContact.Contact__r, $scope.objContact, signatoryAPAId, $rootScope.accountId, function (result, event) {
 
                if (event.status && result != null) {
                     console.log('Result ::' + result);
