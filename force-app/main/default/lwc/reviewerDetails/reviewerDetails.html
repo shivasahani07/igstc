@@ -1,0 +1,104 @@
+<template>
+    <div class="main-container">
+        <!-- <lightning-card> -->
+            <div class="head">Reviewer Details</div>
+
+            <template if:true={allData}>
+                <div class="table-container">
+                    <table class="preview-table">
+                        <thead class="table-header">
+                            <tr>
+                                <th>S.No</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Total Proposal Assign</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-body">
+                            <template for:each={paginationData} for:item="item">
+                                <tr key={item.reviewerName}>
+                                    <td>{item.index}</td>
+                                    <td>{item.reviewerName}</td>
+                                    <td>{item.reviewerEmail}</td>
+                                    <td>{item.mappingCount}</td>
+                                    <td>
+                                        <button class="custom-view-button slds-button" onclick={handleViewDetails}
+                                            data-name={item.reviewerName}>
+                                            <lightning-icon icon-name="utility:preview" size="x-small"
+                                                class="slds-button__icon slds-button__icon_left slds-m-bottom_xx-small" data-name={item.reviewerName}></lightning-icon>
+                                            <span class="view-text" data-name={item.reviewerName}>View</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <c-reusable-pagination class="slds-p-around_medium slds-float_right" page-size="10"
+                    style="font-size: medium;" list={allData} onpagechange={handlePagination}> </c-reusable-pagination>
+            </template>
+
+            <template if:true={error}>
+                <p class="slds-text-color_error">Error loading data</p>
+            </template>
+        <!-- </lightning-card> -->
+
+
+        <template if:true={isModalOpen}>
+            <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <h4 class="custom-modal-header">
+                            Details for {selectedReviewer}
+                        </h4>
+                        <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_small">
+                            <lightning-input type="search" value={searchKey} placeholder="Search by Call Type"
+                                onchange={handleSearch} variant="label-hidden">
+                            </lightning-input>
+                        </div>
+                    </header>
+
+                    <div class="main-container py-3 px-2" style="background-color: white;">
+                        <div class="table-container2">
+                            <table class="preview-table">
+                                <thead class="table-header">
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Proposal Name</th>
+                                        <th>Call Type</th>
+                                        <th>Review Stage</th>
+                                        <th>Proposal Stage</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-body">
+                                    <template for:each={selectedReviewerDetail} for:item="item">
+                                        <tr key={item.Id}>
+                                            <td>{item.serialNumber}</td>
+                                            <td>{item.Proposal_Name__c}</td>
+
+                                            <td>{item.callType}</td>
+                                            <td>{item.Stage__c}</td>
+                                            <td>{item.Proposal_Stage__c}</td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <footer class="slds-modal__footer">
+                        <lightning-button label="Close" variant="brand" onclick={handleCloseModal} class="blue-button">
+                        </lightning-button>
+                        <c-reusable-pagination class="slds-p-around_medium slds-float_right" page-size="10"
+                            style="font-size: medium;" list={filteredReviewerDetails}
+                            onpagechange={handlePaginationTwo}> </c-reusable-pagination>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </div>
+</template>

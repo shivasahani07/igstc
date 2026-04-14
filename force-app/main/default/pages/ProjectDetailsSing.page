@@ -1,0 +1,353 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="IndustrialFellowshipController">
+    <html>
+    <div ng-controller="ProjectDetailsSing_Ctrl">
+
+        <head>
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.5.16/textAngular.css" crossorigin="anonymous"/>
+            <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular.min.js"></script>
+            <script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.1.2/textAngular.min.js'></script>
+            <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular-sanitize.min.js'></script>
+            <script>
+                var userId = '{!$CurrentPage.parameters.id}';
+            </script>
+            <!-- <style>
+                .ta-editor {
+                    min-height: 150px;
+                    height: auto;
+                    overflow: auto;
+                }
+            </style> -->
+        </head>
+
+        <body>
+            <div class="container px-5 mt-5">
+                <div class="row mx-4">
+                    <div class="col-md-12">
+                        <div class="tab-link" ng-show="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ApplicantInformationSing')">
+                                        <div class="icon-circle">
+                                            <i class="fa-regular fa-user"></i>
+                                        </div>
+                                        <span>Personal Information</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('SingHostDetails')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Host Details</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ProjectDetailsSing')">
+                                        <div class="icon-circle">
+                                            <i class="fa-regular fa-address-card"></i>
+                                        </div>
+                                        <span>Proposed Work</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('BudgetDetails')">
+                                        <div class="icon-circle">
+                                            <i class="fa fa-money"></i>
+                                        </div>
+                                        <span>Budget Details</span>
+                                    </a>
+                                </li>                               
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('AttachmentsSing')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Attachments</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('SignatureSealsSing')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-graduation-cap"></i>
+                                        </div>
+                                        <span>Review and Submit</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-link" ng-hide="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success wp-5"></div>
+                            </div>
+                            <ul>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa-regular fa-user"></i>
+                                        </div>
+                                        <span>Personal Information</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Host Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa-regular fa-address-card"></i>
+                                        </div>
+                                        <span>Proposed Work</span>
+                                    </a>
+                                </li> 
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa fa-money"></i>
+                                        </div>
+                                        <span>Budget Details</span>
+                                    </a>
+                                </li>                               
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Attachments</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-graduation-cap"></i>
+                                        </div>
+                                        <span>Review and Submit</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container px-4">
+                <!-- <div class="card h-100 m-5">
+                    <div class="card-header">
+                        <h2 class="p-3">
+                            <b>Project Details</b>
+                        </h2>
+                    </div>
+                    <div class="card-text m-3"> -->
+                        <div class="box-shadow-2 py-3 px-5">
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <h4 class="color-theme"><b>Purpose for applying to SING</b><span class="text-danger ps-2">*</span></h4>
+                            </div>
+                           
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <!-- <div class="form-check"> -->
+                                <input class="form-check-input" type="radio" ng-disabled="proposalStage" value="Joint patent applications" name="radioPurpose" ng-model="objProposal.Purpose_for_applying__c"/>
+                                <label class="font-if ps-3">
+                                    Joint patent applications.
+                                </label>
+                            </div>
+                            <div class="col-md-12">
+                                <input class="form-check-input" type="radio" ng-disabled="proposalStage" value="To develop a working prototype based on a joint patent." name="radioPurpose"
+                                    ng-model="objProposal.Purpose_for_applying__c" />
+                                <label class="font-if ps-3">
+                                    To develop a working prototype based on a joint patent.
+                                </label>
+                            </div>
+                            <div class="col-md-12">
+                                <input class="form-check-input" type="radio" ng-disabled="proposalStage" value="Seed funding for an innovative idea resulting from the networking and connect facilitated through IGSTC."
+                                    name="radioPurpose" ng-model="objProposal.Purpose_for_applying__c" />
+                                <label class="font-if ps-3">
+                                    Seed funding for an innovative idea resulting from the networking and connect facilitated through IGSTC.
+                                </label>
+                                <br/>
+                                <input class="form-check-input" type="radio" ng-disabled="proposalStage" value="One time grant for initiating basic joint experiments" name="radioPurpose"
+                                    ng-model="objProposal.Purpose_for_applying__c" />
+                                <label class="font-if ps-3">
+                                    One time grant for initiating basic joint experiments (consumables or per diem) at partner (India/Germany) countries.
+                                </label>
+                                <br/>
+                                <input class="form-check-input" type="radio" ng-disabled="proposalStage" name="radioPurpose" value="Support towards utilization of mega/lab facilities for experiments."
+                                    ng-model="objProposal.Purpose_for_applying__c" />
+                                <label class="font-if ps-3">
+                                    Support towards utilization of mega/lab facilities for experiments.
+                                </label>
+                                <br/>
+                                <input class="form-check-input" type="radio" ng-disabled="proposalStage" value="German and Indian visiting fellows" name="radioPurpose" ng-model="objProposal.Purpose_for_applying__c"
+                                />
+                                <label class="font-if ps-3">
+                                    German and Indian visiting fellows (researchers and academicians) who need additional support to expand on
+                                    <br/> networking visits and discussions in their visiting countries.
+                                </label>
+                                <br/>
+                                <input class="form-check-input" type="radio" ng-disabled="proposalStage" name="radioPurpose" value="Registration cost for participation in internationally reputed"
+                                    ng-model="objProposal.Purpose_for_applying__c" />
+                                <label class="font-if ps-3">
+                                    Registration cost for participation in internationally reputed scientific conferences in India/Germany
+                                    <br/>(Only on acceptance of paper. Poster presentation and invitation as a speaker may not
+                                    be considered).
+                                </label>
+                                <br/>
+                                <input class="form-check-input" type="radio" ng-disabled="proposalStage" value="Activity related to technology demonstration of a product." name="radioPurpose"
+                                    ng-model="objProposal.Purpose_for_applying__c" />
+                                <label class="font-if ps-3">
+                                    Activity related to technology demonstration of a product.
+                                </label>
+                                <br/>
+                                <input class="form-check-input" type="radio" ng-disabled="proposalStage" value="A new concept that can enhance networking or collaboration." name="radioPurpose"
+                                    ng-model="objProposal.Purpose_for_applying__c" />
+                                <label class="font-if ps-3">
+                                    A new concept that can enhance networking or collaboration.
+                                </label>
+                                <br/>
+                                <input class="form-check-input" type="radio" ng-disabled="proposalStage" value="Conducting intergroup/institutional joint experiments." name="radioPurpose"
+                                    ng-model="objProposal.Purpose_for_applying__c" />
+                                <label class="font-if ps-3">
+                                    Conducting intergroup/institutional joint experiments.
+                                </label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" ng-disabled="proposalStage" value="Partial support towards organization of" name="radioPurpose" ng-model="objProposal.Purpose_for_applying__c"
+                                    />
+                                    <label class="font-if ps-3">
+                                        Partial support towards organization of/participation in an event.
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" ng-disabled="proposalStage" value="Other" name="radioPurpose" ng-model="objProposal.Purpose_for_applying__c"
+                                    />
+                                    <label class="font-if ps-3">
+                                        Other
+                                    </label>
+                                </div>
+
+                                <div class="row mt-2 mb-3" ng-show="objProposal.Purpose_for_applying__c == 'Other'">
+                                    <div class="col-md-6">
+                                        <label class="font-if">Please specify<span class="text-danger me-2">*</span></label>
+                                        <input type="text" id="other" ng-disabled="proposalStage" ng-focus="removeClass()" ng-model="objProposal.Purpose_for_Applying_Other__c" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- <div class="row mt-4 mb-5">
+                            <div class="col-md-12">
+                                <div style="line-height:3px; border-bottom:solid #ddd 1px;"></div>
+                            </div>
+                        </div> -->
+                        <div class="box-shadow-2 pt-3 pb-5 px-5 mt-5">
+                        
+                        <div class="row mt-3">
+                            <div class="col-md-10">
+                                <p class="color-theme pt-4">Title of the Proposed Work<span class="text-danger me-2">*</span></p>
+                                <input type="text" id="txtTitle" ng-disabled="proposalStage" name="txtInputs" ng-focus="removeClass()" maxlength="255" ng-model="objProposal.Title_Of__c" class="form-control mt-3 py-5" />
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-10">
+                                <p class="color-theme pt-4">Broad area of work<span class="text-danger me-2">*</span></p>
+                                <input type="text" id="txtBrdAreaResearch" ng-disabled="proposalStage" name="txtInputs" ng-focus="removeClass()" maxlength="255" ng-model="objProposal.Proposed_area__c" class="form-control mt-3 py-5" />
+                            </div>
+                            <!-- <div class="col-md-4">
+                                <label class="text-danger mt-5"><span class="me-2">*</span>Mandatory Fields</p>
+                            </div> -->
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-5">
+                                <label class="font-if color-theme"><b>Keywords</b><span class="text-danger me-2">*</span></label>
+                                <!-- <input type="text" ng-model="objKeyword.Keyword" class="form-control" /> -->
+                                <div class="row" ng-repeat="key in objKeyword">
+                                    <div class="col-md-9"><input type="text" ng-disabled="proposalStage" name="txtInputs" id="txtKeyword{{$index}}" ng-model="key.keyword" maxlength="255" class="form-control mb-2" /></div>
+                                    <div class="col-md-3">
+                                        <i ng-click="addKeyword()" class="fa-solid fa-2x color-theme-o float-end fa-circle-plus me-2 mt-2" ng-if="!proposalStage"></i>
+                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger float-start mt-2" ng-click="removeKeyword($index)" ng-if="!proposalStage"></i>
+                                    </div>                                    
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <label class="pb-3 color-theme">
+                                    Duration In Months (Max 12)
+                                </label>
+                                <span class="required-asterisk" style="color:red;">*</span>
+                                <input name="duration" class="form-control" type="text" number="objProposal.Duration_In_Months_Max_36__c" ng-model="objProposal.Duration_In_Months_Max_36__c"
+                                        ng-disabled="proposalStage" ng-maxlength="2" max="36" id="txtDuration" ng-focus="removeClass()"
+                                        ng-keyup="restrictDecimalVal(objProposal.Duration_In_Months_Max_36__c)" />
+                                        <!-- <span ng-if="!formPrjDet.duration.$valid" class="text-danger">duration should not be greater than 12 months</span> -->
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-10">
+                                <form name="formPrjDet1">
+                                <p class="color-theme">Abstract of the proposed work<span class="text-danger me-2">*</span></p>
+                                <textarea id="txtProposedWork" class="form-control" rows="3" maxlength="255" ng-model="objProposal.Abstract_of_proposed__c" ng-disabled="proposalStage" ng-focus="removeClass()"></textarea>
+                                <!-- <input type="text" id="txtProposedWork" ng-disabled="proposalStage" name="txtInputs" maxlength="255" ng-focus="removeClass()" ng-model="objProposal.Abstract_of_proposed__c" class="form-control py-5" /> -->
+                                <!-- <span ng-if="!formPrjDet1.txtInputs.$valid" class="text-danger">Please enter a valid email address</span> -->
+                            </form>
+                            </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-md-10">
+                                <form name="formPrjDet">
+                                    <p class="color-theme">Brief description of the Organisation/Institution/Industry<span class="text-danger me-2">*</span></p>
+                                    <textarea id="txtBStatement" class="form-control" rows="3" maxlength="255" ng-model="objProposal.Brief_Statement_of_Purpose__c" ng-disabled="proposalStage" ng-focus="removeClass()"></textarea>
+                                    <!-- <input type="text" id="txtBStatement" ng-disabled="proposalStage" name="txtInputs" maxlength="255" ng-focus="removeClass()" ng-model="objProposal.Brief_Statement_of_Purpose__c" class="form-control py-5" /> -->
+                                    <!-- <span ng-if="!formPrjDet.txtInputs.$valid" class="text-danger">Please enter a valid email address</span> -->
+                                </form>
+                                </div>
+                            </div>
+                            
+                    </div>
+                        
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <form name="formPrjDet2">
+                                <label class="font-if color-theme"><b>Details of the Proposed Work (including time schedule, expected outcomes in max 2500 characters )</b></label><br/>
+                                <small class="label-rtf"><b>To use the below RTF box more efficiently, make sure you write your content in word document first and then copy paste here</b></small>
+                                <ng-ckeditor id="txtSummary" read-Only="true" ng-model="objProposal.Summary__c" ng-change="readCharacter(objProposal.Summary__c,0)" name="ckEditor" ng-config="config"></ng-ckeditor>
+                                <span>Total characters : {{objRtf[0].charCount}}</span>
+                                <span class="text-danger" ng-if="objRtf[0].errorStatus">Maximum characters limit is 2500</span>
+                            </form>
+                            </div>
+                        </div>
+                        <div class="row mt-3"> 
+                            <div class="col-md-12">
+                                <label class="font-if color-theme"><b>How your proposal will enhance the Indo-German Collaboration ? ( in max 1000 Characters)<span class="text-danger me-2">*</span></b></label><br/>
+                                <small class="label-rtf"><b>To use the below RTF box more efficiently, make sure you write your content in word document first and then copy paste here</b></small>
+                                <ng-ckeditor id="txtSummary" read-Only="true" ng-model="objProposal.Research_Approach_Objectives__c" ng-change="readCharacter(objProposal.Research_Approach_Objectives__c,1)" name="ckEditor" ng-config="config"></ng-ckeditor>
+                                <span>Total characters : {{objRtf[1].charCount}}</span>
+                                <span class="text-danger" ng-if="objRtf[1].errorStatus">Maximum characters limit is 1000</span>
+                                <!-- <input type="text" id="txtIndoGerman" ng-disabled="proposalStage" name="txtInputs" ng-focus="removeClass()" maxlength="255" ng-model="objProposal.Indo_German_Colloboration__c" class="form-control mt-3" /> -->
+                            </div>
+                        </div>
+                        <div class="row my-3" ng-if="!proposalStage">
+                            <div class="col-md-12">
+                                <button class="blue-btn float-end" ng-click="saveProjectDetailsSing()" type="button">
+                                    <i class="fa-solid fa-check me-2"></i>Save and Next</button>  
+                                    <button class="blue-bordered-btn float-end me-2" ng-click="redirectPageURL('SingHostDetails')" type="button">
+                                        <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>                         
+                            </div>
+                        </div>
+                    </div>
+                <!-- </div>
+            </div> -->
+            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+            <script src='http://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.2/textAngular-sanitize.min.js'></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.5.16/textAngular.min.js" crossorigin="anonymous"></script>
+        </body>
+    </div>
+
+    </html>
+</apex:page>

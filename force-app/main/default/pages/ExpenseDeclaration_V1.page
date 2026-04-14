@@ -1,0 +1,610 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="ApplicantPortal_Contoller">
+    <html>
+        <head>
+            <c:Libraries />
+            <script src="{!$Resource.Expense}"> 
+            </script>
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+        </head>
+        <body ng-app="ExpenseModule" ng-controller="ExpenseModuleController">
+
+            
+            <div class="container-fluid mt-5">
+                <div class="row px-5">
+                    <div class="col-md-12">
+            <div class="accordion" id="accordionExample" ng-show="!expenseDetails">
+                <div ng-repeat="acc in accList">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="acc.Id">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#acc.Name" aria-expanded="true" aria-controls="acc.Name">
+                               <h4>{{acc.Name}}</h4>
+                            </button>
+                        </h2>
+                        <div id="acc.Name" class="accordion-collapse collapse show" aria-labelledby="acc.Id" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <button type="button" class="btn btn-primary background-theme border-theme" ng-click="enableExpenseModule(acc.Id);">Expense Details</button>                                 
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            <div ng-show = "expenseDetails">
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <h4>Man Power</h4>
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <div class="row ms-3 me-3">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="p-2">Details</th>
+                                                <th class="p-2">Expense Description</th>
+                                                <th class="p-2">Person Per Month</th>
+                                                <th class="p-2">Salary/Month</th>
+                                                <th class="p-2">Year1 Requested Amount</th>
+                                                <th class="p-2">Year1 Approved Amount</th>
+                                                <th class="p-2">Year2 Requested Amount</th>
+                                                <th class="p-2">Year2 Approved Amount</th>
+                                                <th class="p-2">Year3 Requested Amount</th>
+                                                <th class="p-2">Year3 Approved Amount</th>
+                                                <th class="p-3">Total</th>
+                                                <th nowrap="true" width="15%" class="p-2">
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="con in manPowerRecords">
+                                                <td class="p-4">
+                                                    <label>{{$index + 1}}</label>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" id="Man Power" ng-model="con.Description__c"  />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Unit_Price__c" ng-disabled="disable" ng-keyup="calculateYearField('man')" ng-change="calculateYearField('man')" ng-keypress="calculateYearField('man')"/>
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <!--<span class="required-asterisk" style="color:red;">*</span>-->
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Multiplier__c" ng-keyup="calculateYearField('man')" ng-change="calculateYearField('man')" ng-keypress="calculateYearField('man')"/>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Year1_Expense__c" ng-disabled="disable" ng-keyup="calculateOtherField('man')" ng-change="calculateOtherField('man')" ng-keypress="calculateOtherField('man')"/>
+                                                        
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Year1_Approved_Amount__c" ng-disabled="disable" ng-keyup="calculateOtherField('man')" ng-change="calculateOtherField('man')" ng-keypress="calculateOtherField('man')"/>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Year2_Expense__c" ng-disabled="disable" ng-keyup="calculateOtherField('man')" ng-change="calculateOtherField('man')" ng-keypress="calculateOtherField('man')"/>
+                                                        
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.year2_Approved_Amount__c" ng-disabled="disable" ng-keyup="calculateOtherField('man')" ng-change="calculateOtherField('man')" ng-keypress="calculateOtherField('man')"/>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Year3_Expense__c" ng-disabled="disable" ng-keyup="calculateOtherField('man')" ng-change="calculateOtherField('man')" ng-keypress="calculateOtherField('man')"/>
+                                                        
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Year3_Approved_Amount__c" ng-disabled="disable" ng-keyup="calculateOtherField('man')" ng-change="calculateOtherField('man')" ng-keypress="calculateOtherField('man')"/>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Total_Expense__c" ng-disabled="true" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td class="text-center">
+                                                    
+                                                    <a type="button" ng-click="addRow($parent.$index,$index)">
+                                                        <i class="fa-solid fa-circle-plus fa-2x text-success"></i>
+                                                    </a>
+                                                    <a type="button" ng-click="deleteRow($parent.$index,$index,con.Id)">
+                                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                                    </a>
+                                                </td>
+                                                <div class="mb-3">
+                                                    <button type="button" class="btn btn-primary background-theme border-theme" ng-click="submitExpense('Man_Power');">Submit</button>
+                                                    <button type="button" class="btn btn-primary background-theme border-theme" ng-click="disableExpenseModule($index)">Back</button>
+                                                </div>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                <h4>Consumables</h4>
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <div class="row ms-3 me-3">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="p-2">Details</th>
+                                                <th class="p-2">Expense Description</th>
+                                                <th class="p-2">Person Per Month</th>
+                                                <th class="p-2">Salary/Month</th>
+                                                <th class="p-2">Year1 Requested Amount</th>
+                                                <th class="p-2">Year1 Approved Amount</th>
+                                                <th class="p-2">Year2 Requested Amount</th>
+                                                <th class="p-2">Year2 Approved Amount</th>
+                                                <th class="p-2">Year3 Requested Amount</th>
+                                                <th class="p-2">Year3 Approved Amount</th>
+                                                <th class="p-2">Total</th>
+                                                <th nowrap="true" width="15%" class="p-2">
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="con in consumables">
+                                                <td class="p-4">
+                                                    <label>{{$index + 1}}</label>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" id="Man Power" ng-model="con.Description__c"  />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Unit_Price__c" ng-disabled="disable" ng-keyup="calculateYearField('cons')" ng-change="calculateYearField('cons')" ng-keypress="calculateYearField('cons')" required="true" ng-required="consortia.Website"/>
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <!--<span class="required-asterisk" style="color:red;">*</span>-->
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Multiplier__c" required="true" ng-required="con.Email" ng-keyup="calculateYearField('cons')" ng-change="calculateYearField('cons')" ng-keypress="calculateYearField('cons')" />
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Year1_Expense__c" ng-keyup="calculateOtherField('cons')" ng-change="calculateOtherField('cons')" ng-keypress="calculateOtherField('cons')" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Year1_Approved_Amount__c" ng-keyup="calculateOtherField('cons')" ng-change="calculateOtherField('cons')" ng-keypress="calculateOtherField('cons')" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Year2_Expense__c" ng-keyup="calculateOtherField('cons')" ng-change="calculateOtherField('cons')" ng-keypress="calculateOtherField('cons')" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.year2_Approved_Amount__c" ng-keyup="calculateOtherField('cons')" ng-change="calculateOtherField('cons')" ng-keypress="calculateOtherField('cons')" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Year3_Expense__c" ng-keyup="calculateOtherField('cons')" ng-change="calculateOtherField('cons')" ng-keypress="calculateOtherField('cons')" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Year3_Approved_Amount__c" ng-keyup="calculateOtherField('cons')" ng-change="calculateOtherField('cons')" ng-keypress="calculateOtherField('cons')" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Total_Expense__c" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td class="text-center">
+                                                    
+                                                    <a type="button" ng-click="addRowCon($parent.$index,$index)">
+                                                        <i class="fa-solid fa-circle-plus fa-2x text-success"></i>
+                                                    </a>
+                                                    <a type="button" ng-click="deleteRowConsumables($parent.$index,$index,con.Id)">
+                                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div>
+                                        <button type="button" class="btn btn-primary background-theme border-theme" ng-click="submitExpense('consumables');">Submit</button>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            <h4>Equipment</h4>
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <div class="row ms-3 me-3">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="p-2">Details</th>
+                                                <th class="p-2">Expense Description</th>
+                                                <th class="p-2">Person Per Month</th>
+                                                <th class="p-2">Salary/Month</th>
+                                                <th class="p-2">Year1 Requested Amount</th>
+                                                <th class="p-2">Year1 Approved Amount</th>
+                                                <th class="p-2">Year2 Requested Amount</th>
+                                                <th class="p-2">Year2 Approved Amount</th>
+                                                <th class="p-2">Year3 Requested Amount</th>
+                                                <th class="p-2">Year3 Approved Amount</th>
+                                                <th class="p-2">Total</th>
+                                                <th nowrap="true" width="15%" class="p-2">
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="con in Equipment">
+                                                <td class="p-4">
+                                                    <label>{{$index + 1}}</label>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" id="Man Power" ng-model="con.Description__c"  />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Unit_Price__c" ng-disabled="disable" required="true" ng-keyup="calculateYearField('equi')" ng-change="calculateYearField('equi')" ng-keypress="calculateYearField('equi')" ng-required="consortia.Website"/>
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <!--<span class="required-asterisk" style="color:red;">*</span>-->
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Multiplier__c" required="true" ng-keyup="calculateYearField('equi')" ng-change="calculateYearField('equi')" ng-keypress="calculateYearField('equi')" ng-required="con.Email"/>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Year1_Expense__c" ng-keyup="calculateOtherField('equi')" ng-change="calculateOtherField('equi')" ng-keypress="calculateOtherField('equi')" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Year1_Approved_Amount__c" ng-keyup="calculateOtherField('equi')" ng-change="calculateOtherField('equi')" ng-keypress="calculateOtherField('equi')" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Year2_Expense__c" ng-keyup="calculateOtherField('equi')" ng-change="calculateOtherField('equi')" ng-keypress="calculateOtherField('equi')" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.year2_Approved_Amount__c" ng-keyup="calculateOtherField('equi')" ng-change="calculateOtherField('equi')" ng-keypress="calculateOtherField('equi')" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Year3_Expense__c" ng-keyup="calculateOtherField('equi')" ng-change="calculateOtherField('equi')" ng-keypress="calculateOtherField('equi')" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Year3_Approved_Amount__c" ng-keyup="calculateOtherField('equi')" ng-change="calculateOtherField('equi')" ng-keypress="calculateOtherField('equi')" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Total_Expense__c" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td class="text-center">
+                                                    
+                                                    <a type="button" ng-click="addRowEquip($parent.$index,$index)">
+                                                        <i class="fa-solid fa-circle-plus fa-2x text-success"></i>
+                                                    </a>
+                                                    <a type="button" ng-click="deleteRowEquipment($parent.$index,$index,con.Id)">
+                                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div>                                    
+                                        <button type="button" class="btn btn-primary background-theme border-theme" ng-click="submitExpense('quipment');">Submit</button>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingFour">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            <h4>Travel</h4>
+                            </button>
+                        </h2>
+                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <div class="row ms-3 me-3">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="p-2">Details</th>
+                                                <th class="p-2">Expense Description</th>
+                                                <th class="p-2">Person Per Month</th>
+                                                <th class="p-2">Salary/Month</th>
+                                                <th class="p-2">Year1 Requested Amount</th>
+                                                <th class="p-2">Year1 Approved Amount</th>
+                                                <th class="p-2">Year2 Requested Amount</th>
+                                                <th class="p-2">Year2 Approved Amount</th>
+                                                <th class="p-2">Year3 Requested Amount</th>
+                                                <th class="p-2">Year3 Approved Amount</th>
+                                                <th class="p-2">Total</th>
+                                                <th nowrap="true" width="15%" class="p-2">
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="con in travel">
+                                                <td class="p-4">
+                                                    <label>{{$index + 1}}</label>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" id="Man Power" ng-model="con.Description__c"/>
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Unit_Price__c" ng-keyup="calculateYearField('travel')" ng-change="calculateYearField('travel')" ng-keypress="calculateYearField('travel')" ng-disabled="disable" required="true" ng-required="consortia.Website"/>
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <!--<span class="required-asterisk" style="color:red;">*</span>-->
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Multiplier__c" ng-keyup="calculateYearField('travel')" ng-change="calculateYearField('travel')" ng-keypress="calculateYearField('travel')" required="true" ng-required="con.Email"/>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Year1_Expense__c" ng-keyup="calculateOtherField('travel')" ng-change="calculateOtherField('travel')" ng-keypress="calculateOtherField('travel')" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Year1_Approved_Amount__c" ng-keyup="calculateOtherField('travel')" ng-change="calculateOtherField('travel')" ng-keypress="calculateOtherField('travel')" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Year2_Expense__c" ng-keyup="calculateOtherField('travel')" ng-change="calculateOtherField('travel')" ng-keypress="calculateOtherField('travel')" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.year2_Approved_Amount__c" ng-keyup="calculateOtherField('travel')" ng-change="calculateOtherField('travel')" ng-keypress="calculateOtherField('travel')" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Year3_Expense__c" ng-keyup="calculateOtherField('travel')" ng-change="calculateOtherField('travel')" ng-keypress="calculateOtherField('travel')" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Year3_Approved_Amount__c" ng-keyup="calculateOtherField('travel')" ng-change="calculateOtherField('travel')" ng-keypress="calculateOtherField('travel')" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Total_Expense__c" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td class="text-center">
+                                                    
+                                                    <a type="button" ng-click="addRowTravel($parent.$index,$index)">
+                                                        <i class="fa-solid fa-circle-plus fa-2x text-success"></i>
+                                                    </a>
+                                                    <a type="button" ng-click="deleteRowTravel($parent.$index,$index,con.Id)">
+                                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div>
+                                        <button type="button" class="btn btn-primary background-theme border-theme" ng-click="submitExpense('travel');">Submit</button>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingFive">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                            <h4>Other</h4>
+                            </button>
+                        </h2>
+                        <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <div class="row ms-3 me-3">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="p-2">Details</th>
+                                                <th class="p-2">Expense Description</th>
+                                                <th class="p-2">Person Per Month</th>
+                                                <th class="p-2">Salary/Month</th>
+                                                <th class="p-2">Year1 Requested Amount</th>
+                                                <th class="p-2">Year1 Approved Amount</th>
+                                                <th class="p-2">Year2 Requested Amount</th>
+                                                <th class="p-2">Year2 Approved Amount</th>
+                                                <th class="p-2">Year3 Requested Amount</th>
+                                                <th class="p-2">Year3 Approved Amount</th>
+                                                <th class="p-2">Total</th>
+                                                <th nowrap="true" width="15%" class="p-2">
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="con in other">
+                                                <td class="p-4">
+                                                    <label>{{$index + 1}}</label>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" id="Man Power" ng-model="con.Description__c"  />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Unit_Price__c" ng-keyup="calculateYearField('other')" ng-change="calculateYearField('other')" ng-keypress="calculateYearField('other')" ng-disabled="disable" required="true" ng-required="consortia.Website"/>
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <!--<span class="required-asterisk" style="color:red;">*</span>-->
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Multiplier__c" ng-keyup="calculateYearField('other')" ng-change="calculateYearField('other')" ng-keypress="calculateYearField('other')" required="true" ng-required="con.Email" />
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Year1_Expense__c" ng-keyup="calculateOtherField('other')" ng-change="calculateOtherField('other')" ng-keypress="calculateOtherField('other')" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Year1_Approved_Amount__c" ng-keyup="calculateOtherField('other')" ng-change="calculateOtherField('other')" ng-keypress="calculateOtherField('other')" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Year2_Expense__c" ng-keyup="calculateOtherField('other')" ng-change="calculateOtherField('other')" ng-keypress="calculateOtherField('other')" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.year2_Approved_Amount__c" ng-keyup="calculateOtherField('other')" ng-change="calculateOtherField('other')" ng-keypress="calculateOtherField('other')" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Year3_Expense__c" ng-keyup="calculateOtherField('other')" ng-change="calculateOtherField('other')" ng-keypress="calculateOtherField('other')" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Year3_Approved_Amount__c" ng-keyup="calculateOtherField('other')" ng-change="calculateOtherField('other')" ng-keypress="calculateOtherField('other')" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Total_Expense__c" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td class="text-center">
+                                                    
+                                                    <a type="button" ng-click="addRowOther($parent.$index,$index)">
+                                                        <i class="fa-solid fa-circle-plus fa-2x text-success"></i>
+                                                    </a>
+                                                    <a type="button" ng-click="deleteRowOther($parent.$index,$index,con.Id)">
+                                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div>
+                                        <button type="button" class="btn btn-primary background-theme border-theme" ng-click="submitExpense('other');">Submit</button>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-4" ng-if="!proposalStage">
+                <!--div class="col-md-12">
+                    <button type="button" class="blue-btn float-end ms-3" ng-click="redirectPageURL('GrantApplication')">Save and Next</button>
+                    <button type="button" class="blue-bordered-btn float-end" ng-click="redirectPageURL('Network_Meeting')">Previous</button>
+                </div-->
+            </div>
+        </div>
+    </div>
+        </div>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js">
+                </script>
+            
+        </body>
+    </html>
+    
+</apex:page>

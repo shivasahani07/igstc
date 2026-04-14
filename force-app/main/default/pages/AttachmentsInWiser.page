@@ -1,0 +1,531 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="IndustrialFellowshipController">
+    <html>
+    <div ng-controller="attachmentWiser_ctrl">
+
+        <head>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+            <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.5.16/textAngular.css" crossorigin="anonymous"
+            />
+            <script>
+                var userId = '{!$CurrentPage.parameters.id}';
+            </script>
+        </head>
+
+        <body>
+
+            <div class="container mt-5">
+                <div class="row mx-5">
+                    <div class="col-md-12">
+                        <div class="tab-link" ng-show="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <!-- Not Confirmed Yet -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
+                                        <div class="icon-circle">
+                                            <!-- <i class="fa fa-home"></i> -->
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Pairing Details</span>
+                                    </a>
+                                </li>
+
+                                <!-- Pair Project Details -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('HostProjectDetails')">
+                                        <div class="icon-circle">
+                                            <!-- <i class="far fa-address-card"></i> -->
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Paired Project Details</span>
+                                    </a>
+                                </li>
+
+
+                                <!-- Pair Details -->
+                                <!-- <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('HostInfoApplicationPage')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Host Details</span>
+                                    </a>
+                                </li> -->
+
+                                <!-- Applicant Details -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('WiserApplicationPage')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Applicant Details</span>
+                                    </a>
+                                </li>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('CV_Wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li>
+
+                                <!-- Financial Details -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('FinancialOverview_wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <span>Financial Overview</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="tab-link" ng-hide="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Pairing Details</span>
+                                    </a>
+                                </li>
+
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Paired Project Details</span>
+                                    </a>
+                                </li>
+                                <!-- <li >
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Host Details</span>
+                                    </a>
+                                </li> -->
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Applicant Details</span>
+                                    </a>
+                                </li>
+
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li>
+
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <span>Financial Overview</span>
+                                    </a>
+                                </li>
+
+                                <!-- <li class="active">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-user-alt"></i>
+                                            </div>
+                                            <span>Applicant Details</span>
+                                        </a>
+                                    </li>
+                                    <li class="active">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-file-invoice"></i>
+                                            </div>
+                                            <span>Pair Details</span>
+                                        </a>
+                                    </li>
+                                    <li class="active">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa fa-home"></i>
+                                            </div>
+                                            <span>Applicant Project Details</span>
+                                        </a>
+                                    </li>
+                                    <li class="active">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-chart-line"></i>
+                                            </div>
+                                            <span>Financial Overview</span>
+                                        </a>
+                                    </li>
+                                    <li class="active">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="far fa-address-card"></i>
+                                            </div>
+                                            <span>Pair Project Details</span>
+                                        </a>
+                                    </li> -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mx-5">
+                    <div class="col-md-12">
+                        <div class="tab-link" ng-show="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ExistingGrantWISER')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-money-bill"></i>
+                                        </div>
+                                        <span>Other Grants</span>
+                                    </a>
+                                </li>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('TwoReferenceWiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-friends"></i>
+                                        </div>
+                                        <span>References</span>
+                                    </a>
+                                </li>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('AttachmentsInWiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-upload"></i>
+                                        </div>
+                                        <span>Attachments</span>
+                                    </a>
+                                </li>
+
+                                <!-- Change place from 3rd to 4th -->
+                                <!-- <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('CV_Wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li> -->
+                                <!-- ************ -->
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Declaration_Wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                        <span>Declaration</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-link" ng-hide="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success wp-7"></div>
+                            </div>
+
+                            <ul>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-money-bill"></i>
+                                        </div>
+                                        <span>Grant Details</span>
+                                    </a>
+                                </li>
+
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-friends"></i>
+                                        </div>
+                                        <span>References</span>
+                                    </a>
+                                </li>
+
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-upload"></i>
+                                        </div>
+                                        <span>Attachments</span>
+                                    </a>
+                                </li>
+
+                                <!-- <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li> -->
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                        <span>Declaration</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal" id="filePreview">
+                    <div class="modal-dialog" style="min-width:120rem">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">
+                                    <div class="d-flex" style="background:unset;">
+                                        <h3 style="text-align: center">
+                                            <b>{{selectedFile.userDocument.Name}}</b>
+                                        </h3>
+                                    </div>
+                                </h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <iframe style="width:100%;height:75vh;border: 0px;border-radius: 10px;" id="file_frame" title="File"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-5 mx-5">
+                    <div class="col-md-12 alert bg-color-list" role="alert">
+                        <ul class="font-if">
+                            <li>
+                                <i class="fa-solid fa-circle text-success me-3"></i>
+                                Kindly upload all the documents in pdf format according to the respective file size.
+                            </li>
+                            <li>
+                                <i class="fa-solid fa-circle text-success me-3"></i>
+                                Click on upload button to upload the documents.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row box-shadow-2 mt-5 mx-5 p-3 mb-3">
+                    <div class="col-md-6">
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <label class="font-if mb-3">
+                                    <b>NOC Format</b>
+                                    <br/> Click the link below to download the NOC document template.
+                                </label>
+                                <div class="mt-3">
+                                    <a href="{!$Resource.No_Objection_Certificate_Format}" download="No_Objection_Certificate_Format.docx" class="blue-btn py-2 px-4 ms-2"
+                                        style="text-decoration: none; display: inline-block;" onclick="this.setAttribute('download', 'No_Objection_Certificate_Format.docx'); return true;">
+                                        <i class="fa-solid fa-download me-2"></i>Download No Objection Certificate Format
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <label class="font-if mb-3">
+                                    <b>Project Proposal Format</b>
+                                    <br/> Click the link below to download the Project Proposal document template.
+                                </label>
+                                <div class="mt-3">
+                                    <a href="{!$Resource.WISER_Project_Proposal_Format}" download="WISER_Project_Proposal_Format.docx" class="blue-btn py-2 px-4 ms-2"
+                                        style="text-decoration: none; display: inline-block;" onclick="this.setAttribute('download', 'WISER_Project_Proposal_Format.docx'); return true;">
+                                        <i class="fa-solid fa-download me-2"></i>Download Project Proposal Format
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row box-shadow-2 mt-5 mx-5 p-3 mb-5">
+                    <div class="row mt-5" style="margin-left: -1px">
+                        <!-- <div class="col-md-6">
+                            <label class="font-if">Acceptance letter from the pairing collaborator on an official letter head with signature and
+                                seal.
+                                <br/>Upload in pdf format with size less than 1 mb
+                                <span class="text-danger me-2">*</span>
+                            </label>
+                            <div class="col-md-9 mt-4" style="padding-left: 0px !important; padding-right: 0px !important">
+                                <div class="input-group input-group-lg">
+                                    <input type="file" accept=".pdf" ng-disabled="proposalStage" id="{{doc.userDocument.Name}}" class="form-control "
+                                    />
+                                    <span class="input-group-btn" ng-hide="proposalStage">
+                                        <button class="btn btn-success" ng-click="uploadFile(doc.userDocument.Name,doc.userDocument.Id,'','1048576','')" type="button">Upload</button>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3" ng-show="doc.userDocument.Status__c=='Uploaded'">
+                                <a class="blue-btn float-end mt-4 py-3" ng-click="filePreviewHandler(doc)">View</a>
+                                <!-- <a class="blue-btn float-end mt-4 py-3" href="{{doc.ContentDistribution.DistributionPublicUrl}}" target="_blank">View</a>
+                            </div>
+                        </div> -->
+
+                        <div class="col-md-6 mb-3">
+                            <label class="font-if mb-2">
+                                <b>No Objection Certificate (NOC)</b>
+                                <br/> Upload No Objection Certificate (NOC) from the authorised signatory/head of the parent/present
+                                organisation confirming institutional consent for participation. (Max size 1 MB)
+                                <span class="text-danger me-2">*</span>
+                            </label>
+                            <div class="col-md-9 mt-4" style="padding-left: 0px !important; padding-right: 0px !important">
+                                <div class="input-group input-group-lg">
+                                    <input type="file" accept=".pdf" ng-disabled="proposalStage || uploadingNOC" id="{{noObjection.userDocument.Name}}" class="form-control "
+                                    />
+                                    <span class="input-group-btn" ng-hide="proposalStage">
+                                        <button class="btn btn-success" ng-click="uploadFile(noObjection.userDocument.Name,noObjection.userDocument.Id,'','1048576','')"
+                                            type="button" ng-disabled="uploadingNOC">
+                                            <span ng-if="!uploadingNOC">Upload</span>
+                                            <span ng-if="uploadingNOC">
+                                                <i class="fa-solid fa-spinner fa-spin me-2"></i>Uploading...
+                                            </span>
+                                        </button>
+                                    </span>
+                                </div>
+                                <div ng-show="uploadingNOC" class="mt-2">
+                                    <span class="text-info">
+                                        <i class="fa-solid fa-spinner fa-spin me-2"></i>
+                                        <strong>Uploading file, please wait...</strong>
+                                    </span>
+                                </div>
+                                <div ng-show="noObjection && noObjection.userDocument.Status__c=='Uploaded' && !uploadingNOC" class="mt-2">
+                                    <span class="text-success">
+                                        <i class="fa-solid fa-check-circle me-2"></i>
+                                        <strong>Uploaded</strong>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3" ng-show="noObjection.userDocument.Status__c=='Uploaded'">
+                                <a class="blue-btn float-end mt-4 py-3" ng-click="filePreviewHandler(noObjection)">View</a>
+                                <!-- <a class="blue-btn float-end mt-4 py-3" href="{{noObjection.ContentDistribution.DistributionPublicUrl}}" target="_blank">View</a> -->
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="font-if">
+                                <b> Project Proposal PDF </b>
+                                <br/> Complete and upload the Project Proposal as a single PDF file, consistent with the details
+                                and figures/images (if any) provided (if any) in the Paired Project Details section of the
+                                application. (Max size 4.5 MB &amp; 8 pages including references and images)
+                                <span class="text-danger me-2">*</span>
+                            </label>
+                            <div class="col-md-9 mt-4" style="padding-left: 0px !important; padding-right: 0px !important">
+                                <div class="input-group input-group-lg">
+                                    <input type="file" accept=".pdf" ng-disabled="proposalStage || uploadingProjectProposal || !isCoordinator" id="{{projectProposal.userDocument.Name}}"
+                                        class="form-control " />
+                                    <span class="input-group-btn" ng-hide="proposalStage">
+                                        <button class="btn btn-success" ng-click="uploadFile(projectProposal.userDocument.Name,projectProposal.userDocument.Id,'','5242880','30720')"
+                                            type="button" ng-disabled="uploadingProjectProposal||!isCoordinator">
+                                            <span ng-if="!uploadingProjectProposal">Upload</span>
+                                            <span ng-if="uploadingProjectProposal">
+                                                <i class="fa-solid fa-spinner fa-spin me-2"></i>Uploading...
+                                            </span>
+                                        </button>
+                                    </span>
+                                </div>
+                                <div ng-show="uploadingProjectProposal" class="mt-2">
+                                    <span class="text-info">
+                                        <i class="fa-solid fa-spinner fa-spin me-2"></i>
+                                        <strong>Uploading file, please wait...</strong>
+                                    </span>
+                                </div>
+                                <div ng-show="projectProposal && projectProposal.userDocument.Status__c=='Uploaded' && !uploadingProjectProposal" class="mt-2">
+                                    <span class="text-success">
+                                        <i class="fa-solid fa-check-circle me-2"></i>
+                                        <strong>Uploaded</strong>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3" ng-show="projectProposal.userDocument.Status__c=='Uploaded'">
+                                <a class="blue-btn float-end mt-4 py-3" ng-click="filePreviewHandler(projectProposal)">View</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 mb-3" style="margin-left: -1px">
+                        <!-- <div class="col-md-6">
+                                <label class="font-if mb-2">Signature of the applicant  Upload in jpg/jpeg format<br/>with size between 30-50kb<span class="text-danger me-2">*</span></label>
+                                <div class="col-md-9 mt-4" style="padding-left: 0px !important; padding-right: 0px !important">
+                                    <div class="input-group input-group-lg">
+                                        <input type="file" ng-disabled="proposalStage" accept=".jpg,.jpeg" id="{{signApp.userDocument.Name}}" class="form-control "/>
+                                        <span class="input-group-btn" ng-hide="proposalStage">
+                                          <button class="btn btn-success" ng-click="uploadFile1(signApp.userDocument.Name,signApp.userDocument.Id,'','51200','30720')" type="button">Upload</button>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3" ng-show="signApp.ContentDistribution.PreferencesAllowPDFDownload">
+                                    <a class="blue-btn float-end mt-4 py-3"  ng-click="filePreviewHandler(signApp)">View</a>
+                                </div>
+                            </div> -->
+
+                        <!-- <div class="col-md-6">
+                                <label class="font-if mb-2">Signature of the Host  Upload in jpg/jpeg format<br/>with size between 5kb-30kb<span class="text-danger me-2">*</span></label>
+                                <div class="col-md-9 mt-4" style="padding-left: 0px !important; padding-right: 0px !important">
+                                    <div class="input-group input-group-lg">
+                                        <input type="file" ng-disabled="proposalStage" accept=".jpg,.jpeg" id="{{hostsign.userDocument.Name}}" class="form-control "/>
+                                        <span class="input-group-btn" ng-hide="proposalStage">
+                                          <button class="btn btn-success" ng-click="uploadFile1(hostsign.userDocument.Name,hostsign.userDocument.Id,'','30720','5120')" type="button">Upload</button>
+                                        </span>
+                                      </div>
+                                </div>
+
+                                <div class="col-md-3" ng-show="hostsign.ContentDistribution.PreferencesAllowPDFDownload">
+                                    <a class="blue-btn float-end mt-4 py-3"  ng-click="filePreviewHandler(hostsign)">View</a>
+                                </div>
+                                
+                            </div> -->
+
+                        <div class="col-md-12 mt-5 ">
+                            <div ng-if="!proposalStage">
+                                <button class="blue-btn float-end" id="btnPreview" ng-click="saveandNext()" type="button">
+                                    <i class="fa-solid fa-check me-2"></i>Save and Next</button>
+                                <button class="blue-bordered-btn float-end me-2" ng-click="redirectPageURL('TwoReferenceWiser')" type="button">
+                                    <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </body>
+    </div>
+
+    </html>
+</apex:page>

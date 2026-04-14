@@ -1,0 +1,439 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+    <html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+    </head>
+
+    <div ng-controller="parengOrg_ctrl">
+        <body>
+
+            <div class="container mt-5">
+                <div class="row mx-5">
+                    <div class="col-md-12">
+                        <div class="tab-link" ng-show="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Pairing_Page')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-friends"></i>
+                                        </div>
+                                        <span>Pairing Details</span>
+                                    </a>
+                                </li>
+                                
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Personal_Information')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Personal Information</span>
+                                    </a>
+                                </li>
+                                     <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ParentOrganization')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-building"></i>
+                                        </div>
+                                        <span>Parent Organization Details</span>
+                                    </a>
+                                </li>      
+                                        
+                                        
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Education_Qualification')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-graduate"></i>
+                                        </div>
+                                        <span>Educational Qualifications</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Employment_Details')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-edit"></i>
+                                        </div>
+                                        <span>Employment Details</span>
+                                    </a>
+                                </li>
+                                
+                            </ul>
+                        </div>
+                        <div class="tab-link" ng-hide="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success wp-5"></div>
+                            </div>
+                            <ul>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-friends"></i>
+                                        </div>
+                                        <span>Pairing Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Personal Information</span>
+                                    </a>
+                                </li>
+                                        <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Parent Organization Details</span>
+                                    </a>
+                                </li>
+      
+                                <li >
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-graduate"></i>
+                                        </div>
+                                        <span>Educational Qualifications</span>
+                                    </a>
+                                </li>
+                                <li >
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-edit"></i>
+                                        </div>
+                                        <span>Employment Details</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        </div>
+                    </div>
+
+                    <div class="row mx-5">
+                        <div class="col-md-12">
+                            <div class="tab-link" ng-show="proposalStage">
+                                <div class="progress">
+                                    <div class="progress-success w-100"></div>
+                                </div>
+                                <ul>
+                                    
+                                     <li class="active pb-cursor">
+                                       <a ng-click="redirectPageURL('Achievements_Pecfar')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-trophy"></i>
+                                            </div>
+                                            <span>Achievements</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Fellowship_Details')">
+                                            <div class="icon-circle">
+                                                <i class="fa fa-home"></i>
+                                            </div>
+                                            <span>Fellowship Details</span>
+                                        </a>
+                                    </li>
+                                    
+                                   
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Attachments_Pecfar')">
+                                            <div class="icon-circle">
+                                                <i class="fa fa-paperclip"></i>
+                                            </div>
+                                            <span>Attachments</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Declaration_Pecfar')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-check"></i>
+                                            </div>
+                                            <span>Declaration</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('ReviewSubmit_Pecfar')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-file-signature"></i>
+                                            </div>
+                                            <span>Review and Submit</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="tab-link" ng-hide="proposalStage">
+                                <div class="progress">
+                                    <div class="progress-success wp-0"></div>
+                                </div>
+                                <ul>
+                                    
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-trophy"></i>
+                                            </div>
+                                            <span>Achievements</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa fa-home"></i>
+                                            </div>
+                                            <span>Fellowship Details</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa fa-paperclip"></i>
+                                            </div>
+                                            <span>Attachments</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-check"></i>
+                                            </div>
+                                            <span>Declaration</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-file-signature"></i>
+                                            </div>
+                                            <span>Review and Submit</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            </div>
+                        </div>
+
+
+
+						<div class="row mt-5 mx-5">
+                                    <div class="col-md-12 alert bg-color-list" role="alert">
+                                        <ul class="font-if">  
+                                            <li><i class="fa-solid fa-circle text-success me-3"></i>If there is a problem in submitting, kindly press "CTRL+Shift+R" in one go and then try to submit. If the problem still<br/>&nbsp;&nbsp;&nbsp;&nbsp; persists, then contact us.</li>
+                                            
+                                        </ul>
+                                    </div>
+                                </div>
+                        <div class="row mt-5 mx-5 box-shadow-2">
+
+                            <div class="row mt-5 mx-1">
+                                <div class="col-md-12">
+                                    <h4 class="pb-3 color-theme"><b>Details of the Parent Organisation/Institution :</b></h4>
+                                </div>
+                            </div>
+
+                            <div class="row mt-5 mx-1">
+                                <div class="col-md-6">
+                                    <label class="font-if">Organization Name
+                                    </label>
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                    <input name="Organization Name" class="form-control" ng-focus="removeClass2('name')" id="name" type="text" ng-model="accDetails.Account.Name" ng-disabled="proposalStage" />
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="font-if">HomePage URL
+                                    </label>
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                    <input name="HomePage URL" class="form-control" type="text" ng-focus="removeClass2('homepage')" id="homepage" ng-model="accDetails.Account.Homepage_URL__c" ng-disabled="proposalStage" />
+                                </div>
+    
+                                <!-- <div class="col-md-6">
+                                    <label class="font-if">Email
+                                    </label>
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                    <input name="Email" class="form-control" type="email" ng-focus="removeClass2('email')" id="email" ng-model="accDetails.Account.Email__c" ng-disabled="proposalStage" />
+                                </div> -->
+                            </div>
+
+                            <div class="row mt-5 mx-1">
+
+                                <div class="col-md-6">
+                                    <label class="font-if">Street
+                                    </label>
+                                    <input name="Street" class="form-control" type="text" ng-focus="removeClass2('street')" id="street" ng-model="accDetails.Account.BillingStreet" ng-disabled="proposalStage" />
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="font-if">City
+                                    </label>
+                                    <input name="city" class="form-control" type="text" ng-focus="removeClass2('city')" id="city" ng-model="accDetails.Account.BillingCity" ng-disabled="proposalStage" />
+                                </div>
+                            </div>
+
+                            <div class="row mt-5 mx-1">
+
+                                <div class="col-md-6">
+                                    <label class="font-if">Country</label>
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                    <select class="form-control" aria-label="Default select example" ng-focus="removeClass2('country')" id="country" ng-model="accDetails.Account.BillingCountry" ng-change="onCountryChange()" ng-disabled="proposalStage">
+                                        <option ng-repeat="staff in countrytype">{{staff}}</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="font-if">State</label>
+                                    <select class="form-control" aria-label="Default select example" ng-focus="removeClass2('state')" id="state" ng-model="accDetails.Account.BillingState" ng-disabled="proposalStage">
+                                        <option ng-repeat="staff in accDetails.Account.stateList">{{staff}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mt-5 mx-1">
+
+                                <!-- <div class="col-md-6" ng-show="accDetails.Account.BillingCountry == 'India'">
+                                    <label class="font-if">Pin Code
+                                    </label>
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                    <input name="pin" class="form-control" type="text" ng-focus="removeClass2('pincode')" id="pincode" number="accDetails.Account.BillingPostalCode" ng-model="accDetails.Account.BillingPostalCode" ng-disabled="proposalStage" ng-change="checkPinCode()" />
+                                </div> -->
+
+                                <div class="col-md-6">
+                                    <label class="font-if">Pin Code
+                                    </label>
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                    <input name="pin" class="form-control" type="text" ng-focus="removeClass2('pincode')" id="pincode" number="accDetails.Account.BillingPostalCode" ng-model="accDetails.Account.BillingPostalCode" ng-disabled="proposalStage" ng-change="checkPinCode()"/>
+                                </div>
+
+                            </div>
+
+                            <div class="row mt-5 mx-1">
+                               <div class="col-md-12">
+                                <h4 class="label-rtf">
+                                    <b>Brief Portfolio of the organisation (Max 500 characters without space):</b><span class="text-danger ms-2">*</span>
+                                </h4>
+                                <small class="label-rtf"><b>To use the below RTF box more efficiently, make sure you write your content in word document first and then copy paste here</b></small>
+                                <ng-ckeditor ng-model="accDetails.Account.Organisation_Posrt__c" ng-change="readCharacter(accDetails.Account.Organisation_Posrt__c,0)" ng-config="config" maxlength="500"></ng-ckeditor>
+                                <span>Total characters : {{objRtf[0].charCount}}</span>
+                                <span class="text-danger" ng-if="objRtf[0].errorStatus">maximum character limit is 500</span>
+                              </div> 
+                            </div>
+
+                            <div class="row mt-5 mb-3 mx-1" ng-if="!proposalStage">
+                                <div class="col-md-12">
+                                    <button class="blue-btn float-end" ng-click="saveDetails()" type="button">
+                                        <i class="fa-solid fa-check me-2"></i>Save and Next</button>
+                                    <button class="blue-bordered-btn float-end me-2" ng-click="redirectPageURL('Personal_Information')" type="button">
+                                        <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+            <!-- <div class="container px-4">
+                <div class="card mt-5 mx-5">
+                    <div class="card-header">
+                        <h2 class="p-3">
+                            <b>Parent Organization Details</b>
+                        </h2>
+                    </div>
+
+                        <div class="mx-4 row mt-3">
+                            <div class="col">
+                                <label class="control-label">
+                                    <b>Organization Name</b>
+                                </label>
+                                <span class="required-asterisk" style="color:red;">*</span>
+                                <input name="Organization Name" placeholder="Organization Name" class="form-control" type="text" ng-model="accDetails.Account.Name" ng-disabled="proposalStage" />
+                            </div>
+
+                            <div class="col">
+                                <label class="control-label">
+                                    <b>Email</b>
+                                </label>
+                                <span class="required-asterisk" style="color:red;">*</span>
+                                <input name="Email" placeholder="Email" class="form-control" type="email" ng-model="accDetails.Account.Email__c" ng-disabled="proposalStage" />
+                            </div>
+                        </div><br/>
+
+                        <div class="mx-4 row mt-3">
+                            <div class="col">
+                                <label class="control-label">
+                                    <b>Street</b>
+                                </label>
+                                <input name="Street" placeholder="Street" class="form-control" type="text" ng-model="accDetails.Account.BillingStreet" ng-disabled="proposalStage" />
+                            </div>
+
+                            <div class="col">
+                                <label class="control-label">
+                                    <b>City</b>
+                                </label>
+                                <input name="City" placeholder="City" class="form-control" type="text" ng-model="accDetails.Account.BillingCity" ng-disabled="proposalStage" />
+                            </div>
+                        </div><br/>
+
+                        <div class="mx-4 row mt-3">
+                            <div class="col">
+                                <label class="control-label">
+                                    <b>Country</b>
+                                </label>
+                                <span class="required-asterisk" style="color:red;">*</span>
+                                <input name="Country" placeholder="Country" class="form-control" type="text" ng-model="accDetails.Account.BillingCountry" ng-disabled="proposalStage" />
+                            </div>
+
+                            <div class="col">
+                                <label class="control-label">
+                                    <b>State</b>
+                                </label>
+                                <input name="State" placeholder="State" class="form-control" type="text" ng-model="accDetails.Account.BillingState" ng-disabled="proposalStage" />
+                            </div>
+                        </div><br/>
+
+                        <div class="mx-4 row mt-3">
+                            <div class="col">
+                                <label class="control-label">
+                                    <b>Pin Code</b>
+                                </label>
+                                <span class="required-asterisk" style="color:red;">*</span>
+                                <input name="PinCode" placeholder="PinCode" class="form-control" type="text" ng-model="accDetails.Account.BillingPostalCode" ng-disabled="proposalStage" />
+                            </div>
+
+                            <div class="col">
+                                <label class="control-label">
+                                    <b>HomePage URL</b>
+                                </label>
+                                <span class="required-asterisk" style="color:red;">*</span>
+                                <input name="HomePage URL" placeholder="HomePage URL" class="form-control" type="url" ng-model="accDetails.Account.Homepage_URL__c" ng-disabled="proposalStage" />
+                            </div>
+                        </div><br/>
+
+                        <div class="mx-4 row mt-3">
+                            <div class="col">
+                                <label class="control-label">
+                                    <b>Brief Portfolio of the organisation (Max 500 characters):</b>
+                                </label>
+                                <span class="required-asterisk" style="color:red;">*</span>
+                                <ng-ckeditor ng-model="accDetails.Account.Organisation_Posrt__c" ng-config="config" maxlength="500"></ng-ckeditor>
+                            </div>
+                        </div>
+
+                    <div class="card-footer" ng-if="!proposalStage">
+                        <button type="button" class="blue-btn float-end me-4" ng-click="saveDetails()">Save and Next
+                            <i class="fa-solid fa-arrow-right ms-3"></i>
+                        </button>
+                        <button type="button" class="blue-bordered-btn float-end me-4" ng-click="redirectPageURL('Employment_Details')">
+                            <i class="fa-solid fa-arrow-left i-padding"></i>Previous</button>
+                    </div>
+                </div>
+            </div> -->
+            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        </body>
+    </div>
+ </html>
+</apex:page>

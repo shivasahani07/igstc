@@ -1,0 +1,2367 @@
+<!-- /**
+* @author [Dinesh B]
+* @email dinesh.b@utilitarianLab.com
+* @create date 2022-07-28 13:05:29
+* @modify date 2022-07-28 13:05:29
+* @desc [description]
+*/ -->
+
+<apex:page showHeader="false" standardStylesheets="false">
+    <apex:includeLightning />
+    <script src="/soap/ajax/60.0/apex.js"></script>
+
+    <html>
+        
+    <div ng-controller='projects_ctrl'>
+
+        <head>
+            <!-- <c:Libraries></c:Libraries> -->
+
+            <!-- <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" /> -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.8.3/angular-sanitize.js"></script>
+            <link rel='stylesheet prefetch' href='https://netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css' /> 
+            <apex:stylesheet value="{!$Resource.ReviewerPortalCss}" />
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+            <apex:stylesheet value="{!$Resource.SmallCss}" />
+            <apex:stylesheet value="{!$Resource.MediumCss}" />
+            <apex:stylesheet value="{!$Resource.LargCss}" />
+            <link rel='stylesheet' type='text/css' media='screen' href='https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css'/>
+            <apex:stylesheet value="{!$Resource.sidenavCSS}" />
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />  
+            <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.1/angular.js"></script>
+            <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular-sanitize.min.js'></script> -->
+            <!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-sanitize.js"></script>    -->
+            <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" integrity="sha512-XWTTruHZEYJsxV3W/lSXG1n3Q39YIWOstqvmFsdNEEQfHoZ6vm6E9GK2OrF6DSJSpIbRbi+Nn0WDPID9O7xB2Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />        -->
+                    
+            <!-- <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular.min.js"></script> -->
+            <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.1.2/textAngular.min.js'></script>
+            <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular-sanitize.min.js'></script> -->
+            <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.2/sweetalert2.all.js"/> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script> -->
+        
+        <style>
+            .spinner-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.4);
+                z-index: 9999;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .spinner {
+                border: 8px solid #f3f3f3;
+                border-top: 8px solid #3498db;
+                border-radius: 50%;
+                width: 60px;
+                height: 60px;
+                animation: spin 1s linear infinite;
+            }
+
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+
+            .btn {
+                background-color: DodgerBlue;
+                border: none;
+                color: white;
+                padding: 12px 30px;
+                cursor: pointer;
+                font-size: 20px;
+            }
+            
+            /* Darker background on mouse-over */
+            .btn:hover {
+                background-color: RoyalBlue;
+            }
+            .new{
+            background: none;
+            border: none;
+            padding: 0;
+            margin: 0;
+            color: #0070d2;     
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 14px;   
+            font-family: inherit;
+            }
+            .new:hover {
+            text-decoration: none;
+            }
+
+            </style>
+            <style>
+                .filter-dropdown {
+                    position: absolute;
+                    top: 25px;
+                    left: 0;
+                    background: #fff;
+                    border: 1px solid #ccc;
+                    border-radius: 6px;
+                    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+                    padding: 10px;
+                    z-index: 1000;
+                    min-width: 200px;
+                }
+                .filter-dropdown label {
+                    display: block;
+                    margin: 4px 0;
+                    font-size: 14px;
+                }
+                .filter-dropdown .cstm-btn {
+                    margin-top: 6px;
+                }
+                body{
+                    color: #676767;
+                    font-style: normal;
+                    font-weight: 500;
+                    font-family: 'Montserrat', sans-serif;
+                    letter-spacing: 0.01em;
+                }
+                #myIframe {
+                    zoom: 0.75;
+                    -moz-transform: scale(1);
+                    -moz-transform-origin: 0 0;
+                    -o-transform: scale(1);
+                    -o-transform-origin: 0 0;
+                    -webkit-transform: scale(1);
+                    -webkit-transform-origin: 0 0;
+                }
+                .heading-tab{
+                    border-bottom: solid 3px #171347;
+                }
+                @media screen and (-webkit-min-device-pixel-ratio:0) {
+                    #myIframe {
+                        zoom: 1;
+                    }
+                }
+            </style>
+        </head>
+
+        <body id="body-pd">
+            <div ng-show="showSpinner" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.7); z-index:9998;"> </div>
+            <img ng-show="showSpinner" src="{!URLFOR($Resource.spinnerImg)}" style="position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); z-index:9999; width:80px; height:80px;" />
+            <!-- <img ng-show="showSpinner" src="{!URLFOR($Resource.spinnerImg)}" style="position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); z-index:9999;" /> -->
+            <header class="header" id="header">
+                <a href="#">
+                    <apex:image url="{!$Resource.Logo}" alt="IGSTC" styleClass="brand-logo" />
+                </a>
+                <div class="user-profile">
+                    <span class="dropdown-toggle">
+                        <i class="fa-solid fa-circle-user fa-2x me-3"></i> My Profile
+                    </span>
+                    <ul class="dropdown-menu">
+                        <li><span class="px-3 mt-4"><i class="fa-solid fa-user me-3"></i>{{reviewerName}}</span></li>
+                        <li class="divider"></li>
+                        <li><span class="px-3"><i class="fa-solid fa-envelope me-3"></i>{{reviewerEmail}}</span></li>
+                        <li class="divider"></li>
+                        <li><span class="px-3" style="cursor:pointer;" ng-click="showProfileDiv()"><i class="fa-solid fa-id-badge me-3"></i>Profile</span></li>
+                        <li class="divider"></li>
+                        <li><span style="cursor:pointer;" class="px-3" ng-click="signOutReviewer()"><i class="fa-solid fa-power-off me-3"></i>Logout</span></li>
+                    </ul>
+                </div>
+            </header>
+            <div class="l-navbar" id="nav-bar">
+                <!-- <span class="nav_link" style="border-bottom: solid 2px #ddd;margin-right:-10px;"><p id="igstcName"><b>IGSTC</b></p><span class="nav_logo-name" id="spanIGSTC" style="display:none;"><apex:image url="{!$Resource.Logo}" alt="IGSTC" /></span> </span> -->
+                <div class="humburger-menu mt-5" id="header-toggle">
+                    <!-- <i class='bx bx-menu'></i>  -->
+                    <i class="fa-solid fa-bars fa-2x"></i>
+                    <span>Menu</span>
+                </div>
+                <nav class="nav">
+                        <div class="nav_list mt-5">
+                            <span ng-click="showAllProposals()" class="nav_link">
+                                <!-- <i class='bx bx-list-ul bx-md ms-2 nav_icon'></i> -->
+                                <i class="fa-solid fa-gauge fa-2x"></i>
+                                <span style="display:none;" class="nav_name">Dashboard</span>
+                            </span>
+                            <!-- <span ng-click="showDraft()" class="nav_link">
+                                <i class="fa-brands fa-firstdraft fa-2x"></i>
+                                <span style="display:none;" class="nav_name">Draft</span>
+                            </span>
+                            <span ng-click="showPending()" class="nav_link">
+                                <i class="fa-regular fa-pen-to-square fa-2x"></i>
+                                <span style="display:none;" class="nav_name">Pending</span>
+                            </span>
+                            <span ng-click="showSubmitted()" class="nav_link">
+                                <i class="fa-solid fa-file-circle-check fa-2x"></i>
+                                <span style="display:none;" class="nav_name">Submitted</span>
+                            </span>
+                            <span ng-click="showReviewerReviews()" class="nav_link">
+                                <i class="fa-solid fa-list-check fa-2x"></i>
+                                <span style="display:none;" class="nav_name">My Reviews</span>
+                            </span> -->
+                        </div>
+                    <span ng-click="signOutReviewer()" class="nav_link">
+                        <!-- <i class='bx bx-log-out nav_icon bx-md ms-2'></i> -->
+                        <i class="fa-solid fa-arrow-right-from-bracket fa-2x"></i>
+                        <span style="display:none;" class="nav_name">SignOut</span>
+                    </span>
+                </nav>
+            </div>
+            <!--Dashboard start-->
+            <div ng-show="showDashboard" id="divDashboard">
+            <div class="bg-light">
+                    <!-- Main Div -->
+                    <!-- Tab View -->
+                    <!-- Kanban View -->
+                    <div class="container-fluid pt-3" style="background: #ffffff;">
+                        <div  ng-show="flagDashboard">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="white-card yellow">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h2>Pending Reviews</h2>
+                                            <h4>{{pendingList.length}}</h4>
+                                            <a href="javascript:void(0)" ng-click="showPending()" class="btn btn-xs btn-warning">View All</a>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="radialProgressBar yellow progress-30">
+                                                <div class="overlay">
+                                                    <apex:image url="{!$Resource.reviewer_timer}" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="white-card blue">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h2>Draft Reviews</h2>
+                                            <h4>{{draftList.length}}</h4>
+                                            <a href="javascript:void(0)" ng-click="showDraft()" class="btn btn-xs btn-blue">View All</a>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="radialProgressBar blue progress-30">
+                                                <div class="overlay">
+                                                    <apex:image url="{!$Resource.reviewer_draft}" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="white-card green">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h2>Submitted Reviews</h2>
+                                            <h4>{{submittedList.length}}</h4>
+                                            <a href="javascript:void(0)" ng-click="showSubmitted()" class="btn btn-xs btn-green">View All</a>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="radialProgressBar green progress-30">
+                                                <div class="overlay">
+                                                    <apex:image url="{!$Resource.reviewer_submitted}" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="row">
+                            <div class="col-md-12">
+                                <ul class="report-status">
+                                    <li ng-show="infoCardPlus2">
+                                        <span>
+                                            <div class="heading">2+2 Call</div>
+                                            <div class="row mt-5">
+                                                <div class="col-md-4">
+                                                    <apex:image url="{!$Resource.reviewer_timer}" />
+                                                    {{plus2PendingPropCount}}
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <apex:image url="{!$Resource.reviewer_draft}" />
+                                                    {{plus2DraftPropCount}}
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <apex:image url="{!$Resource.reviewer_submitted}" />
+                                                    {{plus2SubmittedPropCount}}
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </li>
+                                    <li ng-show="infoCardPECFAR">
+                                        <span>
+                                            <div class="heading">PECFAR</div>
+                                            <div class="row mt-5">
+                                                <div class="col-md-4">
+                                                    <apex:image url="{!$Resource.reviewer_timer}" />
+                                                    {{PECFARPendingPropCount}}
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <apex:image url="{!$Resource.reviewer_draft}" />
+                                                    {{PECFARDraftPropCount}}
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <apex:image url="{!$Resource.reviewer_submitted}" />
+                                                    {{PECFARSubmittedPropCount}}
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </li>
+                                    <li ng-show="infoCardWISER">
+                                        <span>
+                                            <div class="heading">WISER</div>
+                                            <div class="row mt-5">
+                                                <div class="col-md-4">
+                                                    <apex:image url="{!$Resource.reviewer_timer}" />
+                                                    {{WISERPendingPropCount}}
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <apex:image url="{!$Resource.reviewer_draft}" />
+                                                    {{WISERDraftPropCount}}
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <apex:image url="{!$Resource.reviewer_submitted}" />
+                                                    {{WISERSubmittedPropCount}}
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </li>
+                                    <li ng-show="infoCardIF">
+                                        <span>
+                                            <div class="heading">Industrial Fellowship</div>
+                                            <div class="row mt-5">
+                                                <div class="col-md-4">
+                                                    <apex:image url="{!$Resource.reviewer_timer}" />
+                                                    {{iFPendingPropCount}}
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <apex:image url="{!$Resource.reviewer_draft}" />
+                                                    {{iFDraftPropCount}}
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <apex:image url="{!$Resource.reviewer_submitted}" />
+                                                    {{iFSubmittedPropCount}}
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </li>
+                                    <li ng-show="infoCardSING">
+                                        <span>
+                                            <div class="heading">SING</div>
+                                            <div class="row mt-5">
+                                                <div class="col-md-4">
+                                                    <apex:image url="{!$Resource.reviewer_timer}" />
+                                                    {{SINGPendingPropCount}}
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <apex:image url="{!$Resource.reviewer_draft}" />
+                                                    {{SINGDraftPropCount}}
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <apex:image url="{!$Resource.reviewer_submitted}" />
+                                                    {{SINGSubmittedPropCount}}
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </li>
+                                    <li ng-show="infoCardWorkshop">
+                                        <span>
+                                            <div class="heading">WORKSHOP</div>
+                                            <div class="row mt-5">
+                                                <div class="col-md-4">
+                                                    <apex:image url="{!$Resource.reviewer_timer}" />
+                                                    {{workshopPendingPropCount}}
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <apex:image url="{!$Resource.reviewer_draft}" />
+                                                    {{workshopDraftPropCount}}
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <apex:image url="{!$Resource.reviewer_submitted}" />
+                                                    {{workshopSubmittedPropCount}}
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div> -->
+                        <div class="row mt-4">
+                            <div class="col-md-12">
+                                <!-- <h4>Reviews By Due Date</h4> -->
+                                <table class="tablefinance w-100">
+                                    <thead>
+                                        <tr>
+                                            <th nowrap="true">Sr. No.</th>
+                                            <th nowrap="true">Application ID</th>
+                                            <!-- <th>Proposal Title</th> -->
+                                            <th style="position: relative;">
+                                                Programme
+                                                <button class="btn-sm btn-light ms-1" ng-click="toggleProgrammeFilter()" title="Filter Programme">
+                                                    <i class="fa fa-filter"></i>
+                                                </button>
+                                                <!-- Dropdown -->
+                                                <div class="filter-dropdown" ng-show="showAllProgrammeFilter">
+                                                    <div ng-repeat="prog in allProgrammes">
+                                                        <label>
+                                                            <input type="checkbox" ng-model="prog.selected" />
+                                                            {{prog.name}}
+                                                        </label>
+                                                    </div>
+                                                    <div class="mt-2 text-end">
+                                                        <button class="cstm-btn btn-primary btn-sm" ng-click="applyProgrammeFilter()">Apply</button>
+                                                        <button class="cstm-btn btn-secondary btn-sm" ng-click="clearProgrammeFilter()">Clear</button>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                            <th>Year</th>
+                                            <!-- <th>Proposal Acronym</th> -->
+                                            <th style="position: relative;">
+                                                Status
+                                                <button class="btn-sm btn-light ms-1" ng-click="toggleStatusFilter()" title="Filter Status">
+                                                    <i class="fa fa-filter"></i>
+                                                </button>
+                                                <div class="filter-dropdown" ng-show="showStatusFilter">
+                                                    <div ng-repeat="st in allStatuses">
+                                                        <label>
+                                                            <input type="checkbox" ng-model="st.selected" />
+                                                            {{st.name}}
+                                                        </label>
+                                                    </div>
+                                                <div class="mt-2 text-end">
+                                                    <button class="cstm-btn btn-primary btn-sm" ng-click="applyStatusFilter()">Apply</button>
+                                                    <button class="cstm-btn btn-secondary btn-sm" ng-click="clearStatusFilter()">Clear</button>
+                                                </div>
+                                                </div>
+                                            </th>
+                                            <th style="text-align:center">Score Obtained / Maximum Score</th>
+                                            <!-- <th nowrap="true">Due Date</th> -->
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <tr ng-repeat="row in proposalListByDueDate | filter:programmeFilterFn | filter:statusFilterFn">
+                                            <td>{{$index+1}}</td>
+                                            <td>{{row.Proposals__r.Name}} </td>
+                                            <!-- <td>{{row.Proposals__r.Title_Of__c}}</td> -->
+                                            <td>{{row.Proposals__r.Campaign__r.Name}}{{row.Proposal_Stage__c ? ' - ' + row.Proposal_Stage__c : ''}}</td>
+                                            <td>{{row.Proposals__r.Question_Template__r.Yearly_Call__r.Year__c}}</td>
+                                            <!-- <td>{{row.Proposals__r.Acronym__c}}</td> -->
+                                            <td ng-if="row.Stage__c=='Draft'" class="color-badge-draft">{{row.Stage__c}}</td>
+                                            <td ng-if="row.Stage__c=='Submitted'" class="color-badge-submitted">{{row.Stage__c}}</td>
+                                            <td ng-if="row.Stage__c=='Pending'" class="color-badge-pending">{{row.Stage__c}}</td>
+                                            <!-- <td>{{row.Review_Due_Date__c|date:"dd-MM-yyyy"}}</td> -->
+                                           <td style="text-align:center">{{row.Total_Score__c}} / {{row.Maximum_Score__c}}</td>
+                                            
+                                            <td>
+                                                <button class="btn btn-success w-100 background-theme" ng-if="row.Stage__c=='Draft'" ng-click="enableProjectDetails(row.Id,row.Proposals__r.Id,false,row.Stage__c,row.Proposal_Stage__c,row.Proposals__r.Campaign__r.Name)"><i class="fa-solid fa-eye me-3"></i>Modify</button>
+                                                <button class="btn btn-success w-100 background-theme" ng-if="row.Stage__c=='Submitted'" ng-click="enableProjectDetails(row.Id,row.Proposals__r.Id,false,row.Stage__c,row.Proposal_Stage__c,row.Proposals__r.Campaign__r.Name)"><i class="fa-solid fa-eye me-3"></i>View/Modify</button>
+                                                <button class="btn btn-success w-100 background-theme" ng-if="row.Stage__c=='Pending'" ng-click="enableProjectDetails(row.Id,row.Proposals__r.Id,false,row.Stage__c,row.Proposal_Stage__c,row.Proposals__r.Campaign__r.Name)"><i class="fa-solid fa-eye me-3"></i>Review</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        </div>
+                        <div ng-show="DraftProposal">
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <button type="button" class="blue-bordered-btn" ng-click="showAllProposals()">
+                                    <i class="fa-solid fa-arrow-left i-padding"></i>Back</button>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="c-badge bg-color-badge-draft float-end">Draft</span>
+                            </div>                            
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="tablefinance w-100">
+                                    <thead>
+                                        <tr>
+                                        <th>Sr. No.</th>
+                                        <th nowrap="true" class="p-3">Application ID</th>
+                                        <th style="position: relative;">
+                                            Programme
+                                            <button class="btn-sm btn-light ms-1" ng-click="toggleProgrammeFilter()" title="Filter Programme">
+                                                <i class="fa fa-filter"></i>
+                                            </button>
+                                            <!-- Dropdown -->
+                                            <div class="filter-dropdown" ng-show="showDraftProgrammeFilter">
+                                                <div ng-repeat="prog in allProgrammes">
+                                                    <label>
+                                                        <input type="checkbox" ng-model="prog.selected" />
+                                                        {{prog.name}}
+                                                    </label>
+                                                </div>
+                                                <div class="mt-2 text-end">
+                                                    <button class="cstm-btn btn-primary btn-sm" ng-click="applyProgrammeFilter()">Apply</button>
+                                                    <button class="cstm-btn btn-secondary btn-sm" ng-click="clearProgrammeFilter()">Clear</button>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th>Year</th>
+                                        <!-- <th>Proposal Acronym</th> -->
+                                        <th>Status</th>                                        <!-- <th>Acronym</th>
+                                        <th>Title of Proposal</th>
+                                        <th>Title in German</th>
+                                        <th>Duration</th>
+                                        <th>Due Date</th> -->
+                                        <!-- <th>Total Funding Asked</th> -->
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="rev in draftList | filter:programmeFilterFn">
+                                            <td>{{$index+1}}</td>
+                                            <td nowrap="true" class="p-3">{{rev.Proposals__r.Name}}</td>
+                                            <td>{{rev.Proposals__r.Campaign__r.Name}}{{rev.Proposal_Stage__c ? ' - ' + rev.Proposal_Stage__c : ''}}</td>
+                                            <td>{{rev.Proposals__r.Question_Template__r.Yearly_Call__r.Year__c}}</td>
+                                            <td>{{rev.Stage__c}}</td>
+                                            <!-- <td>{{rev.Proposals__r.Acronym__c}}</td>
+                                            <td>{{rev.Proposals__r.Title_Of__c}}</td>
+                                            <td>{{rev.Proposals__r.Title_In_German__c}}</td>
+                                            <td>{{rev.Proposals__r.Duration_In_Months_Max_36__c}}</td>
+                                            <td>{{rev.Review_Due_Date__c}}</td> -->
+                                            <!-- <th>{{rev.Proposals__r.Total_Amount__c}}</th> -->
+                                            <td><button class="btn btn-success w-100 background-theme" ng-click="enableProjectDetails(row.Id,rev.Proposals__r.Id,false,rev.Stage__c,rev.Proposals__r.Stage__c,rev.Proposals__r.Campaign__r.Name)"><i class="fa-solid fa-eye me-3"></i>Modify</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        </div>
+                        <div ng-show="PendingProposal">
+                            <div class="row mt-4">                                
+                                <div class="col-md-6">
+                                    <button type="button" class="blue-bordered-btn" ng-click="showAllProposals()">
+                                        <i class="fa-solid fa-arrow-left i-padding"></i>Back</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="c-badge bg-color-badge-pending float-end">Pending</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="tablefinance w-100">
+                                        <thead>
+                                            <tr>
+                                                <th>Sr. No.</th>
+                                                <th nowrap="true" class="p-3">Application ID</th>
+                                                <th style="position: relative;">
+                                                    Programme
+                                                    <button class="btn-sm btn-light ms-1" ng-click="toggleProgrammeFilter()" title="Filter Programme">
+                                                        <i class="fa fa-filter"></i>
+                                                    </button>
+                                                    <!-- Dropdown -->
+                                                    <div class="filter-dropdown" ng-show="showPendingProgrammeFilter">
+                                                        <div ng-repeat="prog in allProgrammes">
+                                                            <label>
+                                                                <input type="checkbox" ng-model="prog.selected" />
+                                                                {{prog.name}}
+                                                            </label>
+                                                        </div>
+                                                        <div class="mt-2 text-end">
+                                                            <button class="cstm-btn btn-primary btn-sm" ng-click="applyProgrammeFilter()">Apply</button>
+                                                            <button class="cstm-btn btn-secondary btn-sm" ng-click="clearProgrammeFilter()">Clear</button>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th>Year</th>
+                                                <th>Status</th>
+                                                <!-- <th>Acronym</th>
+                                                <th>Title of Proposal</th>
+                                                <th>Title in German</th>
+                                                <th>Duration</th>
+                                                <th>Due Date</th> -->
+                                                <!-- <th>Total Funding Asked</th> -->
+                                                <th>Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="rev in pendingList | filter:programmeFilterFn">
+                                            <td>{{$index+1}}</td>
+                                            <td nowrap="true" class="p-3">{{rev.Proposals__r.Name}}</td>
+                                            <td>{{rev.Proposals__r.Campaign__r.Name}}{{rev.Proposal_Stage__c ? ' - ' + rev.Proposal_Stage__c : ''}}</td>
+                                            <td>{{rev.Proposals__r.Question_Template__r.Yearly_Call__r.Year__c}}</td>
+                                            <td>{{rev.Stage__c}}</td>
+                                            <!-- <td>{{rev.Proposals__r.Acronym__c}}</td>
+                                            <td>{{rev.Proposals__r.Title_Of__c}}</td>
+                                            <td>{{rev.Proposals__r.Title_In_German__c}}</td>
+                                            <td>{{rev.Proposals__r.Duration_In_Months_Max_36__c}}</td>
+                                            <td>{{rev.Review_Due_Date__c}}</td> -->
+                                            <!-- <th>{{rev.Proposals__r.Total_Amount__c}}</th> -->
+                                            <td><button class="btn btn-success w-100 background-theme" ng-click="enableProjectDetails(row.Id,rev.Proposals__r.Id,false,rev.Stage__c,rev.Proposals__r.Stage__c,rev.Proposals__r.Campaign__r.Name)"><i class="fa-solid fa-eye me-3"></i>Review</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="SubmittedProposal">
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <button type="button" class="blue-bordered-btn" ng-click="showAllProposals()">
+                                        <i class="fa-solid fa-arrow-left i-padding"></i>Back</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="c-badge bg-color-badge-submitted float-end">Submitted</span>
+                                </div> 
+                                <!--
+                                <iframe src="/apex/ProposalDownload" height="120px" width="300" scrolling="NO"/>
+                                -->
+                                <apex:form >                      
+                             </apex:form> 
+                            </div>
+                            <div class="row">
+                                
+                                <div class="col-md-12">
+                                    <table class="tablefinance w-100">
+                                        <thead>
+                                            <tr>
+                                                <th>Sr. No.</th>
+                                                <th nowrap="true" class="p-3">Application ID</th>
+                                                <th style="position: relative;">
+                                                    Programme
+                                                    <button class="btn-sm btn-light ms-1" ng-click="toggleProgrammeFilter()" title="Filter Programme">
+                                                        <i class="fa fa-filter"></i>
+                                                    </button>
+                                                    <!-- Dropdown -->
+                                                    <div class="filter-dropdown" ng-show="showSubmittedProgrammeFilter">
+                                                        <div ng-repeat="prog in allProgrammes">
+                                                            <label>
+                                                                <input type="checkbox" ng-model="prog.selected" />
+                                                                {{prog.name}}
+                                                            </label>
+                                                        </div>
+                                                        <div class="mt-2 text-end">
+                                                            <button class="cstm-btn btn-primary btn-sm" ng-click="applyProgrammeFilter()">Apply</button>
+                                                            <button class="cstm-btn btn-secondary btn-sm" ng-click="clearProgrammeFilter()">Clear</button>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th>Year</th>
+                                                <!--<th>Year</th>-->
+                                                <th>Status</th>
+                                                <th style="text-align:center">Score Obtained / Maximum Score</th>
+                                                <!-- <th>Acronym</th>
+                                                <th>Title of Proposal</th>
+                                                <th>Title in German</th>
+                                                <th>Duration</th>
+                                                <th>Due Date</th> -->
+                                                <!-- <th>Total Funding Asked</th> -->
+                                                <th>
+                                                    <div style="display: flex;
+                                                    justify-content: space-around;">
+                                                        <div>
+                                                            Action
+                                                        </div>
+                                                        <!-- Spinner overlay -->
+                                                            <div ng-show="isLoading" class="spinner-overlay">
+                                                                <div class="spinner"></div>
+                                                            </div>
+                                                        <button class="new" ng-click="downloadDocument()">Download All Reviews</button>
+                                                        <!-- /apex/ApplicationProposalReview?Ids= -->
+                                                        <!-- <a id="myAnchor" target="_blank" download="AllReviews" href="#javascript:void(0)" onclick="downloadDocument" > 
+                                                        
+                                                            <div style="display: none;">
+                                                                <div ng-repeat="rev2 in submittedList">
+                                                                    <span class="valrev2">{{rev2.Proposals__r.Name}}</span>
+                                                                </div>
+                                                            </div>
+                                                            Download All Reviews
+                                                        </a> -->
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                            
+                                            <script>
+                                                function loadScript() {
+                                                    //console.log('script');
+                                                    var vals = '';
+                                                    const slides = document.getElementsByClassName("valrev2");
+
+                                                    for (let i = 0; i < slides.length; i++) {
+                                                        vals += slides.item(i).innerText;
+                                                        if (i < slides.length - 1) {
+                                                            vals += ','; // Add a comma and space between values
+                                                        }
+                                                    }
+
+                                                    //console.log(vals);
+                                                    var anchor = document.getElementById('myAnchor');
+                                                    anchor.href += vals;
+                                                    //console.log(anchor);
+                                                }
+                                                setTimeout(loadScript, 1000);
+                                            </script>
+                                            <tr ng-repeat="rev in submittedList | filter:programmeFilterFn">
+                                                <td>{{$index+1}}</td>
+                                                <td nowrap="true" class="p-3"><a target="_blank" href="/apex/ApplicationProposalReview?Ids={{rev.Proposals__r.Name}}">{{rev.Proposals__r.Name}}</a></td>
+                                                <td>{{rev.Proposals__r.Campaign__r.Name}}{{rev.Proposal_Stage__c ? ' - ' + rev.Proposal_Stage__c : ''}}</td>
+                                                <td>{{rev.Proposals__r.Question_Template__r.Yearly_Call__r.Year__c}}</td>
+                                                <!--<td>{{rev.Proposals__r[0].Campaign__r.year__c}}</td>-->
+                                                <td>{{rev.Stage__c}}</td>
+                                                <td style="text-align:center">{{rev.Total_Score__c}} / {{rev.Maximum_Score__c}} </td>
+                                            <!-- <td>{{rev.Proposals__r.Acronym__c}}</td>
+                                            <td>{{rev.Proposals__r.Title_Of__c}}</td>
+                                            <td>{{rev.Proposals__r.Title_In_German__c}}</td>
+                                            <td>{{rev.Proposals__r.Duration_In_Months_Max_36__c}}</td>
+                                            <td>{{rev.Review_Due_Date__c}}</td> -->
+                                            <!-- <th>{{rev.Proposals__r.Total_Amount__c}}</th> -->
+                                            <td><button class="btn btn-success w-100 background-theme" ng-click="enableProjectDetails(row.Id,rev.Proposals__r.Id,false,rev.Stage__c,rev.Proposals__r.Stage__c,rev.Proposals__r.Campaign__r.Name)"><i class="fa-solid fa-eye me-3"></i>View/Modify</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="myReviews">
+                            <div class="row" id="divStatusCards">
+                                <div class="col-sm-4">
+                                    <div class="white-card blue">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <h2>Draft Reviews</h2>
+                                                <h4>{{draftList.length}}</h4>
+                                                <a href="javascript:void(0)" ng-click="setReviewsList('draft')" class="btn btn-xs btn-blue">View All</a>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="radialProgressBar blue progress-30">
+                                                    <div class="overlay">
+                                                        <apex:image url="{!$Resource.reviewer_draft}" />
+                                                    </div>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="white-card green">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <h2>Submitted Reviews</h2>
+                                                <h4>{{submittedList.length}}</h4>
+                                                <a href="javascript:void(0)" ng-click="setReviewsList('submitted')" class="btn btn-xs btn-green">View All</a>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="radialProgressBar green progress-30">
+                                                    <div class="overlay">
+                                                        <apex:image url="{!$Resource.reviewer_submitted}" />
+                                                    </div>
+                                                  </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-12">
+                                    <h3>{{myReviewsHeading}}</h3>
+                                </div>
+                            </div>
+                            <div class="row" id="divDraftReviews">
+                                <div class="col-md-12">
+                                    <table class="tablefinance w-100">
+                                        <thead>
+                                            <tr>
+                                            <th nowrap="true" class="p-3">Name</th>
+                                            <th>Acronym</th>
+                                            <th>Title of Proposal</th>
+                                            <th>Title in German</th>
+                                            <th>Duration</th>
+                                            <th>Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody ng-repeat="rev in myReviewsList">
+                                            <tr>
+                                                <td nowrap="true" class="p-3">{{rev.Proposals__r.Name}}</td>
+                                                <td>{{rev.Proposals__r.Acronym__c}}</td>
+                                                <td>{{rev.Proposals__r.Title_Of__c}}</td>
+                                                <td>{{rev.Proposals__r.Title_In_German__c}}</td>
+                                                <td>{{rev.Proposals__r.Duration_In_Months_Max_36__c}}</td>
+                                                <td><button class="btn btn-success w-100 background-theme" ng-click="getReviews(rev.Proposals__r.Id,$index)"><i class="fa-solid fa-eye me-3"></i>View</button></td>
+                                            </tr>
+                                            <tr style="display: none;" name="myReviewsRows" id="myReviewsRow{{$index}}">
+                                                <td colspan="6">
+                                                    <div class="row py-3 headerMyReviews">
+                                                        <div class="col-md-5">Question</div>
+                                                        <div class="col-md-6">Comment</div>
+                                                        <div class="col-md-1">Rating</div>
+                                                    </div>
+                                                    <div class="row py-3 rowMyReviews" ng-repeat="q in questionList">
+                                                       <div class="col-md-5">{{q.getQuesLineItemList.Question__c}}</div>
+                                                        <div class="col-md-6">{{q.getQuesLineItemList.Reviewer_Response_LineItem__r[0].Response__c}}</div>
+                                                        <div class="col-md-1">{{q.getQuesLineItemList.Reviewer_Response_LineItem__r[0].Ratings__c}}</div>
+                                                    </div>
+                                                    <!-- <table width="100%">
+                                                        <tr>
+                                                            <td>Question</td>
+                                                            <td>Comment</td>
+                                                            <td>Rating</td>
+                                                            <td><button type="button" class="blue-btn" ng-click="closeRow($index)"><i class="fa fa-times pe-2"></i>Close</button></td>
+                                                        </tr>
+                                                        <tr ng-repeat="q in questionList">
+                                                            <td>{{q.getQuesLineItemList.Question__c}}</td>
+                                                            <td colspan="2">{{q.getQuesLineItemList.Reviewer_Response_LineItem__r[0].Response__c}}</td>
+                                                            <td>{{q.getQuesLineItemList.Reviewer_Response_LineItem__r[0].Ratings__c}}</td>
+                                                        </tr>
+                                                    </table> -->
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Kanban View End -->
+                    <div class="container-fluid" ng-hide="flagProjectDet" style="background: #ffffff;">
+                        <!-- <div class="row">
+                            <div class="col-md-12 mt-4">
+                                <button type="button" ng-click="backToList()" class="btn btn-success background-theme border-theme float-end">Back</button>
+                            </div>
+                        </div> -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="tab-link">
+                                    <div class="progress">
+                                        <div class="progress-success w-100"></div>
+                                    </div>
+                                    <ul>
+                                        <li class="active pb-cursor">
+                                            <a ng-click="tabToggle('divReview')">
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-file-invoice"></i>
+                                                </div>
+                                                <span>Reviews</span>
+                                            </a>
+                                        </li>                                         
+                                        <!-- <li class="active pb-cursor">
+                                            <a ng-click="tabToggle('proposalSummary')">
+                                                <div class="icon-circle">
+                                                    <i class="fa-regular fa-address-card"></i>
+                                                </div>
+                                                <span>Project Details</span>
+                                            </a>
+                                        </li> -->
+                                        <li class="active pb-cursor">
+                                            <a ng-click="tabToggle('ProposalTable')">
+                                                <div class="icon-circle">
+                                                    <i class="fa-regular fa-address-card"></i>
+                                                </div>
+                                                <span>Proposal Brief</span>
+                                            </a>
+                                        </li>
+                                        <!-- <span><a href="{{fileUrl}}" id="hrfAppPDF" style="text-decoration: none;color:black;" target="_blank">View Application</a></span> -->
+                                        <!-- <li class="active pb-cursor">
+                                            <a href="{{fileUrl}}" id="hrfAppPDF" style="text-decoration: none;color:black;" target="_blank">
+                                                <div class="icon-circle">
+                                                    <i class="fa-solid fa-file-pdf"></i>
+                                                </div> 
+                                                   <span>View Application</span>                                                                                            
+                                            </a>
+                                        </li>   -->
+                                        <li class="active pb-cursor">
+                                            <a ng-click="tabToggle('divFiles')">
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-hand-holding-usd"></i>
+                                                </div>
+                                                <span>View Application</span>
+                                            </a>
+                                        </li>   
+                                        <!-- <li class="active pb-cursor">
+                                            <a ng-click="tabToggle('AccountTable')">
+                                                <div class="icon-circle">
+                                                    <i class="fa-regular fa-address-card"></i>
+                                                </div>
+                                                <span>Account</span>
+                                            </a>
+                                        </li> -->
+                                        <!-- <li class="active pb-cursor">
+                                            <a ng-click="tabToggle('ContactTable')">
+                                                <div class="icon-circle">
+                                                    <i class="fa-regular fa-user"></i>
+                                                </div>
+                                                <span>Contact</span>
+                                            </a>
+                                        </li> -->
+                                        <!-- <li class="active pb-cursor" ng-show="showIndustrial">
+                                            <a ng-click="tabToggle('HostTable')">
+                                                <div class="icon-circle">
+                                                    <i class="fa-regular fa-user"></i>
+                                                </div>
+                                                <span>Host Details</span>
+                                            </a>
+                                        </li> -->
+                                        <!-- <li class="active pb-cursor" ng-show="show2plus2">
+                                            <a ng-click="tabToggle('existingGrants')">
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-file-invoice"></i>
+                                                </div>
+                                                <span>Existing Grants</span>
+                                            </a>
+                                        </li>
+                                        <li class="active pb-cursor" ng-show="show2plus2">
+                                            <a ng-click="tabToggle('askedGrants')">
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-graduation-cap"></i>
+                                                </div>
+                                                <span>Asked Grants</span>
+                                            </a>
+                                        </li> -->
+                                        <!-- <li class="active pb-cursor" ng-show="show2plus2">
+                                            <a ng-click="tabToggle('workPackages')">
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-trophy"></i>
+                                                </div>
+                                                <span>Work Packages</span>
+                                            </a>
+                                        </li>
+                                        <li class="active pb-cursor">
+                                            <a ng-click="tabToggle('divFiles')">
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-hand-holding-usd"></i>
+                                                </div>
+                                                <span>Files</span>
+                                            </a>
+                                        </li>                                         -->
+                                    </ul>
+                                </div>
+                                <div class="tab-content mt-5">
+                                    <div class="row grading-scale alert alert-primary">
+                                        <div class="col-md-6">
+
+                                        <ul>
+                                            <li>
+                                                <div class="dot excellent"></div>
+                                                Click on Reviews to review the application
+                                            </li>
+                                            <li>
+                                                <div class="dot excellent"></div> 
+                                                Click on Proposal Brief to view the brief of the proposal
+                                            </li>
+                                            <li>
+                                                <div class="dot excellent"></div>
+                                                Click on View Application to view and download the application
+                                            </li>
+                                        </ul>
+                                    </div>
+                                        <!-- <div class="col-md-4">
+                                            <h6>Click on Reviews to review the application</h6>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <h6>Click on Proposal Brief to view the brief of the proposal</h6>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <h6>Click on View Application to view and download the application</h6>
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <div class="tab-content" id="myTabContent">
+                                    <!-- <div class="review-application">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                Review Application - <a href="javascript:void(0)" ng-click="tabToggle('divReview')">Review</a>
+                                            </div>
+                                            <div class="col-md-6">
+                                                Download Application - <a href="javascript:void(0)" ng-click="tabToggle('divFiles')">Files</a>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                    <div id="AccountTable" name="divTopTables" style="display: none;">
+                                        <table class="tablefinance w-100">
+                                            <thead>
+                                                <tr>
+                                                    <!-- <th>Application ID</th> -->
+                                                    <th nowrap="true" class="p-3">Partner Name</th>
+                                                    <th>Industry/Academia</th>
+                                                    <th>Country</th>
+                                                    <!-- <th>Website</th> -->
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="x in partnersDetail">
+                                                    <!-- <td>{{ProposalData.Name}}</td> -->
+                                                    <td class="p-3">{{x.Name}}</td>
+                                                    <td ng-if="x.Industry__c==true">Industry</td>
+                                                    <td ng-if="x.Industry__c==false">Academia</td>
+                                                    <td>
+                                                        <!-- {{x.Country_Type__c}} -->
+                                                        <i ng-if="x.BillingCountry=='India'"><apex:image url="{!$Resource.indiaFlag}" styleClass="img-fluid" style="max-width:30px;" /></i>
+                                                        <i ng-if="x.BillingCountry=='Germany'"><apex:image url="{!$Resource.germanyFlag}" styleClass="img-fluid" style="max-width:30px;" /></i>
+                                                    </td>
+                                                    <!-- <td>
+                                                        <a href="{{x.Website}}" target="_blank">{{x.Website}}</a>
+                                                    </td> -->
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div id="HostTable" name="divTopTables" style="display: none;">
+                                        <table class="tablefinance w-100">
+                                            <thead>
+                                                <tr>
+                                                    <th nowrap="true">Name of the mantor</th>
+                                                    <th nowrap="true">Industry/organisation name</th>
+                                                    <th nowrap="true">Phone No.</th>
+                                                    <th nowrap="true">Email ID</th>
+                                                    <th>Address</th>
+                                                    <th nowrap="true">Application ID</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="x in objContactHost">
+                                                    <td>{{x.Account.Name_of_Mentor__c}}</td>
+                                                    <td>{{x.Account.Name}}</td>
+                                                    <td>{{x.Account.Phone}}</td>
+                                                    <td>{{x.Account.Email__c}}</td>
+                                                    <td>{{x.Account.ACCOUNT_ADDRESS_FORMULA__c}}</td>
+                                                    <td>{{ProposalData.Name}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div id="BankDetailsTable" name="divTopTables" style="display: none;">
+                                        <table class="tablefinance w-100">
+                                            <thead>
+                                                <tr>
+                                                    <th nowrap="true">Account Name</th>
+                                                    <th nowrap="true">Industry/organisation name</th>
+                                                    <th nowrap="true">Phone No.</th>
+                                                    <th nowrap="true">Email ID</th>
+                                                    <th>Address</th>
+                                                    <th nowrap="true">Application ID</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="x in objContactHost">
+                                                    <td>{{x.Account.Name_of_Mentor__c}}</td>
+                                                    <td>{{x.Account.Name}}</td>
+                                                    <td>{{x.Account.Phone}}</td>
+                                                    <td>{{x.Account.Email__c}}</td>
+                                                    <td>{{x.Account.ACCOUNT_ADDRESS_FORMULA__c}}</td>
+                                                    <td>{{ProposalData.Name}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div id="ContactTable" name="divTopTables" style="display: none;">
+                                        <table class="tablefinance w-100">
+                                            <thead>
+                                                <tr>
+                                                    <th nowrap="true" class="p-3">Acount Name</th>
+                                                    <th>Contact Name</th>
+                                                    <th ng-show="showIndustrial">Fellowship Type</th>
+                                                    <!-- <th nowrap="true">Date of Birth</th>
+                                                    <th>Email ID</th>
+                                                    <th>Phone Number</th>
+                                                    <th>Contact Address</th> -->
+                                                    <!-- <th nowrap="true">Application ID</th> -->
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="x in objContact">
+                                                    <td class="p-3">{{x.AccountName__c}}</td>
+                                                    <td>{{x.Name}}</td>
+                                                    <td ng-show="showIndustrial">{{x.Industrial_Fellowship_Type__c}}</td>
+                                                    <!-- <td>{{x.Birthdate|date:"dd-MM-yyyy"}}</td>
+                                                    <td>{{x.Email}}</td>
+                                                    <td>{{x.Phone}}</td>
+                                                    <td>{{x.MailingAddress.street}}, {{x.MailingAddress.city}}, {{x.MailingAddress.state}}
+                                                        , {{x.MailingAddress.country}}, {{x.MailingAddress.postalCode}}
+                                                    </td>
+                                                    <td>{{ProposalData.Name}}</td> -->
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div id="existingGrants" style="display: none;">
+                                        <table class="tablefinance w-100">
+                                            <thead>
+                                                <tr>
+                                                    <th class="p-3">Sr. No.</th>
+                                                    <th>Title</th>
+                                                    <th>Funding Agency</th>
+                                                    <th>Budget</th>
+                                                    <th>Starting Date</th>
+                                                    <th>Duration</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="row in partnersDetail">
+                                                    <td class="p-3">{{$index}}</td>
+                                                    <td>{{row.Name}}</td>
+                                                    <td>
+                                                        <table width="100%">
+                                                        <tr ng-repeat="x in row.Existing_Grants__r">
+                                                            <td>{{x.Funding_Agency__c}}</td>
+                                                            <td>{{x.Budget__c}}</td>
+                                                            <td>{{x.Starting_Date__c | date:'dd/MM/yyyy'}}</td>
+                                                            <td nowrap="true">{{irow.Duration__c}} Months</td>
+                                                        </tr>
+                                                    </table>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div id="askedGrants" style="display: none;">
+                                        <table class="tablefinance w-100">
+                                            <thead>
+                                                <tr>
+                                                    <th class="p-3">Partner</th>
+                                                    <th>Own Contribution</th>
+                                                    <th>IGSTC Contribution</th>
+                                                    <th>Total Contribution</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="x in partnersDetail">
+                                                    <td class="p-3">{{x.Name}}</td>
+                                                    <td>{{x.Financial_Contribution__r[0].Own_Contribution__c}}</td>
+                                                    <td>{{x.Financial_Contribution__r[0].IGSTC_Contribution__c}}</td>
+                                                    <td>{{x.Financial_Contribution__r[0].Total__c}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div id="workPackages" style="display: none;">
+                                        <table class="tablefinance w-100">
+                                            <thead>
+                                                <tr>
+                                                    <th class="p-3">Sr. No.</th>
+                                                    <th>Partners</th>
+                                                    <th>Strat TRL Level</th>
+                                                    <th>End TRL Level</th>
+                                                    <th>Title</th>
+                                                    <th>Duration</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="row in WorkPackages">
+                                                    <td class="p-3">{{row.WP_Sequence__c}}</td>
+                                                    <td>
+                                                        <p ng-repeat="p in row.Account_Mapping__r">{{$index+1}}) {{p.Account_Name__c}}</p>
+                                                    </td>
+                                                    <td>{{row.TRL_Level__c}}</td>
+                                                    <td>{{row.End_TRL_Level__c}}</td>
+                                                    <td>{{row.Title__c}}</td>
+                                                    <td>{{row.Duration__c}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                   
+                                    <div id="divReview">
+                                        <div class="row grading-scale">
+                                            <div class="col-md-7">
+                                               <!-- <h2>Grading Scale:</h2>
+                                                <ul>
+                                                    <li>
+                                                        <div class="dot"></div>
+                                                        1 - 4 [Poor]
+                                                    </li>
+                                                    <li>
+                                                        <div class="dot good"></div> 
+                                                        5 - 7 [Good]
+                                                    </li>
+                                                    <li>
+                                                        <div class="dot excellent"></div>
+                                                        8 - 10 [Excellent]
+                                                    </li>
+                                                </ul>
+                                            -->
+                                            </div>
+                                            <div class="col-md-5">
+                                                <h2>Score</h2>
+                                                <div class="progress-score">
+                                                    <div class="progress">
+                                                        <div class="progress-bar excellent" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        <!-- <div class="progress-bar" role="progressbar" style="width: 33.33%" aria-valuenow="33.33" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        <div class="progress-bar good" role="progressbar" style="width: 33.33%" aria-valuenow="33.33" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        <div class="progress-bar excellent" role="progressbar" style="width: 33.33%" aria-valuenow="33.33" aria-valuemin="0" aria-valuemax="100"></div> -->
+                                                    </div> 
+                                                </div>
+                                                <h2>{{ratingScore}}/{{totalRating}}</h2>
+                                            </div>
+                                        </div>
+                                        <!--
+                                        <div class="review-panel">
+                                            <ul>
+                                                <li>1</li>
+                                                <li>2</li>
+                                                <li>3</li>
+                                                <li>4</li>
+                                                <li class="good">5</li>
+                                                <li class="good">6</li>
+                                                <li class="good">7</li>
+                                                <li class="excellent">8</li>
+                                                <li class="excellent">9</li>
+                                                <li class="excellent">10</li>
+                                            </ul>
+                                        </div>
+                                        -->
+                                        <!-- <div class="card mt-5"> -->
+                                            <!-- <div class="card-header"> -->
+                                                <!-- <div class="row">
+                                                <div class="col-md-12">
+                                                    <h5 class="p-2">
+                                                    <b>Reviewers Details</b>
+                                                </h5>
+                                            </div>
+                                            </div> -->
+                                            <!-- </div> -->
+                                            <div class="card-body">
+                                                <!-- <div class="row">
+                                                    <div class="col-md-3 mb-3" ng-repeat="reviewer in reviewerData">
+                                                        <div class="card card-reviewer" ng-click="showReviewerReponse($index)">
+                                                            <div class="card-body">
+                                                                <h5>
+                                                                    <i class="fa-solid fa-user me-3"></i>{{reviewer.Reviewer__r.Name}}</h5>
+                                                                <p style="font-size: 12px;">
+                                                                    <i class="fa-regular fa-paper-plane me-3 mt-2"></i>{{reviewer.Reviewer__r.Email__c}}</p>
+                                                                <p style="font-size: 12px;">
+                                                                    <i class="fa-solid fa-clipboard-list me-3"></i>{{reviewer.Stage__c}}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                
+                                                </div> -->
+                                                <div class="row mt-3" ng-show="divReviewerResponse">
+                                                    <!-- <div class="col-md-8">
+                                                        <h4 class="color-theme">Reviewer Response</h4>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <button ng-click="divReviewerResponse=true" class="blue-btn float-end" type="button">
+                                                            <i class="fa-solid fa-circle-xmark me-2"></i>Hide Response</button>
+                                                    </div> -->
+                                                
+                                                    <div class="col-md-12 review-qa">
+                                                        <div class="accordion" id="accordionExample">
+                                                            <div class="accordion-item" ng-repeat="quetemp in QuestionTempList">
+                                                                <h2 class="accordion-header mt-0" id="heading{{$index}}">
+                                                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$index}}" aria-expanded="true" aria-controls="collapse{{$index}}}">
+                                                                        <div class="row">
+                                                                            <div class="col-6">
+                                                                                <label class="pt-3">{{quetemp.getQuesLineItemList.Question__c}}</label>
+                                                                            </div>
+                                                                            <div class="col-3">
+                                                                                <!-- Rating
+                                                                                <ul class="rating">
+                                                                                    <li ng-repeat="item in RatingValues" ng-class="{'active': quetemp.Ratings__c>item-1 }">
+                                                                                        <i class="fas fa-star"></i>
+                                                                                    </li>                                                                                    
+                                                                                </ul> -->
+                                                                            </div>
+                                                                            <div class="col-3">
+                                                                                <!-- Grade
+                                                                                <ul class="grade">
+                                                                                    <li>
+                                                                                        <a href="javascript:void(0)">{{quetemp.Grade_Value__c}}</a>
+                                                                                    </li>
+                                                                                </ul> -->
+                                                                                Rating
+                                                                                <input type="text" number="quetemp.RRLineItemList.Ratings__c" disabled="disabled" ng-model="quetemp.RRLineItemList.Ratings__c" id="txtRating{{$index}}" ng-change="validateRating($index,quetemp.RRLineItemList.Ratings__c)" class="form-control"/>
+                                                                            </div>
+                                                                        </div>
+                                                                    </button>
+                                                                </h2>
+                                                                <div id="collapse{{$index}}" class="accordion-collapse show" aria-labelledby="heading{{$index}}" data-bs-parent="#accordionExample">
+                                                                    <div class="accordion-body">
+                                                                        <strong class="font-if">Response</strong>
+                                                                        <h5 class="answer-field font-if">{{quetemp.RRLineItemList.Response__c}}</h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- <table class="tablefinance" style="width: 100%;">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="p-3">Question</th>
+                                                                    <th>Response</th>
+                                                                    <th>Grade</th>
+                                                                    <th>Rating</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="row in ObjResponse">
+                                                                    <td class="p-3">{{row.Question_Line_Item__r.Question__c}}</td>
+                                                                    <td>{{row.Response__c}}</td>
+                                                                    <td>{{row.Grade_Value__c}}</td>
+                                                                    <td>{{row.Ratings__c}}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <!-- </div> -->
+                                        <div ng-show="!disable">
+                                            <!-- <div class="row mt-5">
+                                                <div class="col-md-12">
+                                            <div style="color:white;border-radius: 3px;" class="d-flex justify-content-center justify-content-middle bg-color-badge-submitted">
+                                                <h3>
+                                                    <b>Question Line Item And Reviewer Response Line Item</b>
+                                                </h3>
+                                            </div>
+                                        </div>
+                                        </div> -->
+                                        
+                                                <div class="row mt-5">
+                                                <div class="col-md-12 review-qa">
+                                                    <div class="accordion" id="accordionExample">
+                                                        <div class="row" ng-show="showPecfar">
+                                                            <div class="col-md-12 px-5">
+                                                                <h4><label>Kindly review the applications based on the following criteria's</label></h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="accordion-item" ng-repeat="quetemp in QuestionTempList">
+                                                            <!-- <h2 class="accordion-header mt-0" id="heading{{$index}}"> -->
+                                                                <!-- <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$index}}" aria-expanded="true" aria-controls="collapse{{$index}}}"> -->
+                                                                    <!-- <div class="row">
+                                                                        <div class="col-8"> -->
+                                                                            <!-- <label><b>{{$index+1}}) Question:-</b></label>  -->
+                                                                            <!-- <h5 class="ps-3">{{quetemp.getQuesLineItemList.Question__c}}</h5> -->
+                                                                            <!-- <label class="pt-3 font-if">Q{{$index+1}}) {{quetemp.getQuesLineItemList.Question__c}}</label> -->
+                                                                        <!-- </div>
+                                                                    </div> -->
+                                                                        <!-- <div class="col-3 font-if">
+                                                                            Rating
+                                                                            <ul class="rating" ng-model='quetemp.RRLineItemList.Ratings__c'>
+                                                                                <li ng-repeat="item in RatingValues" ng-click="setRating(item,$parent.$index)" ng-class="{'active': quetemp.RRLineItemList.Ratings__c>=item-1  }">
+                                                                                    <i class="fas fa-star"></i>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div> -->
+                                                                        <!-- <div class="row">
+                                                                        <div class="col-2 font-if">
+                                                                            <label class="forn-if pt-3">Enter Your Grade 2</label>
+                                                                            </div> -->
+                                                                        <!-- <div class="col-2 font-if"> -->
+                                                                            <!-- <label class="forn-if">Enter Your Grade</label> -->
+                                                                            <!-- <input type="number" number="quetemp.RRLineItemList.Ratings__c" ng-model="quetemp.RRLineItemList.Ratings__c" id="txtRating{{$index}}" ng-change="validateRating($index,quetemp.RRLineItemList.Ratings__c)" class="form-control"/>
+                                                                            <span class="text-danger" id="spnRating{{$index}}" style="display: none;">Please enter rating between 1 to 10</span> -->
+                                                                            <!-- <select ng-model="quetemp.RRLineItemList.Ratings__c" class="form-control w-25 float-end">
+                                                                                <option ng-selected="{{item==quetemp.RRLineItemList.Ratings__c}}" ng-repeat="item in RatingValues">{{item}}</option>
+                                                                            </select> -->
+                                                                            <!-- Grade
+                                                                            <ul class="grade" ng-model='quetemp.RRLineItemList.Grade_Value__c'>
+                                                                                <li ng-repeat="item in GradValues" ng-click="setGrade(item,$parent.$index)" ng-class="{'active': quetemp.RRLineItemList.Grade_Value__c===item  }">
+                                                                                    <a href="javascript:void(0)">{{item}}</a>
+                                                                                </li>
+                                                                            </ul> -->
+                                                                        <!-- </div> -->
+                                                                    <!-- </div> -->
+                                                                <!-- </button> -->
+                                                            <!-- </h2> -->
+                                                            <div id="collapse{{$index}}" class="accordion-collapse show" aria-labelledby="heading{{$index}}" data-bs-parent="#accordionExample">
+                                                                <div class="accordion-body">                                                                   
+                                                                    <div class="row">
+                                                                        <div class="col-md-12 px-5">
+                                                                            <label class="font-reviewer-question">{{quetemp.getQuesLineItemList.Question__c}} </label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row pt-3" ng-show="quetemp.getQuesLineItemList.Is_Rating_Applicable__c">
+                                                                        <div class="col-md-3 px-5"><label>(Max Marks:{{quetemp.getQuesLineItemList.Maximum_Score__c}})<br/>Enter Your Grade</label><span class="required-asterisk" style="color:red;">*</span></div>
+                                                                        <div class="col-md-3">
+                                                                            <input type="number" number="quetemp.RRLineItemList.Ratings__c" min="0" max="{{quetemp.getQuesLineItemList.Maximum_Score__c}}" ng-model="quetemp.RRLineItemList.Ratings__c" id="txtRating{{$index}}" ng-change="validateRating($index,quetemp.RRLineItemList.Ratings__c)" class="form-control" ng-disabled="selectedReviewerMap.Stage__c==='Submitted'"/>
+                                                                            <span class="text-danger" id="spnRating{{$index}}" style="display: none;">Please enter rating between 1 to {{quetemp.getQuesLineItemList.Maximum_Score__c}}</span>
+                                                                        </div>
+                                                                    </div>  
+                                                                    <div class="row" ng-show="quetemp.getQuesLineItemList.Is_Comment_Applicable__c">
+                                                                        <div class="col-12 px-5">
+                                                                    <label>Remarks/Justification</label>
+                                                                    <span class="required-asterisk" style="color:red;">*</span>
+                                                                    <textarea class="answer-field font-if" style="border:solid 1px orange" rows="10" maxlength="32768" ng-model="quetemp.RRLineItemList.Response__c" ng-disabled="selectedReviewerMap.Stage__c==='Submitted'"></textarea>
+                                                                    <!-- <input type="text" class="answer-field font-if" ng-model="quetemp.RRLineItemList.Response__c" ng-disabled="disable" /> -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <table class="tablefinance" style="width: 100%;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="p-3" nowrap="true">Sr No</th>
+                                                                <th>Questions</th>
+                                                                <th width="50%">Response</th>
+                                                                <th nowrap="true">Grade Value</th>
+                                                                <th width="8%">Rating
+                                                                    <br/>Value</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="quetemp in QuestionTempList">
+                                                                <td class="text-muted p-3">{{$index + 1}}</td>
+                                                                <td class="text-muted">{{quetemp.getQuesLineItemList.Question__c}}</td>
+                                                                <td nowrap="true">
+                                                                    <input type="text" class="form-control" ng-model="quetemp.RRLineItemList.Response__c" ng-disabled="disable" />
+                                                                </td>
+                                                                <td>
+                                                                    <select class="form-select" aria-label="Default select example" style="min-height: 34px;" ng-model="quetemp.RRLineItemList.Grade_Value__c" ng-disabled="disable">
+                                                                        <option value="none" ng-selected="true">--None--</option>
+                                                                        <option ng-repeat="staff in GradValues">{{staff}}</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td style="width:150px !important;">
+                                                                    <select class="form-select" aria-label="Default select example" style="min-height: 34px;" ng-model="quetemp.RRLineItemList.Ratings__c" ng-disabled="disable">
+                                                                        <option value="none" ng-selected="true">--None--</option>
+                                                                        <option ng-repeat="staff in RatingValues">{{staff}}</option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table> -->
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="row mb-5">
+                                                <div class="col-md-12">
+                                                <button type="button" ng-if="selectedReviewerMap.Stage__c!=='Submitted'" ng-disabled="disable" class="blue-btn float-end ms-3" ng-click="submitResponseDetail('Submitted')">
+                                                    <i class="fa-solid fa-check me-3"></i>Submit</button>
+                                                <button type="button" ng-if="selectedReviewerMap.Stage__c!=='Submitted'" ng-disabled="disable" class="blue-btn float-end ms-3" ng-click="submitResponseDetail('Draft')">
+                                                    <i class="fa-solid fa-check me-3"></i>Save As Draft</button>
+                                                <button type="button" class="blue-bordered-btn float-end" ng-click="showAllProposals()">
+                                                    <i class="fa-solid fa-arrow-left i-padding"></i>Back</button>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div id="ProposalTable" name="divTopTables" style="display: none;">
+                                        <div class="row px-5">
+                                            <div class="col-md-12"><h4 class="font-if"><b class="heading-tab">Proposal Details</b></h4></div>
+                                        </div>
+                                        <div class="row px-5">
+                                            <div class="col-md-6">
+                                                <div class="row pt-3">
+                                                    <div class="col-md-6"><label>Application ID</label></div>
+                                                    <div class="col-md-6">{{ProposalData.Name}}</div>
+                                                </div>
+                                                <div class="row  pt-3" ng-show="showIndustrial||showWiser||showWorkshop||show2plus2">
+                                                    <div class="col-md-6"><label>Title of the Proposal</label></div>
+                                                    <div class="col-md-6">{{ProposalData.Title_Of__c}}</div>
+                                                </div>
+                                                <div class="row pt-3" ng-show="show2plus2">
+                                                    <div class="col-md-6"><label>Title In German</label></div>
+                                                    <div class="col-md-6">{{ProposalData.Title_In_German__c}}</div>
+                                                </div>                                                
+                                                <div class="row pt-3" ng-show="showWorkshop||show2plus2">
+                                                    <div class="col-md-6"><label>Acronym</label></div>
+                                                    <div class="col-md-6">{{ProposalData.Acronym__c}}</div>
+                                                </div>
+                                                <div class="row pt-3" ng-show="showIndustrial">
+                                                    <div class="col-md-6"><label>Fellowship Duration</label></div>
+                                                    <div class="col-md-6">{{ProposalData.Duration_In_Months_Max_36__c}} Months</div>
+                                                </div>    
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="row pt-3" ng-show="showWiser">
+                                                    <div class="col-md-12">
+                                                        <label>Summary/ Abstract of the Project</label>
+                                                        <p ng-bind-html="trustHtml(ProposalData.Abstract_of_proposed_work__c)"></p>
+                                                    </div>
+                                                </div>
+                                                <div class="row pt-3" ng-show="show2plus2">
+                                                    <div class="col-md-12">
+                                                        <label>Summary/ Abstract of the Project</label>
+                                                        <p ng-bind-html="trustHtml(ProposalData.Summary__c)"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row pt-4 px-5">
+                                            <div class="col-md-12">
+                                                <h4 class="font-if" ng-hide="showPecfar"><b class="heading-tab">Applicant Details</b></h4>
+                                                <h4 class="font-if" ng-show="showPecfar"><b class="heading-tab">Pair Details</b></h4>
+                                            </div>
+                                        </div>
+                                        <div class="row px-5">
+                                            <div class="col-md-12">
+                                                <!-- table contact -->
+                                        <table class="tablefinance w-100">
+                                            <thead>
+                                                <tr>
+                                                    
+                                                    <th ng-show="showPecfar">Pair Name</th>
+                                                    <th ng-hide="showPecfar">Applicant Name</th>
+                                                    <th nowrap="true">Institute Name</th>
+                                                    <th ng-show="showIndustrial">Fellowship Type</th>
+                                                    <th ng-show="showPecfar">Fellowship Start Date</th>
+                                                    <th ng-show="showPecfar">Fellowship End date</th>
+                                                    <th ng-show="showPecfar">Applied As</th>
+                                                    <!-- <th nowrap="true">Date of Birth</th>
+                                                    <th>Email ID</th>
+                                                    <th>Phone Number</th>
+                                                    <th>Contact Address</th> -->
+                                                    <!-- <th nowrap="true">Application ID</th> -->
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="x in objContactPrimaryh">                                                    
+                                                    <td>{{x.Name}}</td>
+                                                    <td>{{x.AccountName__c}}</td>
+                                                    <td ng-show="showIndustrial">{{x.Industrial_Fellowship_Type__c}}</td>
+                                                    <td ng-show="showPecfar">{{x.Tentative_Start_Date__c|date: "dd-MM-yyyy"}}</td>
+                                                    <td ng-show="showPecfar">{{x.Tentative_End_Date__c|date: "dd-MM-yyyy"}}</td>
+                                                    <td ng-show="showPecfar">
+                                                        <!-- <i ng-if="x.MailingAddress.country=='India'"><apex:image url="{!$Resource.indiaFlag}" styleClass="img-fluid" style="max-width:30px;" /></i>
+                                                        <i ng-if="x.MailingAddress.country=='German'"><apex:image url="{!$Resource.germanyFlag}" styleClass="img-fluid" style="max-width:30px;" /></i>
+                                                        <i ng-if="x.MailingAddress.country=='Germany'"><apex:image url="{!$Resource.germanyFlag}" styleClass="img-fluid" style="max-width:30px;" /></i> -->
+                                                        <span ng-if="x.MailingAddress.country=='India'">Indian counter part</span>
+                                                        <span ng-if="x.MailingAddress.country=='German'">German counter part</span>
+                                                        <span ng-if="x.MailingAddress.country=='Germany'">German counter part</span>
+                                                    </td>
+                                                    <!-- <td>{{x.Birthdate|date:"dd-MM-yyyy"}}</td>
+                                                    <td>{{x.Email}}</td>
+                                                    <td>{{x.Phone}}</td>
+                                                    <td>{{x.MailingAddress.street}}, {{x.MailingAddress.city}}, {{x.MailingAddress.state}}
+                                                        , {{x.MailingAddress.country}}, {{x.MailingAddress.postalCode}}
+                                                    </td>
+                                                    <td>{{ProposalData.Name}}</td> -->
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="row pt-4 px-5">
+                                            <div class="col-md-12"><h4 class="font-if"><b class="heading-tab">Parent Details</b></h4></div>
+                                        </div>
+                                        <div class="row px-5">
+                                            <div class="col-md-12">
+                                        <table class="tablefinance w-100">
+                                            <thead>
+                                                <tr>
+                                                    <th>Application ID</th>
+                                                    <th nowrap="true" class="p-3">Partner Name</th>
+                                                    <th>Industry/Academia</th>
+                                                    <th>Country</th>
+                                                    <th>Website</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="x in partnersDetail">
+                                                    <td>{{ProposalData.Name}}</td>
+                                                    <td class="p-3">{{x.Name}}</td>
+                                                    <td ng-if="x.Industry__c==true">Industry</td>
+                                                    <td ng-if="x.Industry__c==false">Academia</td>
+                                                    <td>
+                                                        <i ng-if="x.BillingCountry=='India'"><apex:image url="{!$Resource.indiaFlag}" styleClass="img-fluid" style="max-width:30px;" /></i>
+                                                        <i ng-if="x.BillingCountry=='German'"><apex:image url="{!$Resource.germanyFlag}" styleClass="img-fluid" style="max-width:30px;" /></i>
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{x.Website}}" target="_blank">{{x.Website}}</a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                            </div>
+                                        </div> -->
+                                        <div class="row pt-4 px-5" ng-show="showIndustrial||showWiser">
+                                            <div class="col-md-12"><h4 class="font-if"><b class="heading-tab">Host Details</b></h4></div>
+                                        </div>
+                                        <div class="row px-5" ng-show="showIndustrial||showWiser">
+                                            <div class="col-md-12">
+<!-- table Host ng-show="showIndustrial"-->
+<table class="tablefinance w-100">
+    <thead>
+        <tr>
+            <th nowrap="true">Name of the mentor</th>
+            <th nowrap="true">Industry/organisation name</th>
+            <!-- <th nowrap="true">Phone No.</th>
+            <th nowrap="true">Email ID</th>
+            <th>Address</th>
+            <th nowrap="true">Application ID</th> -->
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="x in objContactPrimaryhHost">
+            <td>{{x.Name}}</td>
+            <td>{{x.AccountName__c}}</td>
+            <!-- <td>{{x.Account.Phone}}</td>
+            <td>{{x.Account.Email__c}}</td> -->
+            <!-- <td>{{x.Account.ACCOUNT_ADDRESS_FORMULA__c}}</td> -->
+            <!-- <td>{{ProposalData.Name}}</td> -->
+        </tr>
+    </tbody>
+</table>
+                                            </div>
+                                        </div>
+                                        <!-- <table class="tablefinance w-100">
+                                            <thead>
+                                                <tr>
+                                                    <th nowrap="true">Application ID</th>
+                                                    <th ng-show="showIndustrial||showWiser||showWorkshop||show2plus2">Title of the Proposal</th>
+                                                    <th ng-show="show2plus2">Title In German</th>
+                                                    <th ng-show="showWorkshop||show2plus2">Acronym</th>
+                                                    <th ng-show="showWiser">Summary/ Abstract of the Project</th>
+                                                    <th nowrap="true" ng-hide="showWorkshop">Tentative Start Date</th>
+                                                    <th nowrap="true" ng-hide="showWorkshop">Tentative End Date</th>
+                                                    <th nowrap="true" ng-show="showWorkshop">WORKSHOP Proposed Date</th>
+                                                    <th nowrap="true" ng-show="showWorkshop">WORKSHOP Finish Date</th>
+                                                    <th ng-show="showWorkshop">Proposed Venue</th>
+                                                    <th ng-show="show2plus2">Extension Date, if any</th>
+                                                    <th ng-show="show2plus2">Extension Type</th>
+                                                    <th ng-show="show2plus2">Summary/Abstract of the Project</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>{{ProposalData.Name}}</td>
+                                                    <td ng-show="showIndustrial||showWiser||showWorkshop||show2plus2">{{ProposalData.Title_Of__c}}</td>
+                                                    <td ng-show="show2plus2">{{ProposalData.Title_In_German__c}}</td>
+                                                    <td ng-show="showWorkshop||show2plus2">{{ProposalData.Acronym__c}}</td>
+                                                    <td ng-show="showWiser">
+                                                        <p ng-bind-html="ProposalData.Abstract_of_proposed_work__c"></p>    
+                                                    </td>
+                                                    <td ng-hide="showWorkshop">{{ProposalData.Tentative_Start_Date__c|date:"dd-MM-yyyy"}}</td>
+                                                    <td ng-hide="showWorkshop">{{ProposalData.Tentative_End_Date__c|date:"dd-MM-yyyy"}}</td>
+                                                    <td ng-show="showWorkshop">{{ProposalData.Proposed_Date__c|date:"dd-MM-yyyy"}}</td>
+                                                    <td ng-show="showWorkshop">{{ProposalData.Workshop_Finish_Date__c|date:"dd-MM-yyyy"}}</td>
+                                                    <td ng-show="showWorkshop">{{ProposalData.Proposed_Venue__c}}</td>
+                                                    <td ng-show="show2plus2"></td>
+                                                    <td ng-show="show2plus2"></td>
+                                                    <td ng-show="show2plus2">
+                                                        <p ng-bind-html="ProposalData.Summary__c"></p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table> -->
+                                                                              
+                                        
+                                    </div>
+                                    <div id="proposalSummary" style="display: none;">
+                                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                            <div name="div_2_Plus_2" ng-show="proposalSummaryShow">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading" role="tab" id="headingOne">
+                                                        <h4 class="panel-title" ng-click="accordianToggle('collapseOne')">
+                                                            <span role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                                Project Summary
+                                                                <i class="fas fa-angle-down float-end"></i>
+                                                            </span>
+                                    
+                                                        </h4>
+                                                    </div>
+                                                    <div id="collapseOne" name='divAccordian' class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                                        <div class="panel-body">
+                                                            {{proposalSummary}}
+                                                            <p ng-bind-html="proposalSummary"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="panel panel-default" ng-show="projectDescriptionShow">
+                                                    <div class="panel-heading" role="tab" id="headingTwo">
+                                                        <h4 class="panel-title" ng-click="accordianToggle('collapseTwo')">
+                                                            <span class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false"
+                                                                aria-controls="collapseTwo">
+                                                                Project Description
+                                                                <i class="fas fa-angle-down float-end"></i>
+                                                            </span>
+                                                        </h4>
+                                                    </div>
+                                                    <div id="collapseTwo" name='divAccordian' style="display: none;" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                                        <div class="panel-body">
+                                                            {{ProposalData.Project_Description__c}}
+                                                            <p ng-bind-html="ProposalData.Project_Description__c"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="panel panel-default" ng-show="mainObjectiveShow">
+                                                    <div class="panel-heading" role="tab" id="headingThree">
+                                                        <h4 class="panel-title" ng-click="accordianToggle('collapseThree')">
+                                                            <span class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false"
+                                                                aria-controls="collapseThree">
+                                                                Main Objectives of the Research Approach
+                                                                <i class="fas fa-angle-down float-end"></i>
+                                                            </span>
+                                                        </h4>
+                                                    </div>
+                                                    <div id="collapseThree" name='divAccordian' style="display: none;" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                                        <div class="panel-body">
+                                                            {{ProposalData.Research_Approach_Objectives__c}}
+                                                            <p ng-bind-html="ProposalData.Research_Approach_Objectives__c"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="panel panel-default" ng-show="currentStateArtShow">
+                                                    <div class="panel-heading" role="tab" id="headingFour">
+                                                        <h4 class="panel-title" ng-click="accordianToggle('collapseFour')">
+                                                            <span class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false"
+                                                                aria-controls="collapseFour">
+                                                                Current State of the Art in the Field
+                                                                <i class="fas fa-angle-down float-end"></i>
+                                                            </span>
+                                                        </h4>
+                                                    </div>
+                                                    <div id="collapseFour" name='divAccordian' style="display: none;" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                                                        <div class="panel-body">
+                                                            {{ProposalData.Current_State_Of_The_Art__c}}
+                                                            <p ng-bind-html="ProposalData.Current_State_Of_The_Art__c"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div name="div_Industril_fellowship" ng-show="showIndustrial">
+                                                <!-- <div class="proposal-details">
+                                                                                                                        <div class="row">
+                                                                                                                            <div class="col-md-8">
+                                                                                                                                <h2>Proposal details</h2>
+                                                                                                                                <h4>Basic details</h4>
+                                                                                                                                <div class="info">
+                                                                                                                                    <label>Proposal Title</label>
+                                                                                                                                    <div class="ans">
+                                                                                                                                        Utilizing CO2 and Biomass as Feedstock for the Production of Fuels and Chemical Intermediates
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                                <div class="info">
+                                                                                                                                    <label>Proposal German Title</label>
+                                                                                                                                    <div class="ans">
+                                                                                                                                        CO2 und Biomasse als Feedstock für die Herstellung von Energieträgern und Chemischen Zwischenprodukten
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div class="col-md-4">
+                                                                                                                                <div class="info">
+                                                                                                                                    <label>Thematic Topic</label>
+                                                                                                                                    <div class="ans sm">
+                                                                                                                                        Topic
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                                <div class="info">
+                                                                                                                                    <label>Acronym</label>
+                                                                                                                                    <div class="ans sm">
+                                                                                                                                        CO2BioFeed
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                                <div class="info">
+                                                                                                                                    <label>Application Date</label>
+                                                                                                                                    <div class="ans sm">
+                                                                                                                                        22-09-2022
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div> -->
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading" role="tab" id="headingFive">
+                                                        <h4 class="panel-title" ng-click="accordianToggle('collapseFive')">
+                                                            <span role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+                                                                Brief Statement of Purpose
+                                                                <i class="fas fa-angle-down float-end"></i>
+                                                            </span>
+                                                        </h4>
+                                                    </div>
+                                                    <div id="collapseFive" name='divAccordian' class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFive">
+                                                        <div class="panel-body">
+                                                            {{ProposalData.Brief_Statement_of_Purpose__c}}
+                                                            <p ng-bind-html="ProposalData.Brief_Statement_of_Purpose__c"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading" role="tab" id="headingSix">
+                                                        <h4 class="panel-title" ng-click="accordianToggle('collapseSix')">
+                                                            <span class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="false"
+                                                                aria-controls="collapseSix">
+                                                                Objectives of the work
+                                                                <i class="fas fa-angle-down float-end"></i>
+                                                            </span>
+                                                        </h4>
+                                                    </div>
+                                                    <div id="collapseSix" name='divAccordian' style="display: none;" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
+                                                        <div class="panel-body">
+                                                            {{ProposalData.Research_Approach_Objectives__c}}
+                                                            <p ng-bind-html="ProposalData.Research_Approach_Objectives__c"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading" role="tab" id="headingSeven">
+                                                        <h4 class="panel-title" ng-click="accordianToggle('collapseSeven')">
+                                                            <span class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" aria-expanded="false"
+                                                                aria-controls="collapseSeven">
+                                                                Work plan
+                                                                <i class="fas fa-angle-down float-end"></i>
+                                                            </span>
+                                                        </h4>
+                                                    </div>
+                                                    <div id="collapseSeven" name='divAccordian' style="display: none;" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSeven">
+                                                        <div class="panel-body">
+                                                            {{ProposalData.Work_plan__c}}
+                                                            <p ng-bind-html="ProposalData.Work_plan__c"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading" role="tab" id="headingEight">
+                                                        <h4 class="panel-title" ng-click="accordianToggle('collapseEight')">
+                                                            <span class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEight" aria-expanded="false"
+                                                                aria-controls="collapseEight">
+                                                                Expected outcomes
+                                                                <i class="fas fa-angle-down float-end"></i>
+                                                            </span>
+                                                        </h4>
+                                                    </div>
+                                                    <div id="collapseEight" name='divAccordian' style="display: none;" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEight">
+                                                        <div class="panel-body">
+                                                            {{ProposalData.Expected_Deliverables__c}}
+                                                            <p ng-bind-html="ProposalData.Expected_Deliverables__c"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div name="div_workshop" ng-show="showWorkshop">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading" role="tab" id="headingNine">
+                                                        <h4 class="panel-title" ng-click="accordianToggle('collapseNine')">
+                                                            <span role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
+                                                                Background, Concept and Purpose in Detail
+                                                                <i class="fas fa-angle-down float-end"></i>
+                                                            </span>
+                                                        </h4>
+                                                    </div>
+                                                    <div id="collapseNine" name='divAccordian' style="display: none;" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingNine">
+                                                        <div class="panel-body">
+                                                            {{ProposalData.Background_Concept_Purpose__c}}
+                                                            <p ng-bind-html="ProposalData.Background_Concept_Purpose__c"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading" role="tab" id="headingTen">
+                                                        <h4 class="panel-title" ng-click="accordianToggle('collapseTen')">
+                                                            <span role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                                                                Specific Need for the Bilateral Event, Its Relevance and Mutual Benefits
+                                                                <i class="fas fa-angle-down float-end"></i>
+                                                            </span>
+                                                        </h4>
+                                                    </div>
+                                                    <div id="collapseTen" name='divAccordian' style="display: none;" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTen">
+                                                        <div class="panel-body">
+                                                            {{ProposalData.Specific_Need_For_the_Bilateral_Event__c}}
+                                                            <p ng-bind-html="ProposalData.Specific_Need_For_the_Bilateral_Event__c"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div name="div_PECFAR" ng-show="showPecfar">
+                                                <div class="panel panel-default" ng-repeat="contact in objContact">
+                                                    <div class="panel-heading" role="tab" id="headingContact{{$index}}">
+                                                        <h4 class="panel-title" ng-click="accordianToggleInd('collapseContact',$index)">
+                                                            <span role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseContact{{$index}}" aria-expanded="true"
+                                                                aria-controls="collapseContact{{$index}}">
+                                                                {{contact.Name}}
+                                                                <i class="fas fa-angle-down float-end"></i>
+                                                            </span>
+                                                        </h4>
+                                                    </div>
+                                                    <div id="collapseContact{{$index}}" name='divAccordian' class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingContact{{$index}}">
+                                                        <div class="panel-body">
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-heading" role="tab" id="headingElevoneContact{{$index}}">
+                                                                    <h4 class="panel-title" ng-click="accordianToggleInd('collapseElevoneContact',$index)">
+                                                                        <span role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseElevoneContact{{$index}}" aria-expanded="true"
+                                                                            aria-controls="collapseElevoneContact{{$index}}">
+                                                                            Planned research activities of the visit
+                                                                            <i class="fas fa-angle-down float-end"></i>
+                                                                        </span>
+                                                                    </h4>
+                                                                </div>
+                                                                <div id="collapseElevoneContact{{$index}}" name='divAccordian' class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingElevoneContact{{$index}}">
+                                                                    <div class="panel-body">
+                                                                        {{contact.Planned_research_activities_of_the_visit__c}}
+                                                                        <p ng-bind-html="contact.Planned_research_activities_of_the_visit__c"></p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-heading" role="tab" id="headingTwelvContact{{$index}}">
+                                                                    <h4 class="panel-title" ng-click="accordianToggleInd('collapseTwelvContact',$index)">
+                                                                        <span class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwelvContact{{$index}}"
+                                                                            aria-expanded="false" aria-controls="collapseTwelvContact{{$index}}">
+                                                                            Expected outcomes including future plans emerging out of the visit and value addition to the parent organization
+                                                                            <i class="fas fa-angle-down float-end"></i>
+                                                                        </span>
+                                                                    </h4>
+                                                                </div>
+                                                                <div id="collapseTwelvContact{{$index}}" name='divAccordian' style="display: none;" class="panel-collapse collapse" role="tabpanel"
+                                                                    aria-labelledby="headingTwelvContact{{$index}}">
+                                                                    <div class="panel-body">
+                                                                        {{contact.Expected_outcomes__c}}
+                                                                        <div ng-bind-html="contact.Expected_outcomes__c">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-heading" role="tab" id="headingThirteenContact{{$index}}">
+                                                                    <h4 class="panel-title" ng-click="accordianToggleInd('collapseThirteenContact',$index)">
+                                                                        <span class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThirteenContact{{$index}}"
+                                                                            aria-expanded="false" aria-controls="collapseThirteenContact{{$index}}">
+                                                                            What is the basis for choosing the pairing fellow?
+                                                                            <i class="fas fa-angle-down float-end"></i>
+                                                                        </span>
+                                                                    </h4>
+                                                                </div>
+                                                                <div id="collapseThirteenContact{{$index}}" name='divAccordian' style="display: none;" class="panel-collapse collapse" role="tabpanel"
+                                                                    aria-labelledby="headingThirteenContact{{$index}}">
+                                                                    <div class="panel-body">
+                                                                        {{contact.Basis_for_choosing_your_paired_member__c}}
+                                                                        <p ng-bind-html="contact.Basis_for_choosing_your_paired_member__c"></p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-heading" role="tab" id="headingFourteenContact{{$index}}">
+                                                                    <h4 class="panel-title" ng-click="accordianToggleInd('collapseFourteenContact',$index)">
+                                                                        <span class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFourteenContact{{$index}}"
+                                                                            aria-expanded="false" aria-controls="collapseFourteenContact{{$index}}">
+                                                                            Tentative plans for networking visits to different institutions during the fellowship ,if any
+                                                                            <i class="fas fa-angle-down float-end"></i>
+                                                                        </span>
+                                                                    </h4>
+                                                                </div>
+                                                                <div id="collapseFourteenContact{{$index}}" name='divAccordian' style="display: none;" class="panel-collapse collapse" role="tabpanel"
+                                                                    aria-labelledby="headingFourteenContact{{$index}}">
+                                                                    <div class="panel-body">
+                                                                        {{contact.Tentative_plans__c}}
+                                                                        <p ng-bind-html="contact.Tentative_plans__c"></p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                    
+                                    
+                                            </div>
+                                            <div name="div_WISER" ng-show="showWiser">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading" role="tab" id="headingWiserOne">
+                                                        <h4 class="panel-title" ng-click="accordianToggleWiser('collapseWiserOne')">
+                                                            <span role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseWiserOne">
+                                                                Abstract of proposed work
+                                                                <i class="fas fa-angle-down float-end"></i>
+                                                            </span>
+                                                        </h4>
+                                                    </div>
+                                                    <div id="collapseWiserOne" name='divAccordian' class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingWiserOne">
+                                                        <div class="panel-body">
+                                                            {{ProposalData.Abstract_of_proposed_work__c}}
+                                                            <p ng-bind-html="ProposalData.Abstract_of_proposed_work__c"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading" role="tab" id="headingWiserTwo">
+                                                        <h4 class="panel-title" ng-click="accordianToggleWiser('collapseWiserTwo')">
+                                                            <span class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false"
+                                                                aria-controls="collapseWiserTwo">
+                                                                Project description (including specific objectives, methodologies, expected outcome and value addition to the host/parent institutions)
+                                                                <i class="fas fa-angle-down float-end"></i>
+                                                            </span>
+                                                        </h4>
+                                                    </div>
+                                                    <div id="collapseWiserTwo" name='divAccordian' style="display: none;" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingWiserTwo">
+                                                        <div class="panel-body">
+                                                            {{ProposalData.Project_Description__c}}
+                                                            <p ng-bind-html="ProposalData.Project_Description__c"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="divFiles" style="display: none;">
+                                        <div style="background-color: white;height: 50vh;padding: 3%" ng-show="documents">
+                                            <div class="row">
+                                                <div class="col-10">
+                                                  <h5 style="font-weight: bold;margin-left: 10px;">Files Name</h5>
+                                                  <div style="padding: 2%;/*margin-top: 3%;height: 10vh;*/overflow-y: auto;">
+                                                    <div ng-repeat="doc in documents">
+                                                        <div class="customcard mb-2" style="border:solid 1px #ddd;border-radius:4px; box-shadow: 0px 0px 7.49306px 3.74653px rgba(0, 0, 0, 0.09);" ng-click="fileSelectedHandler($index)">
+                                                            <div class="card-body" style="cursor: pointer;">
+                                                                {{doc.Name}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </div>
+
+                                                <div class="col-2">
+                                                    <button class="btn btn-success w-100 background-theme ng-scope" onclick="document.getElementById('link').click()"><i class="fa fa-download"></i> Download!</button>
+                                                    <a id="link" href="{{fileUrl}}" download="" hidden=""></a>
+                                                </div>
+                                                
+
+                                                <div class="col-12">
+                                                    <h5 style="font-weight: bold;padding-left: calc(var(--bs-gutter-x)* .5);">Preview</h5>
+                                                    <div class="customcard" style="margin-top: 8px;width:100%;height: 40vh;background-color: aliceblue;padding: 5px;border: 0px;border-radius: 10px">
+                                                        <iframe id="myIframe" ng-src="{{fileUrl}}" style="width:100%;height:80vh;border: 0px;border-radius: 10px;"></iframe>                                                        
+                                                    </div>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <!-- <div style="background-color: white;height: 50vh;padding: 3%" ng-show="documents">
+                                            <div class="row">
+                                                <div class="col-5">
+                                                    <h5 style="font-weight: bold;margin-left: 10px;">Files Name</h5>
+                                                    <div style="padding: 2%;margin-top: 3%;height: 40vh;overflow-y: auto;">
+                                                        <div ng-repeat="doc in documents">                                                            
+                                                                <div class="customcard mb-2"  style="border:solid 1px #ddd;border-radius:4px; box-shadow: 0px 0px 7.49306px 3.74653px rgba(0, 0, 0, 0.09);" ng-click="fileSelectedHandler(doc.Id)">
+                                                                <div class="card-body">
+                                                                    {{doc.Name}}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-7">
+                                                    <h5 style="font-weight: bold;">Preview</h5>
+                                                    <div class="customcard" style="margin-top: 8px;width:100%;height: 40vh;background-color: aliceblue;padding: 5px;border: 0px;border-radius: 10px">
+                                                        <iframe id="myIframe" ng-src="{{fileUrl}}" style="width:100%;height:39vh;border: 0px;border-radius: 10px"></iframe>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> -->
+                                        <!-- <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="p-3">Sr No</th>
+                                                    <th>File Name</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="theme in Attachments">
+                                                    <td class="p-3">{{$index + 1}}</td>
+                                                    <td>{{theme.Name}}</td>
+                                                    <td>
+                                                        <button type="button" class="blue-btn" ng-click="downloadDetails(theme.Id)">
+                                                            <i class="fa-solid fa-eye me-2"></i>View</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table> -->
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div id="divHome" class="container" ng-hide="showHome">
+            <div class="carousel-banner" style="background: url({!$Resource.banner_img}) no-repeat;background-size: cover;min-height: calc(100vh - 124px);align-items: center;display: flex;margin-top:-30px;">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-5">
+                            <h1>It's Time to Bring Your</h1>
+                            <h2>Ideas Alive</h2>
+                            <p>IGSTC intends to catalyse innovative centric R and D projects by synergising the strength of research
+                                institution and industry from India and Germany.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="service mt-3">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-4 mb-4">
+                            <h4>
+                                <apex:image url="{!$Resource.proative}" styleClass="me-2" /> Proactive Play
+                            </h4>
+                            <p>Playing a proactive role in facilitating participation of industry in joint R and D projects</p>
+                        </div>
+                        <div class="col-4 mb-4">
+                            <h4>
+                                <apex:image url="{!$Resource.moblising}" styleClass="me-2" /> Moblising Assistance
+                            </h4>
+                            <p>Providing/assisting in mobilising resources to carry out industrial R and D projects</p>
+                        </div>
+                        <div class="col-4 mb-4">
+                            <h4>
+                                <apex:image url="{!$Resource.individual}" styleClass="me-2" /> Individual Advice
+                            </h4>
+                            <p>Providing individual advice to institutes and industries from both the countries on the possibilities
+                                of Indo-German cooperation and helping in the identification of suitable partners</p>
+                        </div>
+                        <div class="col-4 mb-4">
+                            <h4>
+                                <apex:image url="{!$Resource.encouraging}" styleClass="me-2" /> Encouraging Partners
+                            </h4>
+                            <p>Encouraging public-private partnerships (PPP) to foster elements of research, development and innovation,
+                                and cultivating a culture of cooperation between science and industry</p>
+                        </div>
+                        <div class="col-4 mb-4">
+                            <h4>
+                                <apex:image url="{!$Resource.nurturing}" styleClass="me-2" /> Nurturing Contacts
+                            </h4>
+                            <p>Nurturing contacts between young and mid-career scientists and technologists to develop a sense of
+                                mutual trust, partnership, leadership and entrepreneurship</p>
+                        </div>
+                        <div class="col-4 mb-4">
+                            <h4>
+                                <apex:image url="{!$Resource.cooperative}" styleClass="me-2" /> Cooperative Development
+                            </h4>
+                            <p>Developing cooperation through the identification of scientists and scientific institutions of both
+                                the countries</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+            <!-- Dashboard End -->
+        <div ng-hide="showProfile" id="divProfile">
+            <div class="bg-light">
+                <div class="container-fluid pt-3" style="background: #ffffff;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4 class="font-if">My Profile</h4>
+                        </div>
+                    </div>
+                    <div class="row pb-5">
+                        <div class="col-md-4">
+                            <div  ng-if="doc != undefined" class="image-preview d-flex align-items-center justify-content-center">
+                                <img class="mr-2 mb-2" style="max-height: 257px; max-width: 257px" src="{{imageSrc}}" alt="avatar" />
+
+                            </div>
+                            <div ng-show="doc == undefined" class="image-preview d-flex align-items-center justify-content-center" style="background-color:#ddd;height:85%;">
+                                <span ng-show="imageSrc == undefined">
+                                    <i class="fa-solid fa-circle-user fa-5x"></i>
+                                </span>
+                                <span ng-hide="imageSrc == undefined">
+                                    <img class="mr-2 mb-2" style="max-height: 257px; max-width: 257px" src="{{imageSrc}}" alt="avatar" />
+                                </span>
+                            </div>
+                            <small><b>Upload in jpg/jpeg format min 30 kb max 500kb</b>
+                                <!-- <span class="text-danger me-2">*</span> -->
+                            </small>
+                            <div class="custom-file-upload">
+                                <div class="input-group input-group-lg">
+                                    <input class="form-control" type="file" accept=".jpg,.jpeg" id="profilePic" ng-disabled="proposalStage" ng-file-select="onFileSelect($files)" ng-model="imageSrc"/>
+                                    <span class="input-group-btn" ng-hide="proposalStage">
+                                        <button type="button" class="btn btn-success" ng-click="uploadFile(docU.userDocument.Name,docU.userDocument.Id,'','652000','30720')">Upload</button>
+                                    </span>
+                                </div>
+                            </div>                            
+                        </div>
+        
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="font-if" for="txtName">First Name
+                                        <span class="text-danger me-2">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" ng-change="validateField(rFirstName,'txtFirstName')" ng-model="rFirstName" id="txtFirstName"
+                                    />
+                                    <span ng-if="validrFname" class="text-danger">Please enter first name</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="font-if" for="txtName">Last Name
+                                        <span class="text-danger me-2">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" ng-change="validateField(rLastName,'txtLastName')" ng-model="rLastName" id="txtLastName"
+                                    />
+                                    <span ng-if="validrLname" class="text-danger">Please enter last name</span>
+                                </div>
+                            </div>
+        
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <label class="font-if">Gender
+                                        <!-- <span class="text-danger me-2">*</span> -->
+                                    </label>
+                                    <select class="form-control" ng-focus="removeClass('txtGender')" id="txtGender" ng-model="objReviewer.Gender__c" ng-disabled="proposalStage">
+                                        <option ng-selected="{{item==objReviewer.Gender__c}}" ng-repeat="item in objGender" value="{{item}}">{{item}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="font-if">Date of Birth
+                                        <!-- <span class="text-danger me-2">*</span> -->
+                                    </label>
+                                    <input type="date" class="form-control" ng-focus="removeClass('txtBirthdate')" id="txtBirthdate" ng-model="rBirthdate" />
+                                </div>
+                            </div>
+        
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <label class="font-if">Phone No.
+                                        <!-- <span class="text-danger me-2">*</span> -->
+                                    </label>
+                                    <input class="form-control" type="text" number="objReviewer.Phone__c" ng-focus="removeClass('txtPhone')" id="txtPhone" ng-model="objContact.Phone"
+                                        maxlength="10" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="font-if">Email
+                                        <span class="text-danger me-2">*</span>
+                                    </label>
+                                    <input class="form-control" type="text" ng-model="objReviewer.Email__c" disabled="disabled" id="txtEmail1" ng-focus="removeClass('txtEmail1')" ng-change="checkEmail(objReviewer.Email__c)"
+                                    />
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-12">
+                                    <label class="font-if">Additional Details
+                                        <!-- <span class="text-danger me-2">*</span> -->
+                                    </label>
+                                    <textarea class="form-control" rows="3" ng-model="objReviewer.Skills__c" ng-focus="removeClass('Skills__c')" id="Skills__c" ng-change="checkEmail(objReviewer.Skills__c)"/>
+                                </div>
+                            </div>
+                        </div>
+        
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button class="blue-btn float-end" ng-click="updateReviewerDetails()" type="button">Save Details</button>
+                        </div>
+                    </div>
+                    <div name="accountdetails">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 class="font-if">
+                                    Accounts Details
+                                </h4>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-4">E-mail ID</div>
+                            <div class="col-md-4">
+                                <input class="form-control" disabled="disabled" type="text" ng-model="objReviewer.Email__c"/>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-4">Password</div>
+                            <div class="col-md-4">
+                                <input class="form-control" ng-model="objReviewer.Password__c" type="password"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div name="resetpassword">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 class="font-if">
+                                    Change Password
+                                </h4>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-4">Current Password</div>
+                            <div class="col-md-4">
+                                <input class="form-control" ng-focus="removeClass('txtCurrentPassword')" id="txtCurrentPassword" ng-model="currentPassword" type="password"/>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-4">Type New Password</div>
+                            <div class="col-md-4">
+                                <input class="form-control" ng-model="newPassword" type="password"/>
+                            </div>
+                        </div>
+                        <div class="row mt-3 mb-5">
+                            <div class="col-md-4">Re-type New Password</div>
+                            <div class="col-md-4">
+                                <input class="form-control" ng-model="confirmPassword" type="password"/>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="blue-btn" type="button" ng-click="resetPassword()">Reset Password</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+                crossorigin="anonymous"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.1/js/bootstrap.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.1/js/dropdown.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.1/js/tab.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js" crossorigin="anonymous"></script>
+            <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/js/bootstrap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script> -->
+            <script>
+               $(document).ready(function () {
+                    //$('.dropdown-toggle').dropdown();
+                    
+                    $('#header-toggle').click(function () {
+
+                        //$(".header-toggle").toggleClass('bx-x');
+                        $("#nav-bar").toggleClass('show');
+                        //$("#body-pd").toggleClass('body-pd');
+                        //$("#header").toggleClass('body-pd');
+                        $('.nav_name').toggle('show');
+                        $('#header-toggle span').toggleClass('visible')
+                        // $(".nav-bar").toggleClass('toggle');
+                        // $(".nav-bar").toggleClass('toggle');
+                        // $(".body-pd").toggleClass('toggle');
+                        // var triggerTabList = [].slice.call(document.querySelectorAll('#myTab li'))
+                        // triggerTabList.forEach(function (triggerEl) {
+                        //     var tabTrigger = new bootstrap.Tab(triggerEl)
+
+                        //     triggerEl.addEventListener('click', function (event) {
+                        //         event.preventDefault()
+                        //         tabTrigger.show()
+                        //     })
+                        // })
+                        $("#igstcName").toggleClass('hide');
+                        $("#spanIGSTC").toggleClass('show');
+                    });
+
+                    // $('.header_toggle').click();        
+                    // document.addEventListener("DOMContentLoaded", function (event) {
+
+                    //     const showNavbar = (toggleId, navId, bodyId, headerId) => {
+                    //         const toggle = document.getElementById(toggleId),
+                    //             nav = document.getElementById(navId),
+                    //             bodypd = document.getElementById(bodyId),
+                    //             headerpd = document.getElementById(headerId)
+
+                    //         // Validate that all variables exist
+                    //         if (toggle && nav && bodypd && headerpd) {
+                    //             toggle.addEventListener('click', () => {
+                    //                 // show navbar
+                    //                 nav.classList.toggle('show')
+                    //                 // change icon
+                    //                 toggle.classList.toggle('bx-x')
+                    //                 // add padding to body
+                    //                 bodypd.classList.toggle('body-pd')
+                    //                 // add padding to header
+                    //                 headerpd.classList.toggle('body-pd')
+                    //             })
+                    //         }
+                    //     }
+
+                    //     showNavbar('header-toggle', 'nav-bar', 'body-pd', 'header')
+
+                    //     /*===== LINK ACTIVE =====*/
+                    //     const linkColor = document.querySelectorAll('.nav_link')
+
+                    //     function colorLink() {
+                    //         if (linkColor) {
+                    //             linkColor.forEach(l => l.classList.remove('active'))
+                    //             this.classList.add('active')
+                    //         }
+                    //     }
+                    //     linkColor.forEach(l => l.addEventListener('click', colorLink))
+                    //});
+
+                    // Your code to run since DOM is loaded and ready
+                });
+            </script>
+        </body>
+
+    </div>
+
+    </html>
+</apex:page>

@@ -1,0 +1,470 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+<html>
+    <div ng-controller="attachment_ctrl">
+
+        <head>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+            <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+        </head>
+
+        <body>
+
+            <div class="container mt-5">
+                <div class="row mx-5">
+                    <div class="col-md-12">
+                        <div class="tab-link" ng-show="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Pairing_Page')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-friends"></i>
+                                        </div>
+                                        <span>Pairing Details</span>
+                                    </a>
+                                </li>
+                                
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Personal_Information')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Personal Information</span>
+                                    </a>
+                                </li>
+                                  <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ParentOrganization')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-building"></i>
+                                        </div>
+                                        <span>Parent Organization Details</span>
+                                    </a>
+                                </li> 
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Education_Qualification')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-graduate"></i>
+                                        </div>
+                                        <span>Educational Qualifications</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Employment_Details')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-edit"></i>
+                                        </div>
+                                        <span>Employment Details</span>
+                                    </a>
+                                </li>
+                                  
+                            </ul>
+                        </div>
+                        <div class="tab-link" ng-hide="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-friends"></i>
+                                        </div>
+                                        <span>Pairing Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Personal Information</span>
+                                    </a>
+                                </li>
+                                 <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-building"></i>
+                                        </div>
+                                        <span>Parent Organization Details</span>
+                                    </a>
+                                </li>       
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-graduate"></i>
+                                        </div>
+                                        <span>Educational Qualifications</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-edit"></i>
+                                        </div>
+                                        <span>Employment Details</span>
+                                    </a>
+                                </li>
+                                
+                            </ul>
+                        </div>
+                        </div>
+                    </div>
+
+                    <div class="modal" id="filePreview">
+                        <div class="modal-dialog" style="min-width:120rem">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">
+                                        <div class="d-flex" style="background:unset;">
+                                            <h3 style="text-align: center"><b>{{selectedFile.userDocument.Name}}</b></h3>
+                                        </div>
+                                    </h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <iframe style="width:100%;height:75vh;border: 0px;border-radius: 10px;" id="file_frame" title="File"></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mx-5">
+                        <div class="col-md-12">
+                            <div class="tab-link" ng-show="proposalStage">
+                                <div class="progress">
+                                    <div class="progress-success w-100"></div>
+                                </div>
+                                <ul>
+                                    
+                                     <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Achievements_Pecfar')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-trophy"></i>
+                                            </div>
+                                            <span>Achievements</span>
+                                        </a>
+                                    </li>   
+                                   
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Fellowship_Details')">
+                                            <div class="icon-circle">
+                                                <i class="fa fa-home"></i>
+                                            </div>
+                                            <span>Fellowship Details</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Attachments_Pecfar')">
+                                            <div class="icon-circle">
+                                                <i class="fa fa-paperclip"></i>
+                                            </div>
+                                            <span>Attachments</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Declaration_Pecfar')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-check"></i>
+                                            </div>
+                                            <span>Declaration</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('ReviewSubmit_Pecfar')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-file-signature"></i>
+                                            </div>
+                                            <span>Review and Submit</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="tab-link" ng-hide="proposalStage">
+                                <div class="progress">
+                                    <div class="progress-success wp-5"></div>
+                                </div>
+                                <ul>
+                                    
+                                    <li class="active">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-trophy"></i>
+                                            </div>
+                                            <span>Achievements</span>
+                                        </a>
+                                    </li>
+                                  
+                                    <li class="active">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa fa-home"></i>
+                                            </div>
+                                            <span>Fellowship Details</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li class="active">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa fa-paperclip"></i>
+                                            </div>
+                                            <span>Attachments</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-check"></i>
+                                            </div>
+                                            <span>Declaration</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-file-signature"></i>
+                                            </div>
+                                            <span>Review and Submit</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            </div>
+                        </div>
+
+                        <div class="modal" id="filePreview">
+                            <div class="modal-dialog" style="min-width:120rem">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">
+                                            <div class="d-flex" style="background:unset;">
+                                                <h3 style="text-align: center"><b>{{selectedFile.userDocument.Name}}</b></h3>
+                                            </div>
+                                        </h4>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <iframe style="width:100%;height:75vh;border: 0px;border-radius: 10px;" id="file_frame" title="File"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-5 mx-5">
+                            <div class="col-md-12 alert bg-color-list" role="alert">
+                                <ul class="font-if">  
+                                  <li><i class="fa-solid fa-circle text-success me-3"></i>Kindly upload all the documents in a pdf with maximum size of 1 MB</li>
+                                  <li><i class="fa-solid fa-circle text-success me-3"></i>Click on upload button to upload the documents</li>
+                                  <li><i class="fa-solid fa-circle text-success me-3"></i>If there is a problem in submitting, kindly press "CTRL+Shift+R" in one go and then try to submit. If the problem still<br/>&nbsp;&nbsp;&nbsp;&nbsp; persists, then contact us.</li>
+                                      
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="row box-shadow-2 mt-5 mx-5 p-3">
+                            <div class="row mt-5" style="margin-left: -1px">
+
+                                <div class="col-md-6">
+                                        <label class="font-if">Proof of Date of Birth.<span class="text-danger me-2">*</span></label>
+                                        <div class="col-md-9 mt-4" style="padding-left: 0px !important; padding-right: 0px !important">
+
+                                        <div class="input-group input-group-lg">
+                                            <input type="file" accept=".pdf" ng-disabled="proposalStage" id="{{doc.userDocument.Name}}" class="form-control "/>
+                                            <span class="input-group-btn" ng-hide="proposalStage">
+                                              <button class="btn btn-success" ng-click="uploadFile(doc.userDocument.Name,doc.userDocument.Id,'','1048576','1048576')" type="button">Upload</button>
+                                            </span>
+                                          </div>
+                                          <div ng-show="doc.userDocument.Status__c=='Uploaded'" class="mt-2">
+                                            <span class="text-success" style="font-weight: bold;"><i class="fa-solid fa-check-circle me-2"></i>Uploaded</span>
+                                          </div>
+                                    </div>
+
+                                      <div class="col-md-3" ng-show="doc.userDocument.Status__c=='Uploaded'">
+                                        <!-- <label style="color: #fff;">.</label> -->
+                                        <a class="blue-btn float-end mt-4 py-3"  ng-click="filePreviewHandler(doc)">View</a>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6">
+                                    <label class="font-if">Educational Qualification certificates.<span class="text-danger me-2">*</span></label>
+                                    <div class="col-md-9 mt-4" style="padding-left: 0px !important; padding-right: 0px !important">
+                                        <div class="input-group input-group-lg">
+                                            <input type="file" accept=".pdf" ng-disabled="proposalStage" id="{{educational.userDocument.Name}}" class="form-control "/>
+                                            <span class="input-group-btn" ng-hide="proposalStage">
+                                              <button class="btn btn-success" ng-click="uploadFile(educational.userDocument.Name,educational.userDocument.Id,'','1048576','1048576')" type="button">Upload</button>
+                                            </span>
+                                          </div>
+                                          <div ng-show="educational.userDocument.Status__c=='Uploaded'" class="mt-2">
+                                            <span class="text-success" style="font-weight: bold;"><i class="fa-solid fa-check-circle me-2"></i>Uploaded</span>
+                                          </div>
+                                    </div>
+
+                                    <div class="col-md-3" ng-show="educational.userDocument.Status__c=='Uploaded'">
+                                        <a class="blue-btn float-end mt-4 py-3" ng-click="filePreviewHandler(educational)">View</a>
+                                    </div>
+                                    
+                                </div>
+    
+                            </div>
+    
+                            <div class="row mt-5" style="margin-left: -1px">
+
+                                <!-- <div class="col-md-6">
+                                    <label class="font-if mb-2">Invitation letter from the host organization of the paired fellow on an official letterhead with signature and seal.<span class="text-danger me-2">*</span></label>
+                                    <div class="col-md-9 mt-4" style="padding-left: 0px !important; padding-right: 0px !important">
+                                        <div class="input-group input-group-lg">
+                                            <input type="file" accept=".pdf" ng-disabled="proposalStage" id="{{invitation.userDocument.Name}}" class="form-control "/>
+                                            <span class="input-group-btn" ng-hide="proposalStage">
+                                              <button class="btn btn-success" ng-click="uploadFile(invitation.userDocument.Name,invitation.userDocument.Id,'','1048576','1048576')" type="button">Upload</button>
+                                            </span>
+                                          </div>
+                                    </div>
+
+                                    <div class="col-md-3" ng-show="invitation.userDocument.Status__c=='Uploaded'">
+                                        <a class="blue-btn float-end mt-4 py-3" ng-click="filePreviewHandler(invitation)">View</a>
+                                    </div>
+                                    
+                                </div> -->
+
+                                <div class="col-md-6">
+                                    <label class="font-if mb-2">No Objection Certificate/Endorsement letter from the present organization of the applicant.<span class="text-danger me-2">*</span></label>
+                                    <div class="col-md-9 mt-4" style="padding-left: 0px !important; padding-right: 0px !important">
+                                        <div class="input-group input-group-lg">
+                                            <input type="file" ng-disabled="proposalStage" accept=".pdf" id="{{noObjection.userDocument.Name}}" class="form-control "/>
+                                            <span class="input-group-btn" ng-hide="proposalStage">
+                                              <button class="btn btn-success" ng-click="uploadFile(noObjection.userDocument.Name,noObjection.userDocument.Id,'','1048576','1048576')" type="button">Upload</button>
+                                            </span>
+                                          </div>
+                                          <div ng-show="noObjection.userDocument.Status__c=='Uploaded'" class="mt-2">
+                                            <span class="text-success" style="font-weight: bold;"><i class="fa-solid fa-check-circle me-2"></i>Uploaded</span>
+                                          </div>
+                                    </div>
+
+                                    <div class="col-md-3" ng-show="noObjection.userDocument.Status__c=='Uploaded'">
+                                        <a class="blue-btn float-end mt-4 py-3" ng-click="filePreviewHandler(noObjection)">View</a>
+                                    </div>
+                                    
+                                </div>
+    
+                            </div>
+
+                            <div class="row mt-5 mb-5" style="margin-left: -1px">
+                                <div class="col-md-6">
+                                    <label class="font-if mb-2">Proof of Employment/Experience certificate.<span class="text-danger me-2">*</span></label>
+                                    <div class="col-md-9 mt-4" style="padding-left: 0px !important; padding-right: 0px !important">
+                                        <div class="input-group input-group-lg">
+                                            <input type="file" ng-disabled="proposalStage" accept=".pdf" id="{{proof.userDocument.Name}}" class="form-control "/>
+                                            <span class="input-group-btn" ng-hide="proposalStage">
+                                              <button class="btn btn-success" ng-click="uploadFile(proof.userDocument.Name,proof.userDocument.Id,'','1048576','1048576')" type="button">Upload</button>
+                                            </span>
+                                          </div>
+                                          <div ng-show="proof.userDocument.Status__c=='Uploaded'" class="mt-2">
+                                            <span class="text-success" style="font-weight: bold;"><i class="fa-solid fa-check-circle me-2"></i>Uploaded</span>
+                                          </div>
+                                    </div>
+
+                                    <div class="col-md-3" ng-show="proof.userDocument.Status__c=='Uploaded'">
+                                        <a class="blue-btn float-end mt-4 py-3" ng-click="filePreviewHandler(proof)">View</a>
+                                    </div>
+                                    
+                                </div>
+
+                                <div class="col-md-6 mt-5" ng-if="!proposalStage">
+                                    <div class="mt-5">
+                                            <button class="blue-btn float-end" ng-click="saveandNext()" type="button">
+                                                <i class="fa-solid fa-check me-2"></i>Save and Next</button>
+                                        <button class="blue-bordered-btn float-end me-2" ng-click="redirectPageURL('Fellowship_Details')" type="button">
+                                            <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- <div class="row mx-5 mt-5">
+                            <div class="col-md-12 alert bg-color-list" role="alert">
+                                <ul class="font-if">
+                                    <li><h4 class="color-theme pb-4"><b>
+                                        PLEASE ATTACH ALL THE FOLLOWING DOCUMENTS IN A SINGLE PDF FILE UP TO 2 MB
+                                        </b></h4></li>
+                                  <li><i class="fa-solid fa-circle text-success me-3"></i>Scan copy of Passport/Proof of Date of birth.</li>  
+                                  <li><i class="fa-solid fa-circle text-success me-3"></i>Educational Qualification certificates.</li>
+                                  <li><i class="fa-solid fa-circle text-success me-3"></i>Invitation letter from the host organization of the paired fellow on an official letterhead with signature and seal.</li>
+                                  <li><i class="fa-solid fa-circle text-success me-3"></i>No Objection Certificate/Endorsement letter from the present organization of the applicant.
+                                    ( NOC format can be as the per applicant convenience).</li>
+                                  <li><i class="fa-solid fa-circle text-success me-3"></i>Proof of employment/experience certificate in support of your employment details.</li>
+                                </ul>
+                                </div>
+                        </div>
+
+                        <div class="row mt-5 mx-5 mb-5">
+                            <div class="col-md-5 mt-3">
+                                <div class="input-group input-group-lg">
+                                    <input type="file" accept=".pdf" ng-disabled="proposalStage" id="{{doc.userDocument.Name}}" class="form-control"/>
+                                    <span class="input-group-btn" ng-hide="proposalStage">
+                                    <button class="btn btn-success" ng-click="uploadFile(doc.userDocument.Name,doc.userDocument.Id,'',,1048576)" type="button">Upload</button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-2 pt-1" ng-show="doc.userDocument.Status__c=='Uploaded'">
+                                <a class="blue-btn mt-3 py-3" href="{{doc.ContentDistribution.DistributionPublicUrl}}" target="_blank"><i class="fa-solid fa-eye pe-2"></i>View</a>                                    
+                            </div>
+
+                            <div class="col-md-5 mt-4" ng-if="!proposalStage">
+                                <button class="blue-btn float-end" ng-click="redirectPageURL('Declaration_Pecfar')" type="button">
+                                    <i class="fa-solid fa-check me-2"></i>Save and Next</button>
+                            <button class="blue-bordered-btn float-end me-2" ng-click="redirectPageURL('Achievements_Pecfar')" type="button">
+                                <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+                            </div>
+                        </div> -->
+                    </div>
+
+
+                <!-- <div class="container px-4">
+                    <div class="col-md-10 offset-1">
+                    <div class="card h-100 m-5">
+                    <div class="card-header d-flex justify-content-center">
+                        <h4 class="p-3">
+                                <b>Attachments</b>
+                        </h4>
+                    </div>
+
+                        <div class="row pt-5 d-flex justify-content-center">
+                            <div class="col-md-10">
+                                <div class="alert alert-primary" role="alert">
+                                    <i class="fa-solid fa-circle-info me-2"></i>1. Scan copy of Passport/Proof of Date of birth.<br/>
+                                    <i class="fa-solid fa-circle-info me-2"></i>2. Educational Qualification certificates.<br/>
+                                    <i class="fa-solid fa-circle-info me-2"></i>3. Invitation letter from the host organization of the paired fellow on an official letterhead with signature and seal.<br/>
+                                    <i class="fa-solid fa-circle-info me-2"></i>4. No Objection Certificate/Endorsement letter from the present organization of the applicant. ( NOC format can be as the per applicant convenience).<br/>
+                                    <i class="fa-solid fa-circle-info me-2"></i>5. Proof of employment/experience certificate in support of your employment details.<br/>
+                                  </div>
+
+                                  <div>
+                                    <h5><b>Please attach all the following documents in a single pdf</b></h5><br/>
+                                    <input type="file" accept=".pdf" ng-disabled="proposalStage" id="{{doc.userDocument.Name}}" class="form-control "/><br/>
+                                <span class="input-group-btn" ng-hide="proposalStage">
+                                  <button class="btn btn-success text-align: center;" ng-click="uploadFile(doc.userDocument.Name,doc.userDocument.Id,'')" type="button">Upload</button>
+                                </span>
+                                  </div>
+                            </div>
+                        </div>
+
+                        <div class="row" ng-if="!proposalStage">
+                            <div class="col-md-12 d-flex justify-content-center my-4">
+                                <button type="button" class="btn btn-primary me-3" ng-click="redirectPageURL('Achievements_Pecfar')">Previous</button>
+                                <button type="button" class="btn btn-success float-end me-4" ng-disabled="disableSubmit" ng-click="redirectPageURL('Declaration_Pecfar')">Save And Next</button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    </div> -->
+                    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+                </body>
+            </div>
+        </html>
+</apex:page>

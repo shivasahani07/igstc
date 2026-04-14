@@ -1,0 +1,450 @@
+.menu{
+    width:auto;
+    height:900px;
+    background-color: white;
+    border: 0px;
+    overflow: auto;
+
+}
+.num{
+    width: 65px;
+    max-width: 65px;
+    display: flex;
+
+  overflow: auto;
+}
+.num1{
+    padding-left: 20px;
+   
+}
+.rectangle {
+width: 130px;
+height: 155px;
+background-color:#fff;
+box-shadow: 0px 10px 20px #ccc;
+display: flex;
+justify-content: center;
+align-items: top;
+}
+.prog{
+
+    width: 65px;
+    max-width: 65px;
+}
+.circle {
+padding-top: 25%;
+width: 80px;
+height: 80px;
+background-color: #171347;
+border-radius: 50%;
+display: flex;
+justify-content: center;
+align-items: center;
+
+}
+.appCircle{
+padding-top: 25%;
+width: 80px;
+height: 80px;
+background-color: #EB7C01;
+border-radius: 50%;
+display: flex;
+justify-content: center;
+align-items: center;
+padding-bottom: 20px;
+}
+.circlein{
+padding-top: 25%;
+width: 60px;
+height: 60px;
+background-color: #fff;
+border-radius: 50%;
+display: flex;
+
+justify-content: center;
+align-items: center;
+padding-bottom: 20px;
+}
+.circle h2{
+text-align: center;
+text-transform: uppercase;
+color: #fff;
+font-size: x-large;
+position: relative;
+padding-bottom: 40px;
+}
+.TPT{
+text-size-adjust: 30px;
+}
+h1{
+font-family: 'Montserrat'; 
+font-style: normal;
+font-weight: 700;
+font-size: 32px;
+line-height: 39px;
+/* identical to box height */
+
+
+color: #171347;
+
+}
+
+.applicationsRectangle{
+width: 220px;
+height: 170px;
+background-color:#fff;
+box-shadow: 0px 10px 20px #ccc;
+display: flex;
+justify-content: center;
+align-items: top;
+
+}
+
+.totalApp{
+padding-top: 15px;
+color: #EB7C01;
+font-size: 20px;
+
+
+}
+.totalApplicationsNum{
+padding-top: 15px;
+color: #EB7C01 ;
+font-size: 30px;
+font-weight: 500
+}
+.iconPage{
+
+--lwc-colorTextIconDefault:#EB7C01;
+
+}
+
+.draftappCircle{
+padding-top: 25%;
+width: 80px;
+height: 80px;
+background-color: #171347;
+border-radius: 50%;
+display: flex;
+justify-content: center;
+align-items: center;
+padding-bottom: 20px;
+}
+.draftcirclein{
+padding-top: 25%;
+width: 60px;
+height: 60px;
+background-color: #fff;
+border-radius: 50%;
+display: flex;
+
+justify-content: center;
+align-items: center;
+padding-bottom: 20px;
+}
+.drafticonPage{
+--lwc-colorTextIconDefault:#171347;
+}
+
+.draftApp{
+padding-top: 15px;
+color: #171347;
+font-size: 20px;
+
+
+}
+.draftApplicationsNum{
+padding-top: 15px;
+color: #171347 ;
+font-size: 30px;
+font-weight: 500
+}
+
+
+
+.submittedappCircle{
+padding-top: 25%;
+width: 80px;
+height: 80px;
+background-color: #138808;
+border-radius: 50%;
+display: flex;
+justify-content: center;
+align-items: center;
+padding-bottom: 20px;
+}
+.submittedcirclein{
+    padding-top: 25%;
+    width: 60px;
+    height: 60px;
+    background-color: #fff;
+    border-radius: 50%;
+    display: flex;
+    
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;   
+}
+.submittediconPage{
+--lwc-colorTextIconDefault:#138808;
+}
+
+.submittedApp{
+padding-top: 15px;
+color: #138808;
+font-size: 20px;
+
+
+}
+.submittedtApplicationsNum{
+padding-top: 15px;
+color: #138808;
+
+font-size: 30px;
+font-weight: 500
+}
+.allocatedRectangle{
+width: 520px;
+height: 250px;
+background-color:#fff;
+box-shadow: 0px 10px 20px #ccc;
+display: flex;
+
+
+
+}
+.allocated{
+padding-top: 15px;
+color: #171347;
+font-size: 20px;
+}
+.allApp{color: #171347;
+    font-size: 20px;
+    padding-left: 20px;
+}
+.unallocatedRectangle{
+width: 520px;
+height: 150px;
+background-color:#fff;
+box-shadow: 0px 10px 20px #ccc;
+display: flex;
+
+align-items: left;
+}
+.totalunallocatedRectangle{
+
+width:300px;
+height:40px;
+background-color:#fff;
+box-shadow: 0px 10px 20px #ccc;
+display: flex;
+justify-content: center;
+align-items: top;
+}
+.submittedtApplicationsNum1{
+padding-top: 15px;
+padding-left: 30px;
+color: #EB7C01;
+
+font-size: 30px;
+font-weight: 500
+}
+.draftApplicationsNum1{
+padding-top: 45px;
+padding-left: 20px;
+color: #EB7C01;
+
+font-size: 40px;
+font-weight: 500
+}
+.dottedlines{
+padding-top: 62px;
+font-size: large;
+font-weight: 800;
+
+}
+.unallocated{
+padding-top: 5px;
+color: #EB7C01;
+font-size: 20px;
+}
+.dottedlineHorizontal{
+
+font-size: large;
+font-weight: 800;
+
+
+}
+.totalocatedRectangle1{
+width:300px;
+height:40px;
+background-color:#fff;
+box-shadow: 0px 10px 20px #ccc;
+display: flex;
+justify-content: center;
+align-items: top;
+
+}
+.totalpending{
+width:300px;
+height:40px;
+background-color:#fff;
+box-shadow: 0px 10px 20px #ccc;
+display: flex;
+justify-content: center;
+align-items: top;
+
+}
+.totalcomplete{
+width:300px;
+height:40px;
+background-color:#fff;
+box-shadow: 0px 10px 20px #ccc;
+display: flex;
+justify-content: center;
+align-items: top;
+}
+.alocated{
+padding-top: 5px;
+color: #EB7C01;
+font-size: 20px;
+}
+.Pending{
+padding-top: 5px;
+color: #171347;
+font-size: 20px;
+}
+.completed{
+padding-top: 5px;
+color: #138808;
+font-size: 20px;
+}
+.TPT{
+font-size: 20px;
+font-weight: 500;
+font-family: monospace;
+padding-left: 20px;
+}
+.slds-button{
+padding-left: 10px;
+}
+.btn{
+font-weight: 400;
+}
+.PECFAR{
+font-size: 20px;
+font-weight: 500;
+font-family: monospace;
+padding-left: 05px;
+}
+.SING{
+font-size: 20px;
+font-weight: 500;
+font-family: monospace;
+padding-left: 05px;
+}
+.WORKSHOP{
+font-size: 20px;
+font-weight: 500;
+font-family: monospace;
+padding-left: 05px;
+}
+.WISER{
+font-size: 20px;
+font-weight: 500;
+font-family: monospace;
+padding-left: 05px;
+}
+.pickList{
+    width: 200px;
+    height: auto;
+    padding-left: 17px;
+}
+
+.totalApplications{
+    padding-top: 15px;
+    padding-left: 15px;
+color: #171347;
+font-size: 20px;
+}
+.allocated{
+    padding-top: 15px;
+color: #0000A6;
+font-size: 20px;
+
+}
+
+.allocatedappCircle{
+    padding-top: 25%;
+    width: 80px;
+    height: 80px;
+    background-color: #0000A6;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
+    }
+.allocatedcirclein{
+    padding-top: 25%;
+    width: 60px;
+    height: 60px;
+    background-color: #fff;
+    border-radius: 50%;
+    display: flex;
+    
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
+    }
+    .allocatediconPage{
+    --lwc-colorTextIconDefault:#0000A6;
+    }
+   
+    .allocatedtApplicationsNum{
+        padding-top: 15px;
+        color: #0000A6;
+        
+        font-size: 30px;
+        font-weight: 500
+        }
+.unallocated{
+    padding-top: 15px;
+color: #171347;
+font-size: 20px;
+
+}
+
+.unallocatedappCircle{
+    padding-top: 25%;
+    width: 80px;
+    height: 80px;
+    background-color: #171347;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
+    }
+.unallocatedcirclein{
+    padding-top: 25%;
+    width: 60px;
+    height: 60px;
+    background-color: #fff;
+    border-radius: 50%;
+    display: flex;
+    
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
+    }
+    .unallocatediconPage{
+    --lwc-colorTextIconDefault:#171347;
+    }
+    .unallocatedtApplicationsNum{
+        padding-top: 15px;
+        color: #171347;
+        
+        font-size: 30px;
+        font-weight: 500
+        }

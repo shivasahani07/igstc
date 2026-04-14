@@ -1,0 +1,76 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+    <html>
+        <div ng-controller="ConsortiumPartnerCtrl">
+        <head>
+            <script>
+            var userId = '{!$CurrentPage.parameters.id}';
+            </script>
+            </head>
+        
+        <body>
+            <div class="container px-4">
+                <div class="card h-100" style= "width: 100%; margin: 5%;">
+                    <div class="row" style="margin-top: 10%; padding-left: 5%; padding-right: 5%;">
+                        <h2><u style="text-decoration-color:Darkorange"><b>Institution</b></u></h2>
+                    </div>
+                    <div class="row" style="margin-top: 5%; padding-left: 5%; padding-right: 5%;">
+                        <div class="col-md-6">
+                            <label class="control-label"><b>Name</b></label>
+                                <input  name="Name" placeholder="Name" class="form-control"  type="text" ng-model="contactDetails.LastName" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="control-label"><b>Department/Division</b></label>
+                                <input  name="Department" placeholder="Department" class="form-control"  type="text" ng-model="contactDetails.Department" />
+                        </div>
+                        <div class="col-md-6" style="margin-top: 3%;">
+                            <label class="control-label"><b>Street</b></label>
+                            <input  name="Street" placeholder="Street" class="form-control"  type="text" ng-model="contactDetails.MailingStreet" />
+                        </div>
+                        <div class="col-md-6" style="margin-top: 3%">
+                            <label class="control-label"><b>City</b></label>
+                            <input  name="City" placeholder="City" class="form-control"  type="text" ng-model="contactDetails.MailingCity" />
+                        </div>
+                        <div class="col-md-6" style="margin-top: 3%;">
+                            <label class="control-label"><b>State</b></label>
+                            <input  name="State" placeholder="State" class="form-control"  type="text" ng-model="contactDetails.MailingState" />
+                        </div>
+                        <div class="col-md-6" style="margin-top: 3%">
+                            <label class="control-label"><b>Post Code</b></label>
+                            <input  name="Post Code" placeholder="Post Code" class="form-control"  type="text" ng-model="contactDetails.MailingPostalCode" />
+                        </div>
+                        <div class="col-md-6" style="margin-top: 3%;">
+                            <label class="control-label"><b>Country</b></label>
+                            <input  name="Country" placeholder="Country" class="form-control"  type="text" ng-model="contactDetails.MailingCountry" />
+                        </div>
+                        <div class="col-md-6" style="margin-top: 3%">
+                            <label class="control-label"><b>Head Of Project</b></label>
+                            <input  name="Head Of Project" placeholder="Head Of Project" class="form-control"  type="text" ng-model="contactDetails.Head_Of_Project__c" />
+                        </div>
+                        <div class="col-md-6" style="margin-top: 3%;">
+                            <label class="control-label"><b>Email</b></label>
+                            <input  name="Email" placeholder="Email" class="form-control"  type="email" ng-model="contactDetails.Email" />
+                        </div>
+                        <div class="col-md-6" style="margin-top: 3%">
+                            <label class="control-label"><b>Phone</b></label>
+                            <input  name="Phone" placeholder="Phone" class="form-control"  type="tel" ng-model="contactDetails.Phone" />
+                        </div>
+                        <div class="col-md-6" style="margin-top: 3%">
+                            <label class="control-label"><b>Homepage URL</b></label>
+                            <input  name="Homepage URL" placeholder="Homepage URL" class="form-control"  type="url" ng-model="contactDetails.Homepage_URL__c" />
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6" style="margin-top: 3%; margin-bottom: 10%;">
+                                <button class="btn btn-light" type="submit" ng-click="redirectPageURL('ConsortiaDetailPage')" style="padding-left: 15%; padding-right: 15%; border: 2px solid black;">Previous</button>
+                            </div>
+                            <div class="col-md-6" style="margin-top: 3%; margin-bottom: 10%;">
+                                <div class="col-md-8"></div>
+                                <div class="col-md-4"><button class="btn btn-dark float-right" type="submit" ng-click="saveDetails()" style="padding-left: 20%; padding-right: 20%;">Submit And Next</button></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </body>
+        </div>
+    </html>
+</apex:page>

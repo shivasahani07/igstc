@@ -1,0 +1,377 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="BulkAssignReviewerController">
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Allocation Engine</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
+
+    <style>
+        :root {--primary-color:#207454;--primary-light:#2e8b5d;--primary-dark:#165c40;--secondary-color:#f1f4f7;--text-color:#333333;--border-color:#dee2e6;--success-color:#28a745;}
+        body {font-family:'Montserrat',sans-serif;background-color:#f8f9fa;}
+        .page-header {padding:20px 0;margin-bottom:25px;}
+        .head {font-weight:600;color:#464255;font-size:2rem;}
+        .filter-section {background:white;padding:25px;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,0.05);margin-bottom:30px;}
+        .filter-label {font-weight:600;margin-bottom:8px;color:var(--primary-color);font-size:14px;}
+        .table-container {flex:1;overflow-y:auto;border:1px solid lightgray;border-radius:1rem;margin-bottom:1rem;}
+        /* table {width:100%;border-collapse:collapse;}
+        th,td {padding:12px 15px;border:1px solid var(--border-color);}
+        th {background-color:var(--secondary-color);font-weight:600;position:sticky;top:0;z-index:10;}
+        .fixed-td {position:sticky;left:0;z-index:5;width:150px;background-color:white!important;}
+        .fixed-td2 {position:sticky;left:150px;z-index:5;width:300px;background-color:white!important;}
+        .fixed-td3 {position:sticky;left:450px;z-index:5;width:200px;background-color:white!important;}
+        thead .fixed-td,thead .fixed-td2,thead .fixed-td3 {z-index:15;} */
+        .preview-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.table-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.preview-table th,
+.preview-table td {
+    padding: 6px 10px;
+    border: 1px solid lightgray;
+    text-align: left;
+}
+
+.preview-table th {
+    padding: 0.5rem 1rem;
+    /* background-color: #007acc; */
+    background-color: #10732d;
+    color: white;
+    font-weight: 600;
+}
+
+.preview-table tr:nth-child(even) {
+    background-color: aliceblue;
+}
+
+.preview-table tr:nth-child(odd) {
+    background-color: white;
+}
+
+        .btn-primary-custom {background:var(--primary-color);color:#fff;font-size:16px;padding:8px 20px;border:none;border-radius:6px;}
+        .btn-primary-custom:hover {background:var(--primary-dark);color:#fff;}
+        .btn-primary-custom:disabled {background:#a0a0a0;color:#fff;}
+        .form-check-input:checked {background-color:var(--primary-color);border-color:var(--primary-color);}
+        .loading-overlay {position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.8);display:flex;justify-content:center;align-items:center;z-index:9999;flex-direction:column;}
+        .spinner-border {width:3rem;height:3rem;color:var(--primary-color);}
+        .bootstrap-select .dropdown-toggle {border:1px solid var(--border-color);background:#fff;}
+    </style>
+</head>
+<body ng-app="GetCampaignApp" ng-controller="GetCampaignCtrl">
+    <div class="loading-overlay" ng-show="isLoading">
+        <div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div>
+        <h5 class="mt-3 text-secondary">Processing...</h5>
+    </div>
+    <div class="" style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">
+        <h1 class="head">Allocation Engine</h1>
+        <div class="filter-section">
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="filter-label">Call Type</label>
+                    <select class="form-control selectpicker" id="listDropDown" ng-model="filters.callType" multiple="multiple" data-live-search="true" data-actions-box="true">
+                        <option ng-repeat="campaign in listOfCampaign" value="{{campaign.Id}}">{{campaign.Name}}</option>
+                    </select>
+                </div>
+                
+                <div class="col-md-3">
+                    <label class="filter-label">Call Year</label>
+                    <select class="form-control selectpicker" id="listDropDown2" ng-model="filters.callYear" multiple="multiple" data-live-search="true" data-actions-box="true">
+                        <option ng-repeat="yearInfo in listOfCampaignYear" value="{{yearInfo.Year__c}}">{{yearInfo.Year__c}}</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="filter-label">Reviewer</label>
+                    <select class="form-control selectpicker" id="listDropDown3" ng-model="filters.reviewer" multiple="multiple" data-live-search="true" data-actions-box="true">
+                        <option ng-repeat="rev in listOfReviewer" value="{{rev.Id}}">{{rev.Name}}</option>
+                    </select>
+                </div>
+                <div class="col-md-3 d-flex justify-content-end align-items-end">
+                    <button type="button" ng-click="fetchData()" class="btn btn-primary-custom me-1"><i class="fa-solid fa-filter me-0"></i> Fetch</button>
+                    <button type="button" ng-click="saveReviewersAction()" class="btn btn-primary-custom"><i class="fa-solid fa-save me-1"></i> Save</button>
+                </div>
+            </div>
+        </div>
+        <div class="table-container">
+            <table class="preview-table">
+                <thead class="table-header">
+                    <tr>
+                        <th class="fixed-td">Application ID</th>
+                        <th class="fixed-td2">Title</th>
+                        <th class="fixed-td3">Submitted By</th>
+                        <th ng-repeat="rev in applicationData.allReviewer" class="text-center">{{rev.Name}}<span class="badge bg-success rounded-pill ms-1" ng-repeat="countInfo in reviewerPropCount" ng-if="countInfo.Id == rev.Id">{{countInfo.count}}</span></th>
+                    </tr>
+                </thead>
+                <tbody class="table-body">
+                    <tr ng-repeat="app in applicationData.allAppWithRM">
+                        <td class="fixed-td">{{app.application.Name}}</td>
+                        <td class="fixed-td2">{{app.application.Title_Of__c}}</td>
+                        <td class="fixed-td3"><span ng-repeat="con in app.application.Contacts__r">{{con.Name}}{{$last ? '' : ', '}}</span></td>
+                        <td class="text-center" ng-repeat="rRecord in applicationData.allReviewer">
+                            <span ng-repeat="rmRecord in app.reviewerList" ng-if="rmRecord.Reviewer__c == rRecord.Id">
+                                <input type="checkbox" class="form-check-input" ng-model="rmRecord.isSelected__c" ng-click="setCount(rmRecord.Reviewer__c, rmRecord.isSelected__c)" />
+                            </span>
+                        </td>
+                    </tr>
+                    <tr ng-if="!applicationData.allAppWithRM || applicationData.allAppWithRM.length === 0">
+                        <td colspan="{{applicationData.allReviewer.length + 3}}" class="text-center text-muted p-5">
+                            <h5>No data to display.</h5>
+                            <p>Please select filters and click 'Fetch' to see the allocation data.</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<script>
+var app = angular.module('GetCampaignApp', []);
+app.controller('GetCampaignCtrl', function ($scope) {
+    $scope.isLoading = false;
+    $scope.filters = { callType: [], callYear: [], reviewer: [] };
+    $scope.applicationData = { allReviewer: [] };
+    $scope.reviewerPropCount = [];
+    $scope.listOfCampaign = [];
+    $scope.listOfCampaignYear = [];
+    $scope.listOfReviewer = [];
+
+    function initOrRefreshSelectPicker(id) {
+        var selector = $(id);
+        setTimeout(function() {
+            if (selector.data('selectpicker')) {
+                selector.selectpicker('refresh');
+            } else {
+                selector.selectpicker({
+                    actionsBox: true,
+                    title: 'Select an option',
+                    selectedTextFormat: 'count > 2',
+                    width: '100%'
+                });
+            }
+        }, 0);
+    }
+
+    $scope.getCampaignList = function () {
+        BulkAssignReviewerController.getCampaign(function (result, event) {
+            if (event.status) {
+                $scope.listOfCampaign = result;
+                $scope.$apply();
+                initOrRefreshSelectPicker('#listDropDown');
+            } else {
+                console.error("Failed to get Campaign List");
+            }
+        });
+    };
+
+    $scope.getCampaignYearList = function () {
+        BulkAssignReviewerController.getCampaignYear(function (result, event) {
+            if (event.status) {
+                $scope.listOfCampaignYear = result;
+                $scope.$apply();
+                initOrRefreshSelectPicker('#listDropDown2');
+            } else {
+                console.error("Failed to get Campaign Year List");
+            }
+        });
+    };
+
+    $scope.getReviewerList = function () {
+        BulkAssignReviewerController.getReviewer(function (result, event) {
+            if (event.status) {
+                $scope.listOfReviewer = result;
+                $scope.$apply();
+                initOrRefreshSelectPicker('#listDropDown3');
+            } else {
+                console.error("Failed to get Reviewer List");
+            }
+        });
+    };
+
+    // $scope.fetchData = function () {
+    //     var arrName = $('#listDropDown').val() || [];
+    //     var arrYear = $('#listDropDown2').val() || [];
+    //     var arrReviewer = $('#listDropDown3').val() || [];
+    //     if (arrName.length === 0 && arrYear.length === 0) {
+    //         swal('Warning', 'Please select at least one Call Type or Call Year', 'warning');
+    //         return;
+    //     }
+    //     $scope.catchCampaign(arrName, arrYear, arrReviewer);
+    // };
+
+    $scope.fetchData = function () {
+        var arrName = $('#listDropDown').val() || [];
+        var arrYear = $('#listDropDown2').val() || [];
+        var arrReviewer = $('#listDropDown3').val() || [];
+        
+        if (arrName.length === 0 && arrYear.length === 0) {
+            swal('Warning', 'Please select at least one Call Type or Call Year', 'warning');
+            return;
+        }
+
+        var campaignNames = JSON.stringify(arrName);
+        var years = JSON.stringify(arrYear);
+        var reviewers = JSON.stringify(arrReviewer);
+
+        $scope.catchCampaign(campaignNames, years, reviewers);
+    };
+
+
+    $scope.setCount = function (reviewerId, isSelected) {
+        for (var i = 0; i < $scope.reviewerPropCount.length; i++) {
+            if ($scope.reviewerPropCount[i].Id === reviewerId) {
+                $scope.reviewerPropCount[i].count += isSelected ? 1 : -1;
+                break;
+            }
+        }
+    };
+
+    // $scope.catchCampaign = function (names, years, reviewers) {
+    //     $scope.isLoading = true;
+    //     BulkAssignReviewerController.getProposalAndReviewer(names, years, reviewers, function (result, event) {
+    //         if (event.status) {
+    //             result.allAppWithRM.forEach(function (app) {
+    //                 const existingReviewerIds = new Set(app.reviewerList.map(r => r.Reviewer__c));
+    //                 result.allReviewer.forEach(function (rev) {
+    //                     if (!existingReviewerIds.has(rev.Id)) {
+    //                         app.reviewerList.push({
+    //                             Proposals__c: app.application.Id,
+    //                             Reviewer__c: rev.Id,
+    //                             isSelected__c: false
+    //                         });
+    //                     }
+    //                 });
+    //             });
+    //             $scope.applicationData = result;
+    //             $scope.reviewerPropCount = [];
+    //             $scope.applicationData.allReviewer.forEach(function (rev) {
+    //                 let proCount = 0;
+    //                 $scope.applicationData.allAppWithRM.forEach(function (app) {
+    //                     app.reviewerList.forEach(function (rm) {
+    //                         if (rm.Reviewer__c === rev.Id && rm.isSelected__c) {
+    //                             proCount++;
+    //                         }
+    //                     });
+    //                 });
+    //                 $scope.reviewerPropCount.push({ Id: rev.Id, count: proCount });
+    //             });
+    //             $scope.$apply();
+    //         } else {
+    //             swal('Error', 'Failed to load proposal data', 'error');
+    //         }
+    //         $scope.isLoading = false;
+    //         $scope.$apply();
+    //     });
+    // };
+
+    $scope.catchCampaign = function (names, years, reviewers) {
+        $scope.isLoading = true;
+        BulkAssignReviewerController.getProposalAndReviewer(names, years, reviewers, function (result, event) {
+            if (event.status) {
+                result.allAppWithRM.forEach(function (app) {
+                    const existingReviewerIds = new Set(app.reviewerList.map(r => r.Reviewer__c));
+                    result.allReviewer.forEach(function (rev) {
+                        if (!existingReviewerIds.has(rev.Id)) {
+                            app.reviewerList.push({
+                                Proposals__c: app.application.Id,
+                                Reviewer__c: rev.Id,
+                                isSelected__c: false
+                            });
+                        }
+                    });
+                });
+
+                $scope.applicationData = result;
+
+                $scope.reviewerPropCount = [];
+                $scope.applicationData.allReviewer.forEach(function (rev) {
+                    let proCount = 0;
+                    $scope.applicationData.allAppWithRM.forEach(function (app) {
+                        app.reviewerList.forEach(function (rm) {
+                            if (rm.Reviewer__c === rev.Id && rm.isSelected__c) {
+                                proCount++;
+                            }
+                        });
+                    });
+                    $scope.reviewerPropCount.push({ Id: rev.Id, count: proCount });
+                });
+
+                $scope.$apply();
+            } else {
+                swal('Error', 'Failed to load proposal data', 'error');
+            }
+            $scope.isLoading = false;
+            $scope.$apply();
+        });
+    };
+
+    $scope.saveReviewersAction = function () {
+        $scope.isLoading = true;
+        var finalReviewermappingForInsert = [];
+        var finalReviewermappingForDelete = [];
+        $scope.applicationData.allAppWithRM.forEach(function (app) {
+            app.reviewerList.forEach(function (reviewer) {
+                var cleanReviewer = {
+                    Id: reviewer.Id,
+                    Proposals__c: reviewer.Proposals__c,
+                    Reviewer__c: reviewer.Reviewer__c,
+                    isSelected__c: reviewer.isSelected__c
+                };
+                if (cleanReviewer.isSelected__c) {
+                    finalReviewermappingForInsert.push(cleanReviewer);
+                } else if (cleanReviewer.Id !== undefined) {
+                    finalReviewermappingForDelete.push(cleanReviewer);
+                }
+            });
+        });
+        BulkAssignReviewerController.getReviewerAction(finalReviewermappingForInsert, finalReviewermappingForDelete, function (result, event) {
+            if (event.status) {
+                swal('Success', 'Reviewer assignments saved successfully', 'success');
+                $scope.fetchData();
+                // $scope.resetData();
+                // $scope.$apply();
+            } else {
+                swal('Error', 'Failed to save reviewer assignments', 'error');
+            }
+            $scope.isLoading = false;
+            $scope.$apply();
+        });
+    };
+
+    $scope.resetData = function () {
+        // reset filters
+        $scope.filters = { callType: [], callYear: [], reviewer: [] };
+
+        // clear data
+        $scope.applicationData = { allReviewer: [], allAppWithRM: [] };
+        $scope.reviewerPropCount = [];
+
+        // clear dropdown selections & refresh bootstrap-select
+        $('#listDropDown, #listDropDown2, #listDropDown3')
+            .val([])
+            .selectpicker('refresh');
+    };
+
+    // Initial data load
+    $scope.getCampaignList();
+    $scope.getCampaignYearList();
+    $scope.getReviewerList();
+});
+</script>
+</body>
+</html>
+</apex:page>

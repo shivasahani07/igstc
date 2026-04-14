@@ -1,0 +1,1439 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="RegistrationForm_Controller">
+    <html>
+
+    <head>
+        <!-- <c:Libraries ></c:Libraries> -->
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" rel="stylesheet"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" rel="stylesheet" crossorigin="anonymous"/>
+        <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+        <apex:stylesheet value="{!$Resource.ReviewerPortalCss}" />
+        <!-- <apex:stylesheet value="{!$Resource.SlickThemeCSS}" /> -->
+        <!-- <apex:stylesheet value="{!$Resource.SlickCss}" /> -->
+        
+        <apex:stylesheet value="{!$Resource.SmallCss}" />
+        <apex:stylesheet value="{!$Resource.MediumCss}" />
+        <apex:stylesheet value="{!$Resource.LargCss}" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
+    
+        <!-- <style>
+            body {
+                background: #F5F5F5;
+            }
+
+            .card-img-left {
+                width: 45%;
+                /* Link to your background image using in the property below! */
+                background: scroll center url('https://source.unsplash.com/WEQbe2jBg40/414x512');
+                background-size: cover;
+            }
+
+            .btn-login {
+                font-size: 0.9rem;
+                letter-spacing: 0.05rem;
+                padding: 0.75rem 1rem;
+            }
+
+            .btn-google {
+                color: white !important;
+                background-color: #ea4335;
+            }
+
+            .btn-facebook {
+                color: white !important;
+                background-color: #3b5998;
+            }
+
+            .loadingBackground {
+                position: fixed;
+                height: 100%;
+                width: 100%;
+                background: #F6F6F6;
+                z-index: 11111;
+                opacity: 0.7;
+                top: 0px;
+                left: 0;
+                bottom: 0;
+                right: 0;
+            }
+
+            .loading {
+                top: 50%;
+                left: 50%;
+                margin: -50px 0px 0px -50px;
+                z-index: 111111;
+                position: fixed;
+            }
+
+            @media only screen and (min-width:850px) and (max-width:1000px) {
+                .padding_1000 {
+                    padding-left: 20px !important;
+                    padding-right: 20px !important;
+                }
+            }
+
+            @media only screen and (max-width: 750px) {
+                @media screen and (min-device-width: 650px) and (max-device-width: 750px) {
+                    .col {
+                        padding:unset;
+                    }
+                }
+                .col {
+                    flex-shrink: 0 !important;
+                    flex: unset;
+
+                }
+            }
+        </style> -->
+
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+/* Popup container - can be anything you want */
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;} 
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+
+/* Password validation Code */
+input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+}
+
+/* Style the submit button */
+input[type=submit] {
+  background-color: #04AA6D;
+  color: white;
+}
+
+/* Style the container for inputs */
+.container {
+  background-color: #f1f1f1;
+  padding: 20px;
+}
+
+/* The message box is shown when the user clicks on the password field */
+#message {
+  display:none;
+  color: #000;
+  position: relative;
+  margin-top: 5px;
+}
+
+#message span {
+}
+
+/* Add a green text color and a checkmark when the requirements are right */
+.valid {
+  color: green;
+}
+
+.valid:before {
+  content: "&#10004;";
+}
+
+/* Add a red text color and an "x" icon when the requirements are wrong */
+.invalid {
+  color: red;
+}
+
+.invalid:before {
+  left: -35px;
+  content: "&#x2715;";
+}
+</style>
+        
+    </head>
+
+    <body ng-app="myApp" ng-controller="myCtrl" style="background-color: white;">
+        <!-- <nav class="navbar navbar-expand-lg navbar-light" style="background-color:white !important;font-size: 14px;">
+            <div class="container-fluid">
+                <a class="navbar-brand ms-5" href="#/CP_HomePage">
+                    <apex:image url="{!$Resource.Logo}" styleClass="logo" width="100%" height="100%" />
+                </a>
+            </div>
+        </nav> -->
+        <!-- <div class="container mt-5" ng-if="registrationPage">
+            <div class="card m-lr-singup">
+                <div class="row">
+                    <div class="col-md-8 justify-content-around p-5">
+                        <div class="row mb-3">
+                            <h5>Registration</h5>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                    <label for="txtFirstName text-muted">First name</label>
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                    <input type="text" class="form-control" id="txtFirstName" ng-model="contactDetails.FirstName" required="true" ng-required="contactDetails.FirstName"/>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                    <label for="txtLastName">Last name</label>
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                    <input type="text" class="form-control" id="txtLastName" ng-model="contactDetails.LastName" required="true" ng-required="contactDetails.LastName"/>
+                                </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="txtOrgType">Company/Institute</label>
+                                <span class="required-asterisk" style="color:red;">*</span>
+                                <input type="text" class="form-control" id="txtOrgType" ng-model="companyInfo.Name" required="true" ng-required="companyInfo.Name"/>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="txtUrl">Homepage URL</label>
+                                <span class="required-asterisk" style="color:red;">*</span>
+                                <input type="url" class="form-control" id="txtUrl" ng-model="contactDetails.Homepage_URL__c" required="true" ng-required="contactDetails.Homepage_URL__c"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                    <label for="txtEmail">Email address</label>
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                    <input type="email" class="form-control" id="txtEmail" ng-model="contactDetails.Email" required="true" ng-required="contactDetails.Email"/>
+                                </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="txtPassword">Password</label>
+                                <span class="required-asterisk" style="color:red;">*</span>
+                                <input type="password" class="form-control" id="txtPassword" ng-model="contactDetails.Password__c" required="true" ng-required="contactDetails.Password__c"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button class="blue-btn float-end ms-3" type="submit" ng-click="saveContact()">Register</button>
+                                <button class="blue-bordered-btn float-end" type="button" ng-click="showLoginForm()">Back</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 d-flex align-items-center justify-content-center">
+                        <apex:image url="{!$Resource.LoginSignUp}" styleClass="img-fluid box" />
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <div class="login" ng-if="registrationPage">
+            <div class="login-left">
+                <div class="login-form register">
+                    <div class="d-flex justify-content-center">
+                        <!-- <apex:image url="{!$Resource.Logo}"/> -->
+                        <apex:image url="{!$Resource.Logo}" alt="IGSTC" styleClass="brand-logo"/>
+                    </div>
+                    <div class="pt-4">
+                        <label class="text-uppercase mt-2 mb-1">Registration</label>
+                        <div class="row" ng-show="campaignName=='Landing_Page_Two_Plus_Two'">
+                            <div class="col-md-12">
+                                <div class="alert bg-color-list font-if" role="alert">
+                                        <li class="ps-4"><i class="fa-solid fa-circle text-success me-3"></i>
+                                            <b>Only the Coordinator should register on the portal and submit the proposal on behalf of the consortia.</b> 
+                                                Other partners in the project should not register. They can be added by the Coordinator from the application portal.</li>
+                                  </div>
+                            </div>  
+                        </div>
+                        <div class="row">
+                            <div class="mb-1" ng-show="campaignName=='Landing_Page_Two_Plus_Two'">
+                                <div class="row">
+                                   <!-- <div class="col-md-2">
+                                        <select class="form-control" id="ddTitle" ng-focus="removeClass('txtFirstName')" ng-model='contactDetails.Title'>
+                                            <option value="Prof." ng-selected="Mr">Prof.</option>
+                                            <option value="Dr.">Dr.</option>
+                                            <option value="Mr.">Mr.</option>
+                                            <option value="Ms.">Ms.</option>
+                                        </select>
+                                    </div>-->
+                                    <div class="col-md-2">
+                                	<select class="form-control" id="ddTitle" ng-focus="removeClass('txtFirstName')" ng-model='contactDetails.Title' >
+                                        <option value="Prof." ng-selected="Mr">Prof.</option>
+                                        <option value="Dr.">Dr.</option>
+                                        <option value="Mr.">Mr.</option>
+                                        <option value="Ms.">Ms.</option>
+                                    </select>
+                                </div>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control mt-0" id="txtFirstName" ng-model="contactDetails.FirstName" ng-focus="removeClass('txtFirstName')" placeholder="Firstname"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-1" ng-show="campaignName!='Landing_Page_Two_Plus_Two'">
+                                <!--<input type="text" class="form-control mt-0" id="txtFirstName" ng-model="contactDetails.FirstName" ng-focus="removeClass('txtFirstName')" placeholder="Firstname"/>
+                            -->
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <select class="form-control" id="ddTitle" ng-focus="removeClass('txtFirstName')" ng-model='contactDetails.Title'>
+                                            <option value="Prof." ng-selected="Mr">Prof.</option>
+                                            <option value="Dr.">Dr.</option>
+                                            <option value="Mr.">Mr.</option>
+                                            <option value="Ms.">Ms.</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control mt-0" id="txtFirstName" ng-model="contactDetails.FirstName" ng-focus="removeClass('txtFirstName')" placeholder="Firstname"/>
+                                    </div>
+                                </div>
+							</div>
+                            <div class="mb-1">
+                                <input type="text" class="form-control" id="txtLastName" ng-model="contactDetails.LastName" ng-focus="removeClass('txtLastName')" placeholder="Lastname"/>
+                            </div>
+                            <div class="mb-1">
+                                <input type="text" class="form-control" id="txtOrgType" ng-model="companyInfo.Name" ng-focus="removeClass('txtOrgType')" placeholder="Institution/Organization"/>
+                            </div>
+                            <div class="mb-1" ng-hide="campaignName=='Landing_Page_Wiser' || campaignName=='LANDING_PAGE_WISER' || campaignName=='Landing_Page_Pecfar' || campaignName=='LANDING_PAGE_PECFAR' || campaignName=='Landing_Page_Industrial_Fellowship' || campaignName=='LANDING_PAGE_INDUSTRIAL_FELLOWSHIP' || campaignName=='Landing_Page_Workshop' || campaignName=='LANDING_PAGE_WORKSHOP'">
+                                <input type="text" class="form-control" id="txtUrl" ng-model="contactDetails.Homepage_URL__c" ng-focus="removeClass('txtUrl')" placeholder="Homepage URL"/>
+                            </div>
+                            <!-- {{campaignName}} -->
+
+                            <!-- {{campaignName=='Landing_Page_Pecfar'}} -->
+                            <div class="mb-1" ng-show="campaignName=='Landing_Page_Pecfar' || campaignName=='Landing_Page_Wiser' || campaignName=='Landing_Page_Sing' || campaignName=='LANDING_PAGE_WISER || campaignName=='LANDING_PAGE_PECFAR'">
+                                <!-- <label>Select Applicant Type</label> -->
+                                <span style="font-size:small !important">Type of Applicant</span>
+                                <select class="form-control" id="txtCountry" ng-model="contactDetails.MailingCountry" ng-focus="removeClass('txtCountry')"> 
+                                    <option value="India">India</option>
+                                    <option value="Germany">Germany</option>
+                                </select>
+                            </div>
+                            <div class="mb-1 mt-2">
+                                <input type="email" class="form-control" id="txtEmail" ng-model="contactDetails.Email" ng-focus="removeClass('txtEmail')" placeholder="Email Address"/>
+                            </div>
+                           
+                            <div class="mb-1 position-relative">
+                                <input class="form-control" type="password" id="psw" ng-focus="passwordFocus()" ng-keyup="onPassKeyUp()" ng-model="contactDetails.Password__c" ng-pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" placeholder="Password" />
+                                <i class="fa fa-eye eye-icon-2 mb-3" ng-click="showHideLoginPassword('psw')"></i>
+                            </div>
+                            <div id="message">
+                                <h6><b>Password must contain the following:</b></h6>
+                                <span style="margin-left: 20px;font-weight: 600;" id="capital" class="invalid">&nbsp;&nbsp;A <b>capital (uppercase)</b> letter</span>
+                                <span style="margin-left: 20px;font-weight: 600;" id="letter" class="invalid">&nbsp;&nbsp;A <b>lowercase</b> letter</span>
+                                <span style="margin-left: 20px;font-weight: 600;" id="number" class="invalid">&nbsp;&nbsp;A <b>number</b></span>
+                                <span style="margin-left: 20px;font-weight: 600;" id="spclChrctr" class="invalid">&nbsp;&nbsp;A <b>Special character</b></span>
+                                <span style="margin-left: 20px;font-weight: 600;" id="length" class="invalid">&nbsp;&nbsp;Minimum <b>8 characters</b></span>
+                                <span style="margin-left: 20px;font-weight: 600;" id="mxLen" class="valid">&nbsp;&nbsp;Maximum <b>15 characters</b></span>
+                              </div>
+                            <!-- <div class="mb-1" > 
+                                <input type="text" class="form-control" id="hint" ng-model="contactDetails.Password_Hint__c" required="true" ng-required="contactDetails.Password_Hint__c" placeholder="Password hint"/> -->
+                                <br/>
+                                <!-- <div id="message" >
+                                <span class="badge rounded-pill text-dark" id="letter" style="background-color: #e8f1fb;margin-top:1%"><i class="fa fa-check" aria-hidden="true"></i>Atleast 8 character</span>
+                                
+                                <span class="badge rounded-pill text-dark" id="capital" style="background-color: #e8f1fb;margin-top:1%"><i class="fa fa-check" aria-hidden="true"></i>1 upper case</span>
+                                
+                                <span class="badge rounded-pill text-dark" id="number" style="background-color: #e8f1fb;margin-top:1%"><i class="fa fa-check" aria-hidden="true"></i>1 lower case</span>
+                                <br/>
+                                <span class="badge rounded-pill text-dark" id="length" style="background-color: #e8f1fb;margin-top:1%"><i class="fa fa-check" aria-hidden="true"></i>1 number</span>
+                               
+                                <span class="badge rounded-pill text-dark" id="spclChrcter" style="background-color: #e8f1fb;margin-top:1%"><i class="fa fa-check" aria-hidden="true"></i>1 special character</span>
+                                </div> -->
+                            </div>
+                            
+                          
+                              
+                        <!-- </div> -->
+                        <div class="row my-3">
+                            <div class="col-6">
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-secondary" ng-click="showLoginForm()" type="button">Back</button>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-success btn-block" id="btnSubmit" ng-click="saveContact()" type="submit">Submit</button>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-success btn-block" id="btnPleaseWait"  style="display:none;" type="btn"><i class="fa-solid fa-spinner fa-spin-pulse me-3"></i>Please Wait....</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="login-bg">
+                <div id="divIF" ng-if="img_If">
+                    <apex:image url="{!$Resource.industrial_fellowship_login}" />
+                </div>
+                <div id="div2plus2" ng-if="img_2plus2">
+                    <apex:image url="{!$Resource.Two_Plus_Two_Login}" />
+                </div>
+                <div id="divWorkshop" ng-if="img_workshop">
+                    <apex:image url="{!$Resource.Workshop_Login}" />
+                </div>
+                <div id="divPecfar" ng-if="img_pecfar">
+                    <apex:image url="{!$Resource.PecfarNewLogin}" />
+                </div>
+                <div id="divWiser" ng-if="img_wiser">
+                    <apex:image url="{!$Resource.Wiser_Login1}" />
+                </div>
+                <div id="divSing" ng-if="img_sing">
+                    <apex:image url="{!$Resource.Sing_Login}" />
+                </div>
+            </div>
+        </div>
+        <div class="login" ng-if="loginPage">
+            <div class="login-left">
+                <div class="login-form">
+                    <!-- <img src="images/logo.png" alt="IGSTC"> -->
+                    <div class="d-flex justify-content-center">
+                    <!-- <apex:image url="{!$Resource.Logo}"/> -->
+                    <apex:image url="{!$Resource.Logo}" alt="IGSTC" styleClass="brand-logo"/>
+                </div>
+                    <div class="pt-5">  
+                        <label>Email</label>
+                        <input id="txtusername" ng-model="loginDetails.userName" type="text" class="form-control" placeholder="Enter your email" aria-label="Username" aria-describedby="basic-addon1"/>
+                    </div>
+                    <div class="pt-4 position-relative">
+                        <label>Password</label>
+                        <input id="txtpassword" ng-model="loginDetails.userPassword" type="password" class="form-control" placeholder="**********" aria-label="Password" aria-describedby="basic-addon1"/>
+                        <i class="fa fa-eye eye-icon" ng-click="showHideLoginPassword('txtpassword')"></i>
+                    </div>
+                    <div class="pt-3 pb-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="custom-checkbox position-relative">
+                                    <input type="checkbox" />
+                                    <span class="checkmark"></span>
+                                    Remember me
+                                </label>
+                            </div>
+                            <div class="col-md-6 text-end">
+                                <a href="javascript:void(0)" ng-click="forgotpass()" class="link">
+                                    Forgot Password
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-success" ng-click="getcampaigntype()">Login</button>
+                    </div>
+                    <div class="btn-group mt-5" ng-hide="disableRegistration">
+                        <a href="#" onclick="myFunctionforgoogle()" id="googleUrlId" class="signin-google">
+                            <apex:image url="{!$Resource.google_img}" />Sign in with Google
+                        </a>
+                        <span>Or</span>
+                        <a href="javascript:void(0)" ng-click="showRegForm()" class="signin-google">
+                            Create an Account
+                            <!-- Create an Account -->
+                        </a>
+                    </div> 
+                    <div class="text-center">
+                        <br/>
+                        <label style="background-color: rgb(255, 67, 67); border-radius: 4px; font: bolder">The email ID and the User ID are unique in nature and thus can be used once only for registration on this portal, regardless of the Programme or Call.</label>
+                    </div>     
+                    <div class="pt-4">                        
+                        <!-- <label>Sign In</label> -->
+                        <!-- <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">
+                                <i class="fas fa-user"></i>
+                            </span>
+                            <input id="txtusername" ng-model="loginDetails.userName" type="text" class="form-control" placeholder="Enter your email" aria-label="Username" aria-describedby="basic-addon1"/>
+                        </div>
+                        <div class="input-group mb-1">
+                            <span class="input-group-text" id="basic-addon1" ng-click="showHideLoginPassword()">
+                                <i class="fa fa-eye"></i>
+                            </span>
+                            <input id="txtpassword" ng-model="loginDetails.userPassword" type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1"/>
+                        </div> -->
+
+                        <!-- <div class="input-group mb-1">
+                            <span class="input-group-text" ng-click="showHide()" >
+                                <i class="fa fa-eye"></i>
+                            </span>
+                            <input type="password" class="form-control" id="txtPassword1" ng-model="contactDetails.Password__c" required="true" ng-required="contactDetails.Password__c" placeholder="Password" name="txtPassword" />
+                        </div> -->
+
+                        <!-- <div class="text-end mb-3">
+                            <a href="#" ng-click="forgotpass()" class="link">
+                                Forgot Password
+                            </a>
+                        </div> -->
+                        <!-- <input type="button" value="Login" class="w-100 btn btn-success"/> -->
+                        <!-- <button type="submit" class="w-100 btn btn-success" ng-click="loginUser()">Login</button> -->
+                        <!-- <div class="text-center mb-3">
+                            <a href="#" ng-click="showRegForm()" class="link">
+                                <u>Or Create an Account</u>
+                            </a>
+                        </div>
+                        <hr/>
+                        <a href="#" onclick="myFunctionforgoogle()" id="googleUrlId" class="btn w-100 signin-google mt-3 mb-3">
+                            Signin with Google
+                        </a>
+                        <a href="#" onclick="myFunction()" id="facebookUrlId" class="btn w-100 signin-facebook">
+                            Signin with Facebook
+                        </a> -->
+                    </div>
+                </div>
+            </div>
+            <div class="login-bg">
+                <div id="divIF" ng-if="img_If">
+                    <apex:image url="{!$Resource.industrial_fellowship_login}" />
+                </div>
+                <div id="div2plus2" ng-if="img_2plus2">
+                    <apex:image url="{!$Resource.Two_Plus_Two_Login}"/>
+                </div>
+                <div id="divWorkshop" ng-if="img_workshop">
+                    <apex:image url="{!$Resource.Workshop_Login}" />
+                </div>
+                <div id="divPecfar" ng-if="img_pecfar">
+                    <apex:image url="{!$Resource.PecfarNewLogin}" />
+                </div>
+                <div id="divWiser" ng-if="img_wiser">
+                    <apex:image url="{!$Resource.Wiser_Login1}" />
+                </div>
+                <div id="divSing" ng-if="img_sing">
+                    <apex:image url="{!$Resource.Sing_Login}" />
+                </div>
+                <div class="bottom-links" ng-if="!img_workshop">
+                    <ul>
+                        <li><a href="{{LinkCallText}}" class="link" target="_blank">Call Text</a></li>
+                        <li ng-if="!img_sing"><a href="{{LinkBasicGuidelines}}" class="link" target="_blank">Basic Guidelines</a></li>
+                        <li ng-if="!img_sing"><a href="{{LinkFAQs}}" class="link" target="_blank">FAQs</a></li>
+                    </ul>
+                </div>
+                
+                <div class="bottom-links" ng-if="img_workshop">
+                    <ul>
+                        <li><a href="{{LinkCallText}}" class="link" target="_blank" style="width: 50%;">Call Text</a></li>
+                        <li ng-if="!img_sing"><a href="{{LinkFAQs}}" class="link" target="_blank" style="width: 50%;">FAQs</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="container" ng-if="loginPage">
+            <div class="row justify-content-around ms-5">
+                <div class="col-md-10">
+                    <div class="row">
+                        <div class="col-md-6 d-flex align-items-center justify-content-center">
+                            <apex:image url="{!$Resource.LoginImage3}" styleClass="img-fluid box" />
+                        </div>
+                        <div class="col-md-6 pt-5 pe-5">
+                            <div class="row">
+                                <div class="col-md-6 float-start">Sign in</div>
+                                <div class="col-md-6 float-end">or
+                                    <a href="#" ng-click="showRegForm()">create an account</a>
+                                </div>
+                            </div>
+                            <div class="row pt-3">
+                                <div class="col-md-12">
+                                    <div class="d-grid gap-2">
+                                        <a href="#" class="blue-bordered-btn social-media-btn p-2" onclick="myFunctionforgoogle()" id="googleUrlId">
+                                            <i class="fa-brands fa-google pe-5"></i>Sign in with Google</a>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 pt-3">
+                                    <div class="d-grid gap-2">
+                                        <a href="#" onclick="myFunction()" id="facebookUrlId" class="blue-bordered-btn social-media-btn p-2">
+                                            <i class="fa-brands fa-square-facebook pe-4"></i>Sign in with Facebook</a>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 pt-3">
+                                    <div class="hr-label">
+                                        <span>or</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 pt-1">
+                                    <label for="txtusername" class="form-label">User name</label>
+                                    <input type="text" class="form-control" id="txtusername" ng-model="loginDetails.userName" placeholder="Please enter username"
+                                    />
+                                </div>
+                                <div class="col-md-12 pt-3">
+                                    <label for="txtpassword" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="txtpassword" ng-model="loginDetails.userPassword" placeholder="Please enter password"
+                                    />
+                                    <div class="float-end">
+                                        <a href="#" ng-click="forgotpass()">Forgot Password?</a>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 pt-3">
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" ng-click="loginUser()" class="blue-btn">
+                                            <i class="fa-solid fa-lock pe-5"></i>Login</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+            </div>
+        </div> -->
+        <!-- forgotpass -->
+        <!-- <div class="container px-4" ng-if="forgetpass">
+                <div class="card h-100" style="width: 100%; margin: 5%;">
+                    <div class="row"></div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <apex:image url="{!$Resource.LoginSignUp}" styleClass="logo" width="100%" height="100%" />
+                        </div>
+                        <div class="col-md-9">
+                            <div class="row" style="margin-top: 10%;">
+                                <h2>
+                                    <u style="text-decoration-color:Darkorange">RESET PASSWORD</u>
+                                </h2>
+                            </div>
+                            <div class="row" style="margin-top: 5%;">
+                                <div class="col-md-6">
+                                    <label for="floatingInputUsername" style="text: 2px solid LightBlue;">Username</label>
+                                    <input type="text" class="form-control" placeholder="username" ng-model="passwordEmail.userName" style="border: 2px solid LightBlue;"
+                                    />
+                                </div>
+                                <div class="col-md-6"></div>
+
+                                <div class="col-md-7" style="margin-top: 2%;">
+                                    <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" ng-click="resetpassword()" style="padding-left: 37.5%; padding-right: 37.5%;"
+                                        type="submit">Reset</button>
+                                </div>
+                                <div class="col-md-6"></div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"></div>
+                </div>
+            </div> -->
+            <div class="login" ng-if="forgetpass">
+                <div class="login-left">
+                    <div class="login-form">
+                        <div class="d-flex justify-content-center">
+                            <!-- <apex:image url="{!$Resource.Logo}"/> -->
+                            <apex:image url="{!$Resource.Logo}" alt="IGSTC" styleClass="brand-logo"/>
+                        </div>
+                        <label class="mt-5 mb-2 d-block">RESET PASSWORD</label>
+                        <div class="pt-2">
+                            <label>Email</label>
+                            <input type="text" class="form-control" id="txtUsernamefp" ng-model="passwordEmail.userName" placeholder="Enter Username" aria-label="Username" aria-describedby="basic-addon1"/>
+                        </div>                        
+                        <!-- <div class="text-end mb-2 mt-1">
+                            <a class="popup" ng-click="getPasswordHint()">Password hint
+                                <span class="popuptext" id="myPopup">{{hint}}</span>
+                            </a>
+                        </div> -->
+
+                        <!-- <div class="text-end mb-3 popup">
+                            <a href="#" ng-click="getPasswordHint()" class="link">
+                                Password hint
+                            </a>
+                        </div>
+                        <div class="text-end mb-3">
+                            {{hint}}
+                        </div> -->
+                        <div class="my-4">
+                            <a href="javascript:void(0)" ng-click="showLoginForm()" class="back">
+                                <i class="fas fa-arrow-left me-2"></i> Back
+                            </a>
+                        </div>
+                        <button type="button" ng-click="resetpassword()" class="w-100 btn btn-success mb-3">Submit</button>
+                    </div>
+                </div>
+                <div class="login-bg">
+                    <div id="divIF" ng-if="img_If">
+                        <apex:image url="{!$Resource.industrial_fellowship_login}" />
+                    </div>
+                    <div id="div2plus2" ng-if="img_2plus2">
+                        <apex:image url="{!$Resource.Two_Plus_Two_Login}" />
+                    </div>
+                    <div id="divWorkshop" ng-if="img_workshop">
+                        <apex:image url="{!$Resource.Workshop_Login}" />
+                    </div>
+                    <div id="divPecfar" ng-if="img_pecfar">
+                        <apex:image url="{!$Resource.PecfarNewLogin}" />
+                    </div>
+                    <div id="divWiser" ng-if="img_wiser">
+                        <apex:image url="{!$Resource.Wiser_Login1}" />
+                    </div>
+                    <div id="divSing" ng-if="img_sing">
+                        <apex:image url="{!$Resource.Sing_Login}" />
+                    </div>
+                </div>
+            </div>
+        <!-- <div class="container mt-5" ng-if="forgetpass">
+            <div class="row justify-content-center">
+                <div class="col-md-6 float-center">
+                    <h6>Forgot Password</h6>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-6 mb-3 mt-2">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="txtUsernamefp" ng-model="passwordEmail.userName" placeholder="Enter user name"/>
+                        <label for="txtUsernamefp">Enter user name</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-6 float-end">
+                    <div class="d-grid gap-2 mb-3">
+                        <button class="blue-btn" ng-click="resetpassword()" type="submit">Reset</button>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button class="blue-bordered-btn" ng-click="showLoginForm()" type="button">Back</button>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <!-- forgotpass -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+        
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.2/sweetalert2.all.js">  -->
+        <script>
+            debugger
+
+          
+
+            var isRegistration = '{!$CurrentPage.parameters.register}';
+            var gemail = '{!$CurrentPage.parameters.gemail}';
+            var first_name = '{!$CurrentPage.parameters.first_name}';
+            var last_name = '{!$CurrentPage.parameters.last_name}';
+            var siteUrl = "{!$Label.ApplicantPortalSiteURL}";  
+            localStorage.setItem("reload", "true");
+          
+            function myFunction() {
+                debugger;
+                var fb = document.getElementById('facebookUrlId');
+                fb.href = "https://www.facebook.com/v2.8/dialog/oauth?client_id=" + "{!$Setup.Facebook_API_Details__c.App_Id__c}" + "&response_type=code&redirect_uri=" + "{!$Setup.Facebook_API_Details__c.login_Site_URL__c}" + "&scope=public_profile,email&&auth_type=rerequest";
+
+            }
+            function myFunctionforgoogle() {
+                debugger;
+                // if($scope.disableRegistration){
+                //         return;
+                //     }
+                var a = document.getElementById('googleUrlId');
+                a.href = "https://accounts.google.com/AccountChooser?continue=https://accounts.google.com/o/oauth2/auth?redirect_uri=" + "{!$Setup.Google_API_Details__c.Login_Redirect_URI__c}" + "%26prompt%3Dconsent%26response_type%3Dcode%26client_id=" + "{!$Setup.Google_API_Details__c.Client_Id__c}" + "%26scope%3Dhttps://www.googleapis.com/auth/userinfo.email%2Bhttps://www.googleapis.com/auth/userinfo.email%2Bhttps://www.googleapis.com/auth/userinfo.email%2Bhttps://www.googleapis.com/auth/plus.login%2Bhttps://www.googleapis.com/auth/plus.me%2Bhttps://www.googleapis.com/auth/userinfo.email%2Bhttps://www.googleapis.com/auth/userinfo.profile%2Bhttps://www.googleapis.com/auth/plus.login%2Bhttps://www.googleapis.com/auth/userinfo.email%2Bhttps://www.googleapis.com/auth/userinfo.profile%2Bhttps://www.googleapis.com/auth/plus.login%2Bhttps://www.googleapis.com/auth/plus.login%2Bhttps://www.googleapis.com/auth/plus.login%2Bhttps://www.googleapis.com/auth/plus.me%2Bhttps://www.googleapis.com/auth/userinfo.email%2Bhttps://www.googleapis.com/auth/userinfo.profile%2Bhttps://www.googleapis.com/auth/plus.login%2Bhttps://www.googleapis.com/auth/plus.me%2Bhttps://www.googleapis.com/auth/userinfo.email%2Bhttps://www.googleapis.com/auth/userinfo.profile%2Bhttps://www.googleapis.com/auth/userinfo.email%26access_type%3Doffline%26from_login%3D1%26as%3D-270badd61a3e150b&btmpl=authsub&scc=1&oauth=1";
+            }
+            var app = angular.module('myApp', []);
+            app.controller('myCtrl', function ($scope) {
+                debugger;
+                $scope.isDisabled = false;
+                var myInput = document.getElementById("psw");
+var letter = document.getElementById("letter");
+var capital = document.getElementById("capital");
+var number = document.getElementById("number");
+var length = document.getElementById("length");
+
+// When the user clicks on the password field, show the message box
+
+
+// When the user clicks outside of the password field, hide the message box
+// myInput.onblur = function() {
+//   document.getElementById("message").style.display = "none";
+// }
+
+
+                $scope.img_If=false;
+                $scope.img_workshop=false;
+                $scope.img_2plus2=false;
+                $scope.img_pecfar=false;
+                $scope.img_sing=false;
+                $scope.img_wiser=false;
+                $scope.campaingUrlText="if";
+                $scope.LinkFAQs='/#';
+                $scope.LinkBasicGuidelines='/#';
+                $scope.LinkCallText='/#';
+                $scope.campaignName = '{!$CurrentPage.parameters.campaign}';
+
+                var siteURL3 = window.location.href;
+                $scope.programmeName=siteURL3.split('?campaign=')[1];
+                localStorage.setItem("campaign", $scope.programmeName);
+                debugger;
+                if($scope.programmeName==$scope.programmeName != undefined){
+                    $scope.programmeName=$scope.programmeName.toUpperCase();
+                }
+                if($scope.programmeName.includes("&")){
+                    var split = $scope.programmeName.split("&");
+                    if($scope.campaignName == 'Landing_Page_Wiser'){
+                        debugger;
+                        $scope.campaingUrlText="wiser";
+                        $scope.img_wiser=true; 
+                    }else if($scope.campaignName == 'Landing_Page_Workshop'){
+                        $scope.img_workshop=true;
+                        $scope.campaingUrlText="workshop"; 
+                    }else if($scope.campaignName == 'Landing_Page_Pecfar'){
+                        $scope.campaingUrlText="pecfar";
+                        $scope.img_pecfar=true; 
+                    }else if($scope.campaignName == 'Landing_Page_Sing'){
+                        $scope.campaingUrlText="sing";
+                        $scope.img_sing=true;
+                    }else if($scope.campaignName == 'Landing_Page_Two_Plus_Two'){
+                        $scope.campaingUrlText="2plus2";
+                        $scope.img_2plus2=true;
+                    }else if($scope.campaignName == 'Landing_Page_Industrial_Fellowship'){
+                        $scope.img_If=true;
+                        $scope.campaingUrlText="if"; 
+                    }else if($scope.campaignName == 'Landing_Page_Connect_Plus'){
+                        $scope.img_If=true;
+                        $scope.campaingUrlText="if"; 
+                    }
+                }else{
+                    switch($scope.programmeName){
+                    case 'LANDING_PAGE_INDUSTRIAL_FELLOWSHIP':
+                    $scope.img_If=true;
+                    $scope.campaingUrlText="if";
+                    break;
+                    case 'LANDING_PAGE_CONNECT_PLUS':
+                    $scope.img_If=true;
+                    $scope.campaingUrlText="CONNECT";
+                    break;
+                    case 'LANDING_PAGE_WORKSHOP':
+                    $scope.img_workshop=true;
+                    $scope.campaingUrlText="workshop";
+                    break;
+                    case 'LANDING_PAGE_PECFAR':
+                    $scope.campaingUrlText="pecfar";
+                    $scope.img_pecfar=true;
+                    break;
+                    case 'LANDING_PAGE_SING':
+                    $scope.campaingUrlText="sing";
+                    $scope.img_sing=true;
+                    break;
+                    case 'LANDING_PAGE_WISER':
+                    $scope.campaingUrlText="wiser";
+                    $scope.img_wiser=true;
+                    break;
+                    case 'LANDING_PAGE_TWO_PLUS_TWO':
+                    $scope.campaingUrlText="2plus2";
+                    $scope.img_2plus2=true;
+                    break;
+                    default:
+                    $scope.img_2plus2=true;
+                    break;
+                }
+                }
+                // if($scope.campaign.toUpperCase()=="INDUSTRIAL_FELLOWSHIP"){
+
+                // }
+                // $scope.login_image="";
+                
+                //console.log('campaign image ::=> '+$scope.campaignImage);
+                $scope.companyInfo = { "Name": "" };
+                $scope.showSpinner = true;
+                $scope.contactDetails = { FirstName: "", LastName: "", Email: "", Password__c: "", AccountId: "" };
+                $scope.contactDetails.FirstName = first_name;
+                $scope.contactDetails.LastName = last_name;
+                
+                $scope.contactDetails.Email = gemail;
+                $scope.registrationPage = false;
+                $scope.userName = '';
+                $scope.userPassword = '';
+                if (isRegistration == "true") {
+                    $scope.registrationPage = true;
+                } else {
+                    $scope.loginPage = true;
+
+                }
+                $scope.signUpMap;
+                RegistrationForm_Controller.getSignupSettings(function (result, event) {
+
+                    debugger;
+                    if (event.status && result != null) {
+
+                        signUpMap = result;
+                    }
+                    $scope.showSpinner = false;
+                },
+                    { escape: false }
+                );
+                // Password validation 
+                $scope.passwordFocus = function() {
+    debugger;
+  document.getElementById("message").style.display = "block";
+}
+// When the user starts to type something inside the password field
+$scope.onPassKeyUp = function() {
+  // Validate lowercase letters
+  debugger;
+  var lowerCaseLetters = /[a-z]/g;
+  if( $scope.contactDetails.Password__c.match(lowerCaseLetters)) {  
+    document.getElementById("letter").classList.remove("invalid");
+    document.getElementById("letter").classList.add("valid");
+  } else {
+    document.getElementById("letter").classList.remove("valid");
+    document.getElementById("letter").classList.add("invalid");
+  }
+  
+  // Validate capital letters
+  var upperCaseLetters = /[A-Z]/g;
+  if( $scope.contactDetails.Password__c.match(upperCaseLetters)) {  
+    document.getElementById("capital").classList.remove("invalid");
+    document.getElementById("capital").classList.add("valid");
+  } else {
+    document.getElementById("capital").classList.remove("valid");
+    document.getElementById("capital").classList.add("invalid");
+  }
+
+  // Validate numbers
+  var numbers = /[0-9]/g;
+  if( $scope.contactDetails.Password__c.match(numbers)) {  
+    document.getElementById("number").classList.remove("invalid");
+    document.getElementById("number").classList.add("valid");
+  } else {
+    document.getElementById("number").classList.remove("valid");
+    document.getElementById("number").classList.add("invalid");
+  }
+  
+  // Validate length
+  if( $scope.contactDetails.Password__c.length >= 8) {
+    document.getElementById("length").classList.remove("invalid");
+    document.getElementById("length").classList.add("valid");
+  } else {
+    document.getElementById("length").classList.remove("valid");
+    document.getElementById("length").classList.add("invalid");
+  }
+  var specialChracter =/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+  if( $scope.contactDetails.Password__c.match(specialChracter)) {  
+    document.getElementById("spclChrctr").classList.remove("invalid");
+    document.getElementById("spclChrctr").classList.add("valid");
+  } else {
+    document.getElementById("spclChrctr").classList.remove("valid");
+    document.getElementById("spclChrctr").classList.add("invalid");
+  }
+  if($scope.contactDetails.Password__c.length>15){    
+    document.getElementById("mxLen").classList.remove("valid");
+    document.getElementById("mxLen").classList.add("invalid");
+  }
+  else
+  {
+    document.getElementById("mxLen").classList.remove("invalid");
+    document.getElementById("mxLen").classList.add("valid");
+    $("#psw").removeClass('border-theme');
+  }
+}
+
+
+
+                $scope.saveContact = function () {
+                    debugger;
+                    
+                    $scope.registrationPage = true;
+                    $scope.loginPage = false;
+                    $scope.forgetpass = false;
+                    $scope.contactDetails.Campaign__c = $scope.campaingUrlText;
+                    if($scope.contactDetails.Title==undefined && $scope.programmeName =='Landing_Page_Two_Plus_Two'){
+                        swal(
+                            '',
+                            'Please choose Salutation',
+                            'error'
+                        );
+                        $("#ddTitle").addClass('border-theme');
+                        return;
+                    }
+                    if ($scope.contactDetails.FirstName == "") {
+                        swal(
+                            '',
+                            'Please Enter First Name',
+                            'error'
+                        );
+                        $("#txtFirstName").addClass('border-theme');
+                        return;
+                    }
+                    if ($scope.contactDetails.LastName == "") {
+                        swal(
+                            '',
+                            'Please Enter Last Name',
+                            'error'
+                        );
+                        $("#txtLastName").addClass('border-theme');
+                        return;
+                    }
+                    if ($scope.companyInfo.Name == undefined || $scope.companyInfo.Name == "") {
+                        swal(
+                            '',
+                            'Please Enter Institution/Organization Name',
+                            'error'
+                        );
+                        $("#txtOrgType").addClass('border-theme');
+                        return;
+                    }
+                    if($scope.programmeName =='Landing_Page_Sing' || $scope.programmeName =='Landing_Page_Two_Plus_Two'){
+                        if (($scope.contactDetails.Homepage_URL__c == undefined || $scope.contactDetails.Homepage_URL__c == "") && $scope.programmeName!="LANDING_PAGE_WISER") {
+                        swal(
+                            '',
+                            'Please Enter Homepage URL',
+                            'error'
+                        );
+                        $("#txtUrl").addClass('border-theme');
+                        return;
+                    }
+                    else{
+                        if($scope.validurl($scope.contactDetails.Homepage_URL__c)  && $scope.programmeName!="Landing_Page_Wiser"){
+                            swal(
+                                'info',
+                                'Check Your Homepage url!',
+                                'info'
+                            );
+                            $("#txtUrl").addClass('border-theme');
+                            return;
+                        }
+                    }
+                    }
+
+                    if(($scope.contactDetails.MailingCountry == "" || $scope.contactDetails.MailingCountry == undefined) && ($scope.programmeName=="Landing_Page_Pecfar" || $scope.programmeName=="Landing_Page_Wiser" || $scope.programmeName=="LANDING_PAGE_WISER" || $scope.programmeName=="LANDING_PAGE_PECFAR")){
+                      swal('','Please select Origin of Application.','error');
+                     $("#txtCountry").addClass('border-theme');
+                      return;
+                    }
+                    // else{
+                    //     if($scope.contactDetails.Homepage_URL__c.contains("https://")){
+                    //         $scope.contactDetails.Homepage_URL__c = $scope.contactDetails.Homepage_URL__c.replace("https://", ""); 
+                    //     }else{
+
+                    //     }
+                    // }
+                    if ($scope.contactDetails.Email == "" || $scope.contactDetails.Email == undefined) {
+                        swal(
+                            '',
+                            'Please Enter your Email',
+                            'error'
+                        );
+                        $("#txtEmail").addClass('border-theme');
+                        return;
+                    }else{
+                        if($scope.valid($scope.contactDetails.Email)){
+                            swal(
+                                'info',
+                                'Check Your Registered Email!',
+                                'info'
+                            );
+                            $("#txtEmail").addClass('border-theme');
+                            return;
+                        }
+                    }
+                    if ($scope.contactDetails.Password__c == "" || $scope.contactDetails.Password__c == undefined) {
+                        swal(
+                            '',
+                            'Please Enter your password',
+                            'error'
+                        );
+                        $("#psw").addClass('border-theme');
+                        return;
+                    }
+
+                    var lowerCaseLetters = /[a-z]/g;
+                    if($scope.contactDetails.Password__c.match(lowerCaseLetters)) {  
+                        
+                    } else {
+                        swal(
+                            'info',
+                            'Your password must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters.',
+                            'info'
+                        ); 
+                        $("#psw").addClass('border-theme');
+                        return;
+                    }
+
+                    var upperCaseLetters = /[A-Z]/g;
+                    if($scope.contactDetails.Password__c.match(upperCaseLetters)) {
+
+                    } else {
+                        swal(
+                            'info',
+                            'Your password must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters.',
+                            'info'
+                        );
+                        $("#psw").addClass('border-theme');
+                        return;
+                    }
+
+                    var numbers = /[0-9]/g;
+                    if($scope.contactDetails.Password__c.match(numbers)) {  
+                        
+                    } else {
+                        swal(
+                            'info',
+                            'Your password must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters.',
+                            'info'
+                        );
+                        $("#psw").addClass('border-theme');
+                        return;
+                    }
+
+                    var passw = /^(?=.*[0-9])(?=.*[!@#$%^&*~=+'",.-_|{}])[a-zA-Z0-9!@#$%^&~=+'"|,.-_{}*]{7,30}$/;
+
+                    if($scope.contactDetails.Password__c.match(passw)) {  
+                        
+                    } else {
+                        swal(
+                            'info',
+                            'Your password must contain at least one number and one uppercase and lowercase letter, and at least 8 and maximum 15 characters.',
+                            'info'
+                        );
+                        $("#psw").addClass('border-theme');
+                        return;
+                    }
+
+                    if($scope.contactDetails.Password__c.length >= 8) {
+                    
+                    } else {
+                        swal(
+                            'info',
+                            'Password length should be atleast 8 chars.',
+                            'info'
+                        );
+                        $("#psw").addClass('border-theme');
+                        return;
+                }
+                if($scope.contactDetails.Password__c.length>15) {
+                    swal(
+                        'info',
+                        'Password maxlength should be 15 characters.',
+                        'info'
+                    );
+                    $("#psw").addClass('border-theme');
+                    return;
+                } 
+
+                // $scope.recordType;
+
+                // if($scope.programmeName == "LANDING_PAGE_WISER"){
+                //     $scope.recordType = "WISER";
+                // }else if($scope.programmeName == "LANDING_PAGE_PECFAR"){
+                //     $scope.recordType = "PECFAR"; 
+                // }else if($scope.programmeName == "LANDING_PAGE_INDUSTRIAL_FELLOWSHIP"){
+                //     $scope.recordType = "Industrial_Fellowships";
+                // }else if($scope.programmeName == "LANDING_PAGE_SING"){
+                //     $scope.recordType = "SING";
+                // }else if($scope.programmeName == "LANDING_PAGE_WORKSHOP"){
+                //     $scope.recordType = "Workshop";
+                // }else{
+                //     $scope.recordType = "Two_Plus_Two";
+                // }
+                $scope.isDisabled = true;
+                    $scope.showSpinner = true;
+                    $("#btnSubmit").hide();
+                    $("#btnPleaseWait").show();
+                    RegistrationForm_Controller.insertContact($scope.contactDetails, $scope.companyInfo.Name, $scope.campaingUrlText, function (result, event) {
+                        $("#btnPleaseWait").hide();
+                        $("#btnSubmit").show();                    
+                        $scope.isDisabled = false;
+                        if (event.status && result != null) {
+                            debugger;
+                            if(result == 'Email already Exists'){
+                                swal(
+                                'error',
+                                'Email already exists.',
+                                'error'
+                            );
+                            return; 
+                            }else
+                            {
+                                swal(
+                                'success',
+                                'Registration Form Submitted Successfully!',
+                                'success'
+                            );
+                            }
+                            
+                            $scope.contactDetails = result;
+                            $scope.$apply();
+                            var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard';
+                            debugger;
+                            // window.location.replace(window.location.origin + sitePrefix + '/ApplicantPortal?id=' + $scope.hashcodeId + '&campaign='+$scope.campaingUrlText+'#/Home');
+                            window.location.replace(window.location.origin + sitePrefix + '/ApplicantPortal?id=' + result + '&campaign='+$scope.campaingUrlText+'#/Home');
+                        }
+                        $scope.showSpinner = false;
+                    },
+                        { escape: false }
+                    );
+                }
+                $scope.openLink=function(url){
+                    alert(url);
+                    window.open(url);
+                }
+                $scope.showRegForm = function () {
+                    if($scope.disableRegistration){
+                        return;
+                    }
+                    $scope.registrationPage = true;
+                    $scope.loginPage = false;
+                    $scope.forgetpass = false;
+                }
+                $scope.showLoginForm = function () {
+                    $scope.registrationPage = false;
+                    $scope.loginPage = true;
+                    $scope.forgetpass = false;
+                }
+                $scope.loginDetails = { userName: "", userPassword: "" };
+
+                $scope.loginUser = function () {
+                    debugger;
+
+                    $scope.registrationPage = false;
+                    $scope.loginPage = true;
+                    $scope.forgetpass = false;
+
+                    $scope.userName;
+                    $scope.userPassword;
+                    $scope.showSpinner = true;
+                    RegistrationForm_Controller.loginUser($scope.loginDetails.userName, $scope.loginDetails.userPassword,$scope.disableRegistration, function (result, event) {
+                        debugger
+                        console.log('Login user data');
+                        console.log(result);
+                        console.log(event);
+                        if (event.status && result != null) { 
+                            if($scope.disableRegistration && result.Proposals__r.Submitted__c!=true){
+                                swal('Campaign ended','Campaign deadline has been lapsed.','info');
+                                return;
+                            }
+                            $scope.Profile = result;
+                            $scope.hashcodeId = result.Login_Hash_Code__c;
+                            $scope.userLoggedIn = true;
+                            if($scope.campaigntype == $scope.campaingUrlText){
+                                swal(
+                                '',
+                                'LoggedIn Successfully!',
+                                'success'
+                            )
+                            $scope.$apply();
+                            debugger;
+                            var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard';
+                            // window.location.replace(window.location.origin + sitePrefix + '/ApplicantPortal?id=' + $scope.hashcodeId + '#/Home');
+                            window.location.replace(window.location.origin + sitePrefix + '/ApplicantPortal?id=' + $scope.hashcodeId + '&campaign='+$scope.campaingUrlText+'#/Home');
+                            }else{
+                                swal("info", "you didnt applied for this programme.","info");
+                                return;  
+                            }
+                        }
+                        else {
+                            swal({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Please enter the correct Username and Password!'
+                            })
+                        }
+                    }, { escape: false })
+                    $scope.showSpinner = false;
+                    $scope.$apply();
+                }
+
+                $scope.getcampaigntype = function(){
+                    debugger;
+                    if($scope.loginDetails.userName == undefined || $scope.loginDetails.userName == ""){
+                        swal("info", "Please Enter username.","info");
+                        return;
+                    }
+                    if($scope.loginDetails.userPassword == undefined || $scope.loginDetails.userPassword == ""){
+                        swal("info", "Please Enter password.","info");
+            return;
+                    }
+                    RegistrationForm_Controller.getcampaigntype($scope.loginDetails.userName, function(result,event){
+                        debugger;
+                        if(event.status && result != null){
+                            debugger;
+                            $scope.campaigntype = result;
+                            $scope.loginUser();
+                            $scope.$apply();
+                        }else{
+                            swal({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Please enter the correct Username and Password!'
+                            }) 
+                        }
+                    })
+                }
+
+                $scope.forgotpass = function () {
+                    $scope.registrationPage = false;
+                    $scope.loginPage = false;
+                    $scope.forgetpass = true;
+
+                }
+                $scope.passwordEmail = { userName: "" };
+
+                $scope.resetpassword = function () {
+                    debugger;
+                    console.log($scope.userName);
+                    if($scope.passwordEmail.userName==undefined || $scope.passwordEmail.userName=='' || $scope.passwordEmail.userName==' '){
+                        swal('Reset','Please enter user name.','info');
+                        return;
+                    }
+                    $scope.userName;
+                    RegistrationForm_Controller.ForgotPassapplication($scope.passwordEmail.userName, function (result, event) {
+                        debugger;
+                        if (event.status && result != null) {
+                            swal(
+                                '',
+                                'Check Your Registered Email!',
+                                'success'
+                            )
+                        }else{
+                            swal(
+                            '',
+                            'Please enter registered emailId',
+                            'error'
+                        );
+                            }
+                    })
+
+                }
+
+                $scope.valid = function(value){
+                    if(value!=undefined){
+                         var x=value;
+                         var atpos = x.indexOf("@");
+                         var dotpos = x.lastIndexOf(".");
+                        if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length) {
+                            
+                            return true;
+                        }
+                        return false;
+                     }
+                 }
+
+                 $scope.validurl = function(value){
+                    if(value!=undefined){
+                         var x=value;
+                         var atpos = x.indexOf("www.");
+                         var dotpos = x.lastIndexOf(".");
+                        if (atpos>1 || dotpos<atpos+2 || dotpos+2>=x.length) {
+                            
+                            return true;
+                        }
+                        return false;
+                     }
+                 }
+
+                 $scope.getPasswordHint = function(){
+                    debugger;
+                    if($scope.passwordEmail.userName == undefined || $scope.passwordEmail.userName == ""){
+                        swal(
+                            'info',
+                            'Please Enter registered emailId',
+                            'info'
+                        ); 
+                    }else{
+                        RegistrationForm_Controller.getPasswordHint($scope.passwordEmail.userName, function(result,event){
+                        debugger;
+                        if(result.Password_Hint__c == undefined || result.Password_Hint__c == ""){
+                            swal(
+                            'info',
+                            'You dont have password hint',
+                            'info'
+                        ); 
+                        }else{
+                            $scope.hint = result.Password_Hint__c;
+                            var popup = document.getElementById("myPopup");
+                            popup.classList.toggle("show");
+                            $scope.$apply();
+                        }
+                    })  
+                    }
+                 }
+
+                // $scope.validatePasswod = function(){
+                //     debugger;
+                    
+                // }
+
+                $scope.showHide = function(){
+                    debugger;
+                    var x = document.getElementById("txtPassword1");
+                    if (x.type === "password") {
+                        x.type = "text";
+                    } else {
+                        x.type = "password";
+                    }
+                }
+
+                $scope.showHideLoginPassword = function(controlid){
+                    debugger;
+                    var x = document.getElementById(controlid);
+                    if (x.type === "password") {
+                        x.type = "text";
+                    } else {
+                        x.type = "password";
+                    }
+                }
+
+                $scope.removeClass=function(controlid){
+                    $("#"+controlid+"").removeClass('border-theme');
+                }
+                $scope.disableRegistration=true;
+        $scope.getFAQLinks=function(){
+            var programmeNameLink="Industrial Fellowships";
+            if($scope.campaingUrlText=="if"){
+                programmeNameLink="Industrial Fellowships";
+            }else if($scope.campaingUrlText=="2plus2"){
+                programmeNameLink="2+2 Call";
+            }
+            else{
+                programmeNameLink=$scope.campaingUrlText;
+            }
+            RegistrationForm_Controller.getFAQLinks(programmeNameLink, function(result,event){
+                console.log('programme links list');
+                console.log(result);
+                debugger
+                if(event.status && result!=undefined){
+                    $scope.LinkBasicGuidelines=result.link.Basic_Guidelines__c;
+                    $scope.LinkCallText=result.link.Call_Text__c;
+                    $scope.LinkFAQs=result.link.FAQs__c;
+                    $scope.allCampaigns=result.listCampaign;
+                    
+                    for(var i=0;i<$scope.allCampaigns.length;i++){
+                        if($scope.allCampaigns[i].Name.toUpperCase()==programmeNameLink.toUpperCase()){
+                            $scope.disableRegistration=$scope.allCampaigns[i].Disable_Campaign__c;
+                        }
+                    }
+                    $scope.$apply();
+                }
+            });
+        }
+        $scope.getFAQLinks();
+            });            
+        </script>
+    </body>
+
+    </html>
+</apex:page>

@@ -1,0 +1,60 @@
+<template>
+    <div style="overflow-x:auto;">
+        <template if:true={listOfHeads}>
+        <table class="slds-table slds-table--bordered " >
+
+            <thead>
+                <tr class="slds-text-title--caps">
+                    <th scope="col" style="background-color:#4998ff;color:white;">
+                        <div class="slds-truncate" title="Subject" style="font-size: 15px;">Head</div>
+                    </th>
+                    <th scope="col" style="background-color:#4998ff;color:white;">
+                        <div class="slds-truncate" title="requested" style="font-size: 15px;">Grants Requested<br/> From IGSTC</div>
+                    </th>
+                    <th scope="col" style="background-color:#4998ff;color:white;">
+                        <div class="slds-truncate" title="approved" style="font-size: 15px;">Approved Head</div>
+                    </th>
+                    <th scope="col" style="background-color:#4998ff;color:white;">
+                        <div class="slds-truncate" title="approved" style="font-size: 15px;">Approved Amount</div>
+                    </th>
+                    <th scope="col" style="background-color:#4998ff;color:white;">
+                        <div class="slds-truncate" title="comment" style="font-size: 15px;">Final Commment</div>
+                    </th>
+                    <th scope="col" style="background-color:#4998ff;color:white;">
+                        <div class="slds-truncate" title="release" style="font-size: 15px;">Advance Release</div>
+                    </th>
+                    <th scope="col" style="background-color:#4998ff;color:white;">
+                        <div class="slds-truncate" title="settlement" style="font-size: 15px;">Final Settlement</div>
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <template for:each={listOfHeads} for:item="head">
+                    <tr key={head.Id}>
+                    <td style="background-color: lightgrey;"><b style="font-size: 17px;">{head.Name}</b>
+                        <template for:each={head.Expense_Line_Items__r} for:item="lineItem">
+                            <div key={lineItem.Id}>
+                                <li style="font-size: 14px;">{lineItem.Description__c}</li>
+                            </div>
+                        </template>  
+                    </td>
+                    <td style="background-color: lightgrey;">{head.ELI__c}</td> 
+                    <!-- <td>{head.Id}</td> -->
+                    <td style="background-color: lightgrey;font-size: 13px;"><lightning-input type="text" name="approvedhead" value={head.Approved_Head__c} data-id={head.Id} access-key={head.index} data-index ={head.index} onchange={handleChange}></lightning-input></td>
+                    <td style="background-color: lightgrey;font-size: 13px;"><lightning-input type="text" name="approved" value={head.Approved_Amount__c} data-id={head.Id} access-key={head.index} data-index ={head.index} onchange={handleChange}></lightning-input></td>
+                    <td style="background-color: lightgrey;font-size: 13px;"><lightning-input type="text" name="comment" value={head.Approved_Comment__c} data-id={head.Id} access-key={head.index} data-index ={head.index} onchange={handleChange}></lightning-input></td>
+                    <td style="background-color: lightgrey;font-size: 13px;"><lightning-input type="Number" name="release" value={head.Advance_Release__c} data-id={head.Id} access-key={head.index} data-index ={head.index} onchange={handleChange}></lightning-input></td>
+                    <td style="background-color: lightgrey;font-size: 13px;"><lightning-input type="Number" name="settlement" value={head.Final_Settlement__c} data-id={head.Id} access-key={head.index} data-index ={head.index} onchange={handleChange}></lightning-input></td>
+                </tr>
+                </template>
+            </tbody>
+             </table>
+            
+        </template>
+
+        <div class="button-container" style="text-align: center;">
+            <button class="slds-button slds-button_brand" onclick={saveRecords}>Submit</button>
+        </div>
+    </div>
+</template>

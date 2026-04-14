@@ -1,0 +1,126 @@
+<template>
+    <div class="main-container">
+        <template if:false={isLoading}>
+            <div class="d-flex flex-row justify-content-between">
+                <div>
+                    <div class="head">Application Review Dashboard</div>
+                    <p class="desc">Track, filter, and manage applications in one place</p>
+                </div>
+                <div class="d-flex flex-row gap-2">
+                    <div class="dropdown filter-select">
+                        <button 
+                            class="btn btn-white border border-success text-success justify-content-between dropdown-toggle d-flex align-items-center" 
+                            type="button" 
+                            data-id="filter" 
+                            onclick={openDropdown}>
+                            <div>
+                                <i class="fa fa-filter me-2"></i>
+                                <span>{selectedFilter}</span>
+                            </div>
+                        </button>
+                        <ul if:true={filterDropdown} class="dropdown-menu">
+                            <template for:each={filterOptions} for:item="opt">
+                                <li key={opt.value}>
+                                    <p 
+                                        class="dropdown-item" 
+                                        onclick={handleSelect} 
+                                        data-value={opt.value}>
+                                        {opt.label}
+                                    </p>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                    <div class="dropdown filter-select">
+                        <button 
+                            class="btn btn-white border border-success text-success justify-content-between dropdown-toggle d-flex align-items-center" 
+                            type="button" 
+                            data-id="year" 
+                            onclick={openDropdown}>
+                            <div>
+                                <span>{selectedYear}</span>
+                            </div>
+                        </button>
+                        <ul if:true={yearDropdown} class="dropdown-menu">
+                            <template for:each={yearOptions} for:item="opt">
+                                <li key={opt.value}>
+                                    <p 
+                                        class="dropdown-item" 
+                                        onclick={handleSelect} 
+                                        data-value={opt.value}>
+                                        {opt.label}
+                                    </p>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>            
+                </div>
+            </div>
+            <div class="row g-3">
+                <template for:each={cards} for:item="card">
+                    <div key={card.label} class="col" data-id="card" data-value={card.label} onclick={handleCardClick}>
+                        <div class="cstm-card d-flex flex-row" data-value={card.label}>
+                            <div class={card.class} data-value={card.label}>
+                                <i class={card.icon} data-value={card.label}></i>
+                            </div>
+                            <div class="d-flex flex-column align-items-center" data-value={card.label}>
+                                <div class="value" data-value={card.label}>{card.value}</div>
+                                <p class="label" data-value={card.label}>{card.label}</p>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+            <div class="d-flex flex-row justify-content-between py-3 px-4 green-head my-3">
+                <span>Application Details</span>
+                <i class="fa-solid fa-arrows-rotate" onclick={handleRefresh}></i>
+            </div>
+            <template if:true={isDataAvailable}>
+                <div class="table-container">
+                    <table class="preview-table">
+                        <thead class="table-header">
+                            <tr>
+                                <template for:each={header} for:item="h" for:index="index">
+                                    <th key={h.value}>
+                                        {h.label}
+                                    </th>
+                                </template>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-body">
+                            <template for:each={processedBody} for:item="row">
+                                <tr key={row.key}>
+                                    <template for:each={row.values} for:item="col">
+                                        <td key={col.key}>
+                                            {col.value}
+                                        </td>
+                                    </template>
+                                    <td>
+                                        <button class="btn btn-white border border-success text-success d-flex align-items-center" value={row.Id} onclick={handleView}><i class="fa-solid fa-eye"></i>&nbsp;&nbsp;View</button>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </template>
+            <template if:false={isDataAvailable}>
+                <div class="noData">
+                    <p>No records to display for the selected criteria</p>
+                </div>
+            </template>
+            <div class="cstm-pagination">
+                <c-reusable-pagination page-size=10 list={body} onpagechange={handlePagination}></c-reusable-pagination>
+            </div>
+        </template>
+        <template if:true={isLoading}>
+            <div class="modal fade show d-block" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered justify-content-center" role="document">
+                    <span class="loader"></span>
+                </div>
+            </div>
+            <div class="modal-backdrop fade show"></div>
+        </template>
+    </div>
+</template>

@@ -1,0 +1,9 @@
+<apex:component >
+    <script> 
+        angular.module('rp_app', ['ngRoute','angularjs-dropdown-multiselect', 'ui.bootstrap', 'ui.bootstrap.datetimepicker', 'ng.ckeditor','ngSanitize']); 
+    </script>
+    <script src="{!$Resource.Rp_Projects}"/>
+    <script src="{!$Resource.ReviewerPortal}"/>
+    <script src="{!$Resource.ReviewerPortalCss}"/>
+    <script src="{!$Resource.ReviewerHome}"/>
+    </apex:component>

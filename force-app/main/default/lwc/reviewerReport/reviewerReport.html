@@ -1,0 +1,121 @@
+<template>
+    <template if:true={showSpinner}>
+        <div class="spinner-overlay">
+            <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+            <h1 style="text-align:center">Processing Records...</h1>
+        </div>
+    </template>
+    <template if:false={showSpinner}>
+        <div class="main-container">
+            <div class="head">Reviewer Reports</div>
+            <div class="slds-grid slds-gutters slds-wrap slds-align_absolute-center slds-m-bottom_medium">
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-combobox name="Call Type" label="Call Type" placeholder="Select Call Type"
+                        value={selectedName} onchange={handleChangeName} options={campaignNameOptions}>
+                    </lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-combobox name="Call Year" label="Call Year" placeholder="Select Call Year"
+                        value={selectedYear} onchange={handleChangeYear} options={yearOptions}> </lightning-combobox>
+                </div>
+                <template if:true={showStage}>
+                    <div class="slds-col slds-size_1-of-3">
+                        <lightning-combobox 
+                            name="Stage"
+                            label="Stage"
+                            placeholder="Select Stage"
+                            value={selectedStage}
+                            options={stageOptions}
+                            onchange={handleStageChange}>
+                        </lightning-combobox>
+                    </div>
+                </template>
+                <div class="slds-col slds-size_1-of-6 slds-m-top_large">
+                    <lightning-button label="Search" variant="brand" onclick={handleSearch}   disabled={isSearchDisabled} class="slds-m-top_small">
+                    </lightning-button>
+                </div>
+            </div>
+            <template if:true={showTable}>
+                <div class="table-container">
+                    <table class="preview-table">
+                        <thead class="table-header">
+                            <tr class="slds-text-title_caps slds-text-align_center">
+                                <th>S.No</th>
+                                <th>
+                                    <lightning-input type="checkbox" checked={headerCheckboxChecked}
+                                        onchange={handleSelectAll}></lightning-input>
+                                </th>
+                                <th>Name</th>
+                                <th>Title</th>
+                                <th>Call Type</th>
+                                <th>Stage</th>
+                                <th>Proposal Stage</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-body">
+
+                            <template if:true={paginationData}>
+                                <template for:each={paginationData} for:item="item">
+                                    <tr key={item.Id}>
+                                        <td>{item.index}</td>
+                                        <td>
+                                            <lightning-input type="checkbox" class="rowCheckbox" data-id={item.Id}
+                                                checked={item.Generate_Reviewer_Document__c}
+                                                onchange={handleRowSelection}>
+                                            </lightning-input>
+                                        </td>
+                                        <td>{item.Name}</td>
+                                        <td>{item.Title_Of__c}</td>
+                                        <td>{item.Campaign__r.Name}</td>
+                                        <td>{item.Proposal_Stages__c}</td>
+                                        <td>{item.Stage__c}</td>
+                                    </tr>
+                                </template>
+                            </template>
+                            <template if:true={noRecords}>
+                                <tr>
+                                    <td colspan="7" class="slds-text-align_center">
+                                        <div class="slds-p-around_medium">
+                                            <div class="slds-illustration slds-illustration_small" aria-hidden="true">
+                                                <svg class="slds-illustration__svg" viewBox="0 0 64 64"
+                                                    aria-hidden="true" width="40" height="40">
+                                                    <g>
+                                                        <path
+                                                            d="M32 0C14.327 0 0 14.327 0 32s14.327 32 32 32 32-14.327 32-32S49.673 0 32 0z"
+                                                            fill="#ecebea" />
+                                                        <circle cx="32" cy="32" r="20" fill="#d8dde6" />
+                                                        <path d="M22 30h20v4H22zM22 38h20v4H22z" fill="#fff" />
+                                                    </g>
+                                                </svg>
+                                                <div class="slds-text-longform">
+                                                    <h3 class="slds-text-heading_medium slds-m-bottom_small">
+                                                        No Records Found
+                                                    </h3>
+                                                    <p class="slds-text-body_regular slds-m-bottom_medium">
+                                                        Looks like there are no records to display right now.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+                <template if:false={noRecords}>
+                    <div class="slds-m-around_medium slds-text-align_right">
+                        <c-reusable-pagination  page-size="50"
+                        style="font-size: medium;" list={proposals} onpagechange={handlePagination}
+                        current-page={currentPage}>
+                       </c-reusable-pagination>  
+                    </div>
+                    <div class="slds-m-around_medium slds-text-align_right ">
+                        <lightning-button label="Generate" variant="brand" onclick={handleSave}></lightning-button>
+                    </div>    
+
+                </template>
+            </template>
+        </div>
+    </template>
+</template>

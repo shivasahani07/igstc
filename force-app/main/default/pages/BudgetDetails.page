@@ -1,0 +1,219 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="IndustrialFellowshipController">
+    <html>
+    <div ng-controller="budget_ctrl">
+        <head>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+            <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+        </head>
+        <body>
+
+            <div class="container mt-5">
+                <div class="row mx-4">
+                    <div class="col-md-12">
+                        <div class="tab-link" ng-show="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ApplicantInformationSing')">
+                                        <div class="icon-circle">
+                                            <i class="fa-regular fa-user"></i>
+                                        </div>
+                                        <span>Personal Information</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('SingHostDetails')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Host Details</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ProjectDetailsSing')">
+                                        <div class="icon-circle">
+                                            <i class="fa-regular fa-address-card"></i>
+                                        </div>
+                                        <span>Proposed Work</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('BudgetDetails')">
+                                        <div class="icon-circle">
+                                            <i class="fa fa-money"></i>
+                                        </div>
+                                        <span>Budget Details</span>
+                                    </a>
+                                </li>                               
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('AttachmentsSing')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Attachments</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('SignatureSealsSing')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-graduation-cap"></i>
+                                        </div>
+                                        <span>Review and Submit</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-link" ng-hide="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success wp-6"></div>
+                            </div>
+                            <ul>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa-regular fa-user"></i>
+                                        </div>
+                                        <span>Personal Information</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Host Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa-regular fa-address-card"></i>
+                                        </div>
+                                        <span>Proposed Work</span>
+                                    </a>
+                                </li> 
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa fa-money"></i>
+                                        </div>
+                                        <span>Budget Details</span>
+                                    </a>
+                                </li>                               
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Attachments</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-graduation-cap"></i>
+                                        </div>
+                                        <span>Review and Submit</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-5 mx-5">
+                    <div class="col-md-12 alert bg-color-list" role="alert">
+                        <ul class="font-if">
+                            <li>
+                                <i class="fa-solid fa-circle text-success me-3"></i><b><span class="text-danger ms-2">*</span>Travel include shortest route round trip airfare, visa processing charges and travel/medical insurance</b></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- <div class="row mt-5 mx-5">
+                    <div class="col-md-3 py-3 ms-3 box-shadow-1">
+                        <h4 class="pb-3 color-theme w-75 float-end" style="font-weight:800">{{accDetails.Name}}</h4>
+                    </div>
+                </div> -->
+
+                <div class="row mt-5 mx-5" ng-repeat="expence in expenseList">
+                    <div class="accordion" stle="background-color: white !important" id="accordionPanelsStayOpenExample{{$index}}">
+                        <div class="accordion-item" style="border: none;">
+                    <div class="col-md-12 box-shadow-1 accordion-header" id="panelsStayOpen-heading{{$index}}" style="padding: none !important;margin-bottom: 1%;">
+                        <button class="accordion-button" style="background-color: white !important; box-shadow: none !important;" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpencollapse{{$index}}"
+                            aria-expanded="true" aria-controls="panelsStayOpencollapse{{$index}}">
+                        <h4 class="pb-3 color-theme" style="font-weight:600;">{{expence.Name}}</h4>
+                        </button>
+                    </div>
+
+                    <div id="panelsStayOpencollapse{{$index}}" ng-clock="true" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-heading{{$index}}">
+                    <table class="table basic">
+                        <thead>
+                        <tr>
+                            <th class="pb-3 color-theme" style="width:5%;">S.No.</th>
+                            <th class="pb-3 color-theme" style="width:45%;">Description</th>
+                            <th class="pb-3 color-theme" style="width:45%;">Grants requested from IGSTC ({{expence.Expense_Line_Items__r[0].Currency_Type__c}})</th>
+                            <th ng-hide="proposalStage" class="text-center"><i class="fas fa-plus-circle icon" ng-click="addRow($index)" style="width:3%; font-size: 24px;"></i></th>
+                        </tr>
+                        </thead>
+                        
+                        <tbody>
+                        <tr ng-repeat="lineItem in expence.Expense_Line_Items__r">
+                            <td>
+                                {{$index + 1}}
+                            </td>
+                            <td><input class="form-control" type="text" ng-model="lineItem.Description__c" ng-disabled="proposalStage"  /></td>
+                            <td><input class="form-control" type="text" ng-model="lineItem.Year1_Expense__c" ng-keyup="calculateOtherField()" ng-change="calculateOtherField()" ng-keypress="calculateOtherField()" ng-disabled="proposalStage"  /></td>
+                            <td ng-hide="proposalStage" class="text-center"><i class="fas fa-times-circle icon" ng-click="deleteRow($parent.$index,$index)"></i></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+
+                <div class="row mt-5 px-2 mx-5">
+                    <table class="table basic">
+                        <tbody>
+
+                            <tr ng-show="conRecord.MailingCountry == 'India'">
+                                <td style="width: 50%">Total Grant Requested</td>
+                                <td style="width: 50%"><input class="form-control" ng-model="year1" ng-disabled="true" /></td>
+                            </tr>
+                            <tr ng-hide="conRecord.MailingCountry == 'India'">
+                                <td>Total Grant Requested</td>
+                                <td><input class="form-control" ng-model="year1Germany" ng-disabled="true" /></td>
+                            </tr>
+
+                            <!-- <tr ng-show="conRecord.MailingCountry == 'India'">
+                                <td style="width: 50%">All Total Required</td>
+                                <td style="width: 50%">Max 9 lakh</td>
+                            </tr>
+
+                            <tr ng-hide="conRecord.MailingCountry == 'India'">
+                               <td>All Total Required</td>
+                                <td>Max €10000</td>
+                            </tr> -->
+                        </tbody>
+                    </table>
+                    <span class="required-asterisk" style="color:red;">***&nbsp;&nbsp;<small class="label-rtf"><b>Max upto € 10000(For German Applicant) / INR 9.0 Lakh (For Indian Applicant)</b></small></span>
+                </div>
+
+            <div class="m-5" ng-if="!proposalStage">
+                <button class="blue-btn float-end" ng-click="saveExpenceLineitems()" type="button">
+                    <i class="fa-solid fa-check me-2"></i>Save and Next</button>
+                <button class="blue-bordered-btn float-end me-2" ng-click="redirectPageURL('ProjectDetailsSing')" type="button">
+                    <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+            </div>
+            </div>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        </body>
+    </div>
+
+    </html>
+</apex:page>

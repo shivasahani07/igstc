@@ -1,0 +1,90 @@
+<apex:page sidebar="false" showHeader="false" controller="RegistrationForm_Controller" action="{!googleAuth}"> 
+    <c:Libraries /> 
+    
+    <script>
+	debugger;
+    let lastName = encodeURIComponent('{!gLname}');
+    if(localStorage.getItem("reload") == "true"){
+        localStorage.setItem("reload", "false");
+        location.reload();
+    }
+
+    setTimeout(() => {
+        console.warn("{!hasCode}");
+    let email = encodeURIComponent('{!gId}');
+    let firstName = encodeURIComponent('{!gFname}');
+    
+    debugger;
+    var hashcode = '{!hasCode}';
+    var campaign = '{!campaign}';
+    var SignupCustomer = '{!SignupCustomer}';
+    var campaignName = localStorage.getItem("campaign");
+    let SignupCandidate = encodeURIComponent('{!SignupCandidate}');
+    let docUplaodCustomer = encodeURIComponent('{!docUplaodCustomer}');
+    var campToRedirect = "";
+    var redircetPage = "";
+    debugger;
+    if(campaignName != ""){
+        debugger;
+        if(SignupCandidate && campaign != campaignName){
+            debugger;
+        }
+        if(campaignName.toUpperCase() == "LANDING_PAGE_INDUSTRIAL_FELLOWSHIP"){
+            campToRedirect = "if";
+        }
+        if(campaignName.toUpperCase() == "LANDING_PAGE_WORKSHOP"){
+            campToRedirect = "workshop";
+        }
+        if(campaignName.toUpperCase() == "LANDING_PAGE_PECFAR"){
+            campToRedirect = "pecfar";
+        }
+        if(campaignName.toUpperCase() == "LANDING_PAGE_SING"){
+            campToRedirect = "sing";
+        }
+        if(campaignName.toUpperCase() == "LANDING_PAGE_WISER"){
+            campToRedirect = "wiser";
+        }
+        if(campaignName.toUpperCase() == "LANDING_PAGE_TWO_PLUS_TWO"){
+            campToRedirect = "2plus2";
+        }
+        //     if(campToRedirect != campaign){
+        //         swal(
+        //     '',
+        //     'incorrect Campaign',
+        //     'error'
+        // );
+        // window.location.replace(window.location.origin +"/ApplicantDashboard?"+"campaign="+campaignName);  
+        //     }
+    }
+
+    debugger;
+    
+    
+   //  window.location.replace='https://indo-germansciencetechnologycentre--dev--c.visualforce.com/apex/ApplicantPortal?id='+hashcode;
+    let mainURL = window.location.origin+'/apex';
+    debugger;
+    var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard';   
+            
+    if(campToRedirect != null && (campaign != null && campaign != "") && campToRedirect != campaign){
+
+        swal(
+            '',
+            'incorrect Campaign',
+            'error'
+        );
+        window.location.replace(window.location.origin +"/ApplicantDashboard?"+"campaign="+campaignName);  
+
+    }else if(SignupCandidate = "true" && hashcode == ""){
+        window.location.replace(window.location.origin +sitePrefix+"/RegistrationForm?campaign="+campaignName+"&gemail="+email+'&first_name='+firstName+'&last_name='+lastName+'&signUp=customer&register=true'); 
+    }
+    else{
+        debugger;
+       // window.location.replace('https://indo-germansciencetechnologycentre--dev--c.visualforce.com/apex/ApplicantPortal?id='+'{!hasCode}');    
+        window.location.replace(window.location.origin +sitePrefix+"/ApplicantPortal?id="+hashcode+"&campaign="+campToRedirect+"#/Home");  
+    } 
+}, 2000);
+
+   
+    
+    </script>
+</apex:page>

@@ -1,0 +1,25 @@
+<apex:page controller="testt">
+    
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageblocksection >
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >States</apex:outputLabel>
+                    <apex:selectList value="{!state}" size="1">
+                        <apex:selectOptions value="{!ListStates}"/>
+                        <apex:actionSupport event="onchange" rerender="PB2" action="{!getCity}" />
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+            </apex:pageblocksection>
+        </apex:pageBlock>
+                
+        <apex:pageBlock id="PB2">
+            <apex:outputLabel >city</apex:outputLabel>
+            <apex:pageBlockTable value="{!listc}" var="prod">
+                <apex:column value="{!prod.Indian_Cities__c}"/>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+                 
+    </apex:form>
+    
+</apex:page>

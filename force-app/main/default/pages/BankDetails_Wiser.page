@@ -1,0 +1,65 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="IndustrialFellowshipController">
+    <html>
+        <div ng-controller="bankDetailsWiser_ctrl">
+            
+            <head>
+                <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+            </head>    
+                <body>
+                <div class="container">
+                    <div class="card m-5">
+                        <div class="card-header">                            
+                            <h2 class="p-3">
+                                <b>Bank Details</b>
+                            </h2>
+                        </div>
+                        <div class="card-text ps-3 m-5">
+                            <div class="row mt-5">
+                                <div class="col-md-8 offset-2">
+                                    <label>{{bankDetails.Name}}</label>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-4 offset-2">
+                                    <label>Account Name</label>
+                                    <input ng-model="bankDetails.Account_Name__c" maxlength="255" class="form-control" type="text"/>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Account No.</label>
+                                    <input ng-model="bankDetails.Bank_Account_Number__c" maxlength="255" class="form-control" type="text"/>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-4 offset-2">
+                                    <label>IFSC Code</label>
+                                    <input ng-model="bankDetails.Bank_IFSC_Code__c" maxlength="255" class="form-control" type="text"/>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Bank Name</label>
+                                    <input ng-model="bankDetails.Bank_Name__c" maxlength="255" class="form-control" type="text"/>
+                                </div>
+                                
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-4 offset-2">
+                                    <label>Bank address</label>
+                                    <textarea ng-model="bankDetails.Bank_Address__c" maxlength="1000" class="form-control"></textarea>
+                                </div>
+                               
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <button class="blue-btn float-end" ng-click="submitBankDetails()" ng-disabled="disableSubmit" type="button">
+                                        <i class="fa-solid fa-check me-2"></i>Submit</button>
+
+                                    <button class="blue-bordered-btn float-end me-2" ng-click="redirectPageURL('ProjectHandleGrantApplicationWiser')" type="button">
+                                        <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+                                </div>
+                            </div>    
+                        </div>
+                    </div>
+                </div>
+                </body>
+        </div>
+    </html>
+</apex:page>

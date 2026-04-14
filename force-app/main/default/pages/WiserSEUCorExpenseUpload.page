@@ -1,0 +1,126 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="IndustrialFellowshipController">
+<html>
+    <div ng-controller="wiserseuc_ctrl">
+        <head>
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+            <apex:stylesheet value="{!$Resource.timeLineCss}" />
+            <script>
+                var userId = '{!$CurrentPage.parameters.id}';
+            </script>
+        </head>
+
+        <body>
+            <div class="container mt-5">
+
+                <div class="modal" id="filePreview">
+                    <div class="modal-dialog" style="min-width:120rem">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">
+                                    <div class="d-flex" style="background:unset;">
+                                        <h3 style="text-align: center"><b>{{selectedFile.userDocument.Name}}</b></h3>
+                                    </div>
+                                </h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <iframe style="width:100%;height:75vh;border: 0px;border-radius: 10px;" id="file_frame" title="File"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-5 mx-5">
+                    <div class="col-md-12 alert bg-color-list" role="alert">
+                        <ul class="font-if">  
+                          <li><i class="fa-solid fa-circle text-success me-3"></i>Kindly upload the document in a pdf with maximum size of 1 MB</li>
+                          <li><i class="fa-solid fa-circle text-success me-3"></i>Click on upload button to upload the documents</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row box-shadow-2 mt-5 mx-5 p-3">
+                    <div class="row mt-5 mb-5" style="margin-left: -1px">
+
+                        <div class="col-md-6">
+                                <label class="font-if">SE/UC Report</label>
+                                <div class="col-md-9 mt-2" style="padding-left: 0px !important; padding-right: 0px !important">
+
+                                <div class="input-group input-group-lg">
+                                    <input type="file" accept=".pdf" id="{{doc.userDocument.Name}}" class="form-control "/>
+                                    <span class="input-group-btn" >
+                                      <button class="btn btn-success" ng-click="uploadFile(doc.userDocument.Name,doc.userDocument.Id,'','1048576','1048576')" type="button">Upload</button>
+                                    </span>
+                                  </div>
+                            </div>
+
+                              <div class="col-md-3" ng-show="doc.userDocument.Status__c=='Uploaded'">
+                                <!-- <label style="color: #fff;">.</label> -->
+                                <a class="blue-btn float-end mt-2 py-3"  ng-click="filePreviewHandler(doc)">View</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row mt-5 mx-5">
+                    <table class="table basic">
+                        <thead>
+                            <tr>
+                                <th class="pb-3 color-theme" style="width:5%;">Head of Expenditure</th>
+                                <th class="pb-3 color-theme" style="width:20%;">Year-1 Amount</th>
+                                <th class="pb-3 color-theme" style="width:20%;">Year-1 Actual Spent</th>
+                                <!-- <th class="pb-3 color-theme" style="width:20%;">Year-1 Adjustment Amount</th> -->
+                                <th class="pb-3 color-theme" style="width:20%;" ng-show="Showyear2">Year-2 Amount</th>
+                                <th class="pb-3 color-theme" style="width:20%;" ng-show="Showyear2">Year-2 Actual Spent</th>
+                                <th class="pb-3 color-theme" style="width:20%;" ng-show="Showyear2">Year-2 Adjustment Amount</th>
+                                <th class="pb-3 color-theme" style="width:20%;" ng-show="Showyear3">Year-3 Amount</th>
+                                <th class="pb-3 color-theme" style="width:20%;" ng-show="Showyear3">Year-3 Actual Spent</th>
+                                <th class="pb-3 color-theme" style="width:20%;" ng-show="Showyear3">Year-3 Adjustment Amount</th>
+                            </tr>
+                            </thead>
+
+                            <tbody ng-repeat="head in expenseHeadList">
+                                <td>
+                                    {{head.Name}} ({{head.Currency_Type__c}})
+                                </td>
+                                <td>
+                                    {{head.Total_Year_1_ELI__c}}
+                                </td>
+                                <td>
+                                    <input class="form-control" type="text" number="head.Year_1_Actual_Spent__c" ng-model="head.Year_1_Actual_Spent__c" />
+                                </td>
+                                <!-- <td>
+                                    <input class="form-control" type="text" number="head.Year_1_Adjustment_Amount__c" ng-model="head.Year_1_Adjustment_Amount__c" />
+                                </td> -->
+                                <td ng-show="Showyear2">
+                                    {{head.Total_Year_2_ELI__c}}
+                                </td>
+                                <td ng-show="Showyear2">
+                                    <input class="form-control" type="text" number="head.Year_2_Actual_Spent__c" ng-model="head.Year_2_Actual_Spent__c" />
+                                </td>
+                                <td ng-show="Showyear2">
+                                    <input class="form-control" type="text" ng-model="head.Year_2_Adjustment_Amount__c" />
+                                </td>
+                                <td ng-show="Showyear3">
+                                    {{head.Total_Year_3_ELI__c}}
+                                </td>
+                                <td ng-show="Showyear3">
+                                    <input class="form-control" type="text" number="head.Year_3_Actual_Spent__c" ng-model="head.Year_3_Actual_Spent__c" />
+                                </td>
+                                <td ng-show="Showyear3">
+                                    <input class="form-control" type="text" ng-model="head.Year_3_Adjustment_Amount__c" />
+                                </td>
+                            </tbody>
+                    </table>
+
+                    <div class="m-3">
+                        <button class="blue-btn float-end" ng-click="saveAllExpenseHeadExpense()" type="button">
+                            <i class="fa-solid fa-check me-2"></i>Save and Next</button>
+                    </div>
+                </div>
+
+            </div>
+        </body>
+    </div>
+</html>
+</apex:page>

@@ -1,0 +1,1087 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+    <htm>
+        <div ng-controller="Dashboard_iF_Ctlr">
+
+            <head>
+                <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+                <script>
+                    var userId = '{!$CurrentPage.parameters.id}';
+                </script>
+                <!-- <style>
+                    .md-datepicker-input-container {
+                        width: calc(100% - 60px);
+                    }
+                </style> -->
+            </head>
+
+            <body style="font-family: 'Montserrat', sans-serif;">
+                <div class="container mt-5">
+                    <!--<div class="row mx-5">
+                        <div class="col-md-12">
+                            <div class="tab-link" ng-show="proposalStage">
+                                <div class="progress">
+                                    <div class="progress-success w-100"></div>
+                                </div>
+                                <ul>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Dashboard_IF')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-user-friends"></i>
+                                            </div>
+                                            <span>Basic Details</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('PersonalInformationIF')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-user-alt"></i>
+                                            </div>
+                                            <span>Personal Information</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('FellowshipDetailsIF')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-user-edit"></i>
+                                            </div>
+                                            <span>Host Details</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Parent_Organization')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-user-graduate"></i>
+                                            </div>
+                                            <span>Parent Organisation Details</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('EduQualificationIF')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-building"></i>
+                                            </div>
+                                            <span>Education Details</span>
+                                        </a>
+                                    </li>   
+                                </ul>
+                            </div>
+                            <div class="tab-link" ng-hide="proposalStage">
+                                <div class="progress">
+                                    <div class="progress-success"></div>
+                                </div>
+                                <ul>
+                                    <li class="active">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-user-friends"></i>
+                                            </div>
+                                            <span>Basic Details</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-user-alt"></i>
+                                            </div>
+                                            <span>Personal Information</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-user-edit"></i>
+                                            </div>
+                                            <span>Host Details</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-user-graduate"></i>
+                                            </div>
+                                            <span>Parent Organisation Details</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-building"></i>
+                                            </div>
+                                            <span>Education Details</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            </div>
+                        </div>-->
+                    <div class="row mx-5">
+                        <div class="col-md-12">
+                            <div class="tab-link" ng-show="proposalStage">
+                                <div class="progress">
+                                    <div class="progress-success w-100"></div>
+                                </div>
+                                <ul>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Dashboard_IF')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-user-friends"></i>
+                                            </div>
+                                            <span>Basic Details</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('PersonalInformationIF')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-user-alt"></i>
+                                            </div>
+                                            <span>Personal Information</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Parent_Organization')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-user-graduate"></i>
+                                            </div>
+                                            <span>Parent Organisation Details</span>
+                                        </a>
+                                    </li>                                            
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('EduQualificationIF')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-building"></i>
+                                            </div>
+                                            <span>Education Details</span>
+                                        </a>
+                                    </li> 
+                                     <li class="active pb-cursor">
+                                            <a ng-click="redirectPageURL('EmploymentDetailsIF')">
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-trophy"></i>
+                                                </div>
+                                                <span>Employment Details</span>
+                                            </a>
+                                        </li>  
+                                </ul>
+                            </div>
+                            <div class="tab-link" ng-hide="proposalStage">
+                                <div class="progress">
+                                    <div class="progress-success"></div>
+                                </div>
+                                <ul>
+                                    <li class="active">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-user-friends"></i>
+                                            </div>
+                                            <span>Basic Details</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-user-alt"></i>
+                                            </div>
+                                            <span>Personal Information</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-user-graduate"></i>
+                                            </div>
+                                            <span>Parent Organisation Details</span>
+                                        </a>
+                                    </li>
+                                
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-building"></i>
+                                            </div>
+                                            <span>Education Details</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                            <a>
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-trophy"></i>
+                                                </div>
+                                                <span>Employment Details</span>
+                                            </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            </div>
+                    </div>
+    
+                        <!--<div class="row mx-5">
+                            <div class="col-md-12">
+                                <div class="tab-link" ng-show="proposalStage">
+                                    <div class="progress">
+                                        <div class="progress-success w-100"></div>
+                                    </div>
+                                    <ul>
+                                        
+                                        <li class="active pb-cursor">
+                                            <a ng-click="redirectPageURL('EmploymentDetailsIF')">
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-trophy"></i>
+                                                </div>
+                                                <span>Employment Details</span>
+                                            </a>
+                                        </li>
+                                        <li class="active pb-cursor">
+                                            <a ng-click="redirectPageURL('ProjectDetailIF')">
+                                                <div class="icon-circle">
+                                                    <i class="fa fa-paperclip"></i>
+                                                </div>
+                                                <span>Project Details</span>
+                                            </a>
+                                        </li>
+                                        <li class="active pb-cursor">
+                                            <a ng-click="redirectPageURL('AchievementsIF')">
+                                                <div class="icon-circle">
+                                                    <i class="fa fa-home"></i>
+                                                </div>
+                                                <span>Achievements</span>
+                                            </a>
+                                        </li>
+                                        <li class="active pb-cursor">
+                                            <a ng-click="redirectPageURL('AttachmentsIF')">
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-check"></i>
+                                                </div>
+                                                <span>Attachments</span>
+                                            </a>
+                                        </li>
+                                        <li class="active pb-cursor">
+                                            <a ng-click="redirectPageURL('ReviewAndSubmitIF')">
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-file-signature"></i>
+                                                </div>
+                                                <span>Review/Submit</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="tab-link" ng-hide="proposalStage">
+                                    <div class="progress">
+                                        <div class="progress-success wp-0"></div>
+                                    </div>
+                                    <ul>
+                                        
+                                        <li>
+                                            <a>
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-trophy"></i>
+                                                </div>
+                                                <span>Employment Details</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a>
+                                                <div class="icon-circle">
+                                                    <i class="fa fa-paperclip"></i>
+                                                </div>
+                                                <span>Project Details</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a>
+                                                <div class="icon-circle">
+                                                    <i class="fa fa-home"></i>
+                                                </div>
+                                                <span>Achievements</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a>
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-check"></i>
+                                                </div>
+                                                <span>Attachments</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a>
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-file-signature"></i>
+                                                </div>
+                                                <span>Review/Submit</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                </div>
+                            </div>-->
+                        <div class="row mx-5">
+                            <div class="col-md-12">
+                                <div class="tab-link" ng-show="proposalStage">
+                                    <div class="progress">
+                                        <div class="progress-success w-100"></div>
+                                    </div>
+                                    <ul>
+                                        <li class="active pb-cursor">
+                                            <a ng-click="redirectPageURL('AchievementsIF')">
+                                                <div class="icon-circle">
+                                                    <i class="fa fa-home"></i>
+                                                </div>
+                                                <span>Achievements</span>
+                                            </a>
+                                        </li>
+                                        <li class="active pb-cursor">
+                                            <a ng-click="redirectPageURL('FellowshipDetailsIF')">
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-user-edit"></i>
+                                                </div>
+                                                <span>Host Details</span>
+                                            </a>
+                                        </li>                                        
+                                       
+                                        <li class="active pb-cursor">
+                                            <a ng-click="redirectPageURL('ProjectDetailIF')">
+                                                <div class="icon-circle">
+                                                    <i class="fa fa-paperclip"></i>
+                                                </div>
+                                                <span>Project Details</span>
+                                            </a>
+                                        </li>
+                                       
+                                        <li class="active pb-cursor">
+                                            <a ng-click="redirectPageURL('AttachmentsIF')">
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-check"></i>
+                                                </div>
+                                                <span>Attachments</span>
+                                            </a>
+                                        </li>
+                                        <li class="active pb-cursor">
+                                            <a ng-click="redirectPageURL('ReviewAndSubmitIF')">
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-file-signature"></i>
+                                                </div>
+                                                <span>Review/Submit</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="tab-link" ng-hide="proposalStage">
+                                    <div class="progress">
+                                        <div class="progress-success wp-0"></div>
+                                    </div>
+                                    <ul>
+                                        <li>
+                                            <a>
+                                                <div class="icon-circle">
+                                                    <i class="fa fa-home"></i>
+                                                </div>
+                                                <span>Achievements</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a>
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-user-edit"></i>
+                                                </div>
+                                                <span>Host Details</span>
+                                            </a>
+                                        </li>                                        
+                                        
+                                        <li>
+                                            <a>
+                                                <div class="icon-circle">
+                                                    <i class="fa fa-paperclip"></i>
+                                                </div>
+                                                <span>Project Details</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a>
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-check"></i>
+                                                </div>
+                                                <span>Attachments</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a>
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-file-signature"></i>
+                                                </div>
+                                                <span>Review/Submit</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                </div>
+                    </div>
+                        
+
+                            <div class="modal" id="filePreview">
+                                <div class="modal-dialog" style="min-width:120rem">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">
+                                                <div class="d-flex" style="background:unset;">
+                                                    <h3 style="text-align: center"><b>{{selectedFile.userDocument.Name}}</b></h3>
+                                                </div>
+                                            </h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <iframe style="width:100%;height:75vh;border: 0px;border-radius: 10px;" id="file_frame" title="File"></iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div ng-show="basicDetails">
+                                <div class="row mx-5 mt-5">
+                                    
+                                    <div class="col-md-12">
+                                        <div class="alert bg-color-list font-if" role="alert">
+                                            <i class="fa-solid fa-circle-info text-success me-2"></i>
+                                            PhD Industrial Exposure Fellowship (PIEF)<ul><br/>
+                                                <li class="ps-4"><i class="fa-solid fa-circle text-success me-3"></i>Age limit: {{PIEF_age_limit}} years</li>
+                                                <li class="ps-4"><i class="fa-solid fa-circle text-success me-3"></i>Enrolment in PhD program in an Indian institution should be more than {{PIEF_phd_limit}} year.</li>
+                                            </ul>
+                                            <br/>
+                                            <i class="fa-solid fa-circle-info text-success me-2"></i>
+                                            Post-Doctoral Industrial Fellowship (PDIF)<ul><br/>
+                                                <li class="ps-4"><i class="fa-solid fa-circle text-success me-3"></i>Age Limit: {{PDIF_age_limit}} years</li>
+                                                <li class="ps-4"><i class="fa-solid fa-circle text-success me-3"></i>Postdoctoral researchers/fresh PhDs who have been awarded their PhD degree in science/engineering within {{PDIF_phd_limit}} years of the application deadline by any Indian institution/university are eligible to apply.</li>
+                                                <li class="ps-4"><i class="fa-solid fa-circle text-success me-3"></i>Those who have submitted their PhD thesis are also eligible to apply provided they can submit valid thesis submission certificate.</li>
+                                            </ul>
+                                          </div>
+                                    </div>
+                                    <div class="col-md-12 text-center mb-4 mt-2">
+                                        <label class="color-theme">Applying for?</label>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                        <div class="radio">
+                                            <label class="text-muted">
+                                                <input type="radio" ng-disabled="proposalStage" ng-model="objContact.Industrial_Fellowship_Type__c" name="optionsRadios" id="optionsRadios1" ng-focus="removeClass('optionsRadios1')" ng-click="clickRadioPIEF()" value="PIEF" /> PhD Industrial Exposure Fellowship (PIEF)
+                                            </label>
+                                        </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                        <div class="radio ps-0">
+                                            <label class="text-muted">
+                                                <input type="radio" ng-disabled="proposalStage" ng-model="objContact.Industrial_Fellowship_Type__c" ng-click="clickRadioPDIF()" name="optionsRadios" id="optionsRadios2" ng-focus="removeClass('optionsRadios1')" value="PDIF" /> Post-Doctoral Industrial Fellowship (PDIF)
+                                            </label>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div class="row mt-4">
+                                    <div class="col-md-6" ng-show="showEnrolDate">
+                                        <label class="font-if color-theme">Date of Birth<span class="text-danger ms-2">*</span></label>
+                                        <input type="date" ng-disabled="proposalStage" ng-model="Birthdate" id="txtBirthdate" ng-focus="removeClass('txtBirthdate')" ng-keypress="validateDate('txtBirthdate')" ng-change="validateDate('txtBirthdate')" ng-keyup="validateDate('txtBirthdate')" name="txtBorderTheme" md-placeholder="Birthdate" class="form-control"/>
+                                            <!-- <md-datepicker ng-disabled="proposalStage" ng-model="Birthdate" id="txtBirthdate" ng-focus="removeClass('txtBirthdate')" ng-keypress="validateDate('txtBirthdate')" ng-change="validateDate('txtBirthdate')" ng-keyup="validateDate('txtBirthdate')" name="txtBorderTheme" md-placeholder="Birthdate" class="form-control" md-current-view="year"></md-datepicker> -->
+                                    </div>
+                                    <div class="col-md-6" ng-show="showEnrolDate">
+                                        <label class="font-if color-theme">Please mention your PhD enrollment date<span class="text-danger ms-2">*</span></label>
+                                        <!-- <md-datepicker type="date" ng-disabled="proposalStage" name="txtBorderTheme" ng-keypress="validateDate('txtEnroleDate')" ng-change="validateDate('txtEnroleDate')" ng-keyup="validateDate('txtEnroleDate')" ng-focus="removeClass('txtEnroleDate')" ng-model="PhD_Enroll_Date__c" id="txtEnroleDate" class="form-control" md-current-view="year"></md-datepicker> -->
+                                        <input type="date" ng-disabled="proposalStage" name="txtBorderTheme" ng-keypress="validateDate('txtEnroleDate')" ng-change="validateDate('txtEnroleDate')" ng-keyup="validateDate('txtEnroleDate')" ng-focus="removeClass('txtEnroleDate')" ng-model="PhD_Enroll_Date__c" id="txtEnroleDate" class="form-control"/>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                                <div class="row mt-4 mx-5">
+                                    <div class="col-md-6" ng-show="showAwardDrop">
+                                        <label class="font-if color-theme">Have you been awarded PhD degree?<span class="text-danger ms-2">*</span></label>
+                                        <select class="form-control" ng-disabled="proposalStage" id="awarded" ng-focus="removeClass('awarded')" ng-model="objContact.Awarded_PhD__c" ng-change="changeAward()">
+                                            <option ng-option="Yes" value="Yes">Yes</option>
+                                            <option ng-option="No" value="No">No</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6" ng-show="showAwardDrop">
+                                        <label class="font-if color-theme">Date of Birth<span class="text-danger ms-2">*</span></label>
+                                        <!-- <md-datepicker type="date" ng-disabled="proposalStage" ng-model="Birthdate" id="txtBirthdate1" ng-focus="removeClass('txtBirthdate1')" ng-keypress="validateDate('txtBirthdate1')" ng-change="validateDate('txtBirthdate1')" ng-keyup="validateDate('txtBirthdate1')" name="txtBorderTheme" placeholder="Birthdate" class="form-control" md-current-view="year"></md-datepicker> -->
+                                            <input type="date" ng-disabled="proposalStage" ng-model="Birthdate" id="txtBirthdate1" ng-focus="removeClass('txtBirthdate1')" ng-keypress="validateDate('txtBirthdate1')" ng-change="validateDate('txtBirthdate1')" ng-keyup="validateDate('txtBirthdate1')" name="txtBorderTheme" placeholder="Birthdate" class="form-control"/>
+                                    </div>     
+                                   
+                            </div>
+                                <div class="row mt-3 mx-5" ng-show="DivPDIF">
+                                    <div class="col-md-6" ng-show="objContact.Awarded_PhD__c == 'Yes'">
+                                        <label class="font-if color-theme">Date of the PhD award mentioned in certificate<span class="text-danger ms-2">*</span></label>
+                                        <input type="date" ng-disabled="proposalStage" ng-model="PhD_Awarded_Date__c" id="txtPhDAwardedDate" ng-focus="removeClass('txtPhDAwardedDate')" ng-keypress="validateDate('txtPhDAwardedDate')" ng-change="validateDate('txtPhDAwardedDate')" ng-keyup="validateDate('txtPhDAwardedDate')" name="txtBorderTheme" class="form-control"/>
+                                        <!-- <input type="date" ng-disabled="proposalStage" ng-model="PhD_Awarded_Date__c" id="txtPhDAwardedDate" ng-focus="removeClass('txtPhDAwardedDate')" ng-keypress="validateDate('txtPhDAwardedDate')" ng-change="validateDate('txtPhDAwardedDate')" ng-keyup="validateDate('txtPhDAwardedDate')" name="txtBorderTheme" class="form-control"/> -->
+                                        <!-- <md-datepicker type="date" ng-disabled="proposalStage" name="txtBorderTheme" ng-model="PhD_Awarded_Date__c"></md-datepicker> -->
+                                    </div>
+                                  
+                                    <div class="col-md-6" ng-show="objContact.Awarded_PhD__c == 'No'">
+                                        <label class="font-if color-theme">Date of submission of PhD thesis<span class="text-danger ms-2">*</span></label>
+                                        <input type="date" ng-disabled="proposalStage" name="txtBorderTheme" id="txtPhDSubmissionDat" ng-model="Thesis_Submission_Date__c" ng-keypress="validateDate('txtPhDSubmissionDat')" ng-change="validateDate('txtPhDSubmissionDat')" ng-keyup="validateDate('txtPhDSubmissionDat')" ng-focus="removeClass('txtPhDSubmissionDat')" class="form-control"/>
+                                        <!-- <md-datepicker type="date" ng-disabled="proposalStage" name="txtBorderTheme" id="txtPhDSubmissionDat" ng-model="Thesis_Submission_Date__c" ng-keypress="validateDate('txtPhDSubmissionDat')" ng-change="validateDate('txtPhDSubmissionDat')" ng-keyup="validateDate('txtPhDSubmissionDat')" ng-focus="removeClass('txtPhDSubmissionDat')" class="form-control" md-current-view="year"></md-datepicker> -->
+                                    </div>
+                                    <div class="col-md-6" ng-show="objContact.Awarded_PhD__c == 'No'">
+                                                <!-- <label class="font-if color-theme">Upload document as proof of thesis submission </label>
+                                                <div class="col-md-9" style="padding-left: 0px !important; padding-right: 0px !important">
+                                                <div class="input-group input-group-lg">
+                                                <input type="file" accept=".pdf" ng-disabled="proposalStage" id="{{doc.userDocument.Name}}" class="form-control "/>
+                                                    <span class="input-group-btn" ng-hide="proposalStage">
+                                                    <button class="btn btn-success" ng-click="uploadFile(doc.userDocument.Name,doc.userDocument.Id,'')" type="button">Upload</button>
+                                                    </span>
+                                                </div>
+                                        </div>
+
+                                        <!- <div class="col-md-3 mt-4" ng-show="doc.userDocument.Status__c=='Uploaded'">
+                                            <a class="blue-btn float-end mt-4 py-3"  ng-click="filePreviewHandler(doc)">View</a>
+                                        </div> ->
+                                        <div class="col-md-3" ng-show="doc.userDocument.Status__c=='Uploaded'">
+                                            <a class="blue-btn float-end py-3" ng-click="filePreviewHandler(doc)">View</a>
+                                        </div> -->
+
+                                    </div>
+                                </div>
+                                <div class="row mt-3 mx-5">
+                                    <!-- <div class="col-md-4">
+                                        <label>Upload document as proof of thesis submission</label>
+                                        <input type="file" ng-disabled="proposalStage" class="form-control" />
+                                    </div> -->
+                                    <div class="col-md-12 mb-4" ng-if="!proposalStage">
+                                       
+                                        <button id="btnIFSave" class="blue-btn mt-4 float-end" type="button" ng-click="clickBasicDetails()">
+                                            <i class="fa-solid fa-check me-2"></i>Save and Next</button>
+                                         <button class="blue-btn mt-4 float-end me-2" type="button" ng-click="redirectToApplicantPortal()">
+                                            <i class="fa-solid fa-check me-2"></i>Back</button>
+                                            <!-- <button class="blue-bordered-btn float-end mt-4 me-2" ng-click="clickBack()" type="button">
+                                                <i class="fa-solid fa-arrow-left me-2"></i>Previous</button> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div ng-show="personalInfo">
+                                <div class="row mt-3">
+                                    <div class="col-md-12">
+                                        <h4 class="heading-border-2">Personal information</h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="txtName">Name</label>
+                                        <input type="text" class="form-control" id="txtName" placeholder="Name" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="txtGender">Gender</label>
+                                        <select type="select" class="form-control" id="txtGender" aria-label="Gender">
+                                            <option selected="true" value="0">select</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Upload Photo</label>
+                                        <input type="file" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-4">
+                                        <label for="txtDOB">Date of Birth</label>
+                                        <input type="text" class="form-control" id="txtDOB" placeholder="Date of birth" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Nationality</label>
+                                        <input type="text" class="form-control" id="txtNationality" placeholder="Nationality" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-4">
+                                        <label>Passport No.</label>
+                                        <input type="text" class="form-control" id="txtPassport" placeholder="Passport No." />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Expiry Date</label>
+                                        <input type="text" class="form-control" id="txtPassport" placeholder="Expiry date" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-4">
+                                        <h4 class="heading-border-1">Contact Address</h4>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input type="checkbox" id="chkPerAdd" style="height:20px;width:20px;" />
+                                        <label>Permanent address same as contact address</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Line 1</label>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Line 2</label>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>District</label>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-4">
+                                        <label>State</label>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Country</label>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Pin Code</label>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-12">
+                                        <h4 class="heading-border-1">Permanent Address</h4>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Line 1</label>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Line 2</label>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>District</label>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-4">
+                                        <label>State</label>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Country</label>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Pin Code</label>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 m-x-3" style="line-height:2px;border-bottom: solid 1px #f5f5f5;">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label>Email</label>
+                                        <input class="form-control" type="text" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Mobile No.</label>
+                                        <input class="form-control" type="text" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Alternate Contact Number</label>
+                                        <input class="form-control" type="text" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-12">
+                                        <button type="button" class="blue-btn float-end ms-3" ng-click="clickPersonalInfo()">
+                                            <i class="fa-solid fa-check me-2"></i>Next and Save</button>
+                                        <button type="button" ng-click="clickPreviousPersonalInfo()" class="blue-bordered-btn float-end">
+                                            <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-show="eduQualification">
+                                <div class="row mt-3">
+                                    <div class="col-md-12">
+                                        <h4 class="heading-border-2">Education Qualification</h4>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Degree</th>
+                                                    <th>Year of Completion</th>
+                                                    <th>Board/Institute</th>
+                                                    <th>Percentage/CGPA</th>
+                                                    <th>Subject(s)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="col-md-12">
+                                                <div class="heading-border-0">Master Thesis</div>
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <label>Title</label>
+                                                <input type="text" class="form-control" />
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <label>Institute/Organisation</label>
+                                                <input type="text" class="form-control" />
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <label>Start Date</label>
+                                                <input type="text" class="form-control" />
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <label>End Date</label>
+                                                <input type="text" class="form-control" />
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <label>Subject/Area of specialisation
+                                                </label>
+                                                <input type="text" class="form-control" />
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label>Thesis Supervisor(s)</label>
+                                                <input type="text" class="form-control" />
+                                            </div>
+                                            <div class="col-md-12 my-3">
+                                                <label>Nature of Thesis Work</label>
+                                                <select class="form-control">
+                                                    <option selected="true" value="0">select</option>
+                                                    <option value="Experimental">Experimental</option>
+                                                    <option value="Theoretical">Theoretical/Simulation</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="col-md-12">
+                                                <div class="heading-border-0">Phd</div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label>Thesis title/Topic</label>
+                                                <input type="text" class="form-control" />
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <label>Institute/Organisation</label>
+                                                <input type="text" class="form-control" />
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <label>Start Date</label>
+                                                <input type="text" class="form-control" />
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <label>End Date</label>
+                                                <input type="text" class="form-control" />
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <label>Subject/Area of specialisation
+                                                </label>
+                                                <input type="text" class="form-control" />
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <label>Thesis Supervisor(s)</label>
+                                                <input type="text" class="form-control" />
+                                            </div>
+                                            <div class="col-md-12 my-3">
+                                                <label>Nature of Thesis Work</label>
+                                                <select class="form-control">
+                                                    <option selected="true" value="0">select</option>
+                                                    <option value="Experimental">Experimental</option>
+                                                    <option value="Theoretical">Theoretical/Simulation</option>
+                                                    <option value="Both">Both</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mt-3">
+                                        <button class="blue-btn float-end" ng-click="clickEduQualification()" type="button">
+                                            <i class="fa-solid fa-check me-2"></i>Submit and Next</button>
+                                        <button class="blue-bordered-btn float-end me-2" ng-click="clickPreviousEduQualification()" type="button">
+                                            <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-show="achievements">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h4 class="heading-border-2">Achievements</h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <label>Awards and Honours</label>
+                                        <textarea rows="3" cols="10" class="form-control"></textarea>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <i class="fa-solid fa-circle-plus fa-2x text-primary mt-5"></i>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-10">
+                                        <label>List of Publications</label>
+                                        <textarea rows="3" cols="10" class="form-control"></textarea>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <i class="fa-solid fa-circle-plus fa-2x text-primary mt-5"></i>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-10">
+                                        <label>List of Patents filed/granted</label>
+                                        <textarea rows="3" cols="10" class="form-control"></textarea>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <i class="fa-solid fa-circle-plus fa-2x text-primary mt-5"></i>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-10">
+                                        <label>Book Chapters/Monographs</label>
+                                        <textarea rows="3" cols="10" class="form-control"></textarea>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <i class="fa-solid fa-circle-plus fa-2x text-primary mt-5"></i>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-10">
+                                        <label>Any other notable achievements</label>
+                                        <textarea rows="3" cols="10" class="form-control"></textarea>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <i class="fa-solid fa-circle-plus fa-2x text-primary mt-5"></i>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mt-3">
+                                    <button class="blue-btn float-end" ng-click="clickAchievements()" type="button">
+                                        <i class="fa-solid fa-check me-2"></i>Submit and Next</button>
+                                    <button class="blue-bordered-btn float-end me-2" ng-click="clickPreviousAchievements()" type="button">
+                                        <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+                                </div>
+                            </div>
+                            <div ng-show="employmentDetails">
+                                <div class="row mt-3">
+                                    <div class="col-md-12">
+                                        <h4 class="heading-border-2">Employment Details</h4>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-12">
+                                        <label>Work Experience including current position</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>From</th>
+                                                    <th>To</th>
+                                                    <th>Position</th>
+                                                    <th>Organisation</th>
+                                                    <th>Nature of Job</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <label> Previous industrial internship, if any</label>
+                                        <textarea cols="10" rows="3" class="form-control" maxlength="200"></textarea>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Are you availing any fellowship currently?</label>
+                                        <select class="form-control">
+                                            <option selected="true" value="0">select</option>
+                                            <option value="yes">Yes</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <label>If yes, give details</label>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Whether the applicant, host/parent Mentor
+                                            <br/> were associated with IGSTC programmes/funding
+                                            <br/> in the past</label>
+                                        <select class="form-control">
+                                            <option selected="true" value="0">select</option>
+                                            <option value="yes">Yes</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <label>If yes, give details</label>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Abstract of ongoing work (Max 500 characters)</label>
+                                        <textarea class="form-control" cols="10" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-12">
+                                        <button class="blue-btn float-end" ng-click="clickEmploymentDetails()" type="button">
+                                            <i class="fa-solid fa-check me-2"></i>Submit and Next</button>
+                                        <button class="blue-bordered-btn float-end me-2" ng-click="clickPreviousEmploymentDetails()" type="button">
+                                            <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-show="fellowshipDetails">
+                                <div class="row mt-3">
+                                    <div class="col-md-12">
+                                        <h4 class="heading-border-2">Fellowship Details</h4>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <label>Proposed area of work</label>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Title of the proposed work/project</label>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <label>Host industry/organisation details</label>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Parent organisation details</label>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <label>Duration of the fellowship (in months)</label>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Brief Statement of Purpose (Max 400 characters)</label>
+                                        <textarea class="form-control" cols="10" rows="3" maxlength="400"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <label>Objectives of the work (Max 500 characters)</label>
+                                        <textarea class="form-control" cols="10" rows="3" maxlength="500"></textarea>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Work plan (Max 2000 characters)</label>
+                                        <textarea class="form-control" cols="10" rows="3" maxlength="2000"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <label>Expected outcomes (Max 400 characters)</label>
+                                        <textarea class="form-control" cols="10" rows="3" maxlength="500"></textarea>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Attach any referred Image / Diagram / Chart /
+                                            <br/>Graph / Illustration (Max 1) for Work plan</label>
+                                        <input type="file" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-12">
+                                        <label>Name</label>
+                                        <input type="text" class="form-control" placeholder="Name" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <label>Line 1</label>
+                                        <input class="form-control" type="text" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Line 2</label>
+                                        <input class="form-control" type="text" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <label>District</label>
+                                        <input class="form-control" type="text" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>State</label>
+                                        <input class="form-control" type="text" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <label>Country</label>
+                                        <select class="form-control">
+                                            <option value="0" selected="true">select</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Pin Code</label>
+                                        <input class="form-control" type="text" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <label>Name of Mentor</label>
+                                        <input class="form-control" type="text" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Designation/Position of the Mentor</label>
+                                        <input class="form-control" type="text" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <label>Brief portfolio (Max 250 characters)</label>
+                                        <textarea rows="3" cols="10" class="form-control" maxlength="250"></textarea>
+                                    </div>
+                                    <div class="col-md-6 mt-5">
+                                        <button class="blue-btn float-end" ng-click="clickFellowshipDetails()" type="button">
+                                            <i class="fa-solid fa-check me-2"></i>Submit</button>
+                                        <button class="blue-bordered-btn float-end me-2" ng-click="clickPreviousFellowshipDetails()" type="button">
+                                            <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+                                    </div>
+                                </div>
+                            </div> -->
+                        <!-- </div> -->
+                    <!-- </div>
+                </div> -->
+                </div>
+                <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+                <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+                <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+                <script>
+                    $(function () {
+                        $('#datepicker').datepicker();
+                    });
+                </script> -->
+            </body>
+        </div>
+    </htm>
+</apex:page>

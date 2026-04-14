@@ -1,0 +1,56 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+    <html>
+        <div ng-controller="privacy_ctrl">
+            <head>
+                <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+            </head>
+
+            <body>
+            <div class="container px-4">
+                <div class="col-md-10 offset-1">
+                <div class="card h-100 m-5">
+                    <div class="card-header d-flex justify-content-center">
+                        <h4 class="p-3">
+                                <b>Privacy Policy Acceptance</b>
+                        </h4>
+                    </div>
+                    <div class="row pt-5 d-flex justify-content-center">
+                        <div class="col-md-10">
+                            <div class="alert alert-primary" role="alert">
+                                <i class="fa-solid fa-circle-info me-2"></i>Before Submission, please make sure that all partners have filled all their details.<br/>
+                                <i class="fa-solid fa-circle-info me-2"></i>Once submitted, No partner would be able to edit any information.
+                              </div>
+                        </div>
+                    </div>
+                    <div class="row pt-2 ps-5">
+                        <div class="col-md-12 d-flex justify-content-center">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" ng-model="proposalDetails.Privacy_Policy_Accepted__c" ng-disabled="disable" id="flexCheckDefault"/>
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Privacy Policy Accepted?
+                            </label>
+                            <span class="required-asterisk" style="color:red;">*</span>
+                          </div>
+                        </div>
+                        <!-- <input type="checkbox" class="form-check-input" ng-model="proposalDetails.Privacy_Policy_Accepted__c" ng-disabled="disable" /> -->
+                    </div>
+                    <div class="row ps-5">
+                        <div class="col-md-12 d-flex justify-content-center my-4">
+                        <a href="#/PrivacyPolicyIGSTC" target="_blank">Click to View Privacy Policy</a>
+                    </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 d-flex justify-content-center my-4">
+                            <button type="button" class="btn btn-success float-end me-4"  ng-click="redirectPageURL('WorkPackages')">Back</button>
+                            <button type="button" class="btn btn-primary me-3" ng-click="saveDetails()">Save As Draft</button>
+                            <button type="button" class="btn btn-success float-end me-4"  ng-click="saveFinal()">Submit</button>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+                <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+            </body>
+        </div>
+    </html>
+</apex:page>

@@ -1,0 +1,316 @@
+<!-- /**
+ * @author [Dinesh B]
+ * @email dinesh.b@utilitarianLab.com
+ * @create date 2022-07-28 13:05:05
+ * @modify date 2022-07-28 13:05:05
+ * @desc [description]
+ */ -->
+
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="ReviewLogInFormController">
+    <html>
+
+    <head>
+        <!-- <c:Libraries ></c:Libraries> -->
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" rel="stylesheet" />
+        <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+        <apex:stylesheet value="{!$Resource.ReviewerPortalCss}" />
+        <apex:stylesheet value="{!$Resource.SmallCss}" />
+        <apex:stylesheet value="{!$Resource.MediumCss}" />
+        <apex:stylesheet value="{!$Resource.LargCss}" />
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-sanitize.js"></script>
+        <style>
+            body {
+                background: white;
+            }
+
+            .btn-login {
+                font-size: 0.9rem;
+                letter-spacing: 0.05rem;
+                padding: 0.75rem 1rem;
+            }
+
+            .loadingBackground {
+                position: fixed;
+                height: 100%;
+                width: 100%;
+                background: #F6F6F6;
+                z-index: 11111;
+                opacity: 0.7;
+                top: 0px;
+                left: 0;
+                bottom: 0;
+                right: 0;
+            }
+
+            .loading {
+                top: 50%;
+                left: 50%;
+                margin: -50px 0px 0px -50px;
+                z-index: 111111;
+                position: fixed;
+            }
+        </style>
+        <script>
+            var siteUrl = "{!$Label.ApplicantPortalSiteURL}";
+            var isRegistration = '{!$CurrentPage.parameters.register}';
+            debugger;
+            var pid = '{!$CurrentPage.parameters.pid}';
+            debugger;
+            var app = angular.module('myApp', []);
+            app.controller('myController', function ($scope) {
+                $scope.userName;
+                $scope.showSpinner = false;
+                debugger;
+                $scope.pid = pid;
+                $scope.contactDetails = { Name: "", Email__c: "" };
+                if (isRegistration == "true") {
+                    $scope.registrationPage = true;
+                } else {
+                    $scope.registrationPage = false;
+                }
+
+                debugger;
+                $scope.loginReviewer = function () {
+                    
+                    $scope.userPassword;
+                    $scope.showSpinner = true;
+                    $scope.loginPage = false;
+                    debugger;
+                    ReviewLogInFormController.loginReviewer($scope.userName, $scope.userPassword, function (result, event) {
+                        if (event.status && result != null) {
+
+                            debugger;
+                            Swal.fire(
+                                '', 'Logged In Successfully', 'Success'
+                            )
+                            $scope.$apply();
+
+                            debugger;
+                            if($scope.pid != null || $scope.pid != undefined || $scope.pid != ""){
+                                var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/Reviewer';
+                                window.location.replace(window.location.origin +sitePrefix+"/ReviewerPortal?id="+result+"&pid="+pid+"#/Rp_Projects");  
+                            }else{
+                                var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/Reviewer';
+                                window.location.replace(window.location.origin +sitePrefix+"/ReviewerPortal?id="+result+"#/ReviewerHome"); 
+                            }
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Opps....!',
+                                text: 'Please Enter the Correct Username & Password !'
+                            })
+                        }
+                    }, { escape: false })
+                    $scope.showSpinner = false;
+                    $scope.$apply();
+                }
+
+                $scope.showHideLoginPassword = function(controlid){
+                    debugger;
+                    var x = document.getElementById(controlid);
+                    if (x.type === "password") {
+                        x.type = "text";
+                    } else {
+                        x.type = "password";
+                    }
+                }
+                $scope.forgotpass = function (flag) {
+                    if(flag=='f'){
+                        $scope.loginPage = true;
+                    }
+                    else
+                    {
+                        $scope.loginPage = false;
+                    }
+                    // $scope.forgotpasswordLink();
+
+                }
+
+                $scope.forgotpasswordLink = function () {
+                    $scope.userName;
+                    debugger;
+                    ReviewLogInFormController.ForgetPassReviewer($scope.userName, function (result, event) {
+                        debugger;
+                        if (event.status && result != null) {
+                            Swal.fire(
+                                '',
+                                'Link has been sent to your Email Id!',
+                                'success'
+                            )
+                          //  $scope.$apply();
+                        } 
+                    })
+                }
+            });
+        </script>
+    </head>
+
+    <body ng-app="myApp" ng-controller="myController">
+        <!-- <nav class="navbar navbar-expand-lg navbar-light" style="background-color:white !important;font-size: 14px;">
+            <div class="container-fluid">
+                <a class="navbar-brand ms-5" href="#/CP_HomePage">
+                    <apex:image url="{!$Resource.Logo}" styleClass="logo" width="100%" height="100%" />
+                </a>
+            </div>
+        </nav> -->
+        <!-- <a class="nav-link" href="#/Home" ng-class="{activeColor:activeTab==0}" style="color: rgba(63,63,70,1)"></a>
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color:white !important;font-size: 14px;margin-bottom:0px !important">
+            <div class="container-fluid" style="margin-left:5%">
+                <a class="navbar-brand ms-5" href="#/CP_HomePage">
+                    <apex:image url="{!$Resource.Logo}" styleClass="logo" width="100%" height="100%" />
+                </a>
+                </div>
+        </nav> -->
+        <div class="login reviewer" ng-hide="loginPage">
+            <div class="login-left">
+                <div class="login-form">
+                    <!-- <img src="images/logo.png" alt="IGSTC"> -->
+                    <apex:image url="{!$Resource.Logo}" alt="IGSTC" styleClass="brand-logo"/>
+                    <div class="pt-4">
+                        <label class="mt-5 mb-2">Welcome to reviewer portal</label>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" ng-model="userName" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1"/>
+                        </div>
+                        <div class="mb-1 position-relative">
+                            <i class="fa fa-eye" ng-click="showHideLoginPassword('txtPassword')"></i>
+                            <input type="password" class="form-control" id="txtPassword" ng-model="userPassword" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1"/>
+                        </div>
+                        <div class="text-end mt-1 mb-3">
+                            <a href="#" ng-click="forgotpass('f')" class="link">
+                                Forgot Password?
+                            </a>
+                        </div>
+                        <button type="button" ng-click="loginReviewer()" class="w-100 btn btn-success">Login</button>
+                    </div>
+                </div>
+            </div>
+            <div class="login-bg">
+                <div>
+                    <apex:image url="{!$Resource.reviewer_login}" />
+                </div>
+                <!-- <img src="images/reviewer-login.png" alt=""> -->
+            </div>
+        </div>
+        <!-- <div class="container px-4" ng-hide="loginPage">
+            <div class="col-md-10" style="width: 100%; margin: auto; margin-top:3%;">
+                <div class="row">
+                    <div class="col-md-4">
+                        <apex:image url="{!$Resource.LoginImage3}" styleClass="img-fluid box d-flex" style="height:100% !important;" />
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row" style="margin-top: 15%; margin-left:5%; margin-bottom:-10%;">
+                            <h2 style="text-decoration-color:rgb(17, 17, 16); font-weight:bold;">Login</h2>
+                        </div>
+                        <div class="row" style="margin-top: 10%;">
+                            <h4 style="margin-bottom:-10pt; margin-left:5%;">
+                                <b style="text-align:center;margin-left:2%;font-family: -webkit-body; color:rgb(255, 117, 24)">Welcome To Reviewer Portal</b>
+                            </h4>
+                        </div>
+
+                        <div class="row" style="margin-top: 5%; margin-left:5%;">
+                            <div class="col-md-12 pt-1">
+                                <label for="floatingInputUsername" style="text: 2px solid LightBlue; margin: 0px 0px 8px;">Username</label>
+                                <input class="form-control ng-pristine ng-untouched ng-valid ng-empty" ng-model="userName" placeholder="username" style="border: 2px solid LightBlue;"
+                                    type="text" />
+                            </div>
+
+                            <div class="col-md-12 pt-3" style="margin-top: 2%;">
+                                <label for="floatingPassword" style="text: 2px solid LightBlue;margin: 0px 0px 8px;">Password</label>
+                                <input class="form-control ng-pristine ng-untouched ng-valid ng-empty" ng-model="userPassword" placeholder="password" style="border: 2px solid LightBlue;"
+                                    type="password" />
+                                    <div class="float-end">
+                                        <a href="#" style="color:DarkOrange; margin-top: 1%; font-size:15px;" ng-click="forgotpass()">Forgot password?</a>
+                                    </div>
+                            </div>
+
+                            <div class="col-md-12 pt-3">
+                                <div class="d-grid gap-2">
+                                    <button type="submit" ng-click="loginReviewer()" class="blue-btn">
+                                        <i class="fa-solid fa-lock pe-5"></i>Login</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row"></div>
+            </div>
+        </div> -->
+
+        <!-- forgotpasswordReset -->
+        <div class="login reviewer" ng-show="loginPage">
+            <div class="login-left">
+                <div class="login-form">
+                    <apex:image url="{!$Resource.Logo}" alt="IGSTC" styleClass="brand-logo"/>
+                    <div class="pt-4">
+                        <label class="mt-5 mb-2">Reset Password</label>
+                        <input type="text" class="form-control" ng-model="userName" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1"/>
+                        <div class="my-4">
+                            <a href="#" ng-click="forgotpass('b')" class="back">
+                                <i class="fas fa-arrow-left me-2"></i> Back
+                            </a>
+                        </div>
+                        <button type="button" ng-click="forgotpasswordLink()" class="w-100 btn btn-success">Reset</button>
+                    </div>
+                </div>
+            </div>
+            <div class="login-bg">
+                <apex:image url="{!$Resource.reviewer_login}"/>
+            </div>
+        </div>
+        <!-- <div class="container px-4" ng-show="loginPage">
+            <div style="width: 100%; margin: 5%;">
+                <div class="row"></div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <apex:image url="{!$Resource.LoginImage3}" styleClass="img-fluid box d-flex" style="height:100% !important;" />
+                    </div>
+
+                    <div class="col-md-9">
+
+                        <div class="row" style="margin-top: 10%;">
+                            <h2 style="margin-bottom:-10pt;">
+                                <apex:image url="{!$Resource.Logo}" styleClass="logo" width="auto;" height="auto;" />
+                                <br/><br/>
+                                <b style="text-align:center;color:rgb(255, 117, 24)">RESET PASSWORD</b>
+                            </h2>
+                        </div>
+
+                        <div class="row" style="margin-top: 5%;">
+                            <div class="col-md-6">
+                                <label for="floatingInputUsername" style="text: 2px solid LightBlue;margin: 0px 0px 8px;">Username</label>
+                                <input class="form-control ng-pristine ng-untouched ng-valid ng-empty" ng-model="userName" placeholder="username" style="border: 2px solid LightBlue;"
+                                    type="text" />
+                            </div>
+                            <div class="col-md-6"></div>
+
+
+                            <div class="col-md-7" style="margin-top: 2%;">
+                                <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" style="padding-left: 37.5%; padding-right: 37.5%;"
+                                    ng-click="forgotpasswordLink()" type="submit">Submit</button>
+                            </div>
+                            <div class="col-md-5"></div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row"></div>
+            </div>
+        </div> -->
+        <!-- forgotpasswordReset -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.2/sweetalert2.all.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+
+    </body>
+
+    </html>
+</apex:page>

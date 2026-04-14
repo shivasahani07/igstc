@@ -1,0 +1,196 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+    <html>
+        <div ng-controller="bankDetails_ctrl">
+            <head>
+                <c:Libraries ></c:Libraries>
+            <script>
+                var userId = '{!$CurrentPage.parameters.id}';
+            </script>
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+            </head>
+
+            <body>
+
+                <div class="container px-4 mt-5">
+                    <div class="row mx-4">
+                        <div class="col-md-12">
+                            <ul class="nav nav-pills nav-fill gap-2 p-1 small bg-white border rounded-5 shadow-sm" ng-show="proposalStage" id="pillNav2" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <a href="#" ng-click="redirectPageURL('BasicDetails_Page')" class="nav-link rounded-5" id="basic_tab" data-bs-toggle="tab"
+                                        type="button" role="tab" aria-selected="true">
+                                        <i class="fa fa-home i-padding"></i>Basic Details</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a href="#" ng-click="redirectPageURL('Coordinators_Page')" class="nav-link rounded-5" id="consortia_tab" data-bs-toggle="tab"
+                                        type="button" role="tab" aria-selected="false">
+                                        <i class="fa-solid fa-people-group i-padding"></i>Consortia Details</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a href="#" ng-click="redirectPageURL('Curriculum_vitae')" class="nav-link rounded-5" id="consortia_tab" data-bs-toggle="tab"
+                                        type="button" role="tab" aria-selected="false">
+                                        <i class="fa-solid fa-people-group i-padding"></i>Consortia Coordinator</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a href="#" ng-click="redirectPageURL('Proposal_Details')" class="nav-link rounded-5" id="finance_tab" data-bs-toggle="tab"
+                                        type="button" role="tab" aria-selected="false">
+                                        <i class="fa-solid fa-money-bill-trend-up i-padding"></i>Proposal Details</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a href="#" ng-click="redirectPageURL('Participants')" class="nav-link rounded-5" id="project_tab" data-bs-toggle="tab"
+                                        type="button" role="tab" aria-selected="false">
+                                        <i class="fa-solid fa-arrows-to-dot i-padding"></i>Participants</a>
+                                </li>
+                                </ul>
+
+                                <ul class="nav nav-pills nav-fill gap-2 p-1 small bg-white border rounded-5 shadow-sm" ng-show="proposalStage" id="pillNav2" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <a href="#" ng-click="redirectPageURL('BankDetailsForCoordinators')" class="nav-link active rounded-5" id="packge_tab" data-bs-toggle="tab" type="button"
+                                        role="tab" aria-selected="false">
+                                        <i class="fa-solid fa-box i-padding"></i>Bank Details</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a href="#" ng-click="redirectPageURL('Financial_Details')" class="nav-link rounded-5" id="packge_tab" data-bs-toggle="tab" type="button"
+                                        role="tab" aria-selected="false">
+                                        <i class="fa-solid fa-box i-padding"></i>Expense Details</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a href="#" ng-click="redirectPageURL('Meeting_Theme')" class="nav-link rounded-5" id="packge_tab" data-bs-toggle="tab" type="button"
+                                        role="tab" aria-selected="false">
+                                        <i class="fa-solid fa-box i-padding"></i>Meeting Details</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a href="#" ng-click="redirectPageURL('SignatureOfCoordinators')" class="nav-link rounded-5" id="packge_tab" data-bs-toggle="tab" type="button"
+                                        role="tab" aria-selected="false">
+                                        <i class="fa-solid fa-box i-padding"></i>Signature Of Coordinators</a>
+                                </li>
+                                </ul>
+                            <ul class="nav nav-pills nav-fill gap-2 p-1 small bg-white border rounded-5 shadow-sm" id="pillNav2" role="tablist" ng-hide="proposalStage">
+                                <li class="nav-item" role="presentation">
+                                    <span class="nav-link rounded-5" id="basic_tab" >
+                                        <i class="fa fa-home i-padding"></i>Basic Details</span>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <span class="nav-link rounded-5" id="basic_tab" >
+                                        <i class="fa-solid fa-people-group i-padding"></i>Consortia Details</span>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <span class="nav-link rounded-5" id="basic_tab" >
+                                        <i class="fa-solid fa-people-group i-padding"></i>Consortia Coordinator</span>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <span class="nav-link rounded-5" id="basic_tab" >
+                                        <i class="fa-solid fa-money-bill-trend-up i-padding"></i>Proposal Details</span>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <span class="nav-link rounded-5" id="basic_tab" >
+                                        <i class="fa-solid fa-arrows-to-dot i-padding"></i>Participants</span>
+                                </li>
+                                </ul>
+
+                                <ul class="nav nav-pills nav-fill gap-2 p-1 small bg-white border rounded-5 shadow-sm" id="pillNav2" role="tablist" ng-hide="proposalStage">
+                                <li class="nav-item" role="presentation">
+                                    <span class="nav-link active rounded-5" id="basic_tab" >
+                                        <i class="fa-solid fa-box i-padding"></i>Bank Details</span>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <span class="nav-link rounded-5" id="basic_tab" >
+                                        <i class="fa-solid fa-box i-padding"></i>Expense Details</span>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <span class="nav-link rounded-5" id="basic_tab" >
+                                        <i class="fa-solid fa-box i-padding"></i>Meeting Details</span>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <span class="nav-link rounded-5" id="basic_tab" >
+                                        <i class="fa-solid fa-box i-padding"></i>Signature Of Coordinators</span>
+                                </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                <div class="container my-5">
+                <h3 class="heading-border-2">Bank Details</h3>
+                <div class="card mb-3" ng-cloak="true" ng-repeat="acc in applicantDetails">
+                    <div class="accordion" id="accordionPanelsStayOpenExample{{$index}}">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="panelsStayOpen-heading{{$index}}">                                
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpencollapse{{$index}}"
+                                    aria-expanded="true" aria-controls="panelsStayOpencollapse{{$index}}">
+                                    <i ng-if="acc.Country_Type__c=='India'"><apex:image url="{!$Resource.indiaFlag}" styleClass="img-fluid" style="max-width:30px;" /></i>
+                                    <i ng-if="acc.Country_Type__c=='Germany'"><apex:image url="{!$Resource.germanyFlag}" styleClass="img-fluid" style="max-width:30px;" /></i>
+                                    <h4 class="ms-3">{{acc.Name}}</h4>
+                                </button>
+                            </h2>
+
+                            <div id="panelsStayOpencollapse{{$index}}" ng-clock="true" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-heading{{$index}}">
+                                <div class="accordion-body">
+                                    <div id="basicDetailsId{{$index}}" ng-repeat="bank in acc.Bank_Details__r">
+                                                <div class="row mt-3">
+                                                    <div class="col-md-6">
+                                                        <label>Bank Name<span class="ms-2 text-danger">*</span></label>
+                                                        <input type="text" ng-model="bank.Bank_Name__c" class="form-control" ng-disabled="proposalStage" />
+                                                    </div>
+                                            
+                                                    <div class="col-md-6">
+                                                        <label>Bank Type<span class="ms-2 text-danger">*</span></label>
+                                                        <select class="form-control" aria-label="Default select example" ng-model="bank.Bank_Type__c" ng-disabled="proposalStage" >
+                                                            <option ng-repeat="staff in bankType">{{staff}}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mt-3">
+                                                    <div class="col-md-6">
+                                                        <label>Bank Account Number<span class="ms-2 text-danger">*</span></label>
+                                                        <input type="text" ng-model="bank.Bank_Account_Number__c" class="form-control" ng-disabled="proposalStage" />
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label>Bank Branch Name<span class="ms-2 text-danger">*</span></label>
+                                                        <input type="text" ng-model="bank.Bank_Branch_Name__c" class="form-control" ng-disabled="proposalStage" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mt-3">
+                                                    <div class="col-md-6">
+                                                        <label>Bank HSN Code</label>
+                                                        <input type="text" ng-model="bank.Bank_HSN_Code__c" class="form-control" ng-disabled="proposalStage" />
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label>Bank IFSC Code</label>
+                                                        <input type="text" ng-model="bank.Bank_IFSC_Code__c" class="form-control" ng-disabled="proposalStage" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mt-3">
+                                                    <div class="col-md-6">
+                                                        <label>Bank SWIFT Code</label>
+                                                        <input type="text" ng-model="bank.Bank_SWIFT_Code__c" class="form-control" ng-disabled="proposalStage" />
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label>Bank Address<span class="ms-2 text-danger">*</span></label>
+                                                        <input type="text" ng-model="bank.Bank_Address__c" class="form-control" ng-disabled="proposalStage" />
+                                                 </div>
+                                         </div>
+                                         <div class="row mt-3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="card-footer" ng-if="!proposalStage">
+                        <button type="button" class="blue-btn float-end me-4" ng-click="submitBankDetails()">Save and Next
+                            <i class="fa-solid fa-arrow-right ms-3"></i>
+                        </button>
+                        <button type="button" class="blue-bordered-btn float-end me-4" ng-click="redirectPageURL('Participants')">
+                            <i class="fa-solid fa-arrow-left i-padding"></i>Previous</button> &nbsp;
+                    </div>
+                </div>
+            </body>
+        </div>
+    </html>
+</apex:page>

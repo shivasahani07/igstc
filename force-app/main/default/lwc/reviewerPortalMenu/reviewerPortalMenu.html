@@ -1,0 +1,88 @@
+<template>
+ <lightning-layout>
+        <template if:true={dashboardOpen}>
+        <lightning-layout-item style="width: 15%;">
+            <div class="slds-col">
+                <div class="slds-box menu">
+                    <img style="max-height: auto" alt="Logo" src={igstcLogo} />
+                    <br>
+                    <br>
+                    <div class="Hamburger">
+                        <i class="fa-solid fa-house"></i>
+                        <lightning-button-icon icon-name="utility:assignment" variant="bare"
+                            alternative-text="Close window" size="large" onclick={hamburgerClose}>
+                         </lightning-button-icon>
+                         <br>  
+                                 <br>
+                                                <div class="slds-col" style="cursor: pointer;">
+                                                    <h1 if:false={isopenDashBoard} onclick={openDashBoard}>Dashboard</h1>
+                                                    <h2 if:true={isopenDashBoard}>Dashboard</h2>
+                                                </div>
+                          <br>
+                                        <div class="slds-col" style="cursor: pointer;">
+                                            <h1 if:false={isallAppliactions} onclick={allAppliactions}>Applications</h1>
+                                            <h2 if:true={isallAppliactions}>Applications</h2>
+                                        </div>
+                            <br>
+                        <div class="slds-col" style="cursor: pointer;">
+                            <h1 if:false={isAllocated} onclick={allocated}>Allocation Engine</h1>
+                            <h2 if:true={isAllocated}>Allocation Engine</h2>
+                        </div>
+                        <br>
+                         <div class="slds-col" style="cursor: pointer;">
+                            <h1 if:false={isReviwer} onclick={reviewerData}>Reviewer Details</h1>
+                            <h2 if:true={isReviwer}>Reviewer Details</h2>
+                        </div>
+                        <br>
+                         <div class="slds-col" style="cursor: pointer;">
+                            <h1 if:false={isReviwerReport} onclick={reviewerDataReport}>Reviewer Report</h1>
+                            <h2 if:true={isReviwerReport}>Reviewer Report</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </lightning-layout-item>
+        </template>
+        <template if:false={dashboardOpen}>
+             <div class="slds-col">
+                <div class="slds-box menuclosed">
+                      <lightning-button-icon icon-name="utility:home" variant="bare"
+                          style="zoom: 200%" icon-class="slds-m-around_medium" onclick={openDashboardBydefault}>
+                        Dashboard </lightning-button-icon>
+                              <br>
+
+                        <lightning-button-icon icon-name="utility:file" variant="bare"
+                          style="zoom: 200%" icon-class="slds-m-around_medium" onclick={openApplicationdefault}>
+                        </lightning-button-icon>
+                                  <br>
+                        
+                         <lightning-button-icon icon-name="utility:settings" variant="bare"
+                           style="zoom: 200%" icon-class="slds-m-around_medium" onclick={openAlocationdefault}>
+                        </lightning-button-icon>
+                </div>
+             </div>
+
+        </template>
+        <lightning-layout-item style="width: 85%;">
+                            <template if:false={allApplications}>
+                                    <c-reviewer-portal></c-reviewer-portal>
+                            </template>
+
+                                            <template if:true={allApplications1}>
+                                                <c-reviewer-portal-all-applications></c-reviewer-portal-all-applications>
+                                            </template>
+
+                            <template if:true={isAllocated}>
+                                <c-reviwer-portal-bulk></c-reviwer-portal-bulk>
+                            </template>
+                            <template if:true={isReviwer}>
+                                <c-reviwer-data></c-reviwer-data>
+                            </template>
+                            <!--
+                            <template if:true={isReviwerReport}>
+                                <iframe id="myIframe" src="/lightning/r/Report/00OIp000000SMdeMAG/view?queryScope=userFolders?isdtp=mn" style="width:100%;height:80vh;border: 5px;border-radius: 10px;" scrolling="true"  height="1588px"  width="100%"></iframe>                                                        
+                            </template>
+                            -->
+        </lightning-layout-item>
+    </lightning-layout>
+</template>

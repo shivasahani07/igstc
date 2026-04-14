@@ -1,0 +1,21 @@
+.pagenum{
+    margin:5px;
+    background-color: white;
+    color: #207454;
+    border: 1px solid #207454;
+    height: 10%;
+    border-radius: 4px;
+}
+.prevnext{
+    color: #207454;
+    border: none;
+    background-color:transparent;
+}
+.currentPage {
+    padding: 0.15rem 0.75rem;
+    margin: 0 0.5rem;
+    color: white;
+    background-color: #207454;
+    border: none;
+    border-radius: 4px;
+}

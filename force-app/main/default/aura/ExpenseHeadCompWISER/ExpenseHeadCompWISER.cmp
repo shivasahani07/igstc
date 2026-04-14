@@ -1,0 +1,132 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global"
+                controller="ExpenseHeadCompWISERController">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="expenseHeads" type="List" />
+
+    <div style="overflow-x:auto;">
+        <table class="slds-table slds-table--bordered " >
+            <thead>  
+                <tr class="slds-text-title--caps" style="font-size: 14px;">
+                    <th scope="col" style="background-color: lightsteelblue;">
+                        <div class="slds-truncate" title="Subject"><b>Head</b></div>
+                    </th>
+                    <th scope="col" style="background-color: lightsteelblue;">
+                        <div class="slds-truncate" title="Subject"><b>Description</b></div>
+                    </th>
+                    <th scope="col" style="background-color: lightsteelblue;">
+                        <div class="slds-truncate" title="Subject"><b>Currency Type</b></div>
+                    </th>
+                    <th scope="col" style="background-color: lightsteelblue;">
+                        <div class="slds-truncate" title="Subject"><b>Approved Head</b></div>
+                    </th>
+                    <th scope="col" style="background-color: lightsteelblue;">
+                        <div class="slds-truncate" title="Comments">year-1 Requested Amount</div>
+                    </th>
+                    <th scope="col" style="background-color: lightsteelblue;">
+                        <div class="slds-truncate" title="Comments">year-1 Actual Spent</div>
+                    </th>
+                    <th scope="col" style="background-color: lightsteelblue;">
+                        <div class="slds-truncate" title="Comments">year-1 Approved Amount</div>
+                    </th>
+                    <th scope="col" style="background-color: lightsteelblue;">
+                        <div class="slds-truncate" title="Comments">year-2 Requested Amount</div>
+                    </th>
+                    <th scope="col" style="background-color: lightsteelblue;">
+                        <div class="slds-truncate" title="Comments">year-2 Actual Spent</div>
+                    </th>
+                    <th scope="col" style="background-color: lightsteelblue;">
+                        <div class="slds-truncate" title="Comments">year-2 Approved Amount</div>
+                    </th>
+                    <th scope="col" style="background-color: lightsteelblue;">
+                        <div class="slds-truncate" title="Comments">year-3 Requested Amount</div>
+                    </th>
+                    <th scope="col" style="background-color: lightsteelblue;">
+                        <div class="slds-truncate" title="Comments">year-3 Actual Spent</div>
+                    </th>
+                    <th scope="col" style="background-color: lightsteelblue;">
+                        <div class="slds-truncate" title="Comments">year-3 Approved Amount</div>
+                    </th>
+                </tr>
+            </thead>
+            
+            <tbody>
+                <aura:iteration items="{!v.expenseHeads}" var="expense">
+                    <tr>
+                        <th style="background-color: bisque; font-size: 18px;">
+                            <div class="slds-truncate"><h3><b>{!expense.Name}</b></h3></div>
+                        </th>
+                        <td style="background-color: lightyellow; font-size: 17px;">
+                            <div class="slds-truncate" style="text-align: center;">
+                                {!expense.Description__c}
+                            </div>
+                        </td>
+                        <td style="background-color: lightyellow; font-size: 17px;">
+                            <div class="slds-truncate" style="text-align: center;">
+                                {!expense.Currency_Type_INR_EURO__c}
+                            </div>
+                        </td>
+                        <td style="background-color: honeydew; font-size: 17px;">
+                            <div class="slds-truncate" style="text-align: center;">
+                                <lightning:input name="approvedhead1" aura:id="approvedhead1" value="{!expense.Approved_Head__c}"/>
+                            </div>
+                        </td>
+                        <td style="background-color: lightyellow; font-size: 17px;">
+                            <div class="slds-truncate" style="text-align: center;">
+                                {!expense.Total_Year_1_ELI__c}
+                            </div>
+                        </td>
+                        <td style="background-color: lightyellow; font-size: 17px;">
+                            <div class="slds-truncate" style="text-align: center;">
+                                {!expense.Year_1_Actual_Spent__c}
+                            </div>
+                        </td>
+                        <td style="background-color: honeydew; font-size: 17px;">
+                            <div class="slds-truncate" style="text-align: center;">
+                                <lightning:input name="year1" aura:id="year1" value="{!expense.Year_1_Approved_Amount__c}"/>
+                            </div>
+                        </td>
+                        <td style="background-color: lightyellow; font-size: 17px;">
+                            <div class="slds-truncate" style="text-align: center;">
+                                {!expense.Total_Year_2_ELI__c}
+                            </div>
+                        </td>
+                        <td style="background-color: lightyellow; font-size: 17px;">
+                            <div class="slds-truncate" style="text-align: center;">
+                                {!expense.Year_2_Actual_Spent__c}
+                            </div>
+                        </td>
+                        <td style="background-color: honeydew; font-size: 17px;">
+                            <div class="slds-truncate" style="text-align: center;">
+                                <lightning:input name="year2" aura:id="year2" value="{!expense.Year_2_Approved_Amount__c}"/>
+                            </div>
+                        </td>
+                        <td style="background-color: lightyellow; font-size: 17px;">
+                            <div class="slds-truncate" style="text-align: center;">
+                                {!expense.Total_Year_3_ELI__c}
+                            </div>
+                        </td>
+                        <td style="background-color: lightyellow; font-size: 17px;">
+                            <div class="slds-truncate" style="text-align: center;">
+                                {!expense.Year_3_Actual_Spent__c}
+                            </div>
+                        </td>
+                        <td style="background-color: honeydew; font-size: 17px;">
+                            <div class="slds-truncate" style="text-align: center;">
+                                <lightning:input name="year3" aura:id="year3" value="{!expense.Year_3_Approved_Amount__c}"/>
+                            </div>
+                        </td>
+                        <th>
+                            
+                        </th>
+                    </tr>
+                </aura:iteration>
+            </tbody>
+        </table>
+    </div>
+    
+    	<div>
+            <br/>
+            <lightning:button label="Submit" class="slds-align_absolute-center" onclick="{!c.saveExpenseDetails }"  />
+            <lightning:spinner aura:id="mySpinner" alternativeText="Processing.." title="Processing.." variant="brand" size="large" class="slds-hide"/>
+        </div>
+</aura:component>

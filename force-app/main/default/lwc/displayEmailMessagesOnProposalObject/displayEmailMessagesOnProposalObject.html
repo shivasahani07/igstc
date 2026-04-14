@@ -1,0 +1,19 @@
+<template>
+    <lightning-card   >
+        <b><div style="padding-left:15px;color:rgb(12, 12, 12); font-size:20px">Email Messages 
+        
+            </div>
+            <br/>
+            
+        </b>
+        
+            <lightning-datatable
+                                 key-field="Id"
+                                 data={EmailMessagesListData}
+                                 columns={columns}
+                                 hide-checkbox-column 
+                                 show-row-number-column>
+            </lightning-datatable>
+    </lightning-card>
+
+</template>

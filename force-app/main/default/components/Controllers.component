@@ -1,0 +1,311 @@
+<apex:component >
+      <script> 
+      angular.module('number', [])
+    .directive('number', function () {
+        return {
+            require: 'ngModel',
+            restrict: 'A',
+            link: function (scope, element, attrs, ctrl) {
+                ctrl.$parsers.push(function (input) {
+                    if (input == undefined) return ''
+                    var inputNumber = input.toString().replace(/[^0-9]/g, '');
+                    if (inputNumber != input) {
+                        ctrl.$setViewValue(inputNumber);
+                        ctrl.$render();
+                    }
+                    return inputNumber;
+                });
+            }
+        };
+});
+    
+  //   app.directive('wrapIntlTelInput', function ($timeout) {
+  // return {
+  //   restrict: 'A',
+  //   require: '^ngModel',
+  //   link: link
+  // };
+
+  ////////////////////////////////////////////////////////////
+
+//   function link (scope, elem, attrs, ctrl) {
+//     hookFieldIntoIntlTelInputJqueryPlugin();
+//     hookFieldIntoJqueryChangeEvent();
+
+//     ctrl.$parsers.push(validateFieldAndFormatModelValue);
+
+//     elem.on('blur keyup change', applyRenderWhenChange);
+//     elem.on('$destroy', function () {
+//       elem.off('blur keyup change');
+//     });
+
+//     $timeout(applyMaskingWhenInitWithPresetPhoneNumber);
+
+//     ////////////
+
+//     function hookFieldIntoIntlTelInputJqueryPlugin () {
+//       elem.intlTelInput({
+//         autoFormat: false,
+//         autoHideDialCode: true,
+//         autoPlaceholder: false,
+//         defaultCountry: 'us',
+//         nationalMode: true,
+//         numberType: '',
+//         preferredCountries: ['us', 'ca', 'gb', 'au'],
+//         responsiveDropdown: false,
+//         utilsScript: ''
+//       });
+//     }
+
+//     function hookFieldIntoJqueryChangeEvent () {
+//       elem.change(reformatPhoneNumberWithCountryCode);
+//     }
+
+//     function reformatPhoneNumberWithCountryCode () {
+//       ctrl.$$parseAndValidate();
+//     }
+
+//     function validateFieldAndFormatModelValue (value) {
+//       var parsedValue = elem.intlTelInput('getNumber') || value;
+//       var formattedModelValue = removeInvalidInput(parsedValue);
+//       ctrl.$setValidity('invalidIntlTel', elem.intlTelInput('isValidNumber'));
+//       return formattedModelValue;
+
+//       ////////////
+      
+//       function removeInvalidInput (input) {
+//         return input ? input.replace(/(?!^\+?)[^0-9]/g, '') : '';
+//       }
+//     }
+
+//     function applyMaskingWhenInitWithPresetPhoneNumber () {
+//       if (elem.val()) {
+//         elem.intlTelInput('setNumber', elem.val());
+//         applyRenderWhenChange();
+//       }
+//     }
+
+//     function applyRenderWhenChange () {
+//       scope.$apply(function () {
+//         return ctrl.$setViewValue(elem.val());
+//       });
+//     }
+//   }
+// });
+
+angular.module('decimal', [])
+    .directive('decimal', function () {
+        return {
+            require: 'ngModel',
+            restrict: 'A',
+            link: function (scope, element, attrs, ctrl) {
+                ctrl.$parsers.push(function (input) {
+                    if (input == undefined) return ''
+                    var inputNumber = input.toString().replace(/[^0-9/.]/g, '');
+                    if (inputNumber != input) {
+                        ctrl.$setViewValue(inputNumber);
+                        ctrl.$render();
+                    }
+                    return inputNumber;
+                });
+            }
+        };
+});
+angular.module('specialChar', [])
+.directive('specialChar', function() {
+    return {
+        require: 'ngModel',
+        restrict: 'A',        
+        link: function (scope, element, attrs, ctrl) {
+                ctrl.$parsers.push(function (input) {
+                    if (input == undefined) return ''
+                    var inputNumber = input.toString().replace(/[^0-9/.]/g, '');
+                    if (inputNumber != input) {
+                        ctrl.$setViewValue(inputNumber);
+                        ctrl.$render();
+                    }
+                    return inputNumber;
+                });
+            }
+    };
+});
+angular.module('text', [])
+.directive('text', function () {
+    return {
+        require: 'ngModel',
+        restrict: 'A',
+        link: function (scope, element, attrs, ctrl) {
+            ctrl.$parsers.push(function (input) {
+                if (input == undefined) return ''
+                var inputText = input.toString();
+                inputText=inputText ? inputText.replace(/&amp;/g,'&').replace(/&#39;/g,'\'').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('lt;','<').replaceAll('&gt;','>').replaceAll('gt;','>').replaceAll('&amp;','&').replaceAll('amp;','&').replaceAll('&quot;','\'') : inputText;
+                if (inputText != input) {
+                    ctrl.$setViewValue(inputText);
+                    ctrl.$render();
+                }
+                return inputText;
+            });
+        }
+    };
+});
+angular.module('textarea', [])
+    .directive('textarea', function () {
+        return {
+            require: 'ngModel',
+            restrict: 'A',
+            link: function (scope, element, attrs, ctrl) {
+                
+                ctrl.$parsers.push(function (input) {
+                    if (input == undefined) return ''
+                
+                    var inputText = input.toString().replace(/[^a-zA-Z\.\s]/g, '');
+                    if (inputText != input) {
+                    
+                        ctrl.$setViewValue(inputText);
+                        ctrl.$render();
+                    }
+                    return inputText;
+                });
+            }
+        };
+    });
+    
+    // angular.module('datepicker', []).directive('datepicker', function() {
+    //      return {
+    //         restrict: 'A',
+    //         require: 'ngModel',
+    //         compile: function() {
+    //            return {
+    //               pre: function(scope, element, attrs, ngModelCtrl) {
+    //                  var format, dateObj;
+    //                  format = (!attrs.dpFormat) ? 'd/m/yyyy' : attrs.dpFormat;
+    //                  if (!attrs.initDate && !attrs.dpFormat) {
+    //                     dateObj = new Date();
+    //                     scope[attrs.ngModel] = dateObj.getDate() + '/' + (dateObj.getMonth() + 1) + '/' + dateObj.getFullYear();
+    //                  } else if (!attrs.initDate) {
+    //                     scope[attrs.ngModel] = attrs.initDate;
+    //                  } else {
+                        
+    //                  }
+    //                  $(element).datepicker({
+    //                     format: format,
+    //                  }).on('changeDate', function(ev) {
+    //                     scope.$apply(function () {
+    //                        ngModelCtrl.$setViewValue(ev.format(format));
+    //                     });
+    //                  });
+    //               }
+    //            }
+    //         }
+    //      }
+    //   });
+
+    // File Upload and render
+
+    
+        angular.module('cp_app', ['ngRoute', 'ui.bootstrap', 'ui.bootstrap.datetimepicker', 'textAngular','ng.ckeditor','ngSanitize','number','ngMaterial', 'ngMessages', 'material.svgAssetsCache','text','textarea','decimal','specialChar']); 
+    </script>
+    <script src="{!$Resource.Home}"/> 
+    <script src="{!$Resource.Campaign}"/>
+        <script src="{!$Resource.TestJs}"/>
+        <script src="{!$Resource.Test2}"/>
+        <script src="{!$Resource.ConsortiaDetailPage}"/>
+        <script src="{!$Resource.CampaignTheme}"/> 
+        <script src="{!$Resource.ProjectDetailPage}"/>
+        <script src="{!$Resource.ProgramDetail}"/>
+        <script src="{!$Resource.ApplicantPortal}"/>       
+        <script src="{!$Resource.MyProposal}"/>
+        <script src="{!$Resource.PIDeliverables}"/>
+        <script src="{!$Resource.Network_Meeting}"/>
+        <script src="{!$Resource.PrivacyPolicyAcceptance}"/>
+        <script src="{!$Resource.Dashboard_IF}"/>
+        <script src="{!$Resource.PersonalInformationIF}"/>
+        <script src="{!$Resource.EduQualificationIF}"/>
+        <script src="{!$Resource.AchievementsIF}"/>
+        <script src="{!$Resource.EmploymentDetails}"/>
+        <script src="{!$Resource.FellowshipDetailsIF}"/>
+        <script src="{!$Resource.ExpenseDeclaration}"/>
+        <!-- <script src="{!$Resource.WiserApplicantInformation}"/> -->
+        <script src="{!$Resource.ApplicantInformationSing}"/>
+        <script src="{!$Resource.ProjectDetailsSing}"/>
+        <script src="{!$Resource.WiserApplicationPage}"/>
+         <script src="{!$Resource.HostInfoApplicationPage}"/>
+         <script src="{!$Resource.FinancialOverview_Wiser}"/>
+         <script src="{!$Resource.ProjectDetailInWiserPage}"/> 
+        <script src="{!$Resource.SignatureSealsSing}"/>
+        <script src="{!$Resource.SignatureSealsSing}"/>
+        <script src="{!$Resource.Coordinators_Page}"/>
+        <script src="{!$Resource.BasicDetails_Page}"/>
+        <script src="{!$Resource.Proposal_Details}"/>
+        <script src="{!$Resource.Participants}"/>
+        <script src="{!$Resource.BankDetailsForCoordinators}"/>
+        <script src="{!$Resource.SignatureOfCoordinators}"/>
+        <script src="{!$Resource.Financial_Details}"/>
+        <script src="{!$Resource.GrantApplication}"/>
+         <script src="{!$Resource.ConsortiumPartnerInformation}"/>   
+         <script src="{!$Resource.Curriculum_vitae}"/>
+         <script src="{!$Resource.CompanyProfile}"/>
+         <script src="{!$Resource.Financial_Overview}"/>
+         <script src="{!$Resource.ProjectDetail}"/>
+         <script src="{!$Resource.WorkPackages}">
+            </script> 
+        <script src="{!$Resource.ConsortiaAddress}"/>
+          <script src="{!$Resource.Fellowship_Details}"/>
+          <script src="{!$Resource.Pairing_Page}"/>
+          <script src="{!$Resource.Personal_Information}"/>
+          <script src="{!$Resource.Education_Qualification}"/>
+          <script src="{!$Resource.Employment_Details}"/>
+          <script src="{!$Resource.ParentOrganization}"/>
+          <script src="{!$Resource.Achievements_Pecfar}"/>
+          <script src="{!$Resource.Declaration_Pecfar}"/>
+          <script src="{!$Resource.ReviewSubmit_Pecfar}"/>
+          <script src="{!$Resource.Attachments_Pecfar}"/>
+
+             <script src="{!$Resource.ConsortiaContacts}"/>
+           <script src="{!$Resource.ApplicantPortalCSS}"/>
+           <script src="{!$Resource.PrivacyPolicyIGSTC}"/>
+           <script src="{!$Resource.ExpenseDeclaration}"/>
+           <script src="{!$Resource.SlickThemeCss}"/>
+           <script src="{!$Resource.SlickCss}"/>
+           <script src="{!$Resource.SmallCss}"/>
+           <script src="{!$Resource.MediumCss}"/>
+           <script src="{!$Resource.LargCss}"/>
+           <script src="{!$Resource.Consortia}"/>
+           <script src="{!$Resource.Meeting_Theme}"/>
+           <script src="{!$Resource.ProjectDetailIF}"/>           
+           <script src="{!$Resource.ReviewAndSubmitIF}"/>
+           <script src="{!$Resource.HostProjectDetails}"/>
+           <script src="{!$Resource.TwoReferenceWiser}"/>
+           <script src="{!$Resource.ProjectHandleGrantApplicationWiser}"/>
+           <script src="{!$Resource.BankDetails_wiser}"/>
+           <script src="{!$Resource.AttachmentsInWiser}"/>
+           <script src="{!$Resource.DeclarationInWiser}"/>
+           <script src="{!$Resource.Declaration_Wiser}"/>
+           <script src="{!$Resource.BankDetails}"/>
+           <script src="{!$Resource.IFDocUploads}"/>
+           <script src="{!$Resource.IFDocUploads2}"/>
+           <script src="{!$Resource.PECFARDocUpload}"/>
+           <script src="{!$Resource.IFSCUCUpload}"/>
+           <script src="{!$Resource.PECFARSCUCUpload}"/>
+           <script src="{!$Resource.PECFARCloserUpload}"/>   
+           <script src="{!$Resource.AttachmentsIF}"/>
+           <script src="{!$Resource.AttachmentsSing}"/>
+           <script src="{!$Resource.CV_Wiser}"/>   
+           <script src="{!$Resource.bootstrapDatepicker}" />  
+           <script src="{!$Resource.Parent_Organization}" /> 
+           <script src="{!$Resource.ExistingGrantWISER}" />
+           <script src="{!$Resource.IntimationLetter_IF}" />
+           <script src="{!$Resource.IntimationLetter_pecfar}" />
+           <script src="{!$Resource.WORKSHOPDocUpload}" />
+           <script src="{!$Resource.ConnectPlusAdditionalinfo}" />
+           <script src="{!$Resource.WORKSHOPDocUpload2}" />
+           <script src="{!$Resource.WORKSHOPDocUpload3}" />
+           <script src="{!$Resource.ConnectAllDocUpload}" />
+           <script src="{!$Resource.SingHostDetails}" />
+           <script src="{!$Resource.BudgetDetails}" />
+           <script src="{!$Resource.CallReviewerDetails}" /> 
+           <script src="{!$Resource.SingDocUpload}" />   
+           <script src="{!$Resource.WISERDocUpload}" /> 
+           <script src="{!$Resource.WiserSEUCorExpenseUpload}" />
+           <script src="{!$Resource.Declartion_2plus2}" />
+</apex:component>

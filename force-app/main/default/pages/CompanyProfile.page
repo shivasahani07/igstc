@@ -1,0 +1,134 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+    <html>
+        <div ng-controller="CompanyProfileCtrl">
+        <head>
+            <c:Libraries ></c:Libraries>
+            <script>
+            var userId = '{!$CurrentPage.parameters.id}';
+            </script>
+               
+        </head>
+        
+        <body>
+            <div class="container px-4">
+                <div class="card h-100" style= "width: 100%;">
+                    <div class="row" style="margin-top: 5%; padding-left: 5%; padding-right: 5%;">
+                        <h2><u style="text-decoration-color:Darkorange"><b>Company Profile (Industry Partner Only)</b></u></h2>
+                    </div>
+                    <div class="row" style="margin-top: 2%; padding-left: 5%; padding-right: 5%;">
+                        <div class="col-md-6">
+                            <input type="checkbox" class="form-check-input" ng-model="applicantDetails.Large_Industry__c"/>&nbsp;
+                            Large Industry&nbsp;&nbsp;&nbsp;
+                            <input type="checkbox" class="form-check-input" ng-model="applicantDetails.SME__c"/>&nbsp;
+                            SME&nbsp;&nbsp;&nbsp;
+                            <input type="checkbox" class="form-check-input" ng-model="applicantDetails.Start_Up__c"/>&nbsp;                     
+                            Start-Up
+
+                        </div>
+                        <div class="col-md-6"></div>
+                      
+                        <div class="col-md-6">
+                            <label class="control-label"><b>Name</b></label>
+                            <input type="text" class="form-control" ng-model="applicantDetails.Name" style="width:75%"/>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="control-label"><b>Year Of Establishment</b></label>
+                            <input type="text" class="form-control" ng-model="applicantDetails.Year_Of_Establishment__c" style="width:75%"/>
+                        </div>
+                        <div class="col-md-6" style="margin-top: 3%;">
+                            <label class="control-label"><b>Main Business Area</b></label>
+                            <input type="text" class="form-control" ng-model="applicantDetails.Main_Business_Area__c" style="width:75%"/>
+                        </div>
+                        <div class="col-md-6" style="margin-top: 3%;">
+                            <label class="control-label"><b>Number Of Permanent Employees</b></label>
+                            <input type="Number" class="form-control" ng-model="applicantDetails.NumberOfEmployees" style="width:75%"/>
+                        </div>
+                        <div class="col-md-6" style="margin-top: 3%;">
+                            <label class="control-label"><b>Infrastructural Facilities</b></label>
+                            <input type="text" class="form-control" ng-model="applicantDetails.Infrastructural_Facilities__c" style="width:75%"/>
+                        </div>
+                        <div class="col-md-6" style="margin-top: 3%;">
+                            <label class="control-label"><b>Domain Exoertise Available/Existing</b></label>
+                            <input type="text" class="form-control" ng-model="applicantDetails.Domain_Expertise_Available__c" style="width:75%"/>
+                        </div>
+                        <div class="col-md-6" style="margin-top: 3%;">
+                            <label class="control-label"><b>DSIR Recoginition Details</b></label>
+                            <input type="text" class="form-control" ng-model="applicantDetails.DSIR_Recoginition_Details__c" style="width:75%"/>
+                        </div>
+                        <div class="card-footer" style="background:unset;border-top:unset;margin-top:5%;margin-bottom:3%;">
+                            <div class="d-flex justify-content-center justify-content-between">
+                            <button type="button" class="btn btn-primary col-sm-3" style="background: #fff;color: black;border: 1px solid;" ng-click="redirectPageURL('Curriculum_vitae')">Previous</button> &nbsp;
+                            <button type="button" class="btn btn-primary col-sm-3" style="background: black;border: 1px solid;" ng-click="saveDetails()">Submit and Next</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            <!--div class="container mt-3">
+                <h3>
+                    Company Profile (Industry Partner Only)
+                </h3>
+                <br/>
+                <div class="row">
+                    <label class="control-label col-sm-2">Large Industry</label>
+                    <input type="checkbox" class="form-check-input" ng-model="applicantDetails.Large_Industry__c" style="width:75%"/>
+                    <br/>
+                    
+                    <label class="control-label col-sm-2">SME</label>
+                    <input type="checkbox" class="form-check-input" ng-model="applicantDetails.SME__c" style="width:75%"/>
+                    <br/>
+                    
+                    <label class="control-label col-sm-2">Start-Up</label>
+                    <input type="checkbox" class="form-check-input" ng-model="applicantDetails.Start_Up__c" style="width:75%"/>
+                    <br/>
+                </div>
+                <br/>
+                
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="width:10%;">1</th>
+                            <th style="width:30%;">Name</th>
+                            <td style="width:60%;"><input type="text" class="form-control" ng-model="applicantDetails.Name" style="width:75%"/></td>
+                        </tr>
+                        <tr>
+                            <th style="width:10%;">2</th>
+                            <th style="width:30%;">Year Of Establishment</th>
+                            <td style="width:60%;"><input type="text" class="form-control" ng-model="applicantDetails.Year_Of_Establishment__c" style="width:75%"/></td>
+                        </tr>
+                        <tr>
+                            <th style="width:10%;">3</th>
+                            <th style="width:30%;">Main Business Area</th>
+                            <td style="width:60%;"><input type="text" class="form-control" ng-model="applicantDetails.Main_Business_Area__c" style="width:75%"/></td>
+                        </tr>
+                        <tr>
+                            <th style="width:10%;">4</th>
+                            <th style="width:30%;">Number Of Permanent Employees</th>
+                            <td style="width:60%;"><input type="Number" class="form-control" ng-model="applicantDetails.NumberOfEmployees" style="width:75%"/></td>
+                        </tr>
+                        <tr>
+                            <th style="width:10%;">5</th>
+                            <th style="width:30%;">Infrastructural Facilities</th>
+                            <td style="width:60%;"><input type="text" class="form-control" ng-model="applicantDetails.Infrastructural_Facilities__c" style="width:75%"/></td>
+                        </tr>
+                        <tr>
+                            <th style="width:10%;">6</th>
+                            <th style="width:30%;">Domain Exoertise Available/Existing</th>
+                            <td style="width:60%;"><input type="text" class="form-control" ng-model="applicantDetails.Domain_Expertise_Available__c" style="width:75%"/></td>
+                        </tr>
+                        <tr>
+                            <th style="width:10%;">7</th>
+                            <th style="width:30%;">DSIR Recoginition Details</th>
+                            <td style="width:60%;"><input type="text" class="form-control" ng-model="applicantDetails.DSIR_Recoginition_Details__c" style="width:75%"/></td>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="d-flex justify-content-center"><br/>
+                    <button type="button" class="btn btn-primary" ng-click="redirectPageURL('Curriculum_vitae')">Previous</button> &nbsp;
+                    <button type="button" class="btn btn-primary" ng-click="saveDetails()">Submit and Next</button>
+                </div>
+            </div-->
+        </body>
+        </div>
+    </html>
+</apex:page>

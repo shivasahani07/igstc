@@ -1,0 +1,267 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 03-01-2023
+  @last modified by  : Dhanush Babu
+-->
+<template>
+          <div class="slds-box menu">
+              <h1> Reviewers Portal</h1>
+              <div class="block1">
+                  <lightning-layout>
+                      <lightning-layout-item padding="around-large">
+                          <div class="rectangle">
+                              <div slds-col>
+                                  <div class="circle">
+                                      <h2>{numberTpT}</h2>
+                                  </div> <br>
+                                  <div class="TPT22">2+2</div>
+                                  <lightning-button data-name="Two plus Two" variant="base" label="View All" title="Looks like a link" onclick={handleClick2p2} class="slds-m-left_x-small btn"></lightning-button>
+                              </div>
+                          </div>
+                      </lightning-layout-item>
+                      <lightning-layout-item padding="around-large">
+                          <div class="rectangle">
+                              <div slds-col>
+                                  <div class="circle">
+                                      <h2>{numberPECFAR}</h2>
+                                  </div> <br>
+                                  <div class="TPT">PECFAR</div>
+                                  <lightning-button data-name="PECFAR" variant="base" label="View All" title="Looks like a link" onclick={handleClickPECFAR} class="slds-m-left_x-small btn"></lightning-button>
+                              </div>
+                          </div>
+                      </lightning-layout-item>
+                      <lightning-layout-item padding="around-large">
+                          <div class="rectangle">
+                              <div slds-col>
+                                  <div class="circle">
+                                      <h2>{numberIF}</h2>
+                                  </div> <br>
+                                  <div class="TPTIF">IF</div>
+                                  <lightning-button data-name="Industrial Fellowship" variant="base" label="View All" title="Looks like a link" onclick={handleClickIF} class="slds-m-left_x-small btn"></lightning-button>
+                              </div>
+                          </div>
+                      </lightning-layout-item>
+                      <lightning-layout-item padding="around-large">
+                          <div class="rectangle">
+                              <div slds-col>
+                                  <div class="circle">
+                                      <h2>{numberSing}</h2>
+                                  </div> <br>
+                                  <div class="TPTSING">SING</div>
+                                  <lightning-button data-name="SING" variant="base" label="View All" title="Looks like a link" onclick={handleClickSING} class="slds-m-left_x-small btn" style="padding-left: 9px;"></lightning-button>
+                              </div>
+                          </div>
+                      </lightning-layout-item>
+                      <lightning-layout-item padding="around-large">
+                          <div class="rectangle">
+                              <div slds-col>
+                                  <div class="circle">
+                                      <h2 data-name="WISER">{numberWISER}</h2>
+                                  </div> <br>
+                                  <div class="TPTWiser">WISER</div>
+                                  <lightning-button data-name="WISER" variant="base" label="View All" title="Looks like a link" onclick={handleClickWiser} class="slds-m-left_x-small btn"></lightning-button>
+                              </div>
+                          </div>
+                      </lightning-layout-item>
+                      <lightning-layout-item padding="around-large">
+                          <div class="rectangle">
+                              <div slds-col>
+                                  <div class="circle">
+                                      <h2 data-name="Workshop">{numberWorkshop}</h2>
+                                  </div> <br>
+                                  <div class="TPT">WORKSHOP</div>
+                                  <lightning-button data-name="workShop" variant="base" label="View All" title="Looks like a link" onclick={handleClickWorkShp} class="slds-m-left_x-small btn"></lightning-button>
+                              </div>
+                          </div>
+                      </lightning-layout-item>
+                  </lightning-layout>
+              </div> <br>
+                 <div class="unallocatedRec">
+                          <h1 > Applications Details</h1>
+                          </div>
+              <div class="block1">
+                  <lightning-layout>
+                      <lightning-layout-item padding="around-medium">
+                          <div class="applicationsRectangle">
+                              <div class="slds-grid slds-grid_vertical">
+                                  <div class="totalApp"> Total Applications</div> <br>
+                                  <div class="slds-grid ">
+                                      <div class="slds-col num">
+                                          <div class="totalApplicationsNum">{totalApplications}</div>
+                                      </div>
+                                      <div class="slds-col prod">
+                                          <div class="appCircle">
+                                              <div class="circlein">
+                                                  <lightning-icon icon-name="utility:display_text" class="iconPage"></lightning-icon>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </lightning-layout-item>
+                      <!-- <lightning-layout-item padding="around-medium">
+                          <div class="applicationsRectangle">
+                              <div class="slds-grid slds-grid_vertical">
+                                  <div class="draftApp"> Draft Applications</div> <br>
+                                  <div class="slds-grid">
+                                      <div class="slds-col num">
+                                          <div class="draftApplicationsNum">{draftApplications}</div>
+                                      </div>
+                                      <div class="slds-col prod">
+                                          <div class="draftappCircle">
+                                              <div class="draftcirclein">
+                                                  <lightning-icon icon-name="utility:opened_folder" class="drafticonPage"></lightning-icon>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </lightning-layout-item> -->
+                      <lightning-layout-item padding="around-medium">
+                          <div class="applicationsRectangle">
+                              <div class="slds-grid slds-grid_vertical">
+                                  <div class="submittedApp"> Submitted Applications</div> <br>
+                                  <div class="slds-grid ">
+                                      <div class="slds-col num">
+                                          <div class="submittedtApplicationsNum">{submittedApplications}</div>
+                                      </div>
+                                      <div class="slds-col prod">
+                                          <div class="appCircle1">
+                                              <div class="circlein1">
+                                                  <lightning-icon icon-name="utility:form" class="submittediconPage"></lightning-icon>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </lightning-layout-item>
+                  </lightning-layout>
+              </div>
+              <div class="block1">
+                  <lightning-layout>
+                      <lightning-layout-item padding="around-large">
+                         <div class="unallocatedRec">
+                          <h1 > Allocated</h1>
+                          </div>
+                          <br>
+                          <div class="allocatedRectangle">
+                              <lightning-layout>
+                                  <div class="slds-grid slds-grid_vertical">
+                                      <div class="slds-col">
+                                          <lightning-layout-item size="2">
+                                              <div class="submittedtApplicationsNum1">{submittedApplications1}</div>
+                                          </lightning-layout-item>
+                                      </div>
+                                      <div class="slds-col">
+                                          <lightning-layout horizontal-align="spread">
+                                              <lightning-layout-item>
+                                                  <div class="dottedline">
+                                                      <div class="slds-grid slds-grid_vertical">
+                                                          <div class="slds-col">
+                                                              <div class="submittedtApplicationsNum1">{pendingApp}</div>
+                                                          </div>
+                                                          <div class="slds-col">
+                                                              <div class="dottedlines1"> ----------></div>
+                                                          </div>
+                                                          <div class="slds-col">
+                                                              <div class="submittedtApplicationsNum1">{totalcompApps}</div>
+                                                          </div>
+                                                          <div class="slds-col">
+                                                              <div class="dottedlines1"> ----------></div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </lightning-layout-item>
+                                              <lightning-layout-item padding="around-medium">
+                                                  <div class="slds-grid slds-grid_vertical">
+                                                      <div class="slds-col slds-float_right ">
+                                                          <div class="totalocatedRectangle1">
+                                                              <div class="alocated"> Total allocated</div>
+                                                          </div>
+                                                      </div> <br>
+                                                      <div class="slds-col">
+                                                          <div class="totalpending">
+                                                              <div class="Pending"> Pending </div>
+                                                          </div>
+                                                      </div> <br>
+                                                      <div class="slds-col">
+                                                          <div class="totalcomplete">
+                                                              <div class="completed"> Completed </div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </lightning-layout-item>
+                                          </lightning-layout>
+                                      </div>
+                                  </div>
+                                  <lightning-layout>
+                                      <div class="allocatedDiv">
+                                          <lightning-layout-item size="1">
+                                              <!-- <div class="slds-grid slds-grid_vertical">
+                            <div class="slds-col slds-float_right ">
+                              <div class="totalocatedRectangle1">
+                                <div class = "alocated"> Total allocated</div>
+                             
+      
+                              </div>
+                            </div>
+                            <br>
+                            <div class="slds-col">
+                              <div class="totalpending">
+                                <div class = "submittedtApplicationsNum1">{totalPendApps}10</div>
+                                <div class = "Pending"> Pending </div>
+      
+                              </div>
+                            </div>
+                            <br>
+                            <div class="slds-col">
+                              <div class="totalcomplete">
+                                <div class ="submittedtApplicationsNum1">{totalCompletedApps}10</div>
+                                <div class = "completed"> Completed </div>
+      
+                              </div>
+                            </div>
+                            </div> -->
+                                          </lightning-layout-item>
+                                      </div>
+                                  </lightning-layout>
+                              </lightning-layout>
+                          </div>
+                      </lightning-layout-item>
+                      <lightning-layout-item padding="around-small">
+                         <div class="unallocatedRec">
+                          <h1 > Unallocated</h1>
+                          </div> 
+                          <div style="padding-top: 32px">
+                          <div class="unallocatedRectangle">
+                              <div class="slds-grid slds-grid_vertical">
+                                  <div class="slds-grid">
+                                      <div class="slds-col">
+                                          <div class="slds-grid slds-gutters">
+                                              <div class="slds-col ">
+                                                  <div class="draftApplicationsNum1">{unallocatedSubmittedApplications}</div>
+                                              </div>
+                                              <div class="slds-col ">
+                                                  <div class="dottedlines"> ----------></div>
+                                              </div>
+                                              <div class="slds-col "> <br> <br> <br>
+                                                  <div class="totalunallocatedRectangle">
+                                                      <div class="unallocated"> Total Unallocated</div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                              </div>
+                          </div>
+                      </lightning-layout-item>
+                  </lightning-layout>
+              </div>
+          </div>
+      </template>

@@ -1,0 +1,219 @@
+<template>
+    <lightning-card>
+        
+        <div style="background-color:white; padding-top:10px;">
+    <b>
+        <b><div style="padding-left:15px;color:rgb(12, 12, 12);  font-size:20px">Proposal Summary </div>
+        <br/>   
+        </b>
+    </b>
+</div>
+<div class="slds-box slds-grid slds-wrap">
+    
+            {primaryContact} , {primaryAccount}
+            <br/>
+            <br/>
+            Host : {hostContact} , {hostAccount}
+            <br/>
+            <br/>
+            Title of Proposal : {proposalTitle}
+            <br/>
+            <br/>
+            Fellowship Type : {fellowshipType}
+            <br/>
+            <lightning-record-view-form
+                record-id={recordId}
+                object-api-name={objectApiName}>
+                <template if:true={isIFRecord}>
+                <div class="slds-box" style="width: 156%;">
+                     <div class="slds-grid slds-wrap"> 
+                        
+                        
+                <lightning-output-field class="slds-size_2-of-12" field-name={startField}></lightning-output-field>
+            
+                <lightning-output-field class="slds-size_2-of-12" field-name={endField}></lightning-output-field>
+            
+                <lightning-output-field class="slds-size_2-of-12" field-name={fellowshipDurationField}></lightning-output-field>
+            
+            <div class="container" lwc:dom="manual"></div>
+            
+                <!--
+                <lightning-output-field class="slds-size_2-of-12" field-name={awardletterDateField}></lightning-output-field>
+                -->
+                <br/>
+                <br/>
+                <br/>
+                <p></p>
+            </div>
+        </div> 
+    </template>
+    <template if:true={isSING}>
+        <div class="slds-box" style="width: 156%;">
+             <div class="slds-grid slds-wrap"> 
+                
+                
+        <lightning-output-field class="slds-size_6-of-12" field-name={startField}></lightning-output-field>
+    
+        <lightning-output-field class="slds-size_6-of-12" field-name={endField}></lightning-output-field>
+    
+    
+    <div class="container" lwc:dom="manual"></div>
+    
+        <!--
+        <lightning-output-field class="slds-size_2-of-12" field-name={awardletterDateField}></lightning-output-field>
+        -->
+        <br/>
+        <br/>
+        <br/>
+        <p></p>
+    </div>
+</div> 
+</template>
+    <!--
+                <lightning-output-field class="slds-size_6-of-12" field-name={primaryAccountField}></lightning-output-field>
+    
+                <lightning-output-field class="slds-size_6-of-12" field-name={primaryContactField}></lightning-output-field>-->
+            
+            <div style="background-color:white; padding-top:10px;">
+                <h2><b>Account Details - </b></h2><br/>
+            <table align="left" style="width: 100%; border: 1px solid #c9c9c9;">
+                <thead>
+                <tr >
+                    <td style=" border: 1px solid #c9c9c9; text-align: center;">
+                        Account Name 
+                    </td>
+                    <td style=" border: 1px solid #c9c9c9; text-align: center;">
+                        Industry
+                    </td>
+                    
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <template iterator:it1={ReviewerMappingListData1}>
+                    <tr class="slds-hint-parent" key = {it1.value.Id}>
+                        <td style=" border: 1px solid #c9c9c9; text-align: center;">
+                            <div >{it1.value.Name}</div>
+                        </td>
+                        
+                        <td style=" border: 1px solid #c9c9c9; text-align: center;">
+                            <div >{it1.value.Industry}</div>
+                        </td>
+                        
+                        
+                        
+                    </tr>
+                </template>
+            </tbody>
+            <!--<tbody>
+                    <tr  >
+                        <td style=" border: 1px solid #c9c9c9; text-align: center;">
+                            <div >{NameAccount}</div>
+                        </td>
+                        
+                        <td style=" border: 1px solid #c9c9c9;text-align: center;">
+                            <div >{IndustryAccount}</div>
+                        </td>                        
+                        
+                    </tr>
+            </tbody>-->
+            </table>
+            <br/>
+            <br/>
+            <br/>
+        </div>
+            <div style="background-color:white; padding-top:10px;">
+                <h2><b>Contact Details - </b></h2><br/>
+            <table align="left" style="width: 120%;">
+                <thead>
+                <tr >
+                    <td style=" border: 1px solid #c9c9c9; text-align: center;">
+                        Contact Name
+                    </td>
+                    <td style=" border: 1px solid #c9c9c9;text-align: center;">
+                        Institution Name
+                    </td>
+                    <template if:true={isIFRecord}>
+                    <td style=" border: 1px solid #c9c9c9;text-align: center;">
+                        Industrial Fellowship Type
+                    </td>
+                    <td style=" border: 1px solid #c9c9c9;text-align: center;">
+                        PhD Enroll Date
+                    </td>
+                    </template>                
+                    <template if:true={isPECFAR}>
+                    <td style=" border: 1px solid #c9c9c9; text-align: center;">
+                        Tentative start date
+                    </td>
+                    <td style=" border: 1px solid #c9c9c9;text-align: center;">
+                        Tentative end date
+                    </td>
+                    <td style=" border: 1px solid #c9c9c9;text-align: center;">
+                        Fellowship Duration (Days)
+                    </td>
+                    </template>
+                    
+                    
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <template iterator:it1={ReviewerMappingListData2}>
+                    <tr class="slds-hint-parent" key = {it1.value.Id}>
+                        <td style=" border: 1px solid #c9c9c9; text-align: center;">
+                            <div >{it1.value.Name}</div>
+                        </td>
+                        <td style=" border: 1px solid #c9c9c9; text-align: center;">
+                            <div >{it1.value.Institution__c}</div>
+                        </td>
+                        <template if:true={isIFRecord}>
+                        <td style=" border: 1px solid #c9c9c9; text-align: center;">
+                            <div >{it1.value.Industrial_Fellowship_Type__c}</div>
+                        </td>
+                        <td style=" border: 1px solid #c9c9c9; text-align: center;">
+                            <div >{it1.value.PhD_Enroll_Date__c}</div>
+                        </td>
+                        </template>
+                        <template if:true={isPECFAR}>
+                        <td style=" border: 1px solid #c9c9c9; text-align: center;">
+                            <div >{it1.value.Tentative_Start_Date__c}</div>
+                        </td>
+                        <td style=" border: 1px solid #c9c9c9; text-align: center;">
+                            <div >{it1.value.Tentative_End_Date__c}</div>
+                        </td>
+                        <td style=" border: 1px solid #c9c9c9; text-align: center;">
+                            <div >{it1.value.Fellowship_Duration__c}</div>
+                        </td> 
+                        </template>
+                        
+                        
+                    </tr>
+                </template>
+            </tbody>
+            <!-- <tbody>
+                    <tr  >
+                        <td style=" border: 1px solid #c9c9c9; text-align: center;">
+                            <div >{NameContact}</div>
+                        </td>
+                        
+                        <td style=" border: 1px solid #c9c9c9; text-align: center;">
+                            <div >{myInstituteContact}</div>
+                        </td>                        
+                        <td style=" border: 1px solid #c9c9c9; text-align: center;">
+                            <div >{fellowshiptypeContact}</div>
+                        </td>
+                        <td style=" border: 1px solid #c9c9c9; text-align: center;">
+                            <div >{phdEnrollDateContact}</div>
+                        </td>
+                        <td>
+                            <div >{addressContact}</div>
+                        </td>
+                    </tr>
+            </tbody> -->
+            </table>
+        
+    </div>
+        </lightning-record-view-form>
+        </div>
+        </lightning-card>
+    </template>

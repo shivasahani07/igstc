@@ -1,0 +1,311 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="IndustrialFellowshipController">
+    <html>
+    <div ng-controller="SignatureSealsSing_Ctrl">
+
+        <head>
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.5.16/textAngular.css" crossorigin="anonymous"
+            />
+            <script>
+                var userId = '{!$CurrentPage.parameters.id}';
+            </script>
+        </head>
+
+        <body>
+            <div class="container px-4 mt-5">
+                <div class="row mx-4">
+                    <div class="col-md-12">
+                        <div class="tab-link" ng-show="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ApplicantInformationSing')">
+                                        <div class="icon-circle">
+                                            <i class="fa-regular fa-user"></i>
+                                        </div>
+                                        <span>Personal Information</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('SingHostDetails')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Host Details</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ProjectDetailsSing')">
+                                        <div class="icon-circle">
+                                            <i class="fa-regular fa-address-card"></i>
+                                        </div>
+                                        <span>Proposed Work</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('BudgetDetails')">
+                                        <div class="icon-circle">
+                                            <i class="fa fa-money"></i>
+                                        </div>
+                                        <span>Budget Details</span>
+                                    </a>
+                                </li>                               
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('AttachmentsSing')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Attachments</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('SignatureSealsSing')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-graduation-cap"></i>
+                                        </div>
+                                        <span>Review and Submit</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-link" ng-hide="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa-regular fa-user"></i>
+                                        </div>
+                                        <span>Personal Information</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Host Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa-regular fa-address-card"></i>
+                                        </div>
+                                        <span>Proposed Work</span>
+                                    </a>
+                                </li> 
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa fa-money"></i>
+                                        </div>
+                                        <span>Budget Details</span>
+                                    </a>
+                                </li>                               
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Attachments</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-graduation-cap"></i>
+                                        </div>
+                                        <span>Review and Submit</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal" id="filePreview">
+                <div class="modal-dialog" style="min-width:120rem">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">
+                                <div class="d-flex" style="background:unset;">
+                                    <h3 style="text-align: center"><b>{{selectedFile.userDocument.Name}}</b></h3>
+                                </div>
+                            </h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <iframe style="width:100%;height:75vh;border: 0px;border-radius: 10px;" id="file_frame" title="File"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal" id="filePreview2">
+                <div class="modal-dialog" style="min-width:120rem">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">
+                                <div class="d-flex" style="background:unset;">
+                                    <h3 style="text-align: center"><b>{{selectedFile.userDocument.Name}}</b></h3>
+                                </div>
+                            </h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <iframe id="myIframe" ng-src="{{fileUrl}}" style="width:100%;height:100vh;border: 0px;border-radius: 10px;"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container mt-5">
+                    <div class="row mt-5 mx-5">
+                        <div class="col-md-12 alert bg-color-list" role="alert">
+                            <ul class="font-if">  
+                              <li><i class="fa-solid fa-circle text-success me-3"></i>Upload each attachment in jpg/jpeg format</li>
+                              <li><i class="fa-solid fa-circle text-success me-3"></i>Click on upload button to upload the documents</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row mx-5 mt-3">
+                        <div class="col-md-12">
+                            <h3 class="color-theme"><b>DECLARATION</b></h3>
+                        </div>
+                        </div>
+                    <div class="row mx-5 mt-3">
+                        <div class="col-md-12">
+                            <p class="ps-5 ms-5 font-if">
+                                I <b>{{applicantName}}</b> thereby declare that the information furnished above is true, complete and correct to the
+best of my knowledge and belief. I understand that in the event of my information being found false or
+incorrect at any stage, my fellowship / award shall be liable to cancellation / termination without notice or any
+compensation in lieu thereof.
+                            </p>
+                        </div>
+                        </div>
+                    <!-- <div class="row box-shadow-2 mt-5 mx-5 p-3">
+                        <div class="row mt-5 pb-5" style="margin-left: -1px">
+                            <div class="col-md-5">
+                                <label class="font-if">Signature of the Head of Organization <br/>(signature, date and seal) file size between 50-70kb </label>
+                                <div class="input-group input-group-lg">
+                                    <input type="file" accept=".jpg,.jpeg" ng-disabled="proposalStage" id="{{doc.userDocument.Name}}" class="form-control " />
+                                    <span class="input-group-btn" ng-hide="proposalStage">
+                                        <button class="btn btn-success" ng-click="uploadFile(doc.userDocument.Name,doc.userDocument.Id,'','71680','51200')" type="button">Upload</button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                            <div ng-show="doc.ContentDistribution.PreferencesAllowPDFDownload">
+                                <label style="color: #fff;" class="pt-2">.</label>
+                                <a class="blue-btn py-3 mt-4 float-end" ng-click="filePreviewHandler(doc)">View</a>
+                            </div>
+                        </div>
+                            <div class="col-md-5">
+                                <label class="font-if">Signature (date) of the applicant<br/>file size between 30-50kb</label>
+                                <div class="input-group input-group-lg">
+                                    <input type="file" accept=".jpg,.jpeg" ng-disabled="proposalStage" id="{{noObjection.userDocument.Name}}" class="form-control "
+                                    />
+                                    <span class="input-group-btn" ng-hide="proposalStage">
+                                        <button class="btn btn-success" ng-click="uploadFile(noObjection.userDocument.Name,noObjection.userDocument.Id,'',51200,'30720')"
+                                            type="button">Upload</button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                            <div ng-show="noObjection.ContentDistribution.PreferencesAllowPDFDownload">
+                                <label style="color: #fff;" class="pt-2">.</label>
+                                <a class="blue-btn py-3 mt-4 float-end" ng-click="filePreviewHandler(noObjection)">View</a>
+                            </div>
+                        </div>
+                        </div>
+                    </div> -->
+                    <div class="row mx-5 mt-5">
+                        <div class="col-md-5">
+                            <Label class="font-if">Date:</Label>
+                            <input type="date" disabled="disabled" ng-model="SignDate" class="form-control w-50"
+                            />
+                        </div>
+                        <div class="col-md-7">
+                            <div class="row">
+    
+                                <div class="col-md-7">
+                                    <div ng-hide="proposalStage" style="margin-right: -60px;">
+                                        <label class="font-if">Signature (date) of the applicant file size between 30-50kb<span class="required-asterisk" style="color:red;">*</span></label>
+                                        <div class="input-group input-group-lg float-end">
+                                            <input type="file" accept=".jpg,.jpeg" ng-disabled="proposalStage" id="{{noObjection.userDocument.Name}}" class="form-control "
+                                    />
+                                    <span class="input-group-btn" ng-hide="proposalStage">
+                                        <button class="btn btn-success" ng-click="uploadFile(noObjection.userDocument.Name,noObjection.userDocument.Id,'',51200,30720)"
+                                            type="button">Upload</button>
+                                    </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div ng-show="noObjection.userDocument.Status__c=='Uploaded'">
+                                        <label style="color: #fff;" class="pt-2">.</label>
+                                        <a class="blue-btn py-3 mt-4 float-end" ng-click="filePreviewHandler(noObjection)">View</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-5" ng-if="!proposalStage">
+                        <div class="col-md-12">
+                            <button class="blue-btn float-end" ng-click="submitSingApp('s')" type="button">
+                                <i class="fa-solid fa-check me-2"></i>Submit</button>
+                            <button class="blue-btn float-end me-2" ng-click="submitSingApp('d')" type="button">
+                                <i class="fa-solid fa-check me-2"></i>Save as Draft</button>
+                                <!-- <button class="blue-btn float-end me-2" ng-click="reviewApp()" type="button">
+                                    <i class="fa-solid fa-eye me-2"></i>Review</button> -->
+                            <button class="blue-bordered-btn float-end me-2" ng-click="redirectPageURL('AttachmentsSing')" type="button">
+                                <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- <div class="container px-5">
+                
+                        <div class="row mt-3">
+                            <div class="col-md-6 mb-3" ng-repeat="doc in proposalDetails">
+                                <label>{{doc.userDocument.Name}}</label>
+                                <div class="input-group input-group-lg">
+                                    <input type="file" accept=".pdf,.png,.jpg,.jpeg" ng-disabled="proposalStage" id="{{doc.userDocument.Name}}" class="form-control "/>
+                                    <span class="input-group-btn" ng-hide="proposalStage">
+                                      <button class="btn btn-success" ng-click="uploadFile(doc.userDocument.Name,doc.userDocument.Id,'')" type="button">Upload</button>
+                                    </span>
+                                  </div>
+                                  <div ng-show="doc.ContentDistribution.PreferencesAllowPDFDownload">
+                                  <label class="pt-2">Uploaded File :{{doc.contentVersion.Title}}</label><br/>
+                                  <a class="btn btn-primary background-theme border-theme mt-3" href="{{doc.ContentDistribution.DistributionPublicUrl}}" target="_blank"><i class="fa-solid fa-eye pe-2"></i>View</a>
+                                </div>
+                            </div>
+                           
+                        </div>
+                    
+                       
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <button class="blue-btn float-end" ng-click="submitSingApp('s')" ng-disabled="disableSubmit" type="button">
+                                    <i class="fa-solid fa-check me-2"></i>Submit</button>
+                                    <button class="blue-btn float-end me-2" ng-click="submitSingApp('d')" type="button">
+                                        <i class="fa-solid fa-check me-2"></i>Save as a Draft</button>
+                                <button class="blue-bordered-btn float-end me-2" ng-click="redirectPageURL('AttachmentsSing')" type="button">
+                                    <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+                            </div>
+                        </div>            
+                    </div> -->
+                <!-- </div>
+            </div> -->
+
+                <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        </body>
+        </div>
+
+    </html>
+</apex:page>

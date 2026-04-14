@@ -1,0 +1,82 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+<html>
+     <div ng-controller="ProjectDetailInWiserCtrl">
+          <head>
+               <style>
+                   .ta-editor {
+                       min-height: 300px;
+                       height: auto;
+                       overflow: auto;
+                       font-family: inherit;
+                       font-size: 100%;
+                   }
+               </style>
+               <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+           </head>
+
+           <body>
+               <div class="container px-4">
+                    <div class="card h-100 m-5">
+
+                         <div class="card-header">
+                              <h2 class="p-3">
+                                      <b>Project Details</b>
+                              </h2>
+                          </div>
+
+                          <div class="row p-5">
+
+                              <div class="col-md-6">
+                                   <label class="control-label">
+                                       <b>Title Of Proposal</b>
+                                   </label>
+                                   <span class="required-asterisk" style="color:red;">*</span>
+                                   <input name="Title Of Proposal" placeholder="Title Of Proposal" class="form-control" type="text" ng-model="applicantDetails.Title_Of__c"
+                                       maxlength="255" ng-disabled="disable" required="true" ng-required="applicantDetails.Title_Of__c" />
+                               </div>
+                             
+                               <div class="col-md-6">
+                                   <label class="control-label">
+                                       <b>Duration In Months (Max 36)</b>
+                                   </label>
+                                   <input name="duration" placeholder="duration" class="form-control" type="Number" ng-model="applicantDetails.Duration_In_Months_Max_36__c"/>
+                                
+                               </div>
+
+                               
+                               <div>
+                                   <div class="col-md-6">
+                                       <label class="control-label">
+                                           <b>Keywords</b>
+                                       </label>
+                                       <div text-angular="text-angular" name="htmlcontent" ng-model="applicantDetails.KeyWords__c" ta-disabled='true' ng-disabled="disable"></div>
+                                   </div>
+                                   <div class="col-md-6">
+                                       <label class="control-label">
+                                           <b>Abstract of proposed work</b>
+                                       </label>
+                                       <div text-angular="text-angular" name="htmlcontent" ng-model="applicantDetails.Abstract_of_proposed__c" ta-disabled='true' ng-disabled="disable"></div>
+                                   </div>
+                               </div>   
+
+                               <div class="col-md-6">
+                                   <label class="control-label">
+                                       <b>Project Description</b>
+                                   </label>
+                                   <div text-angular="text-angular" name="htmlcontent" ng-model="applicantDetails.Project_Description__c" ta-disabled='true' ng-disabled="disable"></div>
+                               </div>
+             
+                               <div class="card-footer">
+                                       <button type="button" class="blue-btn float-end me-4" ng-click="saveApplication()"><i class="fa-solid fa-check i-padding"></i>Save and Next</button>
+                               </div>
+
+
+                          </div>
+
+                    </div>
+               </div>
+               <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
+           </body>
+     </div>
+</html>
+</apex:page>

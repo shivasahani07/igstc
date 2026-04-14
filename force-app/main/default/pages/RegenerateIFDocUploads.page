@@ -1,0 +1,118 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="IndustrialFellowshipController">
+    <html>
+    <div ng-controller="IFDocUploads_Ctrl">
+
+        <head>
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+        </head>
+
+        <body>
+            <div class="container px-4 mt-5" >
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <ul class="nav nav-pills nav-fill gap-2 p-1 small bg-white border rounded-5 shadow-sm" id="pillNav2" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a href="#" ng-click="redirectPageURL('ProjectDetailIF')" class="nav-link rounded-5" id="basic_tab" data-bs-toggle="tab"
+                                    type="button" role="tab" aria-selected="true">
+                                    <i class="fa-solid fa-circle-check fa-lg text-success me-2" ng-show="showTravellerCheck"></i>
+                                    <i class="fa fa-home me-2"></i>SC Review</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a href="#" ng-click="redirectPageURL('Dashboard_IF')" class="nav-link rounded-5" id="consortia_tab" data-bs-toggle="tab"
+                                    type="button" role="tab" aria-selected="false">
+                                    <i class="fa-solid fa-circle-check fa-lg text-success me-2" ng-show="showVisaCheck"></i>
+                                    <i class="fa-solid fa-people-group i-padding"></i>Visa Documents</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a href="#" ng-click="redirectPageURL('PersonalInformationIF')" class="nav-link rounded-5" id="consortia_tab" data-bs-toggle="tab"
+                                    type="button" role="tab" aria-selected="false">
+                                    <i class="fa-solid fa-circle-check fa-lg text-success me-2" ng-show="showUndertakingCheck"></i>
+                                    <i class="fa-solid fa-people-group i-padding"></i>Undertaking</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a href="#" ng-click="redirectPageURL('EduQualificationIF')" class="nav-link rounded-5" id="finance_tab" data-bs-toggle="tab"
+                                    type="button" role="tab" aria-selected="false">
+                                    <i class="fa-solid fa-money-bill-trend-up i-padding"></i>Attendance</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- start file preview model -->
+                <div class="modal" id="filePreview">
+                    <div class="modal-dialog" style="min-width:120rem">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">
+                                    <div class="d-flex" style="background:unset;">
+                                        <h3 style="text-align: center">
+                                            <b>{{selectedFile.userDocument.Name}}</b>
+                                        </h3>
+                                    </div>
+                                </h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <iframe style="width:100%;height:75vh;border: 0px;border-radius: 10px;" id="file_frame" title="File"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end file preview model -->
+
+                <div class="row mt-3" >
+                   <div class="row mt-5">
+                        <div class="col-md-5">
+                            <label>Tentative Start Date</label>
+                            <input class="form-control"  ng-init="tentitiveStartDate=(tentitiveStartDate | date:'yyyy-MM-dd')" type="date" ng-model="tentitiveStartDate"
+                            />
+                        </div>
+
+                        <div class="col-md-5">
+                            <label>Tentative End Date</label>
+                            <input class="form-control"  ng-init="tentitiveEndDate=(tentitiveEndDate | date:'yyyy-MM-dd')" type="date" ng-model="tentitiveEndDate"
+                            />
+                        </div>
+                        <div class="col-md-2" >
+                            <button class="blue-btn mt-5" ng-click="saveDate()" type="button">
+                                <i class="fa-solid fa-check me-2"></i>Submit</button>
+                        </div>
+                    </div>
+
+                    <div class="row mt-5">
+                        <div class="col-md-4 mt-3">
+                            <label>{{Traveller.userDocument.Name}}</label>
+                            <div class="input-group input-group-lg">
+                                <input type="file" accept=".pdf"  id="{{Traveller.userDocument.Name}}" class="form-control "
+                                />
+                                <span class="input-group-btn" >
+                                    <button class="btn btn-success" ng-click="uploadFile(Traveller.userDocument.Name,Traveller.userDocument.Id,'','Create','Check Travel Form')"
+                                        type="button">Upload</button>
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-2 mt-1" ng-show="Traveller.ContentDistribution.PreferencesAllowPDFDownload">
+                            <a class="btn btn-primary btn-lg background-theme mt-5" ng-click="filePreviewHandler(Traveller)">
+                                <i class="fa-solid fa-eye pe-2"></i>View</a>
+                        </div>
+                        
+                        
+                    </div>
+                    
+                    
+                </div>
+                
+                
+            </div>
+
+
+
+
+
+            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        </body>
+    </div>
+
+    </html>
+</apex:page>

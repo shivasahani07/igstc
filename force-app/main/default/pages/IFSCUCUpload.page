@@ -1,0 +1,142 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="IndustrialFellowshipController">    
+    <html>
+    <div ng-controller="IFSCUCUpload_Ctrl">
+
+        <head>
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+        </head>
+
+        <body>
+            <div class="container px-4 mt-5">
+                <!-- <div class="row mt-3">
+                    <div class="col-md-12">
+                        <ul class="nav nav-pills nav-fill gap-2 p-1 small bg-white border rounded-5 shadow-sm" id="pillNav2" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a href="#" ng-click="redirectPageURL('ProjectDetailIF')" class="nav-link rounded-5" id="basic_tab" data-bs-toggle="tab"
+                                    type="button" role="tab" aria-selected="true">
+                                    <i class="fa fa-home i-padding"></i>Traveller's Form</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a href="#" ng-click="redirectPageURL('Dashboard_IF')" class="nav-link rounded-5" id="consortia_tab" data-bs-toggle="tab"
+                                    type="button" role="tab" aria-selected="false">
+                                    <i class="fa-solid fa-people-group i-padding"></i>Visa Documents</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a href="#" ng-click="redirectPageURL('PersonalInformationIF')" class="nav-link rounded-5" id="consortia_tab" data-bs-toggle="tab"
+                                    type="button" role="tab" aria-selected="false">
+                                    <i class="fa-solid fa-people-group i-padding"></i>Undertaking</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a href="#" ng-click="redirectPageURL('EduQualificationIF')" class="nav-link rounded-5" id="finance_tab" data-bs-toggle="tab"
+                                    type="button" role="tab" aria-selected="false">
+                                    <i class="fa-solid fa-money-bill-trend-up i-padding"></i>Monthly Reports</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a href="#" ng-click="redirectPageURL('EduQualificationIF')" class="nav-link rounded-5" id="finance_tab" data-bs-toggle="tab"
+                                    type="button" role="tab" aria-selected="false">
+                                    <i class="fa-solid fa-money-bill-trend-up i-padding"></i>Closure Report, Re-Imbersement</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div> -->
+                <!-- <div class="row mt-3" ng-hide="decision_letter">
+                    <div class="col-md-5 offset-1 mt-3">
+                        <label>{{Traveller.userDocument.Name}}</label>
+                        <div class="input-group input-group-lg">
+                            <input type="file" accept=".pdf" ng-disabled="decision_letter_disabled" id="{{Traveller.userDocument.Name}}" class="form-control " />
+                            <span class="input-group-btn" ng-hide="decision_letter_disabled">
+                                <button class="btn btn-success" ng-click="uploadFile(Traveller.userDocument.Name,Traveller.userDocument.Id,'')" type="button">Upload</button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-1" ng-show="Traveller.ContentDistribution.PreferencesAllowPDFDownload">
+                        <a class="btn btn-primary btn-lg background-theme border-theme mt-5" href="{{Traveller.ContentDistribution.DistributionPublicUrl}}"
+                            target="_blank">
+                            <i class="fa-solid fa-eye pe-2"></i>View</a>
+                    </div>
+                </div>
+                <div class="row mt-3" ng-hide="visa_stage">
+                    <div class="col-md-5 offset-1 mt-3">
+                        <label>{{Visa.userDocument.Name}}</label>
+                        <div class="input-group input-group-lg">
+                            <input type="file" accept=".pdf" ng-disabled="visa_stage_disabled" id="{{Visa.userDocument.Name}}" class="form-control " />
+                            <span class="input-group-btn" ng-hide="visa_stage_disabled">
+                                <button class="btn btn-success" ng-click="uploadFile(Visa.userDocument.Name,Visa.userDocument.Id,'')" type="button">Upload</button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-1" ng-show="Visa.ContentDistribution.PreferencesAllowPDFDownload">
+                        <a class="btn btn-primary btn-lg background-theme border-theme mt-5" href="{{Visa.ContentDistribution.DistributionPublicUrl}}"
+                            target="_blank">
+                            <i class="fa-solid fa-eye pe-2"></i>View</a>
+                    </div>
+                </div> -->
+                <!-- <div class="row mt-3" ng-show="monthly_stage">
+                    <div class="col-md-5 offset-1 mt-3">
+                        <label>{{AttendanceReport.userDocument.Name}}</label>
+                        <div class="input-group input-group-lg">
+                            <input type="file" accept=".pdf" ng-disabled="monthly_stage_disabled" id="{{AttendanceReport.userDocument.Name}}" class="form-control " />
+                            <span class="input-group-btn" ng-hide="monthly_stage_disabled">
+                                <button class="btn btn-success" ng-click="uploadFile(AttendanceReport.userDocument.Name,AttendanceReport.userDocument.Id,'')" type="button">Upload</button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-1" ng-show="AttendanceReport.ContentDistribution.PreferencesAllowPDFDownload">
+                        <a class="btn btn-primary btn-lg background-theme border-theme mt-5" href="{{AttendanceReport.ContentDistribution.DistributionPublicUrl}}"
+                            target="_blank">
+                            <i class="fa-solid fa-eye pe-2"></i>View</a>
+                    </div>
+                </div> -->
+                <div class="row mt-3" ng-show="monthly_stage">
+                    <div class="col-md-5 offset-1 mt-3">
+                        <label>{{SEUCUpload.userDocument.Name}}</label>
+                        <div class="input-group input-group-lg">
+                            <input type="file" accept=".pdf" ng-disabled="monthly_stage_disabled" id="{{SEUCUpload.userDocument.Name}}" class="form-control " />
+                            <span class="input-group-btn" ng-hide="monthly_stage_disabled">
+                                <button class="btn btn-success" ng-click="uploadFile(SEUCUpload.userDocument.Name,SEUCUpload.userDocument.Id,'','Create','Check SE/UC Report')" type="button">Upload</button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-1" ng-show="SEUCUpload.ContentDistribution.PreferencesAllowPDFDownload">
+                        <a class="btn btn-primary btn-lg background-theme border-theme mt-5" href="{{SEUCUpload.ContentDistribution.DistributionPublicUrl}}"
+                            target="_blank">
+                            <i class="fa-solid fa-eye pe-2"></i>View</a>
+                    </div>
+                </div>
+                <!-- <div class="row mt-3" ng-hide="undertaking_stage">
+                    <div class="col-md-5 offset-1 mt-3">
+                        <label>{{Undertaking.userDocument.Name}}</label>
+                        <div class="input-group input-group-lg">
+                            <input type="file" accept=".pdf" ng-disabled="undertaking_stage_disabled" id="{{Undertaking.userDocument.Name}}" class="form-control " />
+                            <span class="input-group-btn" ng-hide="undertaking_stage_disabled">
+                                <button class="btn btn-success" ng-click="uploadFile(Undertaking.userDocument.Name,Undertaking.userDocument.Id,'')" type="button">Upload</button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-1" ng-show="Undertaking.ContentDistribution.PreferencesAllowPDFDownload">
+                        <a class="btn btn-primary btn-lg background-theme border-theme mt-5" href="{{Undertaking.ContentDistribution.DistributionPublicUrl}}"
+                            target="_blank">
+                            <i class="fa-solid fa-eye pe-2"></i>View</a>
+                    </div>
+                </div> -->
+                <!-- <div class="row mt-3 mb-5">
+                    <div class="col-md-5 offset-1 mt-3">
+                        <label>{{CloserReport.userDocument.Name}}</label>
+                        <div class="input-group input-group-lg">
+                            <input type="file" accept=".pdf" ng-disabled="proposalStage" id="{{CloserReport.userDocument.Name}}" class="form-control " />
+                            <span class="input-group-btn" ng-hide="proposalStage">
+                                <button class="btn btn-success" ng-click="uploadFile(CloserReport.userDocument.Name,CloserReport.userDocument.Id,'')" type="button">Upload</button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-1" ng-show="CloserReport.ContentDistribution.PreferencesAllowPDFDownload">
+                        <a class="btn btn-primary btn-lg background-theme border-theme mt-5" href="{{CloserReport.ContentDistribution.DistributionPublicUrl}}"
+                            target="_blank">
+                            <i class="fa-solid fa-eye pe-2"></i>View</a>
+                    </div>
+                </div> -->
+            </div>
+            </body>
+            </div>
+            </html>
+</apex:page>

@@ -1,0 +1,176 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+    <html>
+    <div ng-controller='ReviewerHome_Ctrl'>
+
+        <head>
+            <!-- <c:Libraries ></c:Libraries> -->
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+            <apex:stylesheet value="{!$Resource.ReviewerPortalCss}" />
+            <style>
+                p{
+                    font-size: 2rem;
+                }
+            </style>
+        </head>    
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color:white !important;font-size: 12px;margin-bottom:0px !important">
+            <div class="container-fluid">
+                <!-- <a class="navbar-brand" href="#/ReviewerHome">
+                    <apex:image url="{!$Resource.Logo}" styleClass="pb-2 mb-2" alt="IGSTC" />
+                </a> -->
+                <a class="navbar-brand d-inline-block me-0" href="#/ReviewerHome">
+                    <apex:image url="{!$Resource.Logo}" styleClass="w-75" alt="IGSTC" />
+                </a>
+                <!-- <span class="humburger mt-3 ms-5">
+                    <i class="fas fa-bars fs-4 text-black-50"></i>
+                </span>
+               -->
+                <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNavDarkDropdown" style="font-size: large;font-weight: bold;">
+                    <ul class="navbar-nav mt-3 d-flex justify-content-end float-end">
+                        <li class="nav-item me-5">
+                            <a class="nav-link" href="#/ReviewerHome" ng-class="{activeColor:activeTab==0}" style="color: rgba(63,63,70,1)">Home</a>
+                        </li>
+                        <li class="nav-item me-5">
+                            <a class="nav-link"  href="#/Rp_Projects" ng-class="{activeColor:activeTab==1}" style="color: rgba(63,63,70,1)">Projects</a>
+                        </li>
+                    </ul>
+                    <!-- <div class="d-flex" ng-if="reviewerName==''">
+                        <a class="blue-btn" href="#/RegistrationForm" ng-click="redirect()">Login/Signup</a>
+                    </div> -->
+                    <!-- <ul>
+                        <li class="nav-item dropdown">
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#">Action</a></li>
+                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li><hr class="dropdown-divider"/></li>
+                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            </ul>
+                        </li>
+                    </ul> -->
+                    <div class="d-flex text-align-center">
+                        <!-- <ul>
+                            <li class="nav-item dropdown">
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="#">Action</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                    <li><hr class="dropdown-divider"/></li>
+                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                </ul>
+                            </li>
+                        </ul> -->
+                        <div class="dropdown">
+                            <i class="fa-solid fa-circle-user fa-2x mt-2" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            </i>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" style="min-width:300px;">
+                                <li class="dropdown-item pe-5">
+                                    <i class="fa-solid fa-user me-3"></i>{{reviewerName}}</li>
+                                <li>
+                                    <hr class="dropdown-divider" />
+                                </li>
+                                <li class="dropdown-item pe-5">
+                                    <i class="fa-solid fa-at me-3"></i>{{applicantEmail}}</li>
+                                <li>
+                                    <hr class="dropdown-divider" />
+                                </li>
+                                <li>
+                                    <a class="dropdown-item pe-5" ng-click="LogoutApplicant()">
+                                        <i class="fa-solid fa-right-from-bracket me-3"></i>Logout</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <div class="d-flex align-items-center float-start"> 
+                    <a class="navbar-brand d-inline-block me-0" href="#">
+                        <apex:image url="{!$Resource.Logo}" styleClass="w-75" alt="IGSTC" />
+                    </a>
+                    <a href="#" class="humburger">
+                        <i class="fas fa-bars fs-4 text-black-50"></i>
+                    </a>
+                </div>
+                <ul>
+                    <li class="nav-item dropdown">
+                        <i class="fa fa-user"></i>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><hr class="dropdown-divider"/></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav> -->
+        <div class="carousel-banner" style="background: url({!$Resource.banner_img}) no-repeat;background-size: cover;min-height: calc(100vh - 124px);align-items: center;display: flex;margin-top:-30px;">
+            <!-- <apex:image url="{!$Resource.Hero_IGSTC}" styleClass="img-fluid" /> -->
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-5">
+                        <h1>It's Time to Bring Your</h1>
+                        <h2>Ideas Alive</h2>
+                        <p>IGSTC intends to catalyse innovative centric R and D projects by synergising the strength of research
+                            institution and industry from India and Germany.</p>
+                        <!-- <a class="btn btn-success btn-sm" href="#">
+                            Let's Start
+                        </a> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="service mt-3">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-4 mb-4">
+                        <h4>
+                            <apex:image url="{!$Resource.proative}" styleClass="me-2" /> Proactive Play
+                        </h4>
+                        <p>Playing a proactive role in facilitating participation of industry in joint R and D projects</p>
+                    </div>
+                    <div class="col-4 mb-4">
+                        <h4>
+                            <apex:image url="{!$Resource.moblising}" styleClass="me-2" /> Moblising Assistance
+                        </h4>
+                        <p>Providing/assisting in mobilising resources to carry out industrial R and D projects</p>
+                    </div>
+                    <div class="col-4 mb-4">
+                        <h4>
+                            <apex:image url="{!$Resource.individual}" styleClass="me-2" /> Individual Advice
+                        </h4>
+                        <p>Providing individual advice to institutes and industries from both the countries on the possibilities
+                            of Indo-German cooperation and helping in the identification of suitable partners</p>
+                    </div>
+                    <div class="col-4 mb-4">
+                        <h4>
+                            <apex:image url="{!$Resource.encouraging}" styleClass="me-2" /> Encouraging Partners
+                        </h4>
+                        <p>Encouraging public-private partnerships (PPP) to foster elements of research, development and innovation,
+                            and cultivating a culture of cooperation between science and industry</p>
+                    </div>
+                    <div class="col-4 mb-4">
+                        <h4>
+                            <apex:image url="{!$Resource.nurturing}" styleClass="me-2" /> Nurturing Contacts
+                        </h4>
+                        <p>Nurturing contacts between young and mid-career scientists and technologists to develop a sense of
+                            mutual trust, partnership, leadership and entrepreneurship</p>
+                    </div>
+                    <div class="col-4 mb-4">
+                        <h4>
+                            <apex:image url="{!$Resource.cooperative}" styleClass="me-2" /> Cooperative Development
+                        </h4>
+                        <p>Developing cooperation through the identification of scientists and scientific institutions of both
+                            the countries</p>
+                    </div>
+                    <!-- <div class="col-12 mb-4 text-end">
+                        <a href="#" class="btn btn-success btn-sm">Learn More</a>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </body>
+</div>
+    </html>
+</apex:page>

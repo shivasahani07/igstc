@@ -1,0 +1,849 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+    <html>
+
+    <style>
+        body {
+            overflow-x: hidden;
+            background: unset;
+        }
+
+        .table-striped>tbody>tr:nth-child(odd)>td {
+            background: #fff !important;
+        }
+
+        table tr,
+        tbody>tr {
+            background: #fff !important;
+        }
+        .ta-editor {
+  min-height: 300px;
+  height: auto;
+  overflow: auto;
+  font-family: inherit;
+  font-size: 100%;
+}
+    </style>
+    <div ng-controller="ConsortialCtrl">
+
+        <head>
+
+            <script>
+                var userId = '{!$CurrentPage.parameters.id}';
+            </script>
+<apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+        </head>
+
+        <body>
+
+            <div class="container px-4 mt-5">
+                <div class="row mx-4">
+                    <div class="col-md-12">
+                            <ul class="nav nav-pills nav-fill gap-2 p-1 small bg-white border rounded-5 shadow-sm" id="pillNav2" role="tablist">
+                                <li class="nav-item" role="presentation">                
+                                <a href="#" ng-click="redirectPageURL('ProjectDetailPage')" class="nav-link rounded-5" id="basic_tab" data-bs-toggle="tab" type="button" role="tab" aria-selected="true"><i class="fa fa-home i-padding"></i>Project Details</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                <a href="#" ng-click="redirectPageURL('ConsortiaDetailPage')" class="nav-link active rounded-5" id="consortia_tab" data-bs-toggle="tab" type="button" role="tab" aria-selected="false"><i class="fa-solid fa-people-group i-padding"></i>Consortia Details</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                <a href="#" ng-click="redirectPageURL('Financial_Overview')" class="nav-link rounded-5" id="finance_tab" data-bs-toggle="tab" type="button" role="tab" aria-selected="false"><i class="fa-solid fa-money-bill-trend-up i-padding"></i>Finance Contribution</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                <a href="#" ng-click="redirectPageURL('ProjectDetail')" class="nav-link rounded-5" id="project_tab" data-bs-toggle="tab" type="button" role="tab" aria-selected="false"><i class="fa-solid fa-arrows-to-dot i-padding"></i>Project Details</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                <a href="#" ng-click="redirectPageURL('WorkPackages')" class="nav-link rounded-5" id="packge_tab" data-bs-toggle="tab" type="button" role="tab" aria-selected="false"><i class="fa-solid fa-box i-padding"></i>Work Package</a>
+                                </li>
+                            </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="container mt-5 px-4">
+                <div class="card h-100 m-5">
+                    <div Class="card-header">
+                        <h2 class="p-3">
+                            <b>Consortia Details</b>
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <div ng-repeat="consortia in consortiaDetails">
+                            <div class="row ms-3 me-3">
+                                <div class="col-md-8">
+                                    <h4 class="heading-border-2">Account Details</h4>
+                                </div>
+                                <div class="col-md-4">
+                                    <a type="button" class="float-end ms-2" ng-click="deleteAccountRow($index)">
+                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                    </a>
+                                    <a type="button" class="float-end" ng-click="addAccountRow()">
+                                        <i class="fa-solid fa-circle-plus fa-2x text-success"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row ms-3 me-3">
+                                <div class="col-md-4">
+                                    <label class="control-label">Account Name</label>
+                                    <span class="text-danger">*</span>
+                                    <input name="name" type="Text" class="form-control" placeholder="Enter Your Name" ng-model="consortia.Name" required="true"
+                                        ng-required="consortia.Name" ng-disabled="disable" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="control-label">Website</label>
+                                    <span class="text-danger">*</span>
+                                    <input name="Website" type="tel" class="form-control" placeholder="Enter Website" ng-model="consortia.Website" required="true"
+                                        ng-required="consortia.Website" ng-disabled="disable" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="control-label">Country Type</label>
+                                    <span class="text-danger">*</span>
+                                    <select class="form-control" aria-label="Default select example" ng-model="consortia.Country_Type__c" required="true" ng-required="consortia.Country_Type__c"
+                                        ng-disabled="disable">
+                                        <option value="none" ng-selected="true">--None--</option>
+                                        <option ng-repeat="staff in countrytype">{{staff}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row ms-3 me-3 mt-4">
+                                <div class="col-md-2">
+                                    <label class="control-label">Industry</label>
+                                    <input name="industry" type="checkbox" class="form-check-input" placeholder="Industry" ng-click="openCompanyPopup($index)"
+                                        ng-model="consortia.Industry__c" ng-disabled="disable" />
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="control-label">Academia</label>
+                                    <input name="academia" type="checkbox" class="form-check-input" placeholder="Academia" ng-click="openAcademiaPopup($index)"
+                                        ng-model="consortia.Academia__c" ng-disabled="disable" />
+                                </div>
+                                <div class="col-md-2" ng-if="consortia.Industry__c == true && consortia.Country_Type__c == 'India'">
+                                    <label class="control-label">DSIR Available ?</label>
+                                    <span class="text-danger">*</span>
+                                    <input type="checkbox" class="form-check-input" ng-model="consortia.Is_DSIR_Available__c" required="true" ng-required="consortia.Is_DSIR_Available__c"
+                                        ng-disabled="disable" />
+                                </div>
+                                <div class="col-md-2">
+                                    <span ng-if="consortia.Industry__c">
+                                        <a type="button" class="color-theme" ng-click="openPopup('companyProfile',$index,'')">Company Profile</a>
+                                    </span>&nbsp;
+                                    <span ng-if="consortia.Academia__c">
+                                        <a type="button" class="color-theme" ng-click="openPopup('Institute',$index,'')">
+                                            <Label class="control-label">Institute</Label>
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row ms-3 me-3 mt-3" ng-if="consortia.Is_DSIR_Available__c">
+                                <div class="col-md-8">
+                                    <label class="control-label" ng-if="consortia.Is_DSIR_Available__c">DSIR Recognition Details</label>
+                                    <span class="text-danger">*</span>
+                                    <input type="text" class="form-control" ng-model="consortia.DSIR_Recoginition_Details__c" maxlength="255" required="true"
+                                        ng-required="consortia.DSIR_Recoginition_Details__c" ng-disabled="disable" />
+                                </div>
+                            </div>
+                            <div class="row ms-3 me-3 mt-5">
+                                <div class="col-md-12">
+                                    <h4 class="heading-border-2">Contact Details</h4>
+                                </div>
+                            </div>
+                            <div class="row ms-3 me-3">
+                                <div class="col-md-12">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="p-2">Details</th>
+                                                <th class="p-2">First Name</th>
+                                                <th class="p-2">Last Name</th>
+                                                <th class="p-2">Email</th>
+                                                <th class="p-2">Phone</th>
+                                                <th nowrap="true" width="15%" class="p-2">
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="con in consortia.Contacts">
+                                                <td class="p-4">
+                                                    <label>{{$index + 1}}</label>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.FirstName" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.LastName" ng-disabled="disable" required="true" ng-required="consortia.Website"
+                                                        />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <!--<span class="required-asterisk" style="color:red;">*</span>-->
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Email" required="true" ng-required="con.Email" ng-disabled="disable" />
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="con.Phone" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td class="text-center">
+            
+                                                    <a type="button" ng-click="addRow($parent.$index,$index)">
+                                                        <i class="fa-solid fa-circle-plus fa-2x text-success"></i>
+                                                    </a>
+                                                    <a type="button" ng-click="deleteRow($parent.$index,$index)">
+                                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                                    </a>
+                                                    <a title="Upload CV" type="button" ng-click="openPopup('cvPage',$parent.$index,$index)">
+                                                        <i class="fa-solid fa-file-arrow-up fa-2x text-primary"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" class="blue-btn float-end ms-2" ng-click="submitAllPatnerDetials()">
+                            <i class="fa-solid fa-check me-2"></i>Submit and Next</button>
+                        <button type="button" class="blue-bordered-btn float-end" ng-click="redirectPageURL('ProjectDetailPage')">
+                            <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+                    </div>
+                </div>
+            </div>
+            <!-- The Modal -->
+            <div class="modal" id="companyProfile">
+                <div class="modal-dialog modal-dialog-centered modal-xl">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h2 class="modal-title">
+                                <div class="row ms-5">
+                                    <h3 class="heading-border-2">
+                                            <b>Company Profile (Industry Partner Only)</b>
+                                    </h3>
+                                </div>
+                            </h2>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12" ng-show="secondstage">
+                                    <input type="checkbox" class="form-check-input" ng-model="applicantDetails.Large_Industry__c" ng-disabled="disable" />&nbsp; Large Industry&nbsp;&nbsp;&nbsp;
+                                    <input type="checkbox" class="form-check-input" ng-model="applicantDetails.SME__c" ng-disabled="disable" />&nbsp; SME&nbsp;&nbsp;&nbsp;
+                                    <input type="checkbox" class="form-check-input" ng-model="applicantDetails.Start_Up__c" ng-disabled="disable" />&nbsp; Start-Up
+                                </div>
+                            </div>
+                                <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>Name</b>
+                                    </label>
+                                    <input type="text" class="form-control" ng-model="applicantDetails.Name" maxlength="255" ng-disabled="disable" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>Department/Division</b>
+                                    </label>
+                                    <input type="text" class="form-control" ng-model="applicantDetails.Department__c" maxlength="255" ng-disabled="disable" />
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>Street</b>
+                                    </label>
+                                    <input type="text" class="form-control" ng-model="applicantDetails.ShippingStreet" maxlength="255" ng-disabled="disable" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>City</b>
+                                    </label>
+                                    <input type="text" class="form-control" ng-model="applicantDetails.ShippingCity" maxlength="255" ng-disabled="disable" />
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>State</b>
+                                    </label>
+                                    <input type="text" class="form-control" ng-model="applicantDetails.ShippingState" maxlength="255" ng-disabled="disable" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>Post Code</b>
+                                    </label>
+                                    <input type="text" class="form-control" ng-model="applicantDetails.ShippingPostalCode" maxlength="255" ng-disabled="disable" />
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>Country</b>
+                                    </label>
+                                    <input type="text" class="form-control" ng-model="applicantDetails.ShippingCountry" maxlength="255" ng-disabled="disable" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>Head Of Project</b>
+                                    </label>
+                                    <input type="text" class="form-control" ng-model="applicantDetails.Head_Of_Project__c" maxlength="255" ng-disabled="disable" />
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>Email</b>
+                                    </label>
+                                    <input type="text" class="form-control" ng-model="applicantDetails.Email__c" maxlength="255" ng-disabled="disable" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>Phone</b>
+                                    </label>
+                                    <input type="text" class="form-control" ng-model="applicantDetails.Phone" maxlength="255" ng-disabled="disable" />
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>Homepage URL</b>
+                                    </label>
+                                    <input class="form-control" type="url" ng-model="applicantDetails.Homepage_URL__c" ng-disabled="disable" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>Year Of Establishment</b>
+                                    </label>
+                                    <input type="text" class="form-control" ng-model="applicantDetails.Year_Of_Establishment__c" maxlength="255" ng-disabled="disable" />
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>Main Business Area</b>
+                                    </label>
+                                    <input type="text" class="form-control" ng-model="applicantDetails.Main_Business_Area__c" maxlength="255" ng-disabled="disable" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>Number Of Permanent Employees</b>
+                                    </label>
+                                    <input type="Number" class="form-control" ng-model="applicantDetails.NumberOfEmployees" ng-disabled="disable" />
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>Infrastructural Facilities</b>
+                                    </label>
+                                    <input type="text" class="form-control" ng-model="applicantDetails.Infrastructural_Facilities__c" maxlength="255" ng-disabled="disable" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>Domain Expertise Available/Existing</b>
+                                    </label>
+                                    <input type="text" class="form-control" ng-model="applicantDetails.Domain_Expertise_Available__c" maxlength="255" ng-disabled="disable" />
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>Ownership Profile</b>
+                                    </label>
+                                    <textarea class="form-control" ng-model="applicantDetails.Ownership_Profile__c" maxlength="131072" ng-disabled="disable" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>Last Year's Balance</b>
+                                    </label>
+                                    <input type="Number" class="form-control" ng-model="applicantDetails.Last_Year_s_Balance__c" ng-disabled="disable" />
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <button type="button" class="blue-btn mt-5" ng-click="saveDetails()"><i class="fa-solid fa-check me-2"></i>Submit and Next</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal footer -->
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="modal" id="Institute">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">
+                                <div class="row">
+                                    <h4 class="heading-border-2 ms-5">
+                                            <b>Institution</b>
+                                    </h4>
+                                </div>
+                            </h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>Name</b>
+                                    </label>
+                                    <input name="Name" placeholder="Name" class="form-control" type="text" ng-model="contactInstituteDetails.Name" maxlength="255" ng-disabled="disable" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>Department/Division</b>
+                                    </label>
+                                    <input name="Department" placeholder="Department" class="form-control" type="text" ng-model="contactInstituteDetails.Department__c" maxlength="255" ng-disabled="disable" />
+                                </div>
+                                </div>
+                                <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>Street</b>
+                                    </label>
+                                    <input name="Street" placeholder="Street" class="form-control" type="text" ng-model="contactInstituteDetails.ShippingStreet" maxlength="255" ng-disabled="disable" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>City</b>
+                                    </label>
+                                    <input name="City" placeholder="City" class="form-control" type="text" ng-model="contactInstituteDetails.ShippingCity" maxlength="255" ng-disabled="disable" />
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>State</b>
+                                    </label>
+                                    <input name="State" placeholder="State" class="form-control" type="text" ng-model="contactInstituteDetails.ShippingState" maxlength="255" ng-disabled="disable" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>Post Code</b>
+                                    </label>
+                                    <input name="Post Code" placeholder="Post Code" class="form-control" type="text" ng-model="contactInstituteDetails.ShippingPostalCode" maxlength="255" ng-disabled="disable" />
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>Country</b>
+                                    </label>
+                                    <input name="Country" placeholder="Country" class="form-control" type="text" ng-model="contactInstituteDetails.ShippingCountry" maxlength="255" ng-disabled="disable" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>Head Of Project</b>
+                                    </label>
+                                    <input name="Head Of Project" placeholder="Head Of Project" class="form-control" type="text" ng-model="contactInstituteDetails.Head_Of_Project__c" maxlength="255" ng-disabled="disable" />
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>Email</b>
+                                    </label>
+                                    <input name="Email" placeholder="Email" class="form-control" type="email" ng-model="contactInstituteDetails.Email__c" ng-disabled="disable" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>Phone</b>
+                                    </label>
+                                    <input name="Phone" placeholder="Phone" class="form-control" type="tel" ng-model="contactInstituteDetails.Phone" ng-disabled="disable" />
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>Homepage URL</b>
+                                    </label>
+                                    <input name="Homepage URL" placeholder="Homepage URL" class="form-control" type="url" ng-model="contactInstituteDetails.Homepage_URL__c" ng-disabled="disable" />
+                                </div>
+                                <div class="col-md-6">
+                                        <button class="blue-btn mt-5" type="submit" ng-click="saveInstituteDetails()"><i class="fa-solid fa-circle-check me-2"></i>Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal" id="cvPage">
+                <div class="modal-dialog" style="min-width:1000px">
+                  <div class="modal-content">
+              
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                      <h4 class="modal-title"><div class="d-flex justify-content-center" style="background:unset;">
+                        <h3>
+                            <b>Curriculum Vitae</b>
+                        </h3>
+                    </div></h4>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+              
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div>
+                            <div class="card" style="margin-bottom: 25px;margin-top: 25px;">
+                                <div class="card-header" style="background:unset;border:unset;">
+                                    <div class="d-flex justify-content-center" style="background:unset;">
+                                     
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="d-flex" style="flex-direction: column;">
+
+                                        <div class="col-sm-12 p-4">
+                                            <div class="col-sm-6">
+                                                <label class="control-label">First Name</label>
+                                                <input type="text" class="form-control" ng-model="contactcvDetails.FirstName" size="60" maxlength="255" ng-disabled="disable" />
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label class="control-label">Last Name</label>
+                                                <input type="text" class="form-control" ng-model="contactcvDetails.LastName" size="60" maxlength="255" ng-disabled="disable" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 p-4">
+                                            <div class="col-sm-6">
+                                                <label class="control-label">Actual Position</label>
+                                                <input type="text" class="form-control" ng-model="contactcvDetails.Actual_Position__c" size="60" maxlength="255" ng-disabled="disable" />
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label class="control-label">Street</label>
+                                                <input type="text" class="form-control" ng-model="contactcvDetails.MailingStreet" size="60" maxlength="255" ng-disabled="disable" />
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 p-4">
+                                            <div class="col-sm-6">
+                                                <label class="control-label">City</label>
+                                                <input type="text" class="form-control" ng-model="contactcvDetails.MailingCity" size="60" maxlength="255" ng-disabled="disable" />
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label class="control-label">State</label>
+                                                <input type="text" class="form-control" ng-model="contactcvDetails.MailingState" size="60" maxlength="255" ng-disabled="disable" />
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="col-sm-12 p-4">
+                                            <div class="col-sm-6">
+                                                <label class="control-label">Post Code</label>
+                                                <input type="text" class="form-control" ng-model="contactcvDetails.MailingPostalCode" size="60" maxlength="255" ng-disabled="disable" />
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label class="control-label">Country</label>
+                                                <input type="text" class="form-control" ng-model="contactcvDetails.MailingCountry" size="60" maxlength="255" ng-disabled="disable" />
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <table class="table table-striped" style="border: 1px solid rgba(0,0,0,.125);border-radius: 0.25rem;">
+                                        <thead>
+                                           
+                                        </thead>
+                                    </table>
+                                </div>
+
+                                <div class="m-5">
+                                    <b>
+                                        <h4>Educational Qualification </h4>
+                                    </b>
+                                    <table class="table table-striped" style="border: 1px solid rgba(0,0,0,.125);border-radius: 0.25rem;">
+                                        <thead>
+                                            <tr>
+                                                <th>Details</th>
+                                                <td>
+                                                    <b>Institution</b>
+                                                </td>
+                                                <td>
+                                                    <b>Specialization</b>
+                                                </td>
+                                                <td>
+                                                    <b>Degree</b>
+                                                </td>
+                                                <td>
+                                                    <b>Year</b>
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="education in educationList">
+                                                <td style="vertical-align: middle;">
+                                                    <label>{{$index + 1}}</label>
+                                                </td>
+                                                <td style="vertical-align: middle;">
+                                                    <label>
+                                                        <input type="text" class="form-control" ng-model="education.Institution_Name__c" size="60" maxlength="255" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td style="vertical-align: middle;">
+                                                    <label>
+                                                        <input type="text" class="form-control" ng-model="education.Specialization__c" size="60" maxlength="255" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td style="vertical-align: middle;">
+                                                    <label>
+                                                        <input type="text" class="form-control" ng-model="education.Degree__c" size="60" maxlength="255" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td style="vertical-align: middle;">
+                                                    <label>
+                                                        <input type="text" class="form-control" ng-model="education.End_Year__c" size="60" maxlength="255" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex">
+
+                                                        <a type="button" class="alert alert-success" style="padding:5px;" ng-click="addRowEdu()">
+                                                            <i class="fa fa-plus" style="font-size:30px" aria-hidden="true"></i>
+                                                        </a>
+                                                        <a type="button" class="alert alert-danger" style="padding:5px;" ng-click="deleteRowEdu($index)">
+                                                            <i class="fa fa-close" style="font-size:30px" aria-hidden="true"></i>
+                                                        </a>
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="m-5">
+                                    <b>
+                                        <h4>Employment Experience </h4>
+                                    </b>
+                                    <table class="table table-striped" style="border: 1px solid rgba(0,0,0,.125);border-radius: 0.25rem;">
+                                        <thead>
+                                            <tr>
+                                                <th>Details</th>
+                                                <td>
+                                                    <b>Organization</b>
+                                                </td>
+                                                <td>
+                                                    <b>Position</b>
+                                                </td>
+                                                <td>
+                                                    <b>Year</b>
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="employment in employmentList">
+                                                <td style="vertical-align: middle;" class="p-4">
+                                                    <label>{{$index + 1}}</label>
+                                                </td>
+                                                <td style="vertical-align: middle;">
+                                                    <label>
+                                                        <input type="text" class="form-control" ng-model="employment.Organization_Name__c" size="60" maxlength="255" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td style="vertical-align: middle;">
+                                                    <label>
+                                                        <input type="text" class="form-control" ng-model="employment.Position__c" size="60" maxlength="255" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td style="vertical-align: middle;">
+                                                    <label>
+                                                        <input type="text" class="form-control" ng-model="employment.End_Year__c" size="60" maxlength="255" ng-disabled="disable" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex">
+                                                        <a type="button" class="alert alert-success" style="padding:5px;" ng-click="addRowEmp()">
+                                                            <i class="fa fa-plus" style="font-size:30px" aria-hidden="true"></i>
+                                                        </a>
+                                                        <a type="button" class="alert alert-danger" style="padding:5px;" ng-click="deleteRowEmp($index)">
+                                                            <i class="fa fa-close" style="font-size:30px" aria-hidden="true"></i>
+                                                        </a>
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="m-5">
+                                    <b>
+                                        <h4>Publications/Patents :</h4>
+                                    </b>
+                                    <table class="table table-striped" style="border: 1px solid rgba(0,0,0,.125);border-radius: 0.25rem;">
+                                        <thead>
+                                            <tr>
+                                                <th>Details</th>
+                                                <td>
+                                                    <b>Description</b>
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="publication in publicationList">
+                                                <td style="vertical-align: middle;">
+                                                    <label>{{$index + 1}}</label>
+                                                </td>
+                                                <td style="vertical-align: middle;">
+                                                    <div text-angular="text-angular" name="htmlcontent" ng-model="publication.Description__c"
+                                                        ta-disabled='disabled' ng-disabled="disable" ng-readonly="true"></div>
+                                                    <br/>
+                                                </td>
+                                                <!--textarea  type="text" class="form-control" ng-model="publication.Description__c" cols="100"/-->
+                                                <td style="vertical-align: middle;">
+                                                    <div class="d-flex">
+                                                        <a type="button" class="alert alert-success" style="padding:5px;" ng-click="addRowPublication()">
+                                                            <i class="fa fa-plus" style="font-size:30px" aria-hidden="true"></i>
+                                                        </a>
+                                                        <a type="button" class="alert alert-danger" style="padding:5px;" ng-click="deleteRowPublication($index)">
+                                                            <i class="fa fa-close" style="font-size:30px" aria-hidden="true"></i>
+                                                        </a>
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="d-flex justify-content-center">
+                                        <br/>
+                                        <button type="button" class="btn btn-primary" style="background:#000;color:#fff;border:1px solid #fff;" ng-click="saveCVDetails()">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+
+
+
+            <!-- The Modal -->
+        
+
+
+
+            <!--div class="row mt-2 ">
+                    <div class="col-md-2">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card" style="margin-bottom: 25px;margin-top: 25px;">
+                            <div class="card-header">
+                                <div class="d-flex justify-content-center">
+                                    <h3>
+                                        <b>Consortia Details</b>
+                                    </h3>
+                                </div>
+                            </div>
+                            <ul class="nav nav-pills">
+                                <li class="nav-item">
+                                    <a style="color:black" class="nav-link" href="#" ng-click="showIndiaForm()"><b>Indian Participant</b></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a style="color:black" class="nav-link" href="#" ng-click="showGermanForm()"><b>German Participant</b></a>
+                                </li>
+                            </ul>
+                            <br/>
+                            
+                            <div class="container" ng-show="showAccount">
+                                <h4>
+                                    <b>Account Details</b>
+                                </h4>
+                                <form class="form-horizontal">
+                                    <div class="form-horizontal">
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-2">Industry</label>
+                                            <div class="col-sm-10">
+                                                <input name="industry" type="checkbox" class="form-check-input" placeholder="Industry" ng-model="accountDetails.Industry__c" />
+                                            </div>
+                                            <label class="control-label col-sm-2">Academia</label>
+                                            <div class="col-sm-10">
+                                                <input name="academia" type="checkbox" class="form-check-input" placeholder="Academia" ng-model="accountDetails.Academia__c" />
+                                            </div>
+                                            <label class="control-label col-sm-2">DSIR Available ?</label>
+                                            <div class="col-sm-10">
+                                                <input type="checkbox" class="form-check-input" ng-model="accountDetails.Is_DSIR_Available__c"  />
+                                            </div>
+                                            <label class="control-label col-sm-4" ng-if="accountDetails.Is_DSIR_Available__c">DSIR Recognition Details</label>
+                                            <div class="col-sm-10" ng-if="accountDetails.Is_DSIR_Available__c">
+                                                <input type="text" class="form-control" ng-model="accountDetails.DSIR_Recoginition_Details__c" />
+                                            </div>
+                                            <label class="control-label col-sm-2">Name</label>
+                                            <div class="col-sm-10">
+                                                <input name="name" type="Text" class="form-control" placeholder="Enter Your Name" ng-model="accountDetails.Name" />
+                                            </div>
+                                            <label class="control-label col-sm-2">Phone</label>
+                                            <div class="col-sm-10">
+                                                <input name="phone" type="tel" class="form-control" placeholder="Enter Your Phone" ng-model="accountDetails.Phone" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                </form>
+                                <div class="card-footer">
+                                    <div class="d-flex justify-content-center"><br/>
+                                        <button type="button" class="btn btn-warning" ng-click="createAccounts()">Submit And Next</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div ng-show="showContact">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Contact Details</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat ="con in contactList">
+                                            <td><label>{{$index + 1}}</label></td>
+                                            <td><label><input class="form-control" ng-model="con.FirstName"/></label><br/></td>
+                                            <td><label><input class="form-control" ng-model="con.LastName"/></label><br/></td>
+                                            <td><label><input class="form-control" ng-model="con.Email"/></label><br/></td>
+                                            <td><label><input class="form-control" ng-model="con.Phone"/></label><br/></td>
+                                            <td>
+                                                <a type="button" style="padding:5px;" ng-click="deleteRow($index)"><i class="fa fa-trash" style="font-size:30px" aria-hidden="true"></i></a>
+                                                <a type="button" style="padding:5px;" ng-click="addRow()"><i class="fa fa-plus" style="font-size:30px" aria-hidden="true"></i></a>
+                                            </td>
+                                        </tr> 
+                                    </tbody>
+                                </table>
+                                <button type="button" class="btn btn-primary" ng-click="createContacts()">
+                                    Submit
+                                </button>
+                            </div>  
+                        </div>  
+                    </div> 
+                </div-->
+
+        </body>
+
+
+    </div>
+
+    </html>
+</apex:page>

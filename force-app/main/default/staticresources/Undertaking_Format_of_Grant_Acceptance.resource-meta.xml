@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <cacheControl>Public</cacheControl>
+    <contentType>application/vnd.openxmlformats-officedocument.wordprocessingml.document</contentType>
+    <description>Undertaking format to be submitted towards acceptance of Grant conditions and signing of Agreement</description>
+</StaticResource>

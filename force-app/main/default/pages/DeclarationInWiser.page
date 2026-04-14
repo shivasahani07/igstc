@@ -1,0 +1,50 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="HostProjectDetailController">
+    <html>
+        <div ng-controller="declarationWiser_ctrl">
+            <head>
+                <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+            </head>
+            
+            <body>
+                
+                 <div class="container px-4 mt-4">
+
+                     <div class="card h-100 m-5">
+                            <div class="card-header h-100 ">
+                            <h4 class="p-3">
+                                    <b>Declaration :</b>
+                            </h4>
+                        </div>
+
+                        <div class="card-text m-3 " >
+                            <p style="text-align: justify; font-weight:bold;"> I (Name), hereby declare that the information furnished above is true, complete and
+                              correct to the best of my knowledge and belief. I understand that in the event of the
+                              information given  by me found false or incorrect at any stage, my application/proposalStage
+                              shall be liable to cancellation without notice or any compensation in lieu there of.
+                            </p><br/>
+                            <!-- <p style="font-weight:bold;">Date:</p> -->
+                            <div class="col-md-6">
+                              <label>Date</label>
+                              <input type="date"  id="txtBirthdate"  class="form-control" ng-model="Birthdate" />
+                          </div>
+                          
+                          <div class="col-md-6">
+                              <label>Digital Signature / Signature Upload
+                              </label>
+                              <input type="date" accept=".pdf"  id="txtBirthdate"  class="form-control" ng-model="Birthdate" />
+                          </div>
+                         
+                        </div>
+
+                     </div>  
+                     <div class="card-footer mt-3">
+                        <button type="button" class="blue-bordered-btn float-end"  ng-click="previousPage()">Previous</button>
+                        <button type="button" class="blue-btn float-end ms-3" ng-click="saveApplicantPortalWiser()"><i class="fa-solid fa-check i-padding"></i>Save and Next</button>
+                    </div>
+
+                     
+                </div>
+            </body>
+        </div>
+    </html>
+</apex:page>

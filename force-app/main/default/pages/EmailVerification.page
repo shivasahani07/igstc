@@ -1,0 +1,91 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="EmailVerification_Controller">
+     <head>
+        <c:Libraries /> 
+        <script> 
+            var app = angular.module('uEmailApp', []);
+            debugger;
+            app.controller('uEmailCtrl', function ($scope) {
+                hashId = "{!$CurrentPage.parameters.id}";
+                console.log('hashId--',hashId);
+                $scope.successfull = false;
+                $scope.onInit = function () {
+                    debugger;
+                    debugger;
+                    if (hashId != "") {
+                        debugger;
+                        EmailVerification_Controller.verifyEmail(hashId, function (result, event) {
+                            debugger;
+                            if (event.status) { 
+                                debugger;
+                                if (result != null) {
+                                    //$scope.successfull = true;
+                                    $scope.res = result;
+                                    console.log('result--',result);
+                                    $scope.$apply();
+
+                                    swal('Thank You!','Your email has been verified Successfully.','success');
+                                        setTimeout(function () {
+                                            window.location.replace(
+                                                'https://indo-germansciencetechnologycentre.my.salesforce-sites.com/ApplicantDashboard/'
+                                            );
+                                        }, 2000);
+
+                                    
+                                    // Swal.fire(
+                                    //     '',
+                                    //     'Your Email has been verified successfully',
+                                    //     'success'
+                                    // )
+                                     if($scope.res == "workshop"){
+                                        var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard?campaign=Landing_Page_Workshop';
+                                        setTimeout(function() {window.location.replace(window.location.origin + sitePrefix )}, 5000);
+                                        
+                                    }else if($scope.res == "pecfar"){
+                                        var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard?campaign=Landing_Page_Pecfar';
+                                        setTimeout(function() {window.location.replace(window.location.origin + sitePrefix )}, 5000);
+                                        
+                                    }else if($scope.res == "if"){
+                                        var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard?campaign=Landing_Page_Industrial_Fellowship';
+                                        setTimeout(function() {window.location.replace(window.location.origin + sitePrefix )}, 5000);
+
+                                    }
+                                    else if($scope.res == "sing"){
+                                        var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard?campaign=LANDING_PAGE_SING';
+                                        setTimeout(function() {window.location.replace(window.location.origin + sitePrefix )}, 5000);
+
+                                    }
+                                    else if($scope.res == "wiser"){
+                                        var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard?campaign=LANDING_PAGE_WISER';
+                                        setTimeout(function() {window.location.replace(window.location.origin + sitePrefix )}, 5000);
+
+                                    }
+                                    else if($scope.res == "2plus2"){
+                                        var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard?campaign=Landing_Page_Two_Plus_Two';
+                                        setTimeout(function() {window.location.replace(window.location.origin + sitePrefix )}, 3000);
+                                    }
+
+                                }
+                            }
+                        }, { escape: false })
+                    } else {
+                         console.log('else part--');
+                       //   window.location.replace('https://surveyfieldwork.com/');
+                       var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/ApplicantDashboard';
+                            window.location.replace(window.location.origin + sitePrefix );
+                    }
+                }
+            });
+        </script>
+    </head>
+
+    <body ng-app="uEmailApp" ng-controller="uEmailCtrl">
+        <div ng-init="onInit()">
+            <div class="jumbotron text-center" ng-if="successfull">
+                <h1 class="display-3">Thank You!</h1>
+                <p class="lead"><strong>Your email has been verified successfully</strong> </p>
+                <hr/>
+              
+              </div>
+        </div>
+    </body>
+</apex:page>

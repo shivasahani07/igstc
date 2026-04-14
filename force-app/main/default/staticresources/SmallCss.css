@@ -1,0 +1,87 @@
+.banner {
+    padding: 20px 0 0 0;
+}
+.banner h1, .become-mentor h1, .about-us h1, .recruiter h1 {
+    font-size: 35px;
+}
+.banner p, .about-us p {
+    font-size: 15px;
+}
+.options {
+    padding: 70px 0;
+    font-size: 14px;
+}
+.promotional-banner {
+    padding: 70px 0;
+}
+.heading-border {
+    font-size: 35px;
+    padding: 25px 0 30px 0;
+}
+.heading-border-center {
+    font-size: 35px;
+}
+.our-mentor, .our-academic {
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+}
+.slick-prev, .slick-next {
+    top: -50px;
+}
+.resource-partner {
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    grid-column-gap: 40px;
+    grid-row-gap: 40px;
+}
+
+/* ------------------------- Become a Mentor ------------------------- */
+.become-mentor {
+    padding: 40px 0 100px 0;
+}
+.become-mentor .gradient {
+    height: 50%;
+}
+.become-mentor p {
+    font-size: 18px;
+}
+.about-mentor {
+    padding: 70px 0;
+}
+.about-mentor p {
+    font-size: 15px;
+}
+.about-mentor p:last-child {
+    padding: 0;
+}
+.mentorship-form {
+    padding: 70px 0;
+}
+
+/* ------------------------- Meet Mentor ------------------------- */
+.about-us {
+    padding: 70px 0 50px 0;
+}
+.about-us h2 {
+    font-size: 20px;
+    line-height: 32px;
+}
+.about-us .caption {
+    width: 100%;
+    left: -50px;
+    bottom: 70px;
+}
+
+/* ------------------------- Why Recruiter ------------------------- */
+.recruiter {
+    padding: 70px 0;
+} 
+.login .login-bg {
+    display: flex;
+}
+
+/* -------------------------- Home -------------------------- */
+.navbar .navbar-nav .nav-item {
+    padding: 0 0 0 42px;
+}
+.navbar .navbar-nav .nav-item:last-child {
+    padding-left: 15px;
+}

@@ -1,0 +1,70 @@
+<template>
+    <template if:false={isLoading}>
+        <div class="container-fluid main-container p-0">
+            <!-- Sidebar -->
+            <div class={sidebarClass}>
+                <div class="d-flex flex-row sidebar-logo-container text-center mb-4">
+                    <img src={igstcLogo} width="50%"  alt="IGSTC Logo" class="d-none d-md-block my-1 mx-auto"/>
+                    <div class="contract-sidebar d-none d-md-block" onclick={toggleContraction}>
+                        <lightning-icon icon-name="utility:chevronleft" size="x-small" alternative-text="caollapse" style="--sds-c-icon-color-foreground-default: white; margin-bottom:0.35rem;"></lightning-icon>
+                    </div>
+                    <div class="cls-btn d-md-none" onclick={toggleSidebar}>
+                        <lightning-icon icon-name="utility:close" size="small" alternative-text="Close" title="Close"></lightning-icon>
+                    </div>
+                </div>
+                <template for:each={sidebarItemsWithClasses} for:item="item">
+                    <div key={item.key}
+                        class={item.class}
+                        data-label={item.MasterLabel}
+                        data-value={item.Value__c}
+                        onclick={setActive}>
+                        <i class={item.Icon__c}></i>
+                        <span class="links_name">{item.MasterLabel}</span>
+                        <span class="tooltip">{item.MasterLabel}</span>
+                    </div>
+                </template>
+            </div>
+            <!-- Backdrop for mobile -->
+            <template if:true={sidebarVisible}>
+                <div class="mobile-backdrop d-md-none" onclick={toggleSidebar}></div>
+            </template>
+            <!-- Content -->
+            <div class="flex-fill content-container">
+                <div class="sticky-header p-3 z-3 d-md-none">
+                    <!-- Mobile Sidebar Toggle -->
+                    <button class="btn btn-light d-md-none sidebar-toggle" onclick={toggleSidebar}>
+                        <i class="fa fa-bars"></i>
+                    </button>
+                </div>
+                <div class="scrollable-content p-3">
+                    <template lwc:if={isDashboard}>
+                        
+                    </template>
+                    <template lwc:if={isApplications}>
+                        <c-reviewer-allocation-application></c-reviewer-allocation-application>
+                    </template>
+                    <template lwc:if={isAllocationEngine}>
+                        <c-reviwer-portal-bulk></c-reviwer-portal-bulk>
+                    </template>
+                    <template lwc:if={isBulUpload}>
+                        <c-bulk-reviewer-mapping-allocation></c-bulk-reviewer-mapping-allocation>
+                    </template>
+                    <template lwc:if={isReviewerDetails}>
+                        <c-reviewer-details></c-reviewer-details>
+                    </template>
+                    <template lwc:if={isReviewerReport}>
+                        <c-reviewer-report></c-reviewer-report>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </template>
+    <template if:true={isLoading}>
+        <div class="modal fade show d-block" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered justify-content-center" role="document">
+                <span class="loader"></span>
+            </div>
+        </div>
+        <div class="modal-backdrop fade show"></div>
+    </template>
+</template>

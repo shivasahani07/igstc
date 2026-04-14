@@ -1,0 +1,258 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+    <html>
+        <div ng-controller="singdoc_ctrl">
+
+            <head>
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+                <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+                <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+            </head>
+
+            <body>
+                <div class="container mt-5">
+
+                    <div class="modal" id="filePreview">
+                        <div class="modal-dialog" style="min-width:120rem">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">
+                                        <div class="d-flex" style="background:unset;">
+                                            <h3 style="text-align: center"><b>{{selectedFile.userDocument.Name}}</b></h3>
+                                        </div>
+                                    </h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <iframe style="width:100%;height:75vh;border: 0px;border-radius: 10px;" id="file_frame" title="File"></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-5 mx-5">
+                        <div class="col-md-12 alert bg-color-list" role="alert">
+                            <ul class="font-if">  
+                              <!-- <li><i class="fa-solid fa-circle text-success me-3"></i>Kindly upload all the documents in a pdf with maximum size of 1 MB</li> -->
+                              <li><i class="fa-solid fa-circle text-success me-3"></i>Indian Awardee needs upload bank details which are certified by their institutional authority. </li>
+                                  <li><i class="fa-solid fa-circle text-success me-3"></i>German Awardee should upload the bank details of their institution using the following format in the link - <a href= "https://www.igstc.org/images/scheme/2_167109753320221215.pdf" >Click here</a>  </li>
+                              <li><i class="fa-solid fa-circle text-success me-3"></i>Click on upload button to upload the documents </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="row box-shadow-2 mt-5 mx-5 p-3" ng-show="statusResult.Proposals__r.Bank_Status__c == 'Sent'">
+                        <div class="row mt-3" style="margin-left: -1px">
+
+                            <div class="col-md-6">
+                                    <label class="font-if">Bank Account Details</label>
+                                    <div class="col-md-9 mt-2" style="padding-left: 0px !important; padding-right: 0px !important">
+
+                                    <div class="input-group input-group-lg">
+                                        <input type="file" accept=".pdf" id="{{bank.userDocument.Name}}" class="form-control "/>
+                                        <span class="input-group-btn">
+                                          <button class="btn btn-success" ng-click="uploadFile(bank.userDocument.Name,bank.userDocument.Id,'','Create','Check Bank Details')" type="button">Upload</button>
+                                        </span>
+                                      </div>
+                                </div>
+
+                                  <div class="col-md-3" ng-show="bank.ContentDistribution.PreferencesAllowPDFDownload">
+                                    <!-- <label style="color: #fff;">.</label> -->
+                                    <a class="blue-btn float-end mt-2 py-3"  ng-click="filePreviewHandler(bank)">View</a>
+                                </div>
+                            </div>
+
+                            <!-- <div class="col-md-6">
+                                <label class="font-if mb-2">Note for Sensitivity/Security Clearance</label>
+                                <div class="col-md-9 mt-4" style="padding-left: 0px !important; padding-right: 0px !important">
+                                    <div class="input-group input-group-lg">
+                                        <input type="file" accept=".pdf" id="{{noteForSensitivity.userDocument.Name}}" class="form-control "/>
+                                        <span class="input-group-btn">
+                                          <button class="btn btn-success" ng-click="uploadFile(noteForSensitivity.userDocument.Name,noteForSensitivity.userDocument.Id,'','Create','Check Note for Sensitivity/Security Clearance')" type="button">Upload</button>
+                                        </span>
+                                      </div>
+                                </div>
+
+                                <div class="col-md-3" ng-show="noteForSensitivity.ContentDistribution.PreferencesAllowPDFDownload">
+                                    <a class="blue-btn float-end mt-4 py-3" ng-click="filePreviewHandler(noteForSensitivity)">View</a>
+                                </div>
+                                
+                            </div> -->
+
+
+                        </div>
+
+                                    <div class="row mt-5 mx-1">
+                                    <div class="col-md-6">
+                                    <label class="font-if">Bank Name<span class="text-danger">*</span></label>
+                                    <input type="text" id="txtBankName" ng-focus="removeClass('BankName')" ng-model="bankDetails.Bank_Name__c" class="form-control"/>
+                                    <!-- <span class="text-danger" id="spnBankName">Please enter the bank name</span> -->
+                                    </div>
+                                    <div class="col-md-6">
+                                    <label class="font-if">Account No.<span class="text-danger">*</span></label>
+                                    <input type="text" id="txtAccNo" ng-focus="removeClass('AccNo')" ng-model="bankDetails.Bank_Account_Number__c" class="form-control"/>
+                                    <!-- <span class="text-danger" id="spnAccNo">Please enter the bank account no.</span> -->
+                                    </div>
+                                    <div class="col-md-6 mt-5">
+                                    <label class="font-if">Account Name<span class="text-danger">*</span></label>
+                                    <input type="text" id="txtAccNo" ng-focus="removeClass('AccNo')" ng-model="bankDetails.Account_Name__c" class="form-control"/>
+                                    <!-- <span class="text-danger" id="spnAccNo">Please enter the account name</span> -->
+                                    </div>
+                                    <div class="col-md-6 mt-5">
+                                    <label class="font-if">IBAN Number<span class="text-danger"></span></label>
+                                    <input type="text" id="txtAccNo" ng-focus="removeClass('AccNo')" ng-model="bankDetails.IBAN_Number__c" class="form-control"/>
+                                    <!-- <span class="text-danger" id="spnAccNo">Please enter the IBAN no.</span> -->
+                                    </div>
+                                    <div class="col-md-6 mt-5">
+                                    <label class="font-if">IFSC Code<span class="text-danger"></span></label>
+                                    <input type="text" id="txtIFSC" ng-focus="removeClass('IFSC')" ng-model="bankDetails.Bank_IFSC_Code__c" class="form-control"/>
+                                    <!-- <span class="text-danger" id="spnIFSC">Please enter the bank IFSC</span> -->
+                                    </div>
+                                    <div class="col-md-6 mt-5">
+                                    <label class="font-if">SWIFT Code<span class="text-danger"></span></label>
+                                    <input type="text" id="txtSWIFTCode" ng-focus="removeClass('SWIFTCode')" ng-model="bankDetails.Bank_SWIFT_Code__c" class="form-control"/>
+                                    <!-- <span class="text-danger" id="spnSWIFTCode">Please enter the bank SWIFT Code</span> -->
+                                    </div>
+                                    <div class="col-md-6 mt-5">
+                                    <label class="font-if">Branch<span class="text-danger">*</span></label>
+                                    <input type="text" ng-model="bankDetails.Bank_Branch_Name__c" class="form-control"/>
+                                    </div>
+                                    
+                        <div class="col-md-6 mt-5">
+                            <label class="font-if">Bank Address</label>
+                            <input type="text" ng-model="bankDetails.Bank_Address__c" class="form-control"/>
+                        </div>
+
+                        </div>
+
+                        <div class="col-md-12 pt-3" style="text-align: center;">
+                            <button type="button" class="blue-btn mt-4" ng-click="saveBankDetails()">Submit</button>
+                        </div>
+
+                        <!-- <div class="row mt-5" style="margin-left: -1px">
+
+                            <div class="col-md-6">
+                                <label class="font-if mb-2">Note for Due Diligence</label>
+                                <div class="col-md-9 mt-4" style="padding-left: 0px !important; padding-right: 0px !important">
+                                    <div class="input-group input-group-lg">
+                                        <input type="file" accept=".pdf" id="{{dueDiligence.userDocument.Name}}" class="form-control "/>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-success" ng-click="uploadFile(dueDiligence.userDocument.Name,dueDiligence.userDocument.Id,'','Create','Check Note for Due Diligence')" type="button">Upload</button>
+                                          </span>
+                                        
+                                      </div>
+                                </div>
+
+                                <div class="col-md-3" ng-show="dueDiligence.ContentDistribution.PreferencesAllowPDFDownload">
+                                    <a class="blue-btn float-end mt-4 py-3" ng-click="filePreviewHandler(dueDiligence)">View</a>
+                                </div>
+                                
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="font-if mb-2">Note for Approval to release Award Letter</label>
+                                <div class="col-md-9 mt-4" style="padding-left: 0px !important; padding-right: 0px !important">
+                                    <div class="input-group input-group-lg">
+                                        <input type="file" accept=".pdf" id="{{awardNote.userDocument.Name}}" class="form-control "/>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-success" ng-click="uploadFile(awardNote.userDocument.Name,awardNote.userDocument.Id,'','Create','Check Note for Approval to release Award Letter')" type="button">Upload</button>
+                                          </span>
+                                        
+                                      </div>
+                                </div>
+
+                                <div class="col-md-3" ng-show="awardNote.ContentDistribution.PreferencesAllowPDFDownload">
+                                    <a class="blue-btn float-end mt-4 py-3" ng-click="filePreviewHandler(awardNote)">View</a>
+                                </div>
+                                
+                            </div>
+
+                        </div>
+
+                        <div class="row mt-3" style="margin-left: -1px">
+
+                            <div class="col-md-6">
+                                <label class="font-if mb-2">Undertaking</label>
+                                <div class="mt-2" style="padding-left: 0px !important; padding-right: 0px !important">
+                                    <div class="input-group input-group-lg">
+                                        <input type="file" accept=".pdf" id="{{undertaking.userDocument.Name}}" class="form-control "/>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-success" ng-click="uploadFile(undertaking.userDocument.Name,undertaking.userDocument.Id,'','Create','Review Undertaking')" type="button">Upload</button>
+                                        </span>
+                                        
+                                      </div>
+                                </div>
+
+                                <div class="col-md-3" ng-show="undertaking.ContentDistribution.PreferencesAllowPDFDownload">
+                                    <a class="blue-btn float-end mt-2 py-3" ng-click="filePreviewHandler(undertaking)">View</a>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                    <label class="font-if mb-2">Euro Remittance Invoice <b>(German applicant only) </b><span class="text-danger me-2"></span></label>
+                                <div class="col-md-9 mt-2" style="padding-left: 0px !important; padding-right: 0px !important">
+                                    <div class="input-group input-group-lg">
+                                        <input type="file" accept=".pdf" id="{{euroRemittance.userDocument.Name}}" class="form-control "/>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-success" ng-click="uploadFile(euroRemittance.userDocument.Name,euroRemittance.userDocument.Id,'','Create','Check Euro Remittance Invoice')" type="button">Upload</button>
+                                        </span>
+                                      </div>
+                                </div>
+
+                                <div class="col-md-3" ng-show="euroRemittance.ContentDistribution.PreferencesAllowPDFDownload">
+                                    <a class="blue-btn float-end mt-4 py-3" ng-click="filePreviewHandler(euroRemittance)">View</a>
+                                </div>
+                                
+                            </div>
+
+                        </div> -->
+                    </div>
+
+                    <div class="row mt-3" style="margin-left: -1px" ng-show="statusResult.Proposals__r.Undertaking_Status__c == 'Sent'">
+
+                        <div class="col-md-5">
+                            <label class="font-if mb-2" >Undertaking2</label>
+                            <div class="mt-2 " style="padding-left: 0px !important; padding-right: 0px !important">
+                                <div class="input-group input-group-lg">
+                                    <input type="file" accept=".pdf" id="{{undertaking.userDocument.Name}}" class="form-control "/>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-success" ng-click="uploadFile(undertaking.userDocument.Name,undertaking.userDocument.Id,'','Create','Review Undertaking')" type="button">Upload</button>
+                                    </span>
+                                    
+                                  </div>
+                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                           <!-- <div class="col-md-3" ng-show="undertaking.ContentDistribution.PreferencesAllowPDFDownload"> -->
+                              
+                            <div class="col-md-5 mt-5" style="padding-left: 0px !important; padding-right: 0px !important" ng-show="undertaking.ContentDistribution.PreferencesAllowPDFDownload">
+                                <a class="blue-btn float-end py-3" ng-click="filePreviewHandler(undertaking)">View</a>
+                            </div>
+                        </div>
+                                </div>
+                    <div class="row mt-3" style="margin-left: -1px" ng-show="statusResult.Proposals__r.Undertaking_Status__c == 'Sent'">
+                            <div class="col-md-5">
+                                <label class="font-if mb-2">Euro Remittance Invoice <b>(German applicant only)</b></label>
+                                <!--<div class="col-md-9 mt-2" style="padding-left: 0px !important; padding-right: 0px !important">-->
+                                <div class=" mt-2" style="padding-left: 0px !important; padding-right: 0px !important">
+                                    <div class="input-group input-group-lg">
+                                        <input type="file" accept=".pdf" id="{{euroRemittance.userDocument.Name}}" class="form-control "/>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-success" ng-click="uploadFile(euroRemittance.userDocument.Name,euroRemittance.userDocument.Id,'','Create','Check Euro Remittance Invoice')" type="button">Upload</button>
+                                        </span>
+                                      </div>
+                                </div>
+								</div>
+                                <div class="col-md-2">
+                                <div class="col-md-5 mt-5" style="padding-left: 0px !important; padding-right: 0px !important" ng-show="euroRemittance.ContentDistribution.PreferencesAllowPDFDownload">
+                                    <a class="blue-btn float-end py-3" ng-click="filePreviewHandler(euroRemittance)">View</a>
+                                </div>
+                                
+                            </div>
+                    </div>
+
+                </div>
+            </body>
+        </div>
+    </html>
+</apex:page>

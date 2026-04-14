@@ -1,0 +1,421 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="IndustrialFellowshipController">
+    <html>
+    <div ng-controller="educQual_ctrl">
+
+        <head>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+            <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+            <!-- <link href="https://fontawesome.io/assets/font-awesome/css/font-awesome.css" rel="stylesheet"/> -->
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css" rel="stylesheet"/>
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+            <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"/>
+                <link href="src/css/angular-datepicker.css" rel="stylesheet" type="text/css" /> -->
+            <script>
+                var userId = '{!$CurrentPage.parameters.id}';
+            </script>
+        </head>
+
+        <body>
+            
+            <form name="formPrjDet">
+                <div class="container mt-5">
+                    <div class="row mx-5">
+                        <div class="col-md-12">
+                            <div class="tab-link" ng-show="proposalStage">
+                                <div class="progress">
+                                    <div class="progress-success w-100"></div>
+                                </div>
+                                <ul>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Pairing_Page')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-user-friends"></i>
+                                            </div>
+                                            <span>Pairing Details</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Personal_Information')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-user-alt"></i>
+                                            </div>
+                                            <span>Personal Information</span>
+                                        </a>
+                                    </li>
+                                     <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('ParentOrganization')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-building"></i>
+                                            </div>
+                                            <span>Parent Organization Details</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Education_Qualification')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-user-graduate"></i>
+                                            </div>
+                                            <span>Education Qualification</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Employment_Details')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-user-edit"></i>
+                                            </div>
+                                            <span>Employment Details</span>
+                                        </a>
+                                    </li>
+                                   
+                                </ul>
+                            </div>
+                            <div class="tab-link" ng-hide="proposalStage">
+                                <div class="progress">
+                                    <div class="progress-success wp-7"></div>
+                                </div>
+                                <ul>
+                                    <li class="active">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-user-friends"></i>
+                                            </div>
+                                            <span>Pairing Details</span>
+                                        </a>
+                                    </li>
+                                    <li class="active">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-user-alt"></i>
+                                            </div>
+                                            <span>Personal Information</span>
+                                        </a>
+                                    </li>
+                                    <li class="active">
+                                        
+                                        <a>
+                                            <div  class="icon-circle">
+                                                <i class="fas fa-building"></i>
+                                            </div>
+                                            <span>Parent Organization Details</span>
+                                        </a>
+                                    </li>
+                                    <li class="active">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-user-graduate"></i>
+                                            </div>
+                                            <span>Education Qualification</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-user-edit"></i>
+                                            </div>
+                                            <span>Employment Details</span>
+                                        </a>
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+                            </div>
+                        </div>
+    
+                        <div class="row mx-5">
+                            <div class="col-md-12">
+                                <div class="tab-link" ng-show="proposalStage">
+                                    <div class="progress">
+                                        <div class="progress-success w-100"></div>
+                                    </div>
+                                    <ul>
+                                       
+                                        <li class="active pb-cursor">
+                                            <a ng-click="redirectPageURL('Achievements_Pecfar')">
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-trophy"></i>
+                                                </div>
+                                                <span>Achievements</span>
+                                            </a>
+                                        </li>
+                                        
+                                        <li class="active pb-cursor">
+                                            <a ng-click="redirectPageURL('Fellowship_Details')">
+                                                <div class="icon-circle">
+                                                    <i class="fa fa-home"></i>
+                                                </div>
+                                                <span>Fellowship Details</span>
+                                            </a>
+                                        </li>
+                                        
+                                        <li class="active pb-cursor">
+                                            <a ng-click="redirectPageURL('Attachments_Pecfar')">
+                                                <div class="icon-circle">
+                                                    <i class="fa fa-paperclip"></i>
+                                                </div>
+                                                <span>Attachments</span>
+                                            </a>
+                                        </li>
+                                        <li class="active pb-cursor">
+                                            <a ng-click="redirectPageURL('Declaration_Pecfar')">
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-check"></i>
+                                                </div>
+                                                <span>Declaration</span>
+                                            </a>
+                                        </li>
+                                        <li class="active pb-cursor">
+                                            <a ng-click="redirectPageURL('ReviewSubmit_Pecfar')">
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-file-signature"></i>
+                                                </div>
+                                                <span>Review and Submit</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="tab-link" ng-hide="proposalStage">
+                                    <div class="progress">
+                                        <div class="progress-success wp-0"></div>
+                                    </div>
+                                    <ul>
+                                       
+                                         <li>
+                                            <a>
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-trophy"></i>
+                                                </div>
+                                                <span>Achievements</span>
+                                            </a>
+                                        </li>
+                                        
+                                        <li>
+                                            <a>
+                                                <div class="icon-circle">
+                                                    <i class="fa fa-home"></i>
+                                                </div>
+                                                <span>Fellowship Details</span>
+                                            </a>
+                                        </li>
+                                       
+                                        <li>
+                                            <a>
+                                                <div class="icon-circle">
+                                                    <i class="fa fa-paperclip"></i>
+                                                </div>
+                                                <span>Attachments</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a>
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-check"></i>
+                                                </div>
+                                                <span>Declaration</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a>
+                                                <div class="icon-circle">
+                                                    <i class="fas fa-file-signature"></i>
+                                                </div>
+                                                <span>Review and Submit</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                </div>
+                            </div>
+
+
+                        <div id="eduQualification">
+                            <div class="row mt-5 mx-5">
+                                <div class="col-md-12 alert bg-color-list" role="alert">
+                                    <ul class="font-if">  
+                                        <li><i class="fa-solid fa-circle text-success me-3"></i>Please enter your marks/grades in Percentage/CGPA form.</li>
+                                        <li><i class="fa-solid fa-circle text-success me-3"></i>For CGPA, the maximum grade scale should be specified. E.g. - You may write CGPA as 4.72/5, 9.5/10.</li>
+                                        <li><i class="fa-solid fa-circle text-success me-3"></i>Kindly note, if there are no Percentage/CGPA allotted in your PhD program, choose CGPA option and fill NA in that field.</li>
+                                        <li><i class="fa-solid fa-circle text-success me-3"></i>If there is a problem in submitting, kindly press "CTRL+Shift+R" in one go and then try to submit. If the problem still<br/>&nbsp;&nbsp;&nbsp;&nbsp; persists, then contact us.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="row mt-5 mx-5">
+                                <div class="col-md-12">
+                                    <h4 class="pb-3 color-theme"><b>Kindly add your degrees in reverse chronological order starting from PhD</b></h4>
+                                </div>
+                            </div>
+
+                            <div class="row mx-5 mt-3">
+                                
+                                <div class="col-md-12">
+                                    <table class="table" cellpadding="4">
+                                        <thead>
+                                            <tr>
+                                                <th style="width:30%;" nowrap="true">Degree
+                                                    <span class="required-asterisk" style="color:red;">*</span>
+                                                </th>
+                                                <th style="width:24%;">Subject/Area of specialization
+                                                    <span class="required-asterisk" style="color:red;">*</span>
+                                                </th>
+                                                <th style="width:10%;" nowrap="true">Year of Completion
+                                                    <span class="required-asterisk" style="color:red;">*</span>
+                                                </th>
+                                                <th style="width:20%;" nowrap="true">Board/Institution
+                                                    <span class="required-asterisk" style="color:red;">*</span>
+                                                </th>
+                                                <th colspan="2" nowrap="true">Percentage/CGPA
+                                                    <span class="required-asterisk" style="color:red;">*</span>
+                                                </th>
+                                                <!-- <th style="width:13%;">
+                                                    <span class="required-asterisk" style="color:red;"></span>
+                                                </th> -->                                                
+                                                <th ng-hide="proposalStage" class="text-center"><i class="fas fa-plus-circle icon" ng-click="addEduRow()" style="width:3%;"></i></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="x in eduList | filter:myFilter">
+                                                <td><input ng-focus="removeClass('degree',$index)" id="degree{{$index}}" ng-model="x.Degree__c" ng-disabled="proposalStage" class="form-control" type="text"/>
+                                                   
+                                            </td>
+                                            <td>
+                                                <input id ="txtSpecialization{{$index}}" ng-focus="removeClass('txtSpecialization',$index)" ng-model="x.Area_of_specialization__c" ng-disabled="proposalStage" class="form-control" type="text"/>
+                                        </td>
+                                                <td><input ng-focus="removeClass('endYear',$index)" id="endYear{{$index}}" ng-model="x.End_Year__c" ng-disabled="proposalStage" class="form-control" type="text" name="duration"/>
+                                                    </td>
+                                                <td><input ng-focus="removeClass('instName',$index)" id="instName{{$index}}" ng-model="x.Institution_Name__c" ng-disabled="proposalStage" value="x.Institution_Name__c" class="form-control" type="text"/></td>
+                                                <td style="border-right:none !important;"><select ng-model="x.Percentage_cgpa__c" ng-focus="removeClass('cgpa',$index)" id="cgpa{{$index}}" style="width: 120px;" ng-change="validatePerCGPA($index)" class="form-control" ng-disabled="proposalStage">
+                                                <option ng-repeat="cgpa in percentCGPA" value="{{cgpa}}">{{cgpa}}</option>    
+                                                </select>
+                                            </td>
+                                            <td ng-show="x.Percentage_cgpa__c == undefined || x.Percentage_cgpa__c == 'Percentage'"><input decimal="x.Percentage__c" ng-model="x.Percentage__c" id="txtPer{{$index}}" style="width: 80px;" ng-focus="removeClass('txtPer',$index)" ng-keyup="validatePercentage($index,$event)" ng-change="validatePercentage($index,$event)" ng-disabled="proposalStage" class="form-control" type="text"/>
+                                                <span style="display: none;" id="spnErrMsg{{$index}}" class="text-danger"></span>
+                                            </td>
+
+                                            <td ng-show="x.Percentage_cgpa__c == 'CGPA'"><input ng-model="x.CGPA__c" id="txtPer{{$index}}" style="width: 80px;" ng-disabled="proposalStage" class="form-control" type="text"/>
+                                            </td>
+                                            
+                                                <td ng-hide="proposalStage"><i class="fas fa-times-circle icon" ng-click="removeRow($index,x.Id)"></i></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row mx-5">
+                                <div class="col-md-6">
+                                    <div class="col-md-12 my-4" style="padding-left: 0px;">
+                                        <label class="color-theme ms-2">Master Thesis</label>
+                                    </div>
+                                    <div class="row box-shadow-2 ms-1 me-2">                                        
+                                        <div class="col-md-12 mt-3">
+                                            <label class="font-if">
+                                                <!-- <span class="text-danger pe-2">*</span> -->
+                                                Thesis title/Topic</label>
+                                            <input type="text" ng-disabled="proposalStage" maxlength="250" ng-focus="removeClass2('masterTitle')" id="masterTitle" ng-model="objMasterThesis.Title_Thesis__c" class="form-control" />
+                                        </div>
+                                        <div class="col-md-12 mt-3">
+                                            <label class="font-if">Institute/Organisation</label>
+                                            <input type="text" ng-disabled="proposalStage" ng-focus="removeClass2('masterInst')" id="masterInst" ng-model="objMasterThesis.Institution_Name__c" class="form-control" />
+                                        </div>
+                                        <div class="col-md-12 mt-3">
+                                            <label class="font-if">
+                                                <!-- <span class="text-danger pe-2">*</span> -->
+                                                Start Date</label>
+                                                <!-- <md-datepicker type="date" ng-disabled="proposalStage" ng-focus="removeClass2('masterSD')" id="masterSD" ng-model="StartDate" class="form-control"></md-datepicker> -->
+                                            <input type="date" ng-disabled="proposalStage" ng-focus="removeClass2('masterSD')" id="masterSD" ng-model="StartDate" class="form-control" />
+                                        </div>
+                                        <div class="col-md-12 mt-3">
+                                            <label class="font-if">
+                                                <!-- <span class="text-danger pe-2">*</span> -->
+                                                End Date</label>
+                                                <!-- <md-datepicker type="date" ng-disabled="proposalStage" ng-focus="removeClass2('masterED')" id="masterED" ng-model="EndDate" class="form-control"></md-datepicker> -->
+                                            <input type="date" ng-disabled="proposalStage" ng-focus="removeClass2('masterED')" id="masterED" ng-model="EndDate" class="form-control" />
+                                        </div>
+                                        <div class="col-md-12 mt-3">
+                                            <label class="font-if">Subject/Area of specialisation
+                                            </label>
+                                            <input ng-focus="removeClass2('masterSpecialization')" id="masterSpecialization" ng-model="objMasterThesis.Area_of_specialization__c" ng-disabled="proposalStage" class="form-control" type="text"/>
+                                            <!-- <select class="form-control" aria-label="Default select example" ng-focus="removeClass2('masterSpecialization')" id="masterSpecialization" ng-model="objMasterThesis.Specialization__c" required="true" ng-disabled="proposalStage"  >
+                                                <option ng-repeat="staff in specialization">{{staff}}</option>
+                                            </select> -->
+                                        </div>
+                                        <div class="col-md-12 mt-3">
+                                            <label class="font-if">Thesis Supervisor(s)</label>
+                                            <input type="text" ng-disabled="proposalStage" ng-focus="removeClass2('masterThesis')" id="masterThesis" ng-model="objMasterThesis.Thesis_Supervisor__c" class="form-control" />
+                                        </div>
+                                        <div class="col-md-12 mt-3 mb-5">
+                                            <label class="font-if">Nature of Thesis Work</label>
+                                            <select class="form-control" ng-disabled="proposalStage" ng-focus="removeClass2('masterNature')" id="masterNature" ng-model="objMasterThesis.Nature_of_Thesis_Work__c">
+                                                <option ng-repeat="nature in natureOfThesisWork">{{nature}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 my-4">
+                                        <label class="color-theme">PhD Thesis</label>
+                                    </div>
+                                    <div class="row box-shadow-2 ms-2 me-1">
+                                        
+                                        <div class="col-md-12 mt-3">
+                                            <label class="font-if">
+                                                <!-- <span class="text-danger pe-2">*</span> -->
+                                                Thesis title/Topic</label>
+                                            <input type="text" ng-disabled="proposalStage" autocomplete="off" maxlength="250" ng-focus="removeClass2('phdTitle')" id="phdTitle" ng-model="objPhDThesis.Title_Thesis__c" value="objPhDThesis.Title_Thesis__c" class="form-control" />
+                                        </div>
+                                        <div class="col-md-12 mt-3">
+                                            <label class="font-if">Institute/Organisation</label>
+                                            <input type="text" ng-disabled="proposalStage" autocomplete="off" ng-focus="removeClass2('phdInst')" id="phdInst" ng-model="objPhDThesis.Institution_Name__c" value="objPhDThesis.Institution_Name__c" class="form-control" />
+                                        </div>
+                                        <div class="col-md-12 mt-3">
+                                            <label class="font-if">
+                                                <!-- <span class="text-danger pe-2">*</span> -->
+                                                Start Date</label>
+                                                <!-- <md-datepicker type="date" ng-disabled="proposalStage" ng-focus="removeClass2('phdSD')" id="phdSD" ng-model="masterStartDate" class="form-control"></md-datepicker> -->
+                                            <input type="date" ng-disabled="proposalStage" ng-focus="removeClass2('phdSD')" id="phdSD" ng-model="masterStartDate" class="form-control" />
+                                        </div>
+                                        <div class="col-md-12 mt-3">
+                                            <label class="font-if">
+                                                <!-- <span class="text-danger pe-2">*</span> -->
+                                                End Date</label>
+                                                <!-- <md-datepicker type="date" ng-disabled="proposalStage" ng-focus="removeClass2('phdED')" id="phdED" ng-model="masterEndDate" class="form-control"></md-datepicker> -->
+                                            <input type="date" ng-disabled="proposalStage" ng-focus="removeClass2('phdED')" id="phdED" ng-model="masterEndDate" class="form-control" />
+                                        </div>
+                                        <div class="col-md-12 mt-3">
+                                            <label class="font-if">Subject/Area of specialisation
+                                            </label>
+                                            <input ng-focus="removeClass2('phdSpecialization')" id="phdSpecialization" ng-model="objPhDThesis.Area_of_specialization__c" ng-disabled="proposalStage" class="form-control" type="text"/>
+                                            <!-- <select class="form-control" aria-label="Default select example" ng-focus="removeClass2('phdSpecialization')" id="phdSpecialization" ng-model="objPhDThesis.Specialization__c" required="true" ng-disabled="proposalStage"  >
+                                                <option ng-repeat="staff in specialization">{{staff}}</option>
+                                            </select> -->
+                                        </div>
+                                        <div class="col-md-12 mt-3">
+                                            <label class="font-if">Thesis Supervisor(s)</label>
+                                            <input type="text" ng-disabled="proposalStage" ng-focus="removeClass2('phdThesis')" id="phdThesis" ng-model="objPhDThesis.Thesis_Supervisor__c" value="objPhDThesis.Thesis_Supervisor__c" class="form-control" />
+                                        </div>
+                                        <div class="col-md-12 mt-3 mb-5">
+                                            <label class="font-if">Nature of Thesis Work</label>
+                                            <select class="form-control" ng-disabled="proposalStage" ng-focus="removeClass2('phdNature')" id="phdNature" ng-model="objPhDThesis.Nature_of_PhD_Work__c">
+                                                <option ng-repeat="nature in natureOfPhDWork">{{nature}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 my-4" ng-if="!proposalStage">
+                                    <button class="blue-btn float-end" ng-click="saveEduDetailIF()" type="button">
+                                        <i class="fa-solid fa-check me-2"></i>Save and Next</button>
+                                    <button class="blue-bordered-btn float-end me-2" ng-click="clickPreviousEduQualification()" type="button">
+                                        <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+                                </div>
+                            </div>
+                        <!-- </div>
+                    </div> -->
+                </div>
+            </div>
+            </form>
+            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        </body>
+    </div>
+    </html>
+</apex:page>

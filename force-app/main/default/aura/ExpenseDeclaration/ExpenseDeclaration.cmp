@@ -1,0 +1,32 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	<aura:attribute name="siteURL" type="String" />
+    <aura:html tag="style">
+        .slds-modal__container{
+        max-width: 80% !important;
+        width:100% !important;
+        height:100% !important;
+        }
+        .slds-modal__footer{
+        display:none !important;
+        }   
+       .slds-modal__container>.modal-body>.baseDefault.forceChatterBasePublisher.forceChatterLightningComponent,
+        .slds-modal__container>.modal-body>.baseDefault.forceChatterBasePublisher.forceChatterLightningComponent>.forceChatterPublisherPresentationPanel,
+        .slds-modal__container>.modal-body>.baseDefault.forceChatterBasePublisher.forceChatterLightningComponent>.forceChatterPublisherPresentationPanel>.container.activeState,
+        .slds-modal__container>.modal-body>.baseDefault.forceChatterBasePublisher.forceChatterLightningComponent>.forceChatterPublisherPresentationPanel>.container.activeState>.cuf-content
+        {
+        	height:100%;
+        }
+        .cQuotePDF, .cQuotePDF.body{
+        	height:auto;
+        	float:right;
+        	background:#2076d3;
+        	color:white !important;
+        	margin:0.25rem;
+        }
+        .cQuotePDF:hover{
+        	color:white;
+        }
+    </aura:html>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+     <!--iframe src="{!v.siteURL}" height="auto" width="auto" style="height:400%;width:100%;"></iframe-->
+</aura:component>

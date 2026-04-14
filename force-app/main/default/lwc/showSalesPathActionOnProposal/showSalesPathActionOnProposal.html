@@ -1,0 +1,32 @@
+<template>
+    <div style="overflow-x:auto;">
+        <template if:true={listOfActions}>
+            <table class="slds-table slds-table--bordered">
+                <thead>
+                    <tr class="slds-text-title--caps">
+                        <th scope="col" style="background-color:#4998ff;color:white; width: 20%;">
+                            <div class="slds-truncate" title="Subject" style="font-size: 15px; text-align: center;">Current Stage</div>
+                        </th>
+                        <th scope="col" style="background-color:#4998ff;color:white; width: 60%;">
+                            <div class="slds-truncate" title="requested" style="font-size: 15px; text-align: center;">Current Action</div>
+                        </th>
+                        <th scope="col" style="background-color:#4998ff;color:white; width: 20%;">
+                            <div class="slds-truncate" title="approved" style="font-size: 15px; text-align: center;">Next Stage</div>
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <template for:each={listOfActions} for:item="action">
+                        <tr key={action.Id}>
+                            <td style="background-color: white; color:forestgreen; text-align: center;"><b style="font-size: 17px;">{action.Stage__c}</b></td>
+                            <td style="background-color: white; color:mediumblue; text-align: center;"><b style="font-size: 17px;">{action.Current_Action__c}</b></td>
+                            <td style="background-color: white; color:red; text-align: center;"><b style="font-size: 17px;">{action.Next_Stage__c}</b></td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </template>
+    </div>
+    
+</template>

@@ -1,0 +1,184 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+  <html>
+  <div ng-controller='myProp_ctrl'>
+
+  <head>
+    <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+  </head>
+  <!-- <div class="industrial-felowship">
+    <div class="industrial-banner">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <h2>Industrial Fellowships</h2>
+            <p>The fellowship is aimed at exposure of PhD students/ Post Docs in a German industrial setup to promote applied research and technology development.</p>
+            <a href="#" class="btn apply-btn">Apply</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <h3 class="pt-5 pb-4 text-uppercase">IGSTC Industrial Fellowships - Call 2022</h3>
+      <p>Indo-German Science Technology Centre IGSTC, established by the Department of Science and Technology DST, Government of India, and the Federal Ministry of Education and Research BMBF, Government of Germany invites applications for availing Industrial Fellowships to encourage young researchers towards applied research. This programme is aimed at encouraging PhD students/researchers in ST with appreciable track record and having aptitude for applied research and technology development.</p>
+      <h3 class="pt-5 pb-4 text-uppercase">Fellowships are offered at two levels:</h3>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="level">
+            PhD Industrial Exposure Fellowships (PIEF) – PhD students (science/engineering) enrolled in any research institutions/universities in India and completed at least one year of their PhD curriculum can apply for the Fellowship. Young researchers with high quality research projects that combine innovative approaches towards new concepts and technological development in chosen industrial research set up in Germany may be considered. The duration of the Fellowship is 3-6 months.Age limit: 30 yrs.
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="level">
+            Post Doctoral Industrial Fellowships (PDIF) – Postdoctoral researchers/fresh PhDs who have been awarded their PhD degree in science/engineering within 3 years of the application deadline by any Indian institution/university are eligible to apply. Outstanding researchers not holding a permanent position or having a career break are eligible to apply. Those who have submitted their PhD thesis are also eligible to apply. The Fellowship is granted to work in any industrial research set up in Germany. The duration of the Fellowship is 6-12 months.Age limit: 35 yrs.
+          </div>
+        </div>
+      </div>
+      <p class="text-uppercase pt-5 pb-5 mb-5">Applicants would need to identify the industry/industrial research organisation in Germany and have to submit consent letters from the host industry in Germany and their mentor from India.</p>
+      <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              Aim of the programme
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              Financial Support
+            </button>
+          </h2>
+          <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingThree">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+              Proposal Submission
+            </button>
+          </h2>
+          <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingFour">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+              Evaluation
+            </button>
+          </h2>
+          <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingFive">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+              Fellowship Requirements
+            </button>
+          </h2>
+          <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingSix">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+              Contacts
+            </button>
+          </h2>
+          <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="blue-btn" type="button">
+        Apply
+      </button>
+    </div>
+  </div> -->
+  <div class="container px-4">
+    <!-- <div class="card m-5"> -->
+      <!-- <div class="card-header">
+        <h2 class="p-3">
+          <b>My Proposal</b>
+        </h2>
+      </div> -->
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col" nowrap="true">Application Id</th>
+            <th scope="col" ng-hide="showContactNames" style="width: 30%">Title Of Proposal</th>
+            <th scope="col" ng-show="showContactNames">Name of Indian Pair</th>
+            <th scope="col" ng-show="showContactNames">Name of German Pair</th>
+            <th scope="col">Programme</th>
+            <th scope="col">Stage</th>
+            <th scope="col" nowrap="true">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{project.Name}}</td>
+            <td ng-hide="showContactNames">{{project.Title_Of__c|specialChar}}</td>
+            <td ng-show="showContactNames">
+              {{IndianContact}}
+            </td>
+            <td ng-show="showContactNames">
+              {{GermanyContact}}
+            </td>
+            <td>{{project.Campaign__r.Name}}</td>
+            <td>{{propStage}}</td>
+            <td nowrap="true">
+              <button type="button" class="blue-btn" ng-click="viewProposal()">{{buttonText}}</button>
+                <a ng-show="project.Document_generated__c" href="{{fileURL}}" target="_blank" class="blue-btn">Download</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    <!-- </div> -->
+  </div>
+  </div>
+  <!-- <div ng-controller='myProp_ctrl'>
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-8 mt-2 mb-2">
+    
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Proposal Name</th>
+                  <th scope="col">Title Of Proposal</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>{{project.Name}}</th>
+                  <th>{{project.Title_Of__c}}</th>
+                  <th><button type="button" class="btn btn-primary" ng-click="redirectPageURL('ProjectDetailPage')">View</button></th>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+      </div> -->
+
+  </html>
+</apex:page>

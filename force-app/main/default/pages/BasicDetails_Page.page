@@ -1,0 +1,295 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+    <html>
+        <div ng-controller="basicDetails_ctrl">
+            <head>
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+            <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+                <style>
+                    .ta-editor {
+                       min-height: 300px;
+                       height: auto;
+                       overflow: auto;
+                       font-family: inherit;
+                       font-size: 100%;
+                   }
+                </style>
+                <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+            </head>
+
+            <body>
+
+                <div class="container mt-5">
+                <!-- <div class="container px-4 mt-5"> -->
+                    <div class="row mx-5">
+                        <div class="col-md-12">
+                            <div class="tab-link" ng-show="proposalStage">
+                                <div class="progress">
+                                    <div class="progress-success w-100"></div>
+                                </div>
+                                <ul>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Coordinators_Page')">
+                                            <div class="icon-circle">
+                                                <i class="fab fa-wpforms"></i>
+                                            </div>
+                                            <span>Co-ordinators Detail</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('BasicDetails_Page')">
+                                            <div class="icon-circle">
+                                                <i class="fa-regular fa-building-o"></i>
+                                            </div>
+                                            <span>Basic Details</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Proposal_Details')">
+                                            <div class="icon-circle">
+                                                <i class="fa-solid fa-address-book"></i>
+                                            </div>
+                                            <span>Proposal Details</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Participants')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-file-invoice"></i>
+                                            </div>
+                                            <span>Participants</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Financial_Details')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-box"></i>
+                                            </div>
+                                            <span>Budget Details</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Curriculum_vitae')">
+                                            <div class="icon-circle">
+                                                <i class="fab fa-meetup"></i>
+                                            </div>
+                                            <span>Curriculum vitae</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Meeting_Theme')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-people-group"></i>
+                                            </div>
+                                            <span>Workshop Agenda</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('SignatureOfCoordinators')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-file-signature"></i>
+                                            </div>
+                                            <span>Signature</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="tab-link" ng-hide="proposalStage">
+                                <div class="progress">
+                                    <div class="progress-success wp-2"></div>
+                                </div>
+                                <ul>
+                                    <li class="active">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fab fa-wpforms"></i>
+                                            </div>
+                                            <span>Co-ordinators Detail</span>
+                                        </a>
+                                    </li>
+                                    <li class="active">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa-regular fa-building-o"></i>
+                                            </div>
+                                            <span>Basic Details</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa-solid fa-address-book"></i>
+                                            </div>
+                                            <span>Proposal Details</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-file-invoice"></i>
+                                            </div>
+                                            <span>Participants</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-box"></i>
+                                            </div>
+                                            <span>Budget Details</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fab fa-meetup"></i>
+                                            </div>
+                                            <span>Curriculum vitae</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-people-group"></i>
+                                            </div>
+                                            <span>Workshop Agenda</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-file-signature"></i>
+                                            </div>
+                                            <span>Signature</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            </div>
+                        </div>
+                    <!-- </div> -->
+                            
+
+                <form name="formPrjDet">
+                    <!-- <div class="row mb-5 mx-5 mt-5">
+                        <div class="col-md-12 alert bg-color-list" role="alert">
+                            <ul class="font-if">  
+                              <li><i class="fa-solid fa-circle text-success me-3"></i>Workshop should tentatively start after 1st June 2023 and not before.</li>
+                            </ul>
+                        </div>
+                    </div> -->
+                        <div class="row box-shadow-2 mt-3 mx-5 p-3">
+                            
+
+                            <div class="col-md-12 mt-3">
+                                <label class="font-if">
+                                    Thematic Area of the Proposal
+                                </label>
+                                <span class="required-asterisk" style="color:red;">*</span>
+                                <input ng-focus="removeClass2('thematic')" id="thematic" name="Thematic Area" placeholder="Thematic Area" class="form-control" type="text" ng-model="applicantDetails.Thematic_Area__c" ng-disabled="proposalStage" />
+                            </div>
+                            <div class="col-md-12 mt-3">
+                                <label class="font-if">
+                                    Title Of Proposal
+                                </label>
+                                <span class="required-asterisk" style="color:red;">*</span>
+                                <input ng-focus="removeClass2('titleProp')" id="titleProp" name="Title Of Proposal" placeholder="Title Of Proposal" class="form-control" type="text" ng-model="applicantDetails.Title_Of__c" ng-disabled="proposalStage" />
+                            </div>
+                            <!-- </div> -->
+                            <!-- <div class="row mt-4 mx-5"> -->
+                                <div class="col-md-12 mt-3">
+                                    <label class="font-if">
+                                        Title des Antrages(In German)
+                                    </label>
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                    <input ng-focus="removeClass2('title')" id="title" name="Title In German" placeholder="Title In German" class="form-control" type="text" ng-model="applicantDetails.Title_In_German__c" ng-disabled="proposalStage" />
+                                </div>
+                                <div class="col-md-4 mt-3">
+                                    <label class="font-if">
+                                        Acronym
+                                    </label>
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                    <input ng-focus="removeClass2('acronym')" id="acronym" name="acronym" placeholder="acronym" class="form-control" type="text" ng-model="applicantDetails.Acronym__c" ng-disabled="proposalStage" />
+                                </div>
+
+                                <div class="col-md-4 mt-3">
+                                    <label class="font-if">
+                                        Proposed Venue
+                                    </label>
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                    <input ng-focus="removeClass2('venue')" id="venue" name="proposedvenue" placeholder="proposedvenue" class="form-control" type="text" ng-model="applicantDetails.Proposed_Venue__c" ng-disabled="proposalStage" /><br/>
+                                </div>
+
+                                <div class="col-md-4 mt-3">
+                                    <label class="font-if">
+                                        Country of Venue
+                                    </label>
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                    <select class="form-control" aria-label="Default select example" ng-focus="removeClass2('txtCountry')" id="txtCountry" ng-model="applicantDetails.Country_of_Venue__c" ng-disabled="proposalStage">
+                                        <option ng-repeat="staff in countrytype">{{staff}}</option>
+                                    </select>
+                                </div>
+                            <!-- </div> -->
+                            <!-- <div class="row mt-4 mx-5"> -->
+                                <div class="col-md-6 mt-3 mb-3">
+                                    <label class="font-if">
+                                        Workshop Start Date
+                                    </label>
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                    <input ng-focus="removeClass2('proposedDate')" id="proposedDate" name="Proposed Date" placeholder="Proposed Date" class="form-control" ng-init="proposedDate=(proposedDate | date:'yyyy-MM-dd')"
+                                        type="date" ng-model="proposedDate" required="true" ng-required="applicantDetails.Proposed_Date__c" ng-disabled="proposalStage" />
+                                </div>
+                                <div class="col-md-6 mt-3 mb-3">
+                                    <label class="font-if">
+                                        Workshop End Date
+                                    </label>
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                    <input ng-focus="removeClass2('endDate')" id="endDate" name="End Date" placeholder="End Date" class="form-control" ng-init="endDate=(endDate | date:'yyyy-MM-dd')"
+                                        type="date" ng-model="endDate" required="true" ng-required="applicantDetails.Workshop_Finish_Date__c" ng-disabled="proposalStage" />
+                                </div>
+                            <!-- </div> -->
+                            <!-- <div class="row mt-4 mx-5"> -->
+                                <br/>
+                            <!-- </div> -->
+                            </div>
+                            <!-- <div class="row mt-4 mx-5"> -->
+                                <div class="row mt-5 mx-4">
+                                    <div class="col-md-12 mt-3">
+                                        <label class="pb-3 color-theme">
+                                            Summary (Max 1000 characters):
+                                        </label><br/>
+                                        <small class="label-rtf"><b>To use the below RTF box more efficiently, make sure you write your content in word document first and then copy paste here</b></small>
+                                        <span class="required-asterisk" style="color:red;">*</span>
+                                            <ng-ckeditor id="txtSummary" ng-change="readCharacter(applicantDetails.Summary__c,0)" read-Only="true" ng-model="applicantDetails.Summary__c" name="ckEditor1" ng-config="config" maxlength="1000"></ng-ckeditor>
+                                            <span>Total characters : {{objRtf[0].charCount}}</span>
+                                            <span class="text-danger" ng-if="objRtf[0].errorStatus">maximum character limit is 1000</span>
+                                    </div>
+                                </div>
+                                    
+                                <!-- </div> -->
+                            <!-- </div> -->
+                            <div class="row m-5" ng-if="!proposalStage">
+                                <div class="col-md-12">
+                                    
+                                    <!-- <button class="blue-btn float-end"  ng-click="saveBasicDetails()" type="button">
+                                        <i class="fa-solid fa-arrow-right me-2"></i>Next</button> -->
+                                    <button class="blue-btn float-end" ng-click="saveBasicDetails()" type="button">
+                                        <i class="fa-solid fa-check me-2"></i>Save and Next</button>
+                                    <button class="btn btn-secondary float-end me-2" style="padding: 8px 20px !important;font-size: 16px !important;" ng-click="redirectPageURL('Coordinators_Page')" type="button">
+                                        <i class="fa-solid fa-arrow-left me-2"></i>Back</button>
+                                    <!-- <button class="blue-btn float-end" ng-click="saveBasicDetails()" type="button">
+                                        <i class="fa-solid fa-check me-2"></i>Save and Next</button> -->
+                                </div>
+                            </div>
+                        <!-- <div class="card-footer" ng-if="!proposalStage">
+                                <button type="button" class="blue-btn float-end me-4" ng-click="saveBasicDetails()"><i class="fa-solid fa-check i-padding"></i>Save and Next</button>
+                        </div> -->
+                <!-- </div> -->
+                </form>
+                </div>
+            </body>
+        </div>
+    </html>
+</apex:page>

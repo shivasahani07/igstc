@@ -1,0 +1,53 @@
+<template>
+    <lightning-card title="Create Terms & Conditions" icon-name="standard:document">
+        <div class="slds-p-around_medium">
+
+            <!-- Row 1: Campaign & Country -->
+            <div class="slds-grid slds-gutters">
+                <!-- Campaign Lookup -->
+                <div class="slds-col slds-size_1-of-2">
+                    <lightning-record-edit-form object-api-name="Terms_Condition__c">
+                        <lightning-record-picker
+                        lwc:ref="camapaignLookup"
+                        label="Campaign"
+                        placeholder="Select a Campaign"
+                        object-api-name="Campaign"
+                        onchange={handleCampaignChange}>
+                    </lightning-record-picker>
+                    </lightning-record-edit-form>
+                </div>
+
+                <!-- Country Picklist -->
+                <div class="slds-col slds-size_1-of-2">
+                    <lightning-combobox
+                        name="country"
+                        label="Country"
+                        value={country}
+                        options={countryOptions}
+                        placeholder="Select Country"
+                        onchange={handleChange}>
+                    </lightning-combobox>
+                </div>
+            </div>
+
+            <!-- Row 2: Terms Description -->
+            <div class="slds-m-top_medium ">
+                <lightning-input-rich-text
+                    name="description"
+                    label="Terms Description"
+                    value={termsDescription}
+                    onchange={handleChange}>
+                </lightning-input-rich-text>
+            </div>
+
+            <!-- Save Button -->
+            <div class="slds-align_absolute-center slds-m-top_large">
+                <lightning-button
+                    variant="brand"
+                    label="Save"
+                    onclick={handleSave}>
+                </lightning-button>
+            </div>
+        </div>
+    </lightning-card>
+</template>

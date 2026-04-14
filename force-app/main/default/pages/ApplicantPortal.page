@@ -1,0 +1,3102 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" docType="html-5.0"
+    controller="ApplicantPortal_Contoller">
+
+    <head>
+        <c:Libraries />
+        <script>
+            var tabValues = JSON.parse('{!tabValues}');
+            var candidateId = '{!candidateId}';
+            var campaigntype = '{!campaigntype}';
+            var countrytype = JSON.parse('{!countrytype}');
+            var countryCode = JSON.parse('{!countryCode}');
+            var availingFellowship = JSON.parse('{!availingFellowship}');
+            var pairedApplicant = JSON.parse('{!pairedApplicant}');
+            var participantType = JSON.parse('{!participantType}');
+            var bankType = JSON.parse('{!bankType}');
+            var participatingWorkshop = JSON.parse('{!participatingWorkshop}');
+            var specialization = JSON.parse('{!specialization}');
+            var presentingWorkshop = JSON.parse('{!presentingWorkshop}');
+            var currencyType2 = JSON.parse('{!currencyType2}');
+            var siteURL = '{!ApplicantPortalSiteURL}';
+            var financialConDetails = JSON.parse('{!financialConDetails}');
+            var thematicAreaList = JSON.parse('{!thematicAreaList}');
+            var domainURL = '{!$Label.ApplicantPortalSiteURL}';
+            var contactId = '{!contactId}';
+            var secondstage = '{!secondstage}';
+            var emailVerified = '{!emailVerified}';
+            var isCoordinator = '{!isCoordinator}';
+            var proposalStage = '{!proposalStage}';
+            var gender = JSON.parse('{!gender}');
+            var applicantName = '{!applicantName}';
+            var applicantEmail = '{!applicantEmail}';
+            var country = JSON.parse('{!country}');
+            var nationality = JSON.parse('{!nationality}');
+            var available_followship = '{!available_followship}';
+            var associated_with_igstc = '{!associated_with_igstc}';
+            var isPrimaryContact = '{!isPrimaryContact}';
+            var accountId = '{!accountId}';
+            var natureOfThesisWork = JSON.parse('{!natureOfThesisWork}');
+            var natureOfPhDWork = JSON.parse('{!natureOfPhDWork}');
+            var percentCGPA = JSON.parse('{!percentCGPA}');
+            var states = JSON.parse('{!states}');
+            var campaignData = '{!campaignData}';
+            var signDate = '{!signDate}';
+            var currencyPickList = JSON.parse('{!currencyPickList}');
+            var partnerSubmission = '{!partnerSubmission}';
+            var proposalWrapperList = '{!proposalWrapperList}';
+
+            var yearList = JSON.parse('{!yearList}');//Added for Dropodown by Karthik
+
+            // Contact Profile Remote Actions (moved from contactprofile.page)
+            var REMOTE_ACTION_SAVE_CONTACT = '{!JSENCODE($RemoteAction.ApplicantPortal_Contoller.saveContactProfile)}';
+            var REMOTE_ACTION_SAVE_EDUCATION = '{!JSENCODE($RemoteAction.ApplicantPortal_Contoller.saveEducationDetails)}';
+            var REMOTE_ACTION_SAVE_EMPLOYMENT = '{!JSENCODE($RemoteAction.ApplicantPortal_Contoller.saveEmploymentDetails)}';
+            var REMOTE_ACTION_SAVE_ACHIEVEMENT = '{!JSENCODE($RemoteAction.ApplicantPortal_Contoller.saveAchievementDetails)}';
+            var REMOTE_ACTION_DELETE_EDUCATION = '{!JSENCODE($RemoteAction.ApplicantPortal_Contoller.deleteEducationRecord)}';
+            var REMOTE_ACTION_DELETE_EMPLOYMENT = '{!JSENCODE($RemoteAction.ApplicantPortal_Contoller.deleteEmploymentRecord)}';
+            var REMOTE_ACTION_UPLOAD_PIC = '{!JSENCODE($RemoteAction.ApplicantPortal_Contoller.doUploadProfilePic)}';
+            var REMOTE_ACTION_GET_IMAGE = '{!JSENCODE($RemoteAction.ApplicantPortal_Contoller.getProfileImageUrl)}';
+
+            // Contact Profile Data
+            var contactProfileData = {
+                contactId: '{!contactId}',
+                firstName: '{!JSENCODE(con.FirstName)}',
+                lastName: '{!JSENCODE(con.LastName)}',
+                salutation: '{!JSENCODE(con.Salutation)}',
+                designation: '{!JSENCODE(con.Designation__c)}',
+                department: '{!JSENCODE(con.Department)}',
+                email: '{!JSENCODE(con.Email)}',
+                mobilePhone: '{!JSENCODE(con.MobilePhone)}',
+                mailingCountry: '{!JSENCODE(con.MailingCountry)}',
+                mailingStreet: '{!JSENCODE(con.MailingStreet)}',
+                mailingState: '{!JSENCODE(con.MailingState)}',
+                mailingCity: '{!JSENCODE(con.MailingCity)}',
+                mailingPostalCode: '{!JSENCODE(con.MailingPostalCode)}',
+                accountName: '{!JSENCODE(con.Account.Name)}',
+                profileImageUrl: '{!IF(profileImageUrl != null && profileImageUrl != "", JSENCODE(profileImageUrl), "")}',
+                educationListJSON: '{!IF(educationListJSON != null && educationListJSON != "", JSENCODE(educationListJSON), "[]")}',
+                employmentListJSON: '{!IF(employmentListJSON != null && employmentListJSON != "", JSENCODE(employmentListJSON), "[]")}',
+                achievementListJSON: '{!IF(achievementListJSON != null && achievementListJSON != "", JSENCODE(achievementListJSON), "[]")}'
+            };
+
+            // Initialize contact profile data on page load
+            if (typeof contactProfileData === 'undefined' || !contactProfileData.contactId) {
+                contactProfileData = {
+                    contactId: '',
+                    firstName: '',
+                    lastName: '',
+                    salutation: '',
+                    designation: '',
+                    department: '',
+                    email: '',
+                    mobilePhone: '',
+                    mailingCountry: '',
+                    mailingStreet: '',
+                    mailingState: '',
+                    mailingCity: '',
+                    mailingPostalCode: '',
+                    accountName: '',
+                    profileImageUrl: '',
+                    educationListJSON: '[]',
+                    employmentListJSON: '[]',
+                    achievementListJSON: '[]'
+                };
+            }
+
+            debugger;
+
+            var candidateId = '{!contactId}';
+            var candidateId = '{!$CurrentPage.parameters.id}';
+        </script>
+        <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+        <apex:stylesheet value="{!$Resource.ReviewerPortalCss}" />
+        <apex:stylesheet value="{!$Resource.SlickThemeCSS}" />
+        <apex:stylesheet value="{!$Resource.SlickCss}" />
+
+        <apex:stylesheet value="{!$Resource.SmallCss}" />
+        <apex:stylesheet value="{!$Resource.MediumCss}" />
+        <apex:stylesheet value="{!$Resource.LargCss}" />
+        <!--script src="{!$Resource.AngularMultiSelectDirective}" /-->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular-route.min.js"></script>
+        <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.7.0/lodash.min.js">
+        </script>
+        <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+        <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css" />
+        <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular-sanitize.min.js'></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.1.2/textAngular.min.js'></script>
+        <script src="{!$Resource.datetimepicker}"></script>
+
+
+        <c:Controllers />
+        <!-- Load ApplicantPortal.js after Angular is loaded via Controllers component -->
+        <apex:includeScript value="{!$Resource.ApplicantPortal}" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+            rel="stylesheet" />
+        <style>
+            /* body {
+    background: #F5F5F5;
+} */
+            /* .card-img-left { */
+            /*width: 45%;*/
+            /* Link to your background image using in the property below! */
+            /* background: scroll center url('https://source.unsplash.com/WEQbe2jBg40/414x512');
+    background-size: 'cover'; */
+            /* } */
+            /*
+.btn-login {
+    font-size: 0.9rem;
+    letter-spacing: 0.05rem;
+    padding: 0.75rem 1rem;
+}
+
+.btn-google {
+    color: white !important;
+    background-color: #ea4335;
+}
+
+.btn-facebook {
+    color: white !important;
+    background-color: #3b5998;
+}
+
+.loadingBackground {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background: #F6F6F6;
+    z-index: 11111;
+    opacity: 0.7;
+    top: 0px;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+.loading {
+    top: 50%;
+    left: 50%;
+    margin: -50px 0px 0px -50px;
+    z-index: 111111;
+    position: fixed;
+}
+.i-padding{
+            padding-right: 10px;
+        }
+@media only screen and (min-width:850px) and (max-width:1000px){
+    .padding_1000{
+        padding-left:20px !important;
+        padding-right:20px !important;
+    }
+}
+/* Flatten invalid nested media queries */
+            @media screen and (min-device-width: 650px) and (max-device-width: 750px) {
+                .col {
+                    padding: unset;
+                }
+            }
+
+            @media only screen and (max-width: 750px) {
+                .col {
+                    flex-shrink: 0 !important;
+                    flex: unset;
+                }
+            }
+        </style>
+        <c:Controllers />
+        <style>
+            @media (min-width: 576px) {
+                .h-sm-100 {
+                    height: 100%;
+                }
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                /* font-family: 'Segoe UI', sans-serif; */
+                font-family: "Nunito Sans", sans-serif;
+                background-color: #f6f6fb;
+                min-height: 100vh;
+            }
+
+            /* Sidebar */
+            .sidebar-appPortal {
+                width: 240px;
+                background-color: #fff;
+                border-right: 1px solid #e0e0e0;
+                display: flex;
+                flex-direction: column;
+                padding-top: 0;
+                margin-top: 70px;
+                height: calc(100vh - 70px);
+                position: fixed;
+                left: 0;
+                overflow-y: auto;
+            }
+
+            .sidebar-appPortal .logo {
+                display: none;
+            }
+
+            .sidebar-appPortal .igstc-logo {
+                padding: 15px 20px;
+                text-align: center;
+                margin-bottom: 30px;
+            }
+
+            .sidebar-appPortal .igstc-logo img {
+                width: 100%;
+                max-width: 180px;
+                height: auto;
+                object-fit: contain;
+            }
+
+            .nav-item {
+                padding: 15px 25px;
+                font-size: 15px;
+                color: #444;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                transition: background-color 0.3s;
+            }
+
+            .nav-item i {
+                margin-right: 12px;
+                font-size: 16px;
+            }
+
+            .nav-item:hover,
+            .nav-item.active {
+                background-color: #4b0082;
+                color: #fff;
+            }
+
+            .bottom-nav {
+                margin-top: auto;
+            }
+
+            /* Main Content */
+            .main-content {
+                flex: 1;
+                padding: 30px;
+                padding-top: 10px;
+                overflow-y: auto;
+                scrollbar-width: none;
+                background-color: #F9F9FB;
+                margin-left: 240px;
+                margin-top: 70px;
+                min-height: calc(100vh - 70px);
+            }
+
+            .header {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+            .header span {
+                font-weight: 500;
+                color: #333;
+            }
+
+            /* Top Bar - Full Width Header */
+            .top-bar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                background-color: #fff;
+                padding: 15px 30px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                height: 70px;
+            }
+
+            .top-bar-left {
+                display: flex;
+                align-items: center;
+            }
+
+            .top-bar-logo {
+                display: flex;
+                align-items: center;
+                height: 100%;
+            }
+
+            .top-bar-logo img {
+                max-height: 50px;
+                height: auto;
+                width: auto;
+                object-fit: contain;
+            }
+
+            .top-bar-right {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .user-name {
+                font-weight: 500;
+                color: #333;
+                font-size: 15px;
+                white-space: nowrap;
+            }
+
+            .user-profile-dropdown {
+                position: relative;
+            }
+
+            .user-profile-trigger {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                cursor: pointer;
+                padding: 4px;
+                border-radius: 8px;
+                transition: background-color 0.3s ease;
+            }
+
+            .user-profile-trigger:hover {
+                background-color: #f5f5f5;
+            }
+
+            .avatar-wrapper {
+                position: relative;
+                display: inline-block;
+            }
+
+            .user-avatar,
+            .user-avatar-placeholder {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+                display: block;
+            }
+
+            .user-avatar-placeholder {
+                background-color: #ff9800;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 18px;
+            }
+
+            .user-status-indicator {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                width: 12px;
+                height: 12px;
+                background-color: #4caf50;
+                border: 2px solid white;
+                border-radius: 50%;
+            }
+
+            .dropdown-arrow {
+                color: #666;
+                font-size: 12px;
+                transition: transform 0.3s ease;
+            }
+
+            .dropdown-arrow.rotated {
+                transform: rotate(180deg);
+            }
+
+            .user-dropdown-menu {
+                position: absolute;
+                top: calc(100% + 10px);
+                right: 0;
+                background-color: #fff;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                min-width: 280px;
+                padding: 16px 0;
+                z-index: 1001;
+            }
+
+            .dropdown-user-info {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 0 16px 16px 16px;
+            }
+
+            .dropdown-avatar-wrapper {
+                position: relative;
+                flex-shrink: 0;
+            }
+
+            .dropdown-avatar,
+            .dropdown-avatar-placeholder {
+                width: 48px;
+                height: 48px;
+                border-radius: 50%;
+                object-fit: cover;
+                display: block;
+            }
+
+            .dropdown-avatar-placeholder {
+                background-color: #ff9800;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 20px;
+            }
+
+            .dropdown-user-details {
+                flex: 1;
+            }
+
+            .dropdown-user-name {
+                font-weight: 600;
+                color: #333;
+                font-size: 15px;
+                margin-bottom: 4px;
+            }
+
+            .dropdown-user-email {
+                color: #666;
+                font-size: 13px;
+            }
+
+            .dropdown-divider {
+                height: 1px;
+                background-color: #e0e0e0;
+                margin: 8px 0;
+            }
+
+            .dropdown-item {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 12px 16px;
+                color: #333;
+                text-decoration: none;
+                font-size: 14px;
+                transition: background-color 0.3s ease;
+                cursor: pointer;
+            }
+
+            .dropdown-item:hover {
+                background-color: #f5f5f5;
+            }
+
+            .dropdown-item i {
+                color: #666;
+                width: 18px;
+                text-align: center;
+            }
+
+            /* Responsive adjustments for top bar */
+            @media(max-width: 768px) {
+                .top-bar {
+                    padding: 12px 15px;
+                    height: auto;
+                    min-height: 60px;
+                }
+
+                .top-bar-logo img {
+                    height: 40px;
+                }
+
+                .user-name {
+                    font-size: 13px;
+                    display: none;
+                }
+
+                .user-avatar,
+                .user-avatar-placeholder {
+                    width: 35px;
+                    height: 35px;
+                }
+
+                .user-dropdown-menu {
+                    min-width: 250px;
+                    right: -10px;
+                }
+            }
+
+            /* Adjust main content areas to account for top bar */
+            .main-div {
+                padding-top: 0;
+            }
+
+            .main-content {
+                padding-top: 0;
+            }
+
+            /* Adjust routed view container for top bar */
+            div[ng-if="$root.isRoutedView"] {
+                padding-top: 70px;
+                margin-left: 0;
+                min-height: calc(100vh - 70px);
+                overflow-y: auto;
+            }
+
+            h2 {
+                color: #4F1BA3;
+                margin-top: 20px;
+                font-size: 24px;
+                font-weight: 700;
+
+            }
+
+            .card-grid {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+                margin-top: 10px;
+            }
+
+            .program-card {
+                background: white;
+                border-radius: 24px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+                width: calc(33.33% - 13.33px);
+                padding: 16px;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .program-card-center {
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .program-head {
+                width: 100%;
+                margin-bottom: 16px;
+                display: flex;
+                align-items: center;
+            }
+
+            .program-icon {
+                font-size: 20px;
+                color: white;
+                background-color: #4b0082;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                /* margin-bottom: 10px; */
+            }
+
+            .program-title {
+                font-weight: 700;
+                color: Black;
+                font-size: 24px;
+                /* margin-bottom: 5px; */
+                margin-left: 16px;
+            }
+
+            .program-title2 {
+                text-align: center;
+                margin: 12px 0;
+            }
+
+            .program-deadline {
+                font-size: 16px;
+                color: #d32f2f;
+                margin-bottom: 8px;
+            }
+
+            .program-deadline2 {
+                margin-bottom: 12px;
+                text-align: center;
+            }
+
+            .program-desc,
+            .program-proposal {
+                font-size: 12px;
+                font-weight: 600;
+
+                color: Black;
+                margin-bottom: 8px;
+            }
+
+            .program-desc {
+                margin-bottom: 16px;
+                text-indent: -12px;
+                margin-left: 24px;
+            }
+
+            .fa-id-card {
+                color: #155DFC;
+                margin-right: 8px;
+            }
+
+            .fa-file-text {
+                color: #9747FF;
+                margin-right: 7px;
+            }
+
+            .fa-check-square {
+                color: #00C950;
+                margin-right: 7px;
+            }
+
+            .btn-container {
+                margin-top: auto;
+                display: flex;
+                gap: 10px;
+            }
+
+            .btn {
+                padding: 6px 14px;
+                border-radius: 20px;
+                font-size: 13px;
+                cursor: pointer;
+                border: 1px solid #4b0082;
+                background-color: white;
+                color: #4b0082;
+                transition: 0.3s;
+
+            }
+
+            .btn:hover {
+                background-color: #4b0082;
+                color: white;
+            }
+
+            .apply-btn {
+                background-color: #4F1BA3;
+                color: white;
+                transition: .2s opacity;
+                /* max-width: 106px; */
+            }
+
+            .know-btn,
+            .apply-btn {
+                width: 106px;
+            }
+
+            .apply-btn:hover {
+                opacity: .9;
+            }
+
+            .btn[disabled],
+            .btn.ng-disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+                pointer-events: none;
+                background-color: gray;
+            }
+
+
+            .main-div {
+                display: flex;
+                min-height: calc(100vh - 70px);
+                /* padding-top: 70px; */
+            }
+
+            /* Loader CSS */
+            .loader {
+                height: 60px;
+                aspect-ratio: 2;
+                border-bottom: 3px solid #0000;
+                background:
+                    linear-gradient(90deg, white 50%, transparent 0) -25% 100%/50% 3px repeat-x border-box;
+                position: relative;
+                animation: l3-0 .75s linear infinite;
+            }
+
+            .loader:before {
+                content: "";
+                position: absolute;
+                inset: auto 42.5% 0;
+                aspect-ratio: 1;
+                border-radius: 50%;
+                background: #4b0082;
+                animation: l3-1 .75s cubic-bezier(0, 900, 1, 900) infinite;
+            }
+
+            .disabled-btn {
+                background-color: #ccc;
+                pointer-events: none;
+                cursor: not-allowed;
+                opacity: 0.6;
+            }
+
+            @keyframes l3-0 {
+                to {
+                    background-position: -125% 100%
+                }
+            }
+
+            @keyframes l3-1 {
+
+                0%,
+                2% {
+                    bottom: 0%
+                }
+
+                98%,
+                to {
+                    bottom: .1%
+                }
+            }
+
+            /* FAQ Section Styles */
+            .faq-card {
+                background: white;
+                border-radius: 24px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+                width: calc(33.33% - 13.33px);
+                padding: 24px;
+                display: flex;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .faq-icon {
+                width: 64px;
+                height: 64px;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 0 auto 16px;
+                font-size: 28px;
+                color: white;
+            }
+
+            .faq-icon.blue {
+                background-color: #155DFC;
+            }
+
+            .faq-icon.purple {
+                background-color: #9747FF;
+            }
+
+            .faq-icon.orange {
+                background-color: #FB8A2E;
+            }
+
+            .faq-icon.red {
+                background-color: #d32f2f;
+            }
+
+            .faq-icon.blue-purple {
+                background-color: #6B46C1;
+            }
+
+            .faq-icon.brown {
+                background-color: #8B4513;
+            }
+
+            .faq-title {
+                font-weight: 700;
+                color: #000;
+                font-size: 20px;
+                margin-bottom: 12px;
+            }
+
+            .faq-desc {
+                font-size: 14px;
+                color: #555;
+                line-height: 1.6;
+                margin-bottom: 16px;
+                flex: 1;
+            }
+
+            .faq-know-more {
+                color: #4b0082;
+                text-decoration: none;
+                font-weight: 600;
+                font-size: 14px;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                transition: color 0.3s;
+                cursor: pointer;
+            }
+
+            .faq-know-more:hover {
+                color: #6e40aa;
+            }
+
+            /* FAQ Detail Page Styles */
+            .faq-detail-container {
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+
+            .faq-back-button {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                color: #4b0082;
+                text-decoration: none;
+                font-weight: 600;
+                font-size: 16px;
+                margin-bottom: 20px;
+                cursor: pointer;
+                transition: color 0.3s;
+            }
+
+            .faq-back-button:hover {
+                color: #6e40aa;
+            }
+
+            .faq-detail-card {
+                background: white;
+                border-radius: 24px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+                padding: 40px;
+                margin-top: 10px;
+            }
+
+            .faq-detail-title {
+                color: #4F1BA3;
+                font-size: 28px;
+                font-weight: 700;
+                margin-bottom: 30px;
+            }
+
+            .faq-detail-content {
+                font-size: 15px;
+                line-height: 1.8;
+                color: #333;
+            }
+
+            .faq-detail-content ol {
+                padding-left: 20px;
+            }
+
+            .faq-detail-content li {
+                margin-bottom: 15px;
+            }
+
+            .faq-detail-buttons {
+                display: flex;
+                gap: 15px;
+                margin: 20px 0;
+                flex-wrap: wrap;
+            }
+
+            .faq-detail-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 12px 24px;
+                border: 2px solid #4b0082;
+                border-radius: 8px;
+                background-color: white;
+                color: #4b0082;
+                font-weight: 600;
+                font-size: 14px;
+                text-decoration: none;
+                cursor: pointer;
+                transition: all 0.3s;
+            }
+
+            .faq-detail-btn:hover {
+                background-color: #4b0082;
+                color: white;
+            }
+
+            .faq-detail-btn i {
+                font-size: 16px;
+            }
+
+            .faq-email-link {
+                color: #4b0082;
+                text-decoration: none;
+                font-weight: 600;
+            }
+
+            .faq-email-link:hover {
+                text-decoration: underline;
+            }
+
+            /* Responsive */
+            @media(max-width: 1024px) {
+
+                .program-card,
+                .faq-card {
+                    width: calc(50% - 10px);
+                }
+            }
+
+            @media(max-width: 768px) {
+
+                .program-card,
+                .faq-card {
+                    width: 100%;
+                }
+
+                .sidebar-appPortal {
+                    width: 200px;
+                    margin-top: 60px;
+                    height: calc(100vh - 60px);
+                }
+
+                .main-content {
+                    margin-left: 200px;
+                    margin-top: 60px;
+                }
+            }
+
+
+            .status-pill {
+                padding: 4px 12px;
+                border-radius: 12px;
+                font-size: 12px;
+                font-weight: 600;
+                display: inline-block;
+                text-align: center;
+            }
+
+            /* Status Colors */
+            .status-new {
+                background-color: #e3f2fd;
+                color: #1565c0;
+            }
+
+            .status-Pending {
+                background-color: #fff3e0;
+                color: #ef6c00;
+            }
+
+            .status-inprogress {
+                background-color: #ede7f6;
+                color: #5e35b1;
+            }
+
+            .status-closed {
+                background-color: #e8f5e9;
+                color: #2e7d32;
+            }
+
+            /* ===== Contact Profile Styles (moved from contactprofile.page) ===== */
+            .contact-profile-container {
+                font-family: "Segoe UI", Arial, sans-serif;
+                background: transparent;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .contact-profile-container * {
+                box-sizing: border-box;
+            }
+
+            .contact-profile-container h1,
+            .contact-profile-container h2,
+            .contact-profile-container h3 {
+                margin: 0;
+                padding: 0;
+            }
+
+            .contact-profile-container .tabs {
+                display: flex;
+                background: #fff;
+                border-radius: 30px;
+                padding: 6px;
+                width: fit-content;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            }
+
+            .contact-profile-container .tab {
+                padding: 10px 22px;
+                border-radius: 25px;
+                cursor: pointer;
+                font-size: 14px;
+                color: #333;
+            }
+
+            .contact-profile-container .tab.active {
+                background: #5b2dab;
+                color: #fff;
+                font-weight: 600;
+            }
+
+            .contact-profile-container .card {
+                background: #fff;
+                margin-top: 20px;
+                padding: 24px;
+                border-radius: 14px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            }
+
+            .contact-profile-container .header-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .contact-profile-container .btn-primary {
+                background: #5b2dab;
+                color: #fff;
+                border: none;
+                padding: 10px 26px;
+                border-radius: 6px;
+                cursor: pointer;
+                font-size: 14px;
+            }
+
+            .contact-profile-container .profile-upload {
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                border: 2px dashed #ccc;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                position: relative;
+                cursor: pointer;
+            }
+
+            .contact-profile-container .upload-text {
+                font-size: 12px;
+                color: #999;
+                pointer-events: none;
+                text-align: center;
+                padding: 0 8px;
+            }
+
+            .contact-profile-container .profile-image {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 50%;
+                display: none;
+            }
+
+            .contact-profile-container .profile-upload.has-image .upload-text {
+                display: none;
+            }
+
+            .contact-profile-container .profile-upload.has-image .profile-image {
+                display: block;
+            }
+
+            .contact-profile-container .form-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px 20px;
+                margin-top: 20px;
+            }
+
+            .contact-profile-container .form-group {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .contact-profile-container label {
+                font-size: 13px;
+                margin-bottom: 4px;
+            }
+
+            .contact-profile-container label span {
+                color: red;
+            }
+
+            .contact-profile-container input,
+            .contact-profile-container select,
+            .contact-profile-container .form-control {
+                height: 38px;
+                padding: 0 10px;
+                border-radius: 6px;
+                border: 1px solid #ccc;
+                font-size: 14px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .contact-profile-container textarea {
+                height: auto;
+                min-height: 100px;
+                padding: 10px;
+                resize: vertical;
+            }
+
+            .contact-profile-container .grid-row input,
+            .contact-profile-container .grid-row select,
+            .contact-profile-container .grid-row .form-control {
+                height: 36px;
+                padding: 0 8px;
+                margin: 0;
+            }
+
+            .contact-profile-container .full-width {
+                grid-column: span 2;
+            }
+
+            .contact-profile-container .radio-group {
+                display: flex;
+                gap: 20px;
+                margin-top: 6px;
+            }
+
+            .contact-profile-container .signature {
+                margin-top: 20px;
+            }
+
+            .contact-profile-container .upload-btn {
+                background: #4CAF50;
+                color: #fff;
+                padding: 8px 20px;
+                border-radius: 6px;
+                border: none;
+                cursor: pointer;
+                margin-left: 10px;
+            }
+
+            .contact-profile-container .hint {
+                font-size: 12px;
+                color: #666;
+                margin-top: 6px;
+            }
+
+            .contact-profile-container .tab-content {
+                display: none;
+            }
+
+            .contact-profile-container .tab-content.active {
+                display: block;
+            }
+
+            .contact-profile-container .section-card {
+                background: #fff;
+                border-radius: 14px;
+                margin-top: 20px;
+                padding: 20px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            }
+
+            .contact-profile-container .grid-header,
+            .contact-profile-container .grid-row {
+                display: grid;
+                gap: 12px;
+                align-items: center;
+            }
+
+            .contact-profile-container .grid-header {
+                font-weight: 600;
+                padding-bottom: 10px;
+                border-bottom: 1px solid #eee;
+            }
+
+            .contact-profile-container .grid-row {
+                margin-top: 12px;
+            }
+
+            .contact-profile-container .grid-row>div {
+                display: flex;
+                align-items: center;
+                padding: 4px 0;
+            }
+
+            .contact-profile-container .grid-row textarea {
+                height: auto;
+                min-height: 100px;
+                padding: 8px;
+            }
+
+            .contact-profile-container .action-icons {
+                display: flex;
+                gap: 8px;
+                justify-content: center;
+            }
+
+            .contact-profile-container .icon-btn {
+                width: 26px;
+                height: 26px;
+                border-radius: 50%;
+                border: none;
+                cursor: pointer;
+                color: #fff;
+                font-size: 14px;
+            }
+
+            .contact-profile-container .icon-add {
+                background: #5b2dab;
+            }
+
+            .contact-profile-container .icon-delete {
+                background: #e74c3c;
+            }
+
+            .contact-profile-container .icon-edit {
+                background: #000;
+            }
+
+            .contact-profile-container .section-title {
+                font-size: 16px;
+                font-weight: 600;
+                margin-bottom: 14px;
+            }
+
+            .contact-profile-container .accordion-item {
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                margin-bottom: 12px;
+                overflow: hidden;
+            }
+
+            .contact-profile-container .accordion-header {
+                background: #eaf2ff;
+                padding: 12px 16px;
+                font-weight: 600;
+                cursor: pointer;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                transition: background 0.2s;
+            }
+
+            .contact-profile-container .accordion-header:hover {
+                background: #d4e4ff;
+            }
+
+            .contact-profile-container .accordion-header::after {
+                content: "⌄";
+                font-size: 14px;
+                transition: transform 0.2s;
+            }
+
+            .contact-profile-container .accordion-item.active .accordion-header::after {
+                content: "⌃";
+            }
+
+            .contact-profile-container .accordion-body {
+                display: none;
+                padding: 14px;
+                background: #fff;
+            }
+
+            .contact-profile-container .accordion-item.active .accordion-body {
+                display: block;
+            }
+        </style>
+
+    </head>
+
+    <body ng-app="cp_app" ng-controller="cp_dashboard_ctrl" style="background-color: #ffffff !important;">
+
+        <!-- <div class="top-nav">
+            <div class="container-fluid">
+                <div class="row mx-5">
+                    <div class="col-7">
+                        Email:
+                        <a href="mailto:info@igstc.com" class="link">
+                            info@igstc.com
+                        </a>
+                    </div>
+                    <div class="col-5">
+                        <ul class="social text-end">
+                            <li>
+                                <a href="https://www.facebook.com/IGSTC.IndoGerman/" target="_blank">
+                                    <i class="fab fa-facebook"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://twitter.com/INDOGSTC" target="_blank">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://in.linkedin.com/company/igstc" target="_blank">
+                                    <i class="fab fa-linkedin"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>        
+            </div>
+        </div> -->
+
+        <!-- <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid mx-5">
+                <a class="navbar-brand" href="#/Home">
+                    <apex:image url="{!$Resource.Logo}" style="margin-top:-20px;" alt="IGSTC"/>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                    <ul class="navbar-nav mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#/Home">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#/Campaign">Campaign</a>
+                        </li>
+                        <li class="nav-item" ng-if="projectId != ''">
+                            <a class="nav-link" href="#/MyProposal">MyProposal</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span>Login</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-success btn-sm" href="#">
+                                Sign Up
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav> -->
+        <!-- <a class="nav-link" href="#/Home" ng-class="{activeColor:activeTab==0}" style="color: rgba(63,63,70,1)"></a> -->
+        <!-- <nav class="navbar navbar-expand-lg navbar-light" ng-hide="programmeHeaderName=='CONNECT PLUS'">
+            <div class="wrapper px-5">
+                <a class="navbar-brand p-0" href="#/Home">
+                    <apex:image url="{!$Resource.Logo}" alt="IGSTC" styleClass="brand-logo"/>
+                </a>
+                <div class=""> -->
+        <!-- <p class="nav-link text-center ps-5"><b>Application submission Deadline :</b></p> -->
+        <!-- <li class="nav-link text-center" ng-if="programmeHeaderName=='Workshop'"><b>Cut-off dates: {{cutOffSD}} and {{cutOffED}}</b></li>
+                    <li class="nav-link text-center" ng-if="programmeHeaderName=='2+2 Call' || programmeHeaderName=='PECFAR' || programmeHeaderName=='INDUSTRIAL FELLOWSHIPS'"><b>Application submission Deadline : {{campaignEndDate}}</b></li>
+                    <li class="nav-link text-center" ng-if="programmeHeaderName=='WISER'"><b>Application submission: 1 February to 31 March every year</b></li> -->
+        <!-- <marquee>
+                        <p class="nav-link"><b>{{campaignEndDate}}</b></p>
+                     </marquee> -->
+        <!-- </div>
+                <button class="navbar-toggler float-end m-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown"
+                    aria-expanded="false" aria-label="Toggle navigation"> -->
+        <!-- <span class="navbar-toggler-icon"></span> -->
+        <!-- <i class="fa fa-bars" />
+                </button>
+                <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNavDarkDropdown">                 
+                    <ul class="navbar-nav mt-2">
+                            <li class="nav-item pe-5">
+                                <a class="nav-link" href="#/Home" ng-class="{activeColor:activeTab==0}">Home/{{programmeHeaderName}}</a>
+                            </li> -->
+        <!-- <li class="nav-item me-5">
+                                <a class="nav-link" href="#/Campaign" ng-class="{activeColor:activeTab==1}">Campaign</a>
+                            </li> -->
+
+        <!-- <li class="nav-item me-5">
+                                <a class="nav-link" href="#/CampaignTheme" ng-class="{activeColor:activeTab==2}" style="color: rgba(63,63,70,1)">Campaign Theme</a>
+                            </li> -->
+        <!-- <li class="nav-item pe-5" ng-if="projectId != ''" >
+                                <a class="nav-link" href="#/MyProposal" ng-class="{activeColor:activeTab==3}">My Proposal</a>
+                            </li>
+                    </ul> -->
+        <!-- <div class="nav-item">
+                            <button type="button" class="nav-link btn btn-dark"  href="" ng-class="{activeColor:activeTab==2}" style="color: white;padding-right:1%;padding-left:1%" ng-click="redirect()">Login/Signup</button>
+                        </div> -->
+        <!-- <div class="d-flex" ng-if="applicantName==''">
+                            <a class="blue-btn" href="#/RegistrationForm" ng-click="redirect()">Login/Signup</a>
+                        </div>
+                        <div class="d-flex text-align-center" ng-if="applicantName!=''">
+                        <div class="dropdown" ng-if="applicantName!=''">
+                            <i class="far fa-user fa-2x" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            </i>
+                            <ul class="dropdown-menu" style="width: 300px" aria-labelledby="dropdownMenuButton1">                                                            
+                              <li><a class="dropdown-item pe-5"><i class="fa-solid fa-user me-3"></i>{{applicantName}}</a></li>
+                              <li>
+                                <hr class="dropdown-divider" />
+                            </li>
+                              <li><a class="dropdown-item pe-5"><i class="fa-solid fa-at me-3"></i>{{applicantEmail}}</a></li>
+                              <li>
+                                <hr class="dropdown-divider" />
+                            </li>
+                            <li>
+                                <a class="dropdown-item pe-5" ng-click="LogoutApplicant()"><i class="fa-solid fa-right-from-bracket me-3"></i>Logout</a>
+                            </li>
+                            </ul>
+                          </div>
+                        </div> -->
+        <!-- <div class="d-flex" ng-if="applicantName!=''">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                                    style="color: white !important;">
+                                    <div class="profile-header-img">
+                                        <img ng-show="profilePicId == undefined" class=" rounded-circle mr-2 img-circle" src="https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"
+                                            width="40" height="40" alt="avatar" />
+                                        <img ng-hide="profilePicId == undefined" class="rounded-circle mr-2 profile-pic" src="https://ondonte--dev--c.documentforce.com/sfc/servlet.shepherd/version/download/{{profilePicId}}"
+                                            width="40" height="40" alt="avatar" />
+                                    </div>
+                                    <span class="rank-label-container">
+                                        <span class="label label-default rank-label">{{userDetails.LastName}}</span>
+                                    </span>
+                                </a>
+                                <ul class="dropdown-menu me-5 mobile-drops" aria-labelledby="navbarDropdown" style="margin-left: -100px">
+                                    <li>
+                                        <a class="dropdown-item" href="#/CP_EditProfile">Edit Profile</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#referralModal">Referrals</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" ng-click="redirectToSchdlPlnr()">My Calender</a>
+                                    </li>
+                                    <li>
+                                        <hr class="dropdown-divider" />
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" ng-click="logoutContact()">Logout</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </div> -->
+
+        <!-- </div>
+            </div>
+        </nav> -->
+        <!-- <div>
+    <ul class="nav nav-pills nav-fill gap-2 p-1 small bg-white border rounded-5 shadow-sm" id="pillNav2" role="tablist">
+        <li class="nav-item" role="presentation">                
+          <button class="nav-link active rounded-5" id="basic_tab" data-bs-toggle="tab" type="button" role="tab" aria-selected="true"><i class="fa fa-home i-padding"></i>Basic Details</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link rounded-5" id="consortia_tab" data-bs-toggle="tab" type="button" role="tab" aria-selected="false"><i class="fa-solid fa-people-group i-padding"></i>Consortia Details</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link rounded-5" id="finance_tab" data-bs-toggle="tab" type="button" role="tab" aria-selected="false"><i class="fa-solid fa-money-bill-trend-up i-padding"></i>Finance Contribution</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link rounded-5" id="project_tab" data-bs-toggle="tab" type="button" role="tab" aria-selected="false"><i class="fa-solid fa-arrows-to-dot i-padding"></i>Project Details</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link rounded-5" id="packge_tab" data-bs-toggle="tab" type="button" role="tab" aria-selected="false"><i class="fa-solid fa-box i-padding"></i>Work Package</button>
+        </li>
+    </ul>
+</div> -->
+        <!-- <div style="background-color: #fff;">  
+                <ng-view>
+                </ng-view>
+            </div> -->
+        <!-- <apex:includeScript value="{!$Resource.SlickJs}" />
+    <apex:includeScript value="{!$Resource.CustomJs}" /> -->
+        <!-- Top Bar - Full Width Header -->
+        <div ng-if="!isLoading" class="top-bar">
+            <div class="top-bar-left">
+                <div class="top-bar-logo">
+                    <img src="{!URLFOR($Resource.Logo)}" alt="IGSTC Logo" />
+                </div>
+            </div>
+            <div class="top-bar-right">
+                <!-- <i class="fa-solid fa-bell notification-icon"></i> -->
+                <span class="user-name">{{contactName || 'Loading...'}}</span>
+                <div class="user-profile-dropdown" ng-class="{'dropdown-open': showUserDropdown}">
+                    <div class="user-profile-trigger" ng-click="toggleUserDropdown($event)">
+                        <div class="avatar-wrapper">
+                            <img ng-if="userProfilePicId" class="user-avatar" src="{{profilePicUrl}}"
+                                alt="Profile Picture" />
+                            <div ng-if="!userProfilePicId" class="user-avatar-placeholder">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <div class="user-status-indicator"></div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down dropdown-arrow" ng-class="{'rotated': showUserDropdown}"></i>
+                    </div>
+                    <div class="user-dropdown-menu" ng-show="showUserDropdown">
+                        <div class="dropdown-user-info">
+                            <div class="dropdown-avatar-wrapper">
+                                <img ng-if="userProfilePicId" class="dropdown-avatar" src="{{profilePicUrl}}"
+                                    alt="Profile Picture" />
+                                <div ng-if="!userProfilePicId" class="dropdown-avatar-placeholder">
+                                    <i class="fa-solid fa-user"></i>
+                                </div>
+                            </div>
+                            <div class="dropdown-user-details">
+                                <div class="dropdown-user-name">{{contactName || 'Loading...'}}</div>
+                                <div class="dropdown-user-email">{{userEmail || applicantEmail || ''}}</div>
+                            </div>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item" ng-click="navigateToHome(); showUserDropdown = false;">
+                            <i class="fa-solid fa-house"></i> Home
+                        </a>
+                        <a href="#" class="dropdown-item"
+                            ng-click="navigateToResetPassword(); showUserDropdown = false;">
+                            <i class="fa-solid fa-key"></i> Reset Password
+                        </a>
+                        <a href="#" class="dropdown-item" ng-click="logout(); showUserDropdown = false;">
+                            <i class="fa-solid fa-right-from-bracket"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div ng-else="isLoading" class="main-div" ng-if="!$root.isRoutedView">
+            <div class="sidebar-appPortal">
+                <div class="igstc-logo" style="display: none;">
+                    <img src="{!URLFOR($Resource.Logo)}" alt="IGSTC Logo" />
+                </div>
+                <!-- <div class="nav-item" ng-class="{active: selectedMenu === 'Dashboard'}" ng-click="showSection('Dashboard')">
+                <i class="fa-solid fa-home"></i> Dashboard
+            </div> -->
+                <div class="nav-item" ng-class="{active: selectedMenu === 'Programs'}"
+                    ng-click="showSection('Programs')">
+                    <i class="fa-solid fa-list"></i> Programmes
+                </div>
+                <div class="nav-item" ng-class="{active: selectedMenu === 'Help'}" ng-click="showSection('Help')">
+                    <i class="fa-solid fa-circle-question"></i> Get Help
+                </div>
+                <!-- <div class="nav-item" ng-class="{active: selectedMenu === 'FAQ'}" ng-click="showSection('FAQ')">
+                    <i class="fa-solid fa-question"></i> FAQ’s
+                </div> -->
+                <div class="bottom-nav">
+                    <div class="nav-item" ng-class="{active: selectedMenu === 'Profile'}"
+                        ng-click="showSection('Profile')">
+                        <i class="fa-solid fa-user"></i> Profile
+                    </div>
+                    <div class="nav-item" ng-class="{active: selectedMenu === 'Logout'}" ng-click="logout()">
+                        <i class="fa-solid fa-right-from-bracket"></i> Logout
+                    </div>
+                </div>
+            </div>
+            <div class="main-content">
+                <!-- Added By Karthik -->
+                <div ng-if="yearList.length > 0" style="margin-bottom: 10px; margin-top: 10px;">
+                    <label style="margin-right: 8px; font-weight: 700; color: #4F1BA3; font-size: 24px;">
+                        Call Year:
+                    </label>
+
+                    <select ng-model="selectedYear" ng-options="y.Id as y.Name for y in yearList"
+                        ng-change="onYearChange(selectedYear)"
+                        style="padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;">
+                        <option value="">Select Year</option>
+                    </select>
+                </div>
+
+                <div ng-if="selectedMenu === 'Programs'">
+                    <!-- Message when no programs available for selected year -->
+                    <div ng-if="selectedYear && !isLoading && allPrograms.length === 0 && appliedPrograms.length === 0"
+                        style="background: #fff; padding: 40px; border-radius: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); text-align: center; margin-top: 20px;">
+                        <div style="font-size: 48px; color: #999; margin-bottom: 16px;">
+                            <i class="fa-solid fa-inbox"></i>
+                        </div>
+                        <h3 style="color: #4F1BA3; font-size: 24px; font-weight: 700; margin-bottom: 12px;">
+                            No Programs Available
+                        </h3>
+                        <p style="color: #666; font-size: 16px; margin: 0;">
+                            No programs are available for the selected year. Please select a different year or check
+                            back later.
+                        </p>
+                    </div>
+
+                    <h2 ng-if="appliedPrograms.length > 0">In Progress</h2>
+                    <div class="card-grid">
+                        <div class="program-card" ng-repeat="p in appliedPrograms">
+                            <div class="program-head">
+                                <div class="program-icon">
+                                    <i class="{{p.icon}}"></i>
+                                </div>
+                                <div class="program-title">{{p.name}}</div>
+                            </div>
+
+                            <!-- <div class="program-deadline">Application Deadline: {{p.deadline}}</div> -->
+                            <div class="program-deadline">
+                                <!-- For 2+2 Call -->
+                                <div ng-if="p.isTwoPlusTwo">
+                                    <!-- 1st Stage -->
+                                    <div ng-if="p.firstStageDeadline" ng-style="{'color': p.stage === '1st Stage' ? '#d32f2f' : '#9e9e9e',
+                                            'font-weight': p.stage === '1st Stage' ? '400' : '400'}">
+                                        1st Stage Deadline: {{p.firstStageDeadline}}
+                                    </div>
+                                    <!-- 2nd Stage -->
+                                    <div ng-if="p.secondStageDeadline" ng-style="{'color': p.stage === '2nd Stage' ? '#d32f2f' : '#9e9e9e',
+                                            'font-weight': p.stage === '2nd Stage' ? '400' : '400'}">
+                                        2nd Stage Deadline: {{p.secondStageDeadline}}
+                                    </div>
+                                </div>
+                                <!-- For ALL other programs -->
+                                <div ng-if="!p.isTwoPlusTwo">
+                                    Application Deadline: {{p.deadline}}
+                                </div>
+
+                            </div>
+
+                            <div class="program-proposal"><i class="fa fa-id-card" aria-hidden="true"></i><span
+                                    class="program-proposal-text">Proposal No: </span>{{p.PropName}}</div>
+                            <!--<div class="program-desc"><i class="fa fa-file-text" aria-hidden="true"></i><span class="program-desc-text"> Title: </span>{{p.desc}}</div>-->
+                            <div class="program-proposal" ng-if="p.proposalStage !== 'Draft'"><i
+                                    class="fa fa-check-square" aria-hidden="true"></i>
+
+
+                                <span class="program-proposal-text">Status: </span> Application Submitted
+                            </div>
+                            <div class="program-desc"><i class="fa fa-file-text" aria-hidden="true"></i><span
+                                    class="program-desc-text"> Title of Project: </span>{{p.titleOfProject}}</div>
+                            <div class="btn-container">
+
+                                <!-- <div class="btn" ng-if="p.proposalStage === 'Draft' && p.isExpiredTwoPlusTwoCall"
+                                    ng-click="redirectToForm(p)">
+                                    Edit
+                                </div> -->
+
+                                <!-- <div class="btn"
+                                    ng-if="p.proposalStage === 'Draft'"
+                                    ng-click="redirectToForm(p)">
+                                    Edit
+                                </div> -->
+
+                                <!-- <div class="btn" ng-if="p.proposalStage === 'Draft'" ng-click="redirectToForm(p)"
+                                    ng-disabled="p.disableEdit">
+                                    Edit
+                                </div> -->
+
+                                <div class="btn apply-btn" ng-if="p.proposalStage === 'Draft'" ng-click="redirectToForm2(p)"
+                                    ng-disabled="p.disableEdit">
+                                    Edit
+                                </div>
+
+                                <!--  && p.campaignId !== '7015j00000056SLAAY' -->
+
+                                <!-- VIEW : When NOT Draft -->
+                                <div class="btn" ng-if="p.proposalStage !== 'Draft'" ng-click="redirectToForm(p, true)">
+                                    View
+                                </div>
+
+
+                                <!-- <div class="btn"
+                                 ng-if="p.proposalStage !== 'Draft'"
+                                 ng-click="downloadApplicationPdf(p.id)">
+                                Download Application pdf
+                            </div> -->
+
+                                <div class="btn" ng-if="p && p.proposalStage !== 'Draft' && !wiserCampaign"
+                                    ng-click="downloadApplicationPdf(p.id)">
+                                    Download Application pdf
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <h2 ng-if="allPrograms.length > 0">Programs Offered by IGSTC</h2>
+                    <!-- Added By Karthik -->
+                    <!-- <div ng-if="yearList.length > 0" style="margin-bottom: 10px;">
+                    <label style="margin-right: 8px;">Year:</label>
+                    <select ng-model="selectedYear"
+                            ng-options="y.Id as y.Name for y in yearList">
+                        <option value="">Select</option>
+                    </select>
+                    <!- <select ng-model="selectedYear"
+                            ng-options="y.Name as y.Name for y in yearList"
+                            ng-change="onYearChange()">
+                        <option value="">Select</option>
+                    </select> ->
+                </div> -->
+
+                    <div class="card-grid">
+                        <div class="program-card program-card-center" ng-repeat="p in allPrograms">
+                            <div class="program-icon">
+                                <i class="{{p.icon}}"></i>
+                            </div>
+                            <div class="program-title program-title2">{{p.name}}</div>
+                            <!-- <div class="program-deadline program-deadline2">Application Deadline: <br /> {{p.deadline}}
+                            </div> -->
+                            <div class="program-deadline program-deadline2">
+                                <!-- For 2+2 Call -->
+                                <div ng-if="p.isTwoPlusTwo">
+                                    <div>
+                                        Application Deadline:
+                                    </div>
+                                    <div ng-if="p.firstStageDeadline">
+                                        1st Stage: {{p.firstStageDeadline}}
+                                    </div>
+                                    <div ng-if="p.secondStageDeadline">
+                                        2nd Stage: {{p.secondStageDeadline}}
+                                    </div>
+                                </div>
+                                <!-- For other programs -->
+                                <div ng-if="!p.isTwoPlusTwo">
+                                    Application Deadline: <br /> {{p.deadline}}
+                                </div>
+                            </div>
+                            <!-- <div class="program-desc">{{p.desc}}</div> -->
+                            <!-- <div class="btn-container">
+                            <div class="btn" ng-click="redirectToForm(p)">Apply</div>
+                            <div class="btn">Know More</div>
+                        </div> -->
+                            <div class="btn-container">
+                                <!-- Old functionality before implementing Apply Pop-up -->
+                                <!-- <div class="btn apply-btn" ng-click="!p.isExpired && redirectToForm(p)"
+                                    ng-disabled="p.isExpired || (appliedPrograms && appliedPrograms.length > 0)">
+                                    Apply
+                                </div> -->
+
+                                <!-- New Requirement - To Open Popup on 'What To Expect' Button Click -->
+                                <div class="btn apply-btn"
+                                    style="display: inline-flex; white-space: nowrap; min-width: 130px; justify-content: center; margin:auto;"
+                                    ng-click="openWhatToExpectPopup(p)">
+                                    What To Expect
+                                </div>
+
+                                <div class="btn know-btn" style="margin:auto">
+                                    <a ng-href="{{ getKnowMoreLink(p.name) }}" target="_blank">
+                                        User Manual
+                                    </a>
+                                </div>
+
+                                <!-- New Requirement - To Open Popup on Apply Button Click -->
+                                <div class="btn apply-btn" style="margin:auto" ng-click="openDocumentPopup(p)"
+                                    ng-disabled="p.isExpired || (appliedPrograms && appliedPrograms.length > 0)">
+                                    Apply
+                                </div>
+                                <!-- <div class="btn know-btn"><a href="https://www.igstc.org/home/projects_call_text" target="_blank">Know More</a></div> -->
+                                
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Apply Popup Display -->
+                <div class="popup-overlay" ng-show="showDocumentPopup">
+                    <div class="popup-box">
+
+                        <h3>Required Documents</h3>
+
+                        <ul>
+                            <li> <b>Stage-1 Documents</b> </li>
+                            <li>1. DSIR Certificate</li>
+                            <li>2. Project Proposal - Stage 1
+                                <a href="{!$Resource.First_Stage_Project_Proposal_template}" download="First_Stage_Project_Proposal_template.docx">
+                                    <i class="fa-solid fa-download"></i>
+                                </a>
+                            </li>
+                            <li>
+                                3. Undertaking for Sensitivity-Security Regulations
+                                <a href="{!$Resource.Undertaking_for_Sensitivity_Security_Regulations}"
+                                    download="Undertaking_for_Sensitivity_Security_Regulations.docx"
+                                    style="margin-left:10px;"
+                                    onclick="this.setAttribute('download','Undertaking_for_Sensitivity_Security_Regulations.docx'); return true;">
+                                    <i class="fa-solid fa-download"></i>
+                                </a>
+                            </li>
+                            <li>
+                                4. Undertaking format towards acceptance of Grant &nbsp;&nbsp; &nbsp; conditions and
+                                signing of Agreement
+                                <a href="{!$Resource.Undertaking_Format_of_Grant_Acceptance}"
+                                    download="Undertaking_Format_of_Grant_Acceptance.docx" style="margin-left:10px;"
+                                    onclick="this.setAttribute('download','Undertaking_Format_of_Grant_Acceptance.docx'); return true;">
+                                    <i class="fa-solid fa-download"></i>
+                                </a>
+                            </li>
+                            <!-- <li>5. Signature</li> -->
+                        </ul>
+
+                        <ul>
+                            <li> <b>Stage-2 Documents</b> </li>
+                            <li>1. Project Proposal - Stage 2 
+                                <a href="{!$Resource.Second_Stage_Project_Proposal}" download="Second_Stage_Project_Proposal.docx">
+                                    <i class="fa-solid fa-download"></i>
+                                </a>
+                            </li>
+                            <li>2. Letter of Consent</li>
+                            <li>3. Budget Report</li>
+                            <li>4. Quotation for Equipment / Accessories</li>
+                        </ul>
+
+                        <!-- <ul>
+                            <li> <b>(For Industry)</b></li>
+                            <li>1. Annual Financial Report - Year 1</li>
+                            <li>2. Annual Financial Report - Year 2</li>
+                            <li>3. Annual Financial Report - Year 3</li>
+                        </ul> -->
+
+                        <div class="popup-buttons">
+                            <button class="btn btn-primary" ng-click="remindMeLater()">
+                                Remind me later
+                            </button>
+                            <button class="btn btn-primary" ng-click="dontShowAgain()">
+                                Don't show again
+                            </button>
+                            <button class="btn btn-primary" ng-click="cancelPopup()">
+                                Cancel
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- What To Expect Popup Display for 2+2-->
+                <div class="what-to-expect-popup-overlay" ng-show="showWhatToExpectPopup_2Plus2">
+                    <div class="what-to-expect-popup-box">
+
+                        <!-- <h3>2+2 Call - What To Expect</h3> -->
+
+                        <div class="what-to-expect-content">
+                            <!-- New appended content starts here -->
+                            <h4>2+2 - What to Expect</h4>
+                            <ul>
+                                <li>1. Applicants are advised to initiate the proposal submission process at least five
+                                    days prior to the deadline to avoid last-minute complications.</li>
+                                <li>2. In case of any technical difficulties, please raise a ticket through the “Contact
+                                    Support” option. You may note that resolution of tickets may take up to 48 hours
+                                    during official working hours.</li>
+                                <li>3.Applicants are requested to ensure that the following documents are prepared and
+                                    readily available before initiating the proposal submission process:
+                                    
+                                    <div class="stage-subsection">
+                                        <div class="stage-heading">1st Stage Proposal Submission</div>
+                                        <ul class="aligned-list">
+                                            <li><div class="list-item">I.<span>1st Stage Project Proposal template <a href="{!$Resource.First_Stage_Project_Proposal_template}" download="First_Stage_Project_Proposal_template.docx">[Download]</a></span></div></li>
+                                            <li><div class="list-item">II.<span>DSIR Certificate</span></div></li>
+                                            <li><div class="list-item">III.<span>Undertaking for Sensitivity-Security Regulations. <a href="{!$Resource.Undertaking_for_Sensitivity_Security_Regulations}" download="Undertaking_for_Sensitivity_Security_Regulations.docx">[Download]</a></span></div></li>
+                                            <li><div class="list-item">IV.<span>Undertaking format towards acceptance of Grant conditions and signing of Agreement <a href="{!$Resource.Undertaking_Format_of_Grant_Acceptance}" download="Undertaking_Format_of_Grant_Acceptance.docx">[Download]</a></span></div></li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="stage-subsection">
+                                        <div class="stage-heading">2nd Stage Proposal Submission</div>
+                                        <ul class="aligned-list">
+                                            <li><div class="list-item"><span>I.</span><span>2nd Stage Project Proposal <a href="{!$Resource.Second_Stage_Project_Proposal}" download="Second_Stage_Project_Proposal.docx">[Download]</a></span></div></li>
+                                            <li><div class="list-item"><span>II.</span><span>Letter of Consent</span></div></li>
+                                            <li><div class="list-item"><span>III.</span><span>Financial Statement</span></div></li>
+                                            <li><div class="list-item"><span>IV.</span><span>Quotation for Equipment/Accessories</span></div></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+
+
+                            <ul>
+                                <li>4. All applicants must complete their registration on the portal at the beginning.
+                                </li>
+                                <li>5. Only one project partner, designated as the Coordinator, shall initiate the
+                                    proposal
+                                    and add other project partners from registered applicants using drop-down option.
+                                    Once added, the respective partners will be able to access the proposal on their
+                                    individual dashboards and complete their respective sections.</li>
+                                <li>6. The Coordinator shall be solely responsible for the final submission of the
+                                    proposal, after all project partners have duly completed and submitted their
+                                    respective inputs.</li>
+                                <li>7. Please note that no modifications will be permitted once the proposal has been
+                                    submitted in the portal.</li>
+                                <li>8. The maximum permissible file size for each PDF upload is 4 MB.</li>
+                                <li>9. Signature files must be uploaded in JPG/JPEG format, with a maximum file size of
+                                    1 MB.</li>
+                            </ul>
+                            <!-- New appended content ends here -->
+                        </div>
+
+                        <div class="what-to-expect-popup-buttons">
+                            <button class="btn btn-primary" ng-click="closeWhatToExpectPopup()">
+                                Close
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- What To Expect Popup Display for WISER-->
+                <div class="what-to-expect-popup-overlay" ng-show="showWhatToExpectPopup_WISER">
+                    <div class="what-to-expect-popup-box">
+
+                        <!-- <h3>WISER - What To Expect</h3> -->
+
+                        <div class="what-to-expect-content">
+
+                            <!-- WISER Section -->
+                            <h4>WISER - What to Expect</h4>
+                            <ul>
+                                <li>1. Applicants are advised to initiate their applications at least five days in
+                                    advance
+                                    to avoid last-minute rush.</li>
+                                <li>2. In case emails are not received or any technical issues are encountered,
+                                    applicants
+                                    should raise a ticket via ‘Get Help’ or ‘Contact Us’ in the IGSTC Application
+                                    Portal. The IGSTC Support Team will respond within 48 hours.</li>
+                                <li>3. The application must be submitted online via the “IGSTC Application Portal” only.
+                                </li>
+                                <li>4. Both applicants (India and Germany) must register individually on the portal
+                                    using
+                                    their email addresses and other details.</li>
+                                <li>5. Ensure that correct and active email addresses are used, as a verification link
+                                    will
+                                    be sent to complete registration.</li>
+                                <li>6. Applicants are requested to ensure that the following documents are prepared and
+                                    readily available prior to initiating the proposal submission process:</li>
+                            </ul>
+
+                            <ul style="margin-left: 25px;">
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Passport Size Photo (JPG/JPEG, Min 30 KB &amp; Max 500 KB)
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    No Objection Certificate (PDF, Max size 1 MB)
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Signature (JPG/JPEG, Max 500 KB)
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    2 Project Relevant Images (JPG/JPEG/PNG, Max size 1 MB, 1200x800 pixels)
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Project Proposal PDF (PDF, Max size 4.5 MB &amp; 8 pages including references and
+                                    images)
+                                </li>
+                            </ul>
+
+                            <ul>
+                                <li>7. The Project Proposal PDF and No Objection Certificate (NOC) must be uploaded in
+                                    the
+                                    prescribed formats available on the WISER Forms page of the IGSTC website.</li>
+                                <li>8. After successful registration, either applicant may log in and initiate the WISER
+                                    application.</li>
+                                <li>9. The applicant who starts the application will be designated as the Primary
+                                    Applicant.</li>
+                                <li>10. The Primary Applicant must add the Paired Applicant (India/Germany) within the
+                                    application portal.</li>
+                                <li>11. The Paired Applicant will then receive a link via email to log in and complete
+                                    their
+                                    respective part of the application.</li>
+                                <li>12. Both applicants shall jointly access and complete the ‘Paired Project Details’
+                                    section. This is the only common section of the application shared by both
+                                    applicants and must be completed collaboratively.</li>
+                                <li>13. The project details must be duly filled in the relevant active fields in the
+                                    ‘Paired
+                                    Project Details’ section of the application and upload two Project Relevant Images
+                                    (e.g., Gantt chart, graphical abstract, conceptual diagram, or workflow). The same
+                                    proposal must also be uploaded as a Project Proposal PDF in the prescribed format
+                                    (PDF, maximum size 4.5 MB, up to 8 pages including references and images) in the
+                                    Attachments section by the Primary Applicant.</li>
+                                <li>14. In the Financial Overview section of the application, the budget table
+                                    (including
+                                    travel and research stay costs) must be completed in accordance with the budget
+                                    guidelines available on the WISER Forms page of the IGSTC website.</li>
+                                <li>15. Both applicants must, individually complete their respective parts, save the
+                                    entries
+                                    as a draft version.</li>
+                                <li>16. Only the Primary Applicant can upload the Project Proposal PDF in the
+                                    Attachments
+                                    section.</li>
+                                <li>17. The final submission can be done only by the Primary Applicant, and only after
+                                    all
+                                    sections have been duly completed by both paired applicants.</li>
+                                <li>18. Please note that no modifications will be permitted once the application has
+                                    been
+                                    submitted in the portal.</li>
+                                <li>19. It is the responsibility of the Primary Applicant to ensure that the Paired
+                                    Applicant has fully completed their section before submission.</li>
+                                <li>20. Applicants must strictly follow all instructions provided. Failure to comply may
+                                    result in rejection of the application.</li>
+                            </ul>
+                        </div>
+
+                        <div class="what-to-expect-popup-buttons">
+                            <button class="btn btn-primary" ng-click="closeWhatToExpectPopup()">
+                                Close
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- What To Expect Popup Display for PECFAR-->
+                <div class="what-to-expect-popup-overlay" ng-show="showWhatToExpectPopup_PECFAR">
+                    <div class="what-to-expect-popup-box">
+
+                        <!-- <h3>PECFAR - What To Expect</h3> -->
+
+                        <div class="what-to-expect-content">
+
+                            <!-- PECFAR Section -->
+                            <h4>PECFAR - What to Expect</h4>
+                            <ul>
+                                <li>1. Applicants are advised to initiate their applications at least five days in
+                                    advance
+                                    to avoid last-minute rush.</li>
+                                <li>2. In case emails are not received or any technical issues are encountered,
+                                    applicants
+                                    should raise a ticket via ‘Get Help’ or ‘Contact Us’ in the IGSTC Application
+                                    Portal. The IGSTC Support Team will respond within 48 hours.</li>
+                                <li>3. The application must be submitted online via the “IGSTC Application Portal” only.
+                                </li>
+                                <li>4. Both applicants (India and Germany) must register individually on the portal
+                                    using
+                                    their email addresses and other details.</li>
+                                <li>5. Ensure that correct and active email addresses are used, as a verification link
+                                    will
+                                    be sent to complete registration.</li>
+                                <li>6. Applicants are requested to ensure that the following documents are prepared and
+                                    readily available prior to initiating the proposal submission process:</li>
+                            </ul>
+
+                            <ul style="margin-left: 30px;">
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Proof of Date of Birth (PDF, Max size 1 MB)
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Educational Qualification certificates (PDF, Max size 1 MB)
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Proof of Employment/Experience certificate (PDF, Max size 1 MB)
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    No Objection Certificate (PDF, Max size 1 MB)
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Passport Size Photo (JPG/JPEG, Min 30 KB &amp; Max 500 KB)
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Signature (JPG/JPEG, Max 500 KB)
+                                </li>
+                            </ul>
+
+                            <ul>
+                                <li>7. No Objection Certificate (NOC) must be uploaded in the prescribed format
+                                    available
+                                    on the PECFAR Forms page of the IGSTC website.</li>
+                                <li>8. After successful registration, either applicant may log in and initiate the
+                                    PECFAR
+                                    application.</li>
+                                <li>9. The applicant who starts the application will be designated as the Primary
+                                    Applicant.</li>
+                                <li>10. The Primary Applicant must add the Paired Applicant (India/Germany) within the
+                                    application portal.</li>
+                                <li>11. The Paired Applicant will then receive a link via email to log in and complete
+                                    their
+                                    respective part of the application.</li>
+                                <li>12. Both applicants must, individually complete their respective parts, save the
+                                    entries
+                                    as a draft version.</li>
+                                <li>13. The final submission can be done only by the Primary Applicant.</li>
+                                <li>14. It is the responsibility of the Primary Applicant to ensure that the Paired
+                                    Applicant has fully completed their section before submission.</li>
+                                <li>15. Please note that no modifications will be permitted once the application has
+                                    been
+                                    submitted in the portal.</li>
+                                <li>16. Applicants must strictly follow all instructions provided. Failure to comply may
+                                    result in rejection of the application.</li>
+                            </ul>
+                        </div>
+
+                        <div class="what-to-expect-popup-buttons">
+                            <button class="btn btn-primary" ng-click="closeWhatToExpectPopup()">
+                                Close
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- What To Expect Popup Display for IF -->
+                <div class="what-to-expect-popup-overlay" ng-show="showWhatToExpectPopup_IF">
+                    <div class="what-to-expect-popup-box">
+
+                        <!-- <h3>Industrial Fellowship - What To Expect</h3> -->
+
+                        <div class="what-to-expect-content">
+
+                            <!-- IGSTC Industrial Fellowship Section -->
+                            <div class="igstc-logo" style="text-align: center; margin-bottom: 15px;">
+                                <img src="{!URLFOR($Resource.Logo)}" alt="IGSTC Logo"
+                                    style="height: 60px; width: auto; display: inline-block;" />
+                            </div>
+                            <h4 style="text-align: center; margin-top: 0; margin-bottom: 10px;">
+                                IGSTC Industrial Fellowship
+                            </h4>
+
+                            <h5 style="text-align: center;">What to Expect Before You Start Your Application</h5>
+                            <p style="color: red;"><em><b>*Kindly note below is a guideline for you to be prepared
+                                        before starting the
+                                        application. It gives a symbolic representation of different sections of the
+                                        application. But the most up-to-date information will be available inside
+                                        the
+                                        various sections of the application portal.</b></em></p>
+
+                            <p>Applying for the IGSTC fellowship is a structured, multi-step process. To ensure a
+                                smooth
+                                experience, please familiarise yourself following before you begin:</p>
+
+                            <h5>1. Registration (First Step)</h5>
+                            <p>Before starting the application, you must register/login via the IGSTC portal:</p>
+                            <ul>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Click on “Sign Up” if you are a new user
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Provide your email ID and create a password
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Verify using captcha and complete registration
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Existing users can directly “Sign In”
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    In case of issues, use “Forgot Password” or “Contact Support”
+                                </li>
+                            </ul>
+
+                            <h5>2. Application Structure</h5>
+                            <p>The application is divided into multiple sections that must be completed
+                                sequentially:
+                            </p>
+                            <ul>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Basic Details
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Personal Information
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Parent Organisation Details
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Education Details
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Employment Details
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Achievements
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Host Organisation Details
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Project Details
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Attachments
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Final Review &amp; Submission
+                                </li>
+                            </ul>
+
+                            <h5>3. Documents You Should Keep Ready</h5>
+                            <p>Prepare the following documents in advance (PDF format, <b>max size: 1 MB each</b>):
+                            </p>
+                            <ul>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Consent Letter from the Host Organization
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    NOC from the Head of the institution: NOC Format
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Recommendation letter from the mentor at parent organisation
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Two reference letters from established researchers in the field for PDIF
+                                    applicants
+                                    not having affiliation with an institution
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Proof of Date of Birth (Scan copy of Passport/ Aadhar Card)
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Proof of Education Qualifications arranged in reverse chronological order
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Proof of Employment
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Passport size photo in jpg/jpeg with the following size limits (30 Kb - max 500
+                                    Kb)
+                                </li>
+                            </ul>
+
+                            <h5>4. Content Preparation (Important)</h5>
+                            <p>Several sections require detailed write-ups. It is strongly recommended to:</p>
+                            <ul>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Avoid formatting issues in the online editor
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Stay within character limits:
+                                    <ul>
+                                        <li> <i class="fa-regular fa-circle text-success"
+                                                style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                            Abstract (Max ~500 characters without space)
+                                        </li>
+                                        <li> <i class="fa-regular fa-circle text-success"
+                                                style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                            Statement of Purpose (Max ~1200 characters without space)
+                                        </li>
+                                        <li> <i class="fa-regular fa-circle text-success"
+                                                style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                            Work Plan (Max ~2000 characters without space)
+                                        </li>
+                                        <li> <i class="fa-regular fa-circle text-success"
+                                                style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                            Organisation Portfolio (Max ~250 characters without space)
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                            <h5>5. Academic &amp; Professional Details</h5>
+                            <p>Be ready with:</p>
+                            <ul>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Degrees in reverse chronological order (PhD first)
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    CGPA/Percentage (with scale clearly mentioned)
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Thesis details (title, supervisor, duration)
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Employment history (latest first)
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Details of ongoing research/project
+                                </li>
+                            </ul>
+
+                            <h5>6. Project Information Requirements</h5>
+                            <p>You will need to clearly define:</p>
+                            <ul>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Problem statement and motivation
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Objectives (max 4)
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Detailed work plan (with timelines)
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Expected outcomes (max 6)
+                                </li>
+                            </ul>
+                            <p>Ensure clarity, feasibility, and alignment with the fellowship goals.</p>
+
+                            <h5>7. Host &amp; Parent Organisation Details</h5>
+                            <p>Keep the following handy:</p>
+                            <ul>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Organisation name, address, and country
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Mentor details (Name, designation, contact info)
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Brief portfolio of both organisations
+                                </li>
+                            </ul>
+
+                            <h5>8. Eligibility &amp; Key Checks</h5>
+                            <p>Before starting:</p>
+                            <ul>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Ensure you meet age and eligibility criteria
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Confirm PhD status (awarded/submitted)
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Verify institutional affiliation requirements
+                                </li>
+                            </ul>
+
+                            <h5>9. Technical Tips</h5>
+                            <ul>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Use a <b>stable internet connection</b>
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Preferred browsers: Chrome / Firefox
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    If the portal hangs, try: <b>Ctrl + Shift + R (Hard Refresh)</b>
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Save progress frequently
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Contact Support or Raise a Ticket in case of any issues, which would be
+                                    responded/resolved in 48 hrs.
+                                </li>
+                            </ul>
+
+                            <h5>10. Final Submission</h5>
+                            <p>Before submitting:</p>
+                            <ul>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Review all sections carefully
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Ensure all documents are uploaded
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Confirm declaration and signature
+                                </li>
+                                <li> <i class="fa-solid fa-circle text-success"
+                                        style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    Once submitted, changes may not be allowed
+                                </li>
+                            </ul>
+
+                            <h5>11. Time Commitment</h5>
+                            <p>Completing the application may take 2–4 hours, depending on preparedness.</p>
+
+                            <h5>Pro Tip</h5>
+                            <p>Applicants who prepare all documents and content in advance complete the application
+                                <b>3x faster and with fewer errors</b>.
+                            </p>
+
+                        </div>
+
+                        <div class="what-to-expect-popup-buttons">
+                            <button class="btn btn-primary" ng-click="closeWhatToExpectPopup()">
+                                Close
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- FAQ Section -->
+                <div ng-if="selectedMenu === 'FAQ'">
+                    <!-- FAQ List View -->
+                    <div ng-if="!selectedFAQ">
+                        <h2>FAQ's</h2>
+                        <div class="card-grid">
+                            <!-- 2+2 CALL -->
+                            <div class="faq-card">
+                                <div class="faq-icon blue">
+                                    <i class="fa-solid fa-users"></i>
+                                </div>
+                                <div class="faq-title">2+2 CALL</div>
+                                <div class="faq-desc">
+                                    A flagship funding scheme supporting joint R&amp;D projects with two partners each
+                                    from India and Germany.
+                                </div>
+                                <a href="#" class="faq-know-more" ng-click="showFAQDetail('2+2 CALL')">Know More <i
+                                        class="fa-solid fa-arrow-right"></i></a>
+                            </div>
+
+                            <!-- PECFAR -->
+                            <div class="faq-card">
+                                <div class="faq-icon purple">
+                                    <i class="fa-solid fa-handshake"></i>
+                                </div>
+                                <div class="faq-title">PECFAR</div>
+                                <div class="faq-desc">
+                                    Facilitates exchange of young Indian and German researchers and clinicians in the
+                                    medical field.
+                                </div>
+                                <a href="#" class="faq-know-more" ng-click="showFAQDetail('PECFAR')">Know More <i
+                                        class="fa-solid fa-arrow-right"></i></a>
+                            </div>
+
+                            <!-- WISER -->
+                            <div class="faq-card">
+                                <div class="faq-icon orange">
+                                    <i class="fa-solid fa-graduation-cap"></i>
+                                </div>
+                                <div class="faq-title">WISER</div>
+                                <div class="faq-desc">
+                                    Empowers Indian women scientists through international exposure and Indo-German
+                                    research partnerships.
+                                </div>
+                                <a href="#" class="faq-know-more" ng-click="showFAQDetail('WISER')">Know More <i
+                                        class="fa-solid fa-arrow-right"></i></a>
+                            </div>
+
+                            <!-- SING -->
+                            <div class="faq-card">
+                                <div class="faq-icon red">
+                                    <i class="fa-solid fa-network-wired"></i>
+                                </div>
+                                <div class="faq-title">SING</div>
+                                <div class="faq-desc">
+                                    Supports the creation of Indo-German research network centres in strategic areas.
+                                </div>
+                                <a href="#" class="faq-know-more" ng-click="showFAQDetail('SING')">Know More <i
+                                        class="fa-solid fa-arrow-right"></i></a>
+                            </div>
+
+                            <!-- WORKSHOPS -->
+                            <div class="faq-card">
+                                <div class="faq-icon blue-purple">
+                                    <i class="fa-solid fa-file-circle-check"></i>
+                                </div>
+                                <div class="faq-title">WORKSHOPS</div>
+                                <div class="faq-desc">
+                                    Funds thematic workshops and exploratory meetings to initiate Indo-German
+                                    collaboration.
+                                </div>
+                                <a href="#" class="faq-know-more" ng-click="showFAQDetail('WORKSHOPS')">Know More <i
+                                        class="fa-solid fa-arrow-right"></i></a>
+                            </div>
+
+                            <!-- IF -->
+                            <div class="faq-card">
+                                <div class="faq-icon brown">
+                                    <i class="fa-solid fa-atom"></i>
+                                </div>
+                                <div class="faq-title">IF</div>
+                                <div class="faq-desc">
+                                    This programme is aimed at encouraging PhD students/researchers in S&amp;T with an
+                                    appreciable track record.
+                                </div>
+                                <a href="#" class="faq-know-more" ng-click="showFAQDetail('IF')">Know More <i
+                                        class="fa-solid fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Detail View -->
+                    <div ng-if="selectedFAQ" class="faq-detail-container">
+                        <div class="faq-back-button" ng-click="backToFAQ()">
+                            <i class="fa-solid fa-arrow-left"></i> Back
+                        </div>
+                        <h2 style="text-align: center; margin-bottom: 20px;">FAQ's</h2>
+                        <div class="faq-detail-card">
+                            <div class="faq-detail-title">{{selectedFAQ.name}}</div>
+                            <div class="faq-detail-content">
+                                <ol>
+                                    <!-- Call Text, Basic Guidelines, FAQs -->
+                                    <li
+                                        ng-if="selectedFAQ.hasCallText && selectedFAQ.hasBasicGuidelines && selectedFAQ.hasFAQs">
+                                        Kindly read the Call Text, Basic Guidelines and FAQs carefully before applying.
+                                        The link for same is below:
+                                        <div class="faq-detail-buttons">
+                                            <a href="{{selectedFAQ.callTextUrl}}" target="_blank" class="faq-detail-btn"
+                                                ng-if="selectedFAQ.callTextUrl">
+                                                <i class="fa-solid fa-phone"></i> Call Text
+                                            </a>
+                                            <a href="{{selectedFAQ.basicGuidelinesUrl}}" target="_blank"
+                                                class="faq-detail-btn" ng-if="selectedFAQ.basicGuidelinesUrl">
+                                                <i class="fa-solid fa-book-open"></i> Basic Guidelines
+                                            </a>
+                                            <a href="{{selectedFAQ.faqUrl}}" target="_blank" class="faq-detail-btn"
+                                                ng-if="selectedFAQ.faqUrl">
+                                                <i class="fa-solid fa-file-lines"></i> FAQs
+                                            </a>
+                                        </div>
+                                    </li>
+                                    <li
+                                        ng-if="selectedFAQ.hasCallText && !selectedFAQ.hasBasicGuidelines && !selectedFAQ.hasFAQs">
+                                        Kindly read the Call Text carefully before applying. The link for same is below:
+                                        <div class="faq-detail-buttons">
+                                            <a href="{{selectedFAQ.callTextUrl}}" target="_blank" class="faq-detail-btn"
+                                                ng-if="selectedFAQ.callTextUrl">
+                                                <i class="fa-solid fa-phone"></i> Call Text
+                                            </a>
+                                        </div>
+                                    </li>
+
+                                    <!-- Project Details Format -->
+                                    <li ng-if="selectedFAQ.hasProjectDetailsFormat">
+                                        Download the First Stage "Project Details" upload format from here.
+                                    </li>
+
+                                    <!-- Standing Instructions -->
+                                    <li ng-if="selectedFAQ.hasStandingInstructions">
+                                        Download the Standing Instructions and User Manual for First Stage proposal
+                                        Submission from here.
+                                    </li>
+
+                                    <!-- Eligibility -->
+                                    <li>Please ensure your eligibility before filling the application.</li>
+
+                                    <!-- Documents Required -->
+                                    <li
+                                        ng-if="selectedFAQ.hasDocumentsRequired && selectedFAQ.documentsRequired.length > 0">
+                                        Documents required for application submission:
+                                        <ul style="margin-top: 10px; padding-left: 20px;">
+                                            <li ng-repeat="doc in selectedFAQ.documentsRequired"
+                                                style="margin-bottom: 8px;">{{doc}}</li>
+                                        </ul>
+                                    </li>
+
+                                    <!-- Email -->
+                                    <li>Queries, if any, should be addressed to <a href="mailto:{{selectedFAQ.email}}"
+                                            class="faq-email-link">{{selectedFAQ.email}}</a></li>
+
+                                    <!-- Deadline -->
+                                    <li>{{selectedFAQ.deadline}}</li>
+
+                                    <!-- Disqualification Note -->
+                                    <li>You may note that any false information given in the application can lead to
+                                        disqualification of your candidature at any stage of the process.</li>
+
+                                    <!-- Refresh Note -->
+                                    <li ng-if="selectedFAQ.hasRefreshNote">Please refresh the page with Ctrl+Shift+R and
+                                        clear cache in case you face a lag or recurring error in the portal.</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div ng-if="selectedMenu === 'Help'">
+                <h2>Help</h2>
+                <div class="card-grid">
+                    
+                </div>
+            </div> -->
+                <div ng-if="selectedMenu === 'Help'">
+                    <!-- Header Row -->
+                    <div class="help-header">
+                        <h2 class="help-title">My Tickets</h2>
+
+                        <button class="btn help-raise-btn" ng-click="openRaiseTicketModal()">
+                            <i class="fa-solid fa-plus"></i> Raise a Ticket
+                        </button>
+                    </div>
+
+                    <!-- Loader -->
+                    <!-- <div ng-if="isTicketsLoading" class="loader"></div> -->
+
+                    <!-- No Tickets -->
+                    <div ng-if="!isTicketsLoading && tickets.length === 0" style="background:#fff;padding:30px;border-radius:16px;
+                            text-align:center;font-weight:600;">
+                        No tickets raised
+                    </div>
+
+                    <!-- Tickets Table -->
+                    <div ng-if="!isTicketsLoading && tickets.length > 0"
+                        style="background:#fff;border-radius:16px;padding:20px;">
+
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Ticket Number</th>
+                                    <th>Application Number</th>
+                                    <th>Program</th>
+                                    <th>Status</th>
+                                    <th>Email</th>
+                                    <th>Comments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="t in tickets">
+                                    <td>{{t.caseNumber}}</td>
+                                    <td>{{t.applicationNumber}}</td>
+                                    <td>{{t.program}}</td>
+                                    <td>
+                                        <!-- <span class="label label-info">{{t.status}}</span> -->
+                                        <span class="status-pill" ng-class="{
+                                                'status-new': t.status === 'New',
+                                                'status-Pending': t.status === 'Pending',
+                                                'status-inprogress': t.status === 'In Progress',
+                                                'status-closed': t.status === 'Closed'
+                                            }">
+                                            {{t.status}}
+                                        </span>
+
+                                    </td>
+                                    <td>{{t.email}}</td>
+                                    <td>
+                                        <button class="btn btn-link view-btn" ng-click="openViewCommentsModal(t)">
+                                            View
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                <div ng-if="selectedMenu === 'Profile'">
+                    <h2>Profile</h2>
+
+                    <div class="card-grid">
+                        <!-- ===== Contact Profile Container ===== -->
+                        <div class="contact-profile-container">
+                            <!-- ===== Tabs ===== -->
+                            <div class="tabs">
+                                <div class="tab active" onclick="openContactTab(0)">Basic Details</div>
+                                <div class="tab" onclick="openContactTab(1)">Education Details</div>
+                                <div class="tab" onclick="openContactTab(2)">Employment Details</div>
+                                <div class="tab" onclick="openContactTab(3)">Achievements</div>
+                                <div class="tab" onclick="openContactTab(4)">Publications</div>
+                            </div>
+
+                            <div class="tab-content active">
+                                <!-- ===== Card ===== -->
+                                <div class="card">
+                                    <div id="contactForm">
+                                        <div class="header-row">
+                                            <div class="profile-upload" id="profileUploadDiv">
+                                                <img id="existingProfileImage" alt="Profile Picture"
+                                                    class="profile-image" style="display:none;"
+                                                    onerror="handleImageError(this);" onload="handleImageLoad(this);" />
+                                                <span class="upload-text" id="uploadText">Click to<br />Upload
+                                                    Photo</span>
+                                                <input type="file" id="profileFileInput"
+                                                    accept="image/png,image/jpeg,image/jpg"
+                                                    style="position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;"
+                                                    onchange="handleFileSelect(this);" />
+                                            </div>
+                                            <button type="button" onclick="saveContactData();"
+                                                class="btn-primary">Save</button>
+                                        </div>
+
+                                        <div id="messages" style="margin-top: 10px;"></div>
+
+                                        <!-- ===== Form ===== -->
+                                        <div class="form-grid">
+                                            <div class="form-group">
+                                                <label>Salutation <span>*</span></label>
+                                                <select id="contactSalutation" class="form-control">
+                                                    <option value="">--Select--</option>
+                                                    <option value="Dr">Dr</option>
+                                                    <option value="Mr">Mr</option>
+                                                    <option value="Mrs">Mrs</option>
+                                                    <option value="Ms">Ms</option>
+                                                    <option value="Prof">Prof</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>First Name <span>*</span></label>
+                                                <input type="text" id="contactFirstName" class="form-control"
+                                                    value="{!IF(con != null, con.FirstName, '')}" />
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Last Name <span>*</span></label>
+                                                <input type="text" id="contactLastName" class="form-control"
+                                                    value="{!IF(con != null, con.LastName, '')}" />
+                                            </div>
+
+                                            <div class="form-group full-width">
+                                                <label>Current Position / Designation <span>*</span></label>
+                                                <input type="text" id="contactDesignation" class="form-control"
+                                                    value="{!IF(con != null, con.Designation__c, '')}" />
+                                            </div>
+
+                                            <!--<div class="form-group">
+                                                <label>Institution / Industry</label>
+                                                <div class="radio-group">
+                                                    <label>
+                                                        <input type="radio" name="instType" value="Academia"
+                                                            id="instTypeAcademia" /> Academia
+                                                    </label>
+                                                    <label>
+                                                        <input type="radio" name="instType" value="Industry"
+                                                            id="instTypeIndustry" /> Industry
+                                                    </label>
+                                                </div>
+                                            </div>-->
+
+                                            <div class="form-group full-width">
+                                                <label>Institution / Organisation Name</label>
+                                                <input type="text" id="contactInstitution" class="form-control"
+                                                    value="{!IF(con != null && con.Account != null, con.Account.Name, '')}"
+                                                    readonly="readonly" />
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label>Department / Division</label>
+                                                <input type="text" id="contactDepartment" class="form-control"
+                                                    value="{!IF(con != null, con.Department, '')}" />
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Email <span>*</span></label>
+                                                <input type="email" id="contactEmail" class="form-control"
+                                                    value="{!IF(con != null, con.Email, '')}" readonly="readonly"/>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Phone <span>*</span></label>
+                                                <input type="text" id="contactPhone" class="form-control"
+                                                    value="{!IF(con != null, con.MobilePhone, '')}" />
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Country <span>*</span></label>
+                                                <input type="text" id="contactCountry" class="form-control"
+                                                    value="{!IF(con != null, con.MailingCountry, '')}" />
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Street <span>*</span></label>
+                                                <input type="text" id="contactStreet" class="form-control"
+                                                    value="{!IF(con != null, con.MailingStreet, '')}" />
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>State <span>*</span></label>
+                                                <input type="text" id="contactState" class="form-control"
+                                                    value="{!IF(con != null, con.MailingState, '')}" />
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>City <span>*</span></label>
+                                                <input type="text" id="contactCity" class="form-control"
+                                                    value="{!IF(con != null, con.MailingCity, '')}" />
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Postal / Zip Code <span>*</span></label>
+                                                <input type="text" id="contactPostalCode" class="form-control"
+                                                    value="{!IF(con != null, con.MailingPostalCode, '')}" />
+                                            </div>
+                                        </div>
+
+                                        <!-- ===== Signature ===== -->
+                                        <!-- <div class="signature">
+                                            <label>Signature</label><br />
+                                            <input type="file" id="signatureFile" />
+                                            <button type="button" class="upload-btn"
+                                                onclick="uploadSignature();">Upload</button>
+                                            <div class="hint">
+                                                • Signature should be done by blue/black colour pen<br />
+                                                • Dimension: 200 × 230 pixels<br />
+                                                • Size: 20 KB – 50 KB
+                                            </div>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-content">
+                                <div id="educationForm">
+                                    <div class="section-card">
+                                        <div id="educationMessages" style="margin-bottom:10px;"></div>
+                                        <div class="section-title">Education</div>
+                                        <div class="grid-header"
+                                            style="grid-template-columns: 1.2fr 1.5fr 1.5fr 1fr 1fr 60px;">
+                                            <div>Degree<span style="color:red">*</span></div>
+                                            <div>Institution<span style="color:red">*</span></div>
+                                            <div>Specialisation<span style="color:red">*</span></div>
+                                            <div>Start Date<span style="color:red">*</span></div>
+                                            <div>End Date<span style="color:red">*</span></div>
+                                            <div></div>
+                                        </div>
+                                        <div id="educationRowsContainer"></div>
+                                        <div style="margin-top:20px;text-align:right;">
+                                            <button type="button" onclick="saveEducationData();"
+                                                class="btn-primary">Save Education</button>
+                                            <button type="button" onclick="addEducationRow();" class="btn-primary">Add
+                                                Row</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-content">
+                                <div id="employmentForm">
+                                    <div class="section-card">
+                                        <div id="employmentMessages" style="margin-bottom:10px;"></div>
+                                        <div class="section-title">Employment</div>
+                                        <div class="grid-header"
+                                            style="grid-template-columns: 1.8fr 1.4fr 1fr 1fr 60px;">
+                                            <div>Organisation<span style="color:red">*</span></div>
+                                            <div>Position<span style="color:red">*</span></div>
+                                            <div>Start Date<span style="color:red">*</span></div>
+                                            <div>End Date<span style="color:red">*</span></div>
+                                            <div></div>
+                                        </div>
+                                        <div id="employmentRowsContainer"></div>
+                                        <div style="margin-top:20px;text-align:right;">
+                                            <button type="button" onclick="saveEmploymentData();"
+                                                class="btn-primary">Save Employment</button>
+                                            <button type="button" onclick="addEmploymentRow();" class="btn-primary">Add
+                                                Row</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-content">
+                                <div id="achievementForm">
+                                    <div id="achievementMessages" style="margin-top: 10px;"></div>
+                                    <div class="section-card">
+                                        <div class="section-title">Achievements</div>
+                                        <div id="achievementFields">
+                                            <div class="accordion-item">
+                                                <div class="accordion-header" onclick="toggleAccordion(this)">Awards and
+                                                    Honours</div>
+                                                <div class="accordion-body">
+                                                    <div id="achievementAwards" contenteditable="true"
+                                                        class="form-control"
+                                                        style="width:100%; min-height:200px; padding:10px;"></div>
+                                                </div>
+                                            </div>
+                                            <div class="accordion-item">
+                                                <div class="accordion-header" onclick="toggleAccordion(this)">List of
+                                                    Patents filed / granted</div>
+                                                <div class="accordion-body">
+                                                    <div id="achievementPatents" contenteditable="true"
+                                                        class="form-control"
+                                                        style="width:100%; min-height:200px; padding:10px;"></div>
+                                                </div>
+                                            </div>
+                                            <div class="accordion-item">
+                                                <div class="accordion-header" onclick="toggleAccordion(this)">Book
+                                                    Chapters / Monographs</div>
+                                                <div class="accordion-body">
+                                                    <div id="achievementBookChapters" contenteditable="true"
+                                                        class="form-control"
+                                                        style="width:100%; min-height:200px; padding:10px;"></div>
+                                                </div>
+                                            </div>
+                                            <div class="accordion-item">
+                                                <div class="accordion-header" onclick="toggleAccordion(this)">Any other
+                                                    notable achievements</div>
+                                                <div class="accordion-body">
+                                                    <div id="achievementOther" contenteditable="true"
+                                                        class="form-control"
+                                                        style="width:100%; min-height:200px; padding:10px;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="margin-top:20px;text-align:right;">
+                                            <button type="button" onclick="saveAchievementData();"
+                                                class="btn-primary">Save Achievements</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-content">
+                                <div id="PublicationForm">
+                                    <div id="publicationMessages" style="margin-top: 10px;"></div>
+                                    <div class="section-card">
+                                        <div class="section-title">Publication</div>
+                                        <div id="publicationFields">
+                                            <div class="accordion-item active">
+                                                <div class="accordion-header" onclick="toggleAccordion(this)">List of
+                                                    Publications</div>
+                                                <div class="accordion-body">
+                                                    <div id="achievementPublications" contenteditable="true"
+                                                        class="form-control"
+                                                        style="width:100%; min-height:200px; padding:10px;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="margin-top:20px;text-align:right;">
+                                            <button type="button" onclick="savePublicationData();"
+                                                class="btn-primary">Save Publications</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-else="isLoading"
+            style="background-color: #fff; overflow-y: auto; scrollbar-width: none; width: 100%; min-height: calc(100vh - 70px); padding-top: 70px;"
+            ng-if="$root.isRoutedView">
+            <ng-view>
+            </ng-view>
+        </div>
+        <!-- <div ng-if="isLoading">
+        <div class="modal fade show d-block" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered justify-content-center" role="document">
+                <span class="loader"></span>
+            </div>
+        </div>
+        <div class="modal-backdrop fade show"></div>
+    </div> -->
+
+
+        <!-- Raise Ticket Modal -->
+        <div class="modal fade raise-ticket-modal" ng-class="{in: showRaiseTicketModal}"
+            ng-style="showRaiseTicketModal && {'display':'block'}">
+
+            <div class="modal-dialog modal-dialog-centered" style="width:600px;">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h4 class="modal-title">Raise a Ticket</h4>
+                        <!-- <button type="button"
+                                class="close"
+                                ng-click="closeRaiseTicketModal()">&times;</button> -->
+                    </div>
+
+                    <div class="modal-body">
+
+                        <!-- Proposal Number -->
+                        <!-- <div class="form-group">
+                            <label>Application / Proposal Number</label>
+                            <input type="text"
+                                class="form-control"
+                                ng-model="ticket.proposalNumber"
+                                placeholder="Enter Application Number (Optional)" />
+                        </div> -->
+
+
+
+                        <div class="form-group position-relative">
+                            <label>Application / Proposal Number</label>
+
+                            <input type="text" class="form-control" ng-model="ticket.proposalNumber"
+                                placeholder="Start typing proposal number" ng-focus="filterProposals()"
+                                ng-change="filterProposals()" autocomplete="off" />
+
+                            <!-- Dropdown -->
+                            <ul class="proposal-dropdown" ng-if="showProposalDropdown && filteredProposals.length > 0">
+                                <li ng-repeat="p in filteredProposals" ng-click="selectProposal(p)">
+                                    {{p.proposalNumber}}
+                                </li>
+                            </ul>
+                        </div>
+
+
+                        <!-- Comments -->
+                        <div class="form-group">
+                            <label>Comments</label>
+                            <textarea ckeditor="true" ng-model="ticket.comments" class="form-control ticket-comments"
+                                rows="6">
+                            </textarea>
+                        </div>
+
+                        <!-- Program -->
+                        <div class="form-group">
+                            <label>Program *</label>
+                            <select class="form-control" ng-model="ticket.program">
+                                <!-- <option value="None">--None--</option> -->
+                                <option value="2+2 Call">2+2 Call</option>
+                                <option value="Industrial Fellowships">Industrial Fellowships</option>
+                                <option value="PECFAR">PECFAR</option>
+                                <option value="SING">SING</option>
+                                <option value="WISER">WISER</option>
+                                <option value="Workshop">Workshop</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-cancel" ng-click="closeRaiseTicketModal()">
+                            Cancel
+                        </button>
+                        <button class="btn btn-primary" ng-click="submitTicket()">
+                            Submit
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-backdrop fade in" ng-if="showRaiseTicketModal"></div>
+
+        <!-- View Comments Modal -->
+        <div class="modal fade view-comments-modal" ng-class="{in: showViewCommentsModal}"
+            ng-style="showViewCommentsModal && {'display':'block'}">
+
+            <div class="modal-dialog modal-dialog-centered" style="width:600px;">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h4 class="modal-title">Ticket Comments</h4>
+                        <button type="button" class="close" ng-click="closeViewCommentsModal()">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="readonly-comments" ng-bind-html="selectedTicketComments">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-cancel" ng-click="closeViewCommentsModal()">
+                            Close
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-backdrop fade in" ng-if="showViewCommentsModal"></div>
+
+
+
+        <!-- Toast Notification -->
+        <div class="toast-container" ng-if="toast.show">
+            <div class="toast-message" ng-class="{
+                    'toast-success': toast.type === 'success',
+                    'toast-error': toast.type === 'error'
+                }">
+                <i class="fa-solid" ng-class="{
+                    'fa-circle-check': toast.type === 'success',
+                    'fa-circle-xmark': toast.type === 'error'
+                }">
+                </i>
+                <span>{{toast.message}}</span>
+            </div>
+        </div>
+
+
+
+
+    </body>
+
+
+</apex:page>

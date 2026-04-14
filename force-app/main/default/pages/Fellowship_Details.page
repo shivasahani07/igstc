@@ -1,0 +1,551 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+    <html>
+
+    <head>
+        <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.min.js"></script>
+        <script type="text/javascript"
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.1.1/ui-bootstrap-tpls.min.js"></script>
+        <script src="https://cdn.ckeditor.com/4.6.2/full/ckeditor.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ng.ckeditor/2.0.2/ng-ckeditor.min.js"></script>
+        <script>
+            debugger;
+            var userId = '{!$CurrentPage.parameters.id}';
+            var tabValues = [];
+            var workingDaysValues = [];
+            var candidateId;
+            var getAllEvents;
+            var eventsOnLoad;
+            var maxStringSize = 6000000;    //Maximum String size is 6,000,000 characters 6 MB
+            var maxFileSize = 4350000;      //After Base64 Encoding, this is the max file size
+            var chunkSize = 950000;         //Maximum Javascript Remoting message size is 1,000,000 characters
+            var attachment;
+            var attachmentName;
+            var fileSize;
+            var positionIndex;
+            var doneUploading;
+            var blobData;
+        </script>
+        <style>
+            .ta-editor {
+                min-height: 300px;
+                height: auto;
+                overflow: auto;
+                font-family: inherit;
+                font-size: 100%;
+            }
+        </style>
+    </head>
+    <div ng-controller="fellowshipP_ctrl">
+
+        <body>
+
+            <div class="container mt-5">
+                <div class="row mx-5">
+                    <div class="col-md-12">
+                        <div class="tab-link" ng-show="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Pairing_Page')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-friends"></i>
+                                        </div>
+                                        <span>Pairing Details</span>
+                                    </a>
+                                </li>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Personal_Information')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Personal Information</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ParentOrganization')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-building"></i>
+                                        </div>
+                                        <span>Parent Organization Details</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Education_Qualification')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-graduate"></i>
+                                        </div>
+                                        <span>Educational Qualifications</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Employment_Details')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-edit"></i>
+                                        </div>
+                                        <span>Employment Details</span>
+                                    </a>
+                                </li>
+                                
+                            </ul>
+                        </div>
+                        <div class="tab-link" ng-hide="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-friends"></i>
+                                        </div>
+                                        <span>Pairing Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Personal Information</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-building"></i>
+                                        </div>
+                                        <span>Parent Organization Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-graduate"></i>
+                                        </div>
+                                        <span>Educational Qualifications</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-edit"></i>
+                                        </div>
+                                        <span>Employment Details</span>
+                                    </a>
+                                </li>
+                                
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mx-5">
+                    <div class="col-md-12">
+                        <div class="tab-link" ng-show="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Achievements_Pecfar')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-trophy"></i>
+                                        </div>
+                                        <span>Achievements</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Fellowship_Details')">
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Fellowship Details</span>
+                                    </a>
+                                </li>
+                                
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Attachments_Pecfar')">
+                                        <div class="icon-circle">
+                                            <i class="fa fa-paperclip"></i>
+                                        </div>
+                                        <span>Attachments</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Declaration_Pecfar')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                        <span>Declaration</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ReviewSubmit_Pecfar')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-signature"></i>
+                                        </div>
+                                        <span>Review and Submit</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-link" ng-hide="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success wp-3"></div>
+                            </div>
+                            <ul>
+                                
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-trophy"></i>
+                                        </div>
+                                        <span>Achievements</span>
+                                    </a>
+                                </li>
+                                
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Fellowship Details</span>
+                                    </a>
+                                </li>
+
+                                
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa fa-paperclip"></i>
+                                        </div>
+                                        <span>Attachments</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                        <span>Declaration</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-signature"></i>
+                                        </div>
+                                        <span>Review and Submit</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+                <form name="formPrjDet">
+                    <div class="row mt-5 mx-5">
+                        <div class="col-md-12 alert bg-color-list" role="alert">
+                            <ul class="font-if">
+                                <li>
+                                    <i class="fa-solid fa-circle text-success me-3"></i>
+                                    If there is a problem in submitting, kindly press "CTRL+Shift+R" in one go and then try to submit. If the problem still persists, then contact us.
+                                </li>
+                                <li>
+                                    <i class="fa-solid fa-circle text-success me-3"></i>
+                                    The Title of the project and Non-technical title of the project must be same for both the members of the PECFAR pair.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row mt-5 mx-5">
+                        <div class="col-md-12">
+                            <label class="font-if color-theme"><b>Title of the project</b><span
+                                    class="required-asterisk text-danger">*</span></label>
+                            <input name="Title Of Project" class="form-control" type="text"
+                                ng-focus="removeClass('txtTitle')" id="txtTitle"
+                                ng-model="apaRecord.Title_Of_Project__c" ng-disabled="proposalStage" />
+                                <!-- ng-model="proposalDetails.Title_Of_Project__c" ng-disabled="proposalStage" /> -->
+                        </div>
+                    </div>
+
+                    <!-- SUBTOPIC SECTION -->
+                    <!-- <div class="row mt-5 mx-5">
+                        <div class="col-md-12">    
+                            <label class="pb-3 color-theme"><b>Subtopic</b>
+                                <span class="required-asterisk" style="color:red;">*</span>
+                            </label>
+                            <div class="col-md-12">
+                                <div ng-repeat="theme in thematicAreaToDisplay">
+                                    <div>
+                                        <input type="checkbox" ng-checked="theme.checked" ng-click="thematicArea(theme.Id,$index)" ng-disabled="proposalStage" class="font-if" />&nbsp; <span class="pb-1">{{theme.Name}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <!-- KEYWORDS SECTION -->
+                    <div class="row mt-5 mx-5">
+                        <div class="col-md-4">
+                            <label class="ps-3 pt-1 color-theme">
+                                <b>Keywords<span class="required-asterisk" style="color:red;">*</span> (Max. 6) <i>(To add click plus sign)</i></b>
+                            </label>
+                        </div>
+                        <div class="col-md-1">
+                            <div>
+                                <i ng-click="addKeyword()" class="fa-solid fa-2x text-primary fa-circle-plus" ng-if="!proposalStage && objKeyword.length < 6" style="cursor:pointer;"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="row mx-5">
+                        <div class="col-md-12">
+                            <div ng-repeat="item in objKeyword track by $index" class="row mb-2">
+                                <div class="col-md-5">
+                                    <input id="key{{$index}}" ng-focus="removeClass2('key')" type="text" ng-model="item.keyword"
+                                        class="form-control" maxlength="255" ng-disabled="proposalStage" />
+                                </div>
+                                <div class="col-md-1 d-flex align-items-center">
+                                    <i class="fa-solid fa-circle-xmark fa-2x text-danger" ng-click="removeKeyword($index)" ng-if="!proposalStage" style="cursor:pointer;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="row mx-5">
+                        <div class="col-md-12">
+                            <div ng-repeat="item in objKeyword track by $index" class="row mb-2">
+                                <div class="col-md-5">
+                                    <input id="key{{$index}}" ng-focus="removeClass2('key')" type="text" ng-model="item.keyword"
+                                        class="form-control" maxlength="255" ng-disabled="proposalStage" />
+                                </div>
+                                <div class="col-md-1 d-flex align-items-center">
+                                    <i class="fa-solid fa-circle-xmark fa-2x text-danger" ng-click="removeKeyword($index)" ng-if="!proposalStage" style="cursor:pointer;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END KEYWORDS SECTION -->
+
+                    <div class="row mt-5 mx-5">
+                        <div class="col-md-6">
+                            <label class="font-if color-theme"><b>Broad area of research</b><span
+                                    class="required-asterisk text-danger">*</span></label>
+                            <input name="BroadAreaOfResearch" class="form-control" type="text"
+                                ng-focus="removeClass('txtBroadArea')" id="txtBroadArea"
+                                ng-model="apaRecord.Broad_area_of_research__c" ng-disabled="proposalStage" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="font-if color-theme"><b>Non-technical title of the project</b><span
+                                    class="required-asterisk text-danger">*</span></label>
+                            <input name="NonTechTitle" class="form-control" type="text"
+                                ng-focus="removeClass('txtNonTechTitle')" id="txtNonTechTitle"
+                                ng-model="apaRecord.Non_Technical_Title_Of_Project__c" ng-disabled="proposalStage" />
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="row mt-5 mx-5">
+                        <div class="col-md-12 mt-3">
+                            <!--<label class="label-rtf"><b>Planned research activities of the visit(Abstract/objectives/work plan in max 1500 characters without space):</b></label>-->
+                            <label class="label-rtf"><b>Work plan for the visit duration (max 1500 characters without space):</b></label>
+                            <span class="required-asterisk" style="color:red;">*</span><br />
+                            <small class="label-rtf"><b>To use the below RTF box more efficiently, make sure you write
+                                    your content in word document first and then copy paste here</b></small>
+                            <ng-ckeditor ng-focus="removeClass2('plannedResearch')" id="plannedResearch"
+                                ng-model="apaRecord.Planned_research_activities_of_the_visit__c"
+                                ng-config="config"
+                                ng-change="readCharacter(proposalDetails.Planned_research_activities_of_the_visit__c,0)"></ng-ckeditor>
+                            <span>Total characters : {{objRtf[0].charCount}}</span>
+                            <span class="text-danger" ng-if="objRtf[0].errorStatus">maximum character limit is
+                                1500</span>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 mx-5">
+                        <div class="col-md-12 mt-3">
+                            <label class="label-rtf"><b>Expected outcomes including future plans emerging out of the
+                                    visit and value addition to the parent organization. (Max 500 characters without
+                                    space):</b></label>
+                            <span class="required-asterisk" style="color:red;">*</span><br />
+                            <small class="label-rtf"><b>To use the below RTF box more efficiently, make sure you write
+                                    your content in word document first and then copy paste here</b></small>
+                            <ng-ckeditor ng-focus="removeClass2('expectedOutcomes')" id="expectedOutcomes"
+                            ng-model="apaRecord.Expected_outcomes__c" ng-config="config"
+                                ng-change="readCharacter(proposalDetails.Expected_outcomes__c,1)"></ng-ckeditor>
+                            <span>Total characters : {{objRtf[1].charCount}}</span>
+                            <span class="text-danger" ng-if="objRtf[1].errorStatus">maximum character limit is
+                                500</span>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 mx-5">
+                        <div class="col-md-12 mt-3">
+                            <label class="label-rtf"><b>What is the basis for choosing your paired member of the
+                                    application ?(Max 500 characters without space):</b></label>
+                            <span class="required-asterisk" style="color:red;">*</span><br />
+                            <small class="label-rtf"><b>To use the below RTF box more efficiently, make sure you write
+                                    your content in word document first and then copy paste here</b></small>
+                            <ng-ckeditor ng-focus="removeClass2('pairingFellow')" id="pairingFellow"
+                            ng-model="apaRecord.Basis_for_choosing_your_paired_member__c" ng-config="config"
+                                ng-change="readCharacter(proposalDetails.Basis_for_choosing_your_paired_member__c,2)"></ng-ckeditor>
+                            <span>Total characters : {{objRtf[2].charCount}}</span>
+                            <span class="text-danger" ng-if="objRtf[2].errorStatus">maximum character limit is
+                                500</span>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 mx-5">
+                        <div class="col-md-12 mt-3">
+                            <label class="label-rtf"><b>Plans for networking visits to different institutions during the fellowship (Max 500 characters without space):</b></label>
+                            <span class="required-asterisk" style="color:red;">*</span><br />
+                            <small class="label-rtf"><b>To use the below RTF box more efficiently, make sure you write
+                                    your content in word document first and then copy paste here</b></small>
+                            <ng-ckeditor ng-focus="removeClass2('plansNetworking')" id="plansNetworking"
+                                ng-model="apaRecord.Tentative_plans__c" ng-config="config"
+                                ng-change="readCharacter(proposalDetails.Tentative_plans__c,3)"></ng-ckeditor>
+                            <span>Total characters : {{objRtf[3].charCount}}</span>
+                            <span class="text-danger" ng-if="objRtf[3].errorStatus">maximum character limit is 500</span>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 mx-5">
+                        <div class="col-md-12 mt-3">
+                            <p>
+                            <h5 class="" style="color:#138808; font-family: 'Montserrat', sans-serif;">"Travel shall be scheduled between
+                                  <span class=""
+                                    style="color:#138808; font-family: 'Montserrat', sans-serif;"
+                                    ng-bind="Pecfar_dateInformationText | date:'dd/MM/yyyy'"></span>  to  <span class=""
+                                    style="color:#138808; font-family: 'Montserrat', sans-serif;"
+                                    ng-bind="Pecfar_dateInformationText2 | date:'dd/MM/yyyy'"></span>"
+                            </h5>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 mx-5">
+                        <div class="col-md-6 mt-3">
+                            <label class="label-rtf">
+                                Proposed Start Date
+                            </label>
+                            <span class="required-asterisk" style="color:red;">*</span>
+                            <input name="Proposed Start Date" placeholder="Proposed Start Date" class="form-control"
+                                type="date"
+                                ng-model="apaRecord.Tentative_Start_Date__c" ng-focus="removeClass2('txtSD')" id="txtSD"
+                                ng-disabled="proposalStage" />
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <label class="label-rtf">
+                                Proposed End Date
+                            </label>
+                            <span class="required-asterisk" style="color:red;">*</span>
+                            <input name="Proposed End Date" placeholder="Proposed End Date" class="form-control"
+                                type="date"
+                                ng-model="apaRecord.Tentative_End_Date__c" ng-focus="removeClass2('txtED')" id="txtED"
+                                ng-disabled="proposalStage" />
+                        </div>
+                    </div>
+                    
+
+                    <div class="row mt-3 mx-5">
+                        <div class="col-md-6 mt-3">
+                            <label class="label-rtf">
+                                Are you availing any other fellowship currently?
+                                <span class="required-asterisk" style="color:red;">*</span>
+                            </label><br />
+                        </div>
+                        <div class="col-md-6 mt-3">
+                            <label class="label-rtf">
+                                Whether the applicant/host/mentor/supervisor was previously associated with the IGSTC in
+                                past ?
+                                <span class="required-asterisk" style="color:red;">*</span>
+                            </label><br />
+
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 mx-5">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-12 mt-3">
+                                    <select class="form-control" aria-label="Default select example"
+                                        ng-focus="removeClass2('availingFellowship')" id="availingFellowship"
+                                        ng-model="apaRecord.Availing_Fellowship__c" ng-disabled="proposalStage">
+                                        <!-- <option value="none" ng-selected="true">--None--</option> -->
+                                        <option ng-repeat="staff in availingFellowship">{{staff}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-12 mt-5" ng-if="apaRecord.Availing_Fellowship__c == 'Yes'">
+                                    <label class="label-rtf">
+                                        Give Details : Fellowship Details
+                                    </label><br />
+                                    <small class="label-rtf"><b>To use the below RTF box more efficiently, make sure you
+                                            write your content in word document first and then copy paste
+                                            here</b></small>
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                    <ng-ckeditor ng-model="apaRecord.Give_Fellowship_Details__c"
+                                        ng-config="config"></ng-ckeditor>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-12 mt-3">
+                                    <select class="form-control" aria-label="Default select example"
+                                        ng-focus="removeClass2('pairedApplicant')" id="pairedApplicant"
+                                        ng-model="apaRecord.Associated_with_IGSTC__c" ng-disabled="proposalStage">
+                                        <!-- <option value="none" ng-selected="true">--None--</option> -->
+                                        <option ng-repeat="staff in pairedApplicant">{{staff}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-12 mt-5" ng-if="apaRecord.Associated_with_IGSTC__c == 'Yes'">
+                                    <label class="label-rtf">
+                                        Give Details : IGSTC Association Details
+                                    </label><br />
+                                    <small class="label-rtf"><b>To use the below RTF box more efficiently, make sure you
+                                            write your content in word document first and then copy paste
+                                            here</b></small>
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                    <ng-ckeditor ng-model="apaRecord.Give_Associated_Details__c"
+                                        ng-config="config"></ng-ckeditor>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 mx-5">
+
+                    </div>
+
+                    <div class="row m-5" ng-if="!proposalStage">
+                        <div class="col-md-12">
+
+                            <button class="blue-btn float-end" ng-click="saveApplication()" type="button">
+                                <i class="fa-solid fa-check me-2"></i>Save and Next</button>
+                            <button class="blue-bordered-btn float-end me-2"
+                                ng-click="redirectPageURL('Achievements_Pecfar')" type="button">
+                                <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        </body>
+    </div>
+
+    </html>
+</apex:page>

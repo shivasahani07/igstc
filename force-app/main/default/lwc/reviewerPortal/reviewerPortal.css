@@ -1,0 +1,486 @@
+.menu{
+   
+        width:100%;
+        height:Auto;
+        background-color: white;
+        border: 0px;
+        
+    overflow: auto;
+    
+
+}
+.menu h1{
+  padding-left: 50px;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 39px;
+    color: #171347;
+}
+.rectangle {
+    padding-top: 20px;
+    width: 180px;
+    height: 170px;
+    background-color:#fff;
+    box-shadow: 0px 10px 20px #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: top; 
+  }
+  
+  .circle {
+    padding-top: 40%;
+    width: 80px;
+    height: 80px;
+    background-color: #171347;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+  }
+  .appCircle{
+    padding-top: 25%;
+    width: 80px;
+    height: 80px;
+    background-color: #EB7C01;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
+  }
+  .circlein{
+    padding-top: 25%;
+    width: 60px;
+    height: 60px;
+    background-color: #fff;
+    border-radius: 50%;
+    display: flex;
+    
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
+  }
+  .circle h2{
+    text-align: center;
+    text-transform: uppercase;
+    color: #fff;
+   font-size: x-large;
+   position: relative;
+   padding-bottom: 40px;
+  }
+  .TPT{
+    text-size-adjust: 30px;
+  }
+  h1{
+ font-family: 'Montserrat'; 
+font-style: normal;
+font-weight: 700;
+font-size: 32px;
+line-height: 39px;
+/* identical to box height */
+
+
+color: #171347;
+
+  }
+  
+  .applicationsRectangle{
+    width: 300px;
+    height: 150px;
+    background-color:#fff;
+    box-shadow: 0px 10px 20px #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: top;
+
+  }
+
+  .totalApp{
+    padding-top: 15px;
+    color: #EB7C01;
+    font-size: 20px;
+
+   
+  }
+  .totalApplicationsNum{
+    padding-top: 15px;
+    color: #EB7C01 ;
+    font-size: 30px;
+    font-weight: 500
+  }
+  .iconPage{
+
+    --lwc-colorTextIconDefault:#EB7C01;
+   
+  }
+
+  .draftappCircle{
+    padding-top: 25%;
+    width: 80px;
+    height: 80px;
+    background-color: #171347;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
+  }
+  .draftcirclein{
+    padding-top: 25%;
+    width: 60px;
+    height: 60px;
+    background-color: #fff;
+    border-radius: 50%;
+    display: flex;
+    
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
+  }
+  .drafticonPage{
+    --lwc-colorTextIconDefault:#171347;
+  }
+
+  .draftApp{
+    padding-top: 15px;
+    color: #171347;
+    font-size: 20px;
+
+   
+  }
+  .draftApplicationsNum{
+    padding-top: 15px;
+    color: #171347 ;
+    font-size: 30px;
+    font-weight: 500
+  }
+
+
+  
+  .submittedappCircle{
+    padding-top: 25%;
+    width: 80px;
+    height: 80px;
+    background-color: #138808;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ 
+    padding-bottom: 20px;
+  }
+  .submittedcirclein{
+    padding-top: 25%;
+    width: 60px;
+    height: 60px;
+    background-color: #fff;
+    border-radius: 50%;
+    display: flex;
+    
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 25px;
+  }
+  .submittediconPage{
+    --lwc-colorTextIconDefault:#138808;
+  }
+
+  .submittedApp{
+    padding-top: 15px;
+    color: #138808;
+    font-size: 20px;
+
+   
+  }
+  .submittedtApplicationsNum{
+    padding-top: 15px;
+    color: #138808;
+
+    font-size: 30px;
+    font-weight: 500
+  }
+  .unallocatedRec h1{
+    font-size: 27px;
+  }
+  .allocatedRectangle{
+    width: 500px;
+    height: 250px;
+    background-color:#fff;
+    box-shadow: 0px 10px 20px #ccc;
+    display: flex;
+   
+    
+
+  }
+  .allocated{
+    padding-top: 15px;
+    color: #171347;
+    font-size: 20px;
+  }
+  .unallocatedRectangle{
+   
+    width: 420px;
+    height: 150px;
+    background-color:#fff;
+    box-shadow: 0px 10px 20px #ccc;
+    display: flex;
+  
+    align-items: left;
+  }
+  .totalunallocatedRectangle{
+    justify-content: center;
+    width:215px;
+    height:40px;
+    background-color:#fff;
+    box-shadow: 0px 10px 20px #ccc;
+    display: flex;
+  overflow: hidden;
+    align-items: top;
+}
+.submittedtApplicationsNum1{
+  padding-top: 15px;
+  padding-left: 30px;
+  color: #EB7C01;
+
+  font-size: 30px;
+  font-weight: 500
+}
+.draftApplicationsNum1{
+  padding-top: 45px;
+  padding-left: 20px;
+  color: #EB7C01;
+
+  font-size: 40px;
+  font-weight: 500
+}
+.dottedlines{
+  padding-top: 62px;
+  font-size: medium;
+  font-weight: 800;
+
+}
+.unallocated{
+  padding-top: 5px;
+  color: #EB7C01;
+  font-size: 20px;
+}
+.dottedlineHorizontal{
+
+  font-size: large;
+  font-weight: 800;
+
+
+}
+.totalocatedRectangle1{
+  width:300px;
+  height:40px;
+  background-color:#fff;
+  box-shadow: 0px 10px 20px #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: top;
+
+}
+.totalpending{
+  width:300px;
+  height:40px;
+  background-color:#fff;
+  box-shadow: 0px 10px 20px #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: top;
+
+}
+.totalcomplete{
+  width:300px;
+  height:40px;
+  background-color:#fff;
+  box-shadow: 0px 10px 20px #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: top;
+}
+.alocated{
+  padding-top: 5px;
+  color: #EB7C01;
+  font-size: 20px;
+}
+.Pending{
+  padding-top: 5px;
+  color: #171347;
+  font-size: 20px;
+}
+.completed{
+  padding-top: 5px;
+  color: #138808;
+  font-size: 20px;
+}
+.TPT{
+  
+  max-height: 30px;
+  height:20px;
+  font-size: 20px;
+  font-weight: 500;
+  font-family: monospace;
+  padding-left: 0px;
+  text-size-adjust: auto;
+ 
+  display: flex;
+}
+.TPTIF{
+  
+  max-height: 30px;
+  height:20px;
+  font-size: 20px;
+  font-weight: 500;
+  font-family: monospace;
+  padding-left: 20px;
+  text-size-adjust: auto;
+ 
+  display: flex;
+}
+.TPT22{
+  
+  max-height: 30px;
+  height:20px;
+  font-size: 20px;
+  font-weight: 500;
+  font-family: monospace;
+  padding-left: 20px;
+  text-size-adjust: auto;
+ 
+  display: flex;
+}
+.TPTSING{
+  
+  max-height: 30px;
+  height:20px;
+  font-size: 20px;
+  font-weight: 500;
+  font-family: monospace;
+  padding-left: 20px;
+  text-size-adjust: auto;
+ 
+  display: flex;
+}
+.TPTWiser{
+  max-height: 30px;
+  height:20px;
+  font-size: 20px;
+  font-weight: 500;
+  font-family: monospace;
+  padding-left: 10px;
+  text-size-adjust: auto;
+ 
+  display: flex;
+}
+.slds-button{
+  padding-left: 10px;
+}
+.btn{
+  font-weight: 400;
+}
+.PECFAR{
+  font-size: 20px;
+  font-weight: 500;
+  font-family: monospace;
+  padding-left: 05px;
+}
+.SING{
+  font-size: 20px;
+  font-weight: 500;
+  font-family: monospace;
+  padding-left: 05px;
+}
+.WORKSHOP{
+  font-size: 20px;
+  font-weight: 500;
+  font-family: monospace;
+  padding-left: 05px;
+}
+.WISER{
+  font-size: 20px;
+  font-weight: 500;
+  font-family: monospace;
+  padding-left: 05px;
+}
+.block1{
+  margin-left: 30px;
+
+}
+.allocatedDiv{
+  float:right;
+ 
+}
+.dottedline{
+  margin-left: 20px;
+  padding-top: 0px;
+  padding-left:10px;
+  border-left: #171347;
+  border-style: dashed;
+     border-top: none;
+     border-bottom: none;
+     border-right: none;
+  border-width: 4px;
+  display: flex;
+    
+    justify-content: center;
+    align-items: left;
+
+  height: auto;
+}
+.dottedlines1{
+  padding-left: 10px;
+  padding-top: 0px;
+  font-size: large;
+  font-weight: 800;
+
+}
+.dtdcll{
+  padding-left: 30px;
+}
+.appCircle1{
+  padding-top: 25%;
+  width: 80px;
+  height: 80px;
+  background-color: #138808;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 20px;
+}
+.circlein1{
+  padding-top: 25%;
+  width: 60px;
+  height: 60px;
+  background-color: #fff;
+  border-radius: 50%;
+  display: flex;
+  
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 20px;
+}
+.prod{
+
+  width: 75px;
+  max-width: 75px;
+  
+}
+.num{
+  width: 65px;
+  max-width: 65px;
+  display: flex;
+
+overflow: auto;
+}
+.num1{
+  width: 70px;
+  max-width: 70px;
+  display: flex;
+
+}

@@ -1,0 +1,3 @@
+.richtext-wrapper lightning-input-rich-text::part(editor) {
+    font: optional;
+}

@@ -1,0 +1,322 @@
+.main-container {
+    padding: 10px;
+    border-radius: 8px;
+    height: 100%;
+    font-weight: 500;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    overflow: hidden;
+    height: 100%;
+    background-color: white;
+}
+
+/* Sidebar styles */
+.sidebar-container {
+    position: absolute;
+    height: 100%;
+    border-radius: 8px 0 0 8px;
+    /* top: 0;
+    left: 0; */
+    width: 250px;
+    /* background-color: #E5F5FF; */
+    background-color: white;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.15);
+    overflow-y: auto;
+    scrollbar-width: none;
+    z-index: 1000;
+    transition: transform 0.3s ease, width 0.3s ease;
+}
+
+.visible {
+    transform: translateX(0);
+}
+
+.sidebar-content {
+    padding-left: 1.5rem;
+    margin: 0.25rem 0;
+    cursor: pointer;
+    font-size: 14px;
+    color: #212529;
+    display: flex;
+    align-items: center;
+    /* transition: background-color 0.2s; */
+    position: relative;
+    justify-content: left;
+    height: 50px;
+    padding: 0 1rem;
+    transition: all 0.3s ease;
+    gap: 10px;
+}
+
+.section {
+    padding-left: 1rem;
+    font-size: 12px;
+    color: #0073C2;
+}
+
+.sidebar-content:hover {
+    /* background-color: #c5daf8; */
+    background-color: #d3efdc;
+}
+
+.sidebar-content.active {
+    background-color: #d3efdc;
+    color: #10732d;
+    border-radius: 2rem;
+    padding : 0 1.5rem 0 0.5rem;
+    margin-left: 0.75rem;
+    margin-right: 0.75rem;
+    max-width: -webkit-fill-available;
+    font-weight: 700;
+}
+
+/* Sidebar toggle button for mobile */
+.sidebar-toggle {
+    /* position: absolute;
+    top: 10px;
+    left: 10px; */
+    font-size: 1.25rem;
+    background: none;
+    border: none;
+    color: #212529;
+    /* padding-left: 0;
+    padding-right: 1rem; */
+}
+
+.content-container {
+    /* top: 0; */
+    position: relative;
+    /* width: -webkit-fill-available; */
+    height: 100%;
+    scrollbar-width: none;
+    margin-left: 250px;
+    padding: 0px;
+    transition: margin-left 0.3s ease-in-out;
+    /* min-height:55rem; */
+    overflow-y: auto;
+}
+
+.contract-sidebar {
+    margin: 2% 2% 10% 0;
+    padding: 0rem 0.25rem;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+    background-color: #207454;
+    color: white;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 1;
+}
+
+.cls-btn {
+    margin-left: 20%;
+    padding: 0.5rem;
+}
+
+/* Contracted state for desktop */
+.sidebar-container.contracted {
+    width: 70px;
+}
+
+/* Hide text and adjust items when contracted */
+.sidebar-container.contracted .section,
+.sidebar-container.contracted .sidebar-content {
+    font-size: 0 !important;
+    /* Hide text */
+    justify-content: center !important;
+}
+
+/* Adjust logo size when contracted */
+.sidebar-container.contracted .sidebar-logo-container img {
+    width: 0 !important;
+    /* margin: 0 auto !important; */
+}
+
+/* Rotate contract button */
+.sidebar-container.contracted .contract-sidebar {
+    transform: rotate(180deg) translateX(40%);
+    /* margin-left: 0 !important; */
+    margin-top: 0.25rem;
+}
+
+.sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    background-color: white;
+    /* border-bottom: 1px #e0e0e0 solid; */
+}
+
+.scrollable-content {
+    overflow-y: auto;
+    scrollbar-width: none;
+    height: 100%;
+    background-color: #f3f2f7;
+}
+
+/* Backdrop overlay for mobile */
+.mobile-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* semi-transparent black */
+    z-index: 900;
+    /* should be below your sidebar's z-index */
+}
+
+/* Adjust content margin for contracted sidebar */
+@media (min-width: 769px) {
+    .content-container {
+        margin-left: 250px;
+        transition: margin-left 0.3s ease-in-out;
+    }
+
+    .sidebar-container.contracted~.content-container {
+        margin-left: 70px;
+    }
+}
+
+/* Responsive behavior */
+@media (max-width: 768px) {
+    .sidebar-container {
+        transform: translateX(-110%);
+        z-index: 1000;
+    }
+
+    .visible {
+        transform: translateX(0);
+    }
+
+    .content-container {
+        margin-left: 0;
+    }
+}
+
+/*-- Loader CSS --*/
+.loader {
+    height: 60px;
+    aspect-ratio: 2;
+    border-bottom: 3px solid #0000;
+    background:
+        linear-gradient(90deg, white 50%, transparent 0) -25% 100%/50% 3px repeat-x border-box;
+    position: relative;
+    animation: l3-0 .75s linear infinite;
+}
+
+.loader:before {
+    content: "";
+    position: absolute;
+    inset: auto 42.5% 0;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: #5dff75;
+    animation: l3-1 .75s cubic-bezier(0, 900, 1, 900) infinite;
+}
+
+@keyframes l3-0 {
+    to {
+        background-position: -125% 100%
+    }
+}
+
+@keyframes l3-1 {
+    0%,2% {
+        bottom: 0%
+    }
+
+    98%,
+    to {
+        bottom: .1%
+    }
+}
+
+/* Sidebar main container */
+.sidebar-container {
+    /* position: relative; */
+    /* width: 78px; */
+    /* min-height: 100vh; */
+    /* background: #eaf5ff; */
+    overflow: visible;
+    /* transition: width 0.3s ease; */
+}
+
+/* Tooltip */
+.sidebar-content .tooltip {
+    position: absolute;
+    left: calc(100% + 10px);
+    /* push fully outside sidebar */
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fff;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 400;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 9999;
+    display: none;
+    /* default hidden */
+}
+
+/* Show tooltips only in collapsed state */
+.sidebar-container.contracted .tooltip {
+    display: block;
+}
+
+/* On hover show tooltip */
+.sidebar-container.contracted .sidebar-content:hover .tooltip {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+    pointer-events: auto;
+}
+
+/* Added on 18/08/2025 to fix sidebar allignment issue */
+.sidebar-content i {
+    font-size: 20px;
+    /* color: #111; */
+    transition: 0.3s ease;
+    min-width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.links_name {
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.sidebar-container.contracted .links_name {
+    display: none;
+}
+
+.sidebar-logo-container {
+    padding: 1rem;
+    position: relative;
+}
+
+
+.sidebar-container.contracted .sidebar-content {
+    justify-content: center;
+    padding: 0;
+    padding-left: 0;
+}
+
+.sidebar-container.contracted .sidebar-content i {
+    margin: 0 auto;
+}
+
+.sidebar-container.contracted .contract-sidebar {
+    right: 50%;
+    transform: translate(50%, -50%) rotate(180deg);
+}

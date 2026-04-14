@@ -1,0 +1,211 @@
+<template>
+    <lightning-card   >
+        <b><div style="padding-left:15px;color:rgb(12, 12, 12); font-size:20px">User Documents 
+        
+            </div>
+            <br/>
+            
+        </b>
+        <div class="slds-box slds-theme–default">
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+                    <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="" scope="col">
+                            Name
+                        </th>
+                        <template if:true={isPECFAR}>
+                            <th class="" scope="col">
+                                Contact Name
+                            </th>    
+                        </template>
+                        <th class="" scope="col">
+                            Status
+                        </th>
+                        
+                        
+                    </tr>
+                </thead>
+                <template if:true={isIFRecord}>
+                <tbody>
+                    <template iterator:it1={userDocumentListData1}>
+                        <tr class="slds-hint-parent" key = {it1.value.sno}>
+                            <td data-label="Spec File">
+                                <div class="slds-cell-wrap">{it1.value.Name}</div>
+                            </td>
+                            
+                            <td data-label="Spec File">
+                                <img src={uploadedImage}>
+                            </td>
+                            
+                            
+                            
+                        </tr>
+                    </template>
+                </tbody>
+                <tbody>
+                    <template iterator:it2={userDocumentListData2}>
+                        <tr class="slds-hint-parent" key = {it2.value.sno}>
+                            <td data-label="Spec File1">
+                                <div class="slds-cell-wrap">{it2.value.Name}</div>
+                            </td>
+                            
+                            <td data-label="Spec File2">
+                                <img src={notuploadedImage}>
+                            </td>
+                            
+                            
+                        </tr>
+                    </template>
+                </tbody>
+                </template>
+                <template if:true={isPECFAR}>
+                    <tbody>
+                        <template iterator:it3={userDocumentListData3}>
+                            <tr class="slds-hint-parent" key = {it3.value.sno}>
+                                <td data-label="Spec File">
+                                    <div class="slds-cell-wrap">{it3.value.Name} </div>
+                                </td>
+                                <td data-label="Spec File">
+                                    <div class="slds-cell-wrap">{it3.value.Contact__r.Name} </div>
+                                </td>
+                                <td data-label="Spec File">
+                                    <img src={uploadedImage}>
+                                </td>
+                                
+                                
+                                
+                            </tr>
+                        </template>
+                    </tbody>
+                    <tbody>
+                        <template iterator:it4={userDocumentListData4}>
+                            <tr class="slds-hint-parent" key = {it4.value.sno}>
+                                <td data-label="Spec File1">
+                                    <div class="slds-cell-wrap">{it4.value.Name} </div>
+                                </td>
+                                <td data-label="Spec File">
+                                    <div class="slds-cell-wrap">{it4.value.Contact__r.Name} </div>
+                                </td>
+                                <td data-label="Spec File2">
+                                    <img src={notuploadedImage}>
+                                </td>
+                                
+                                
+                            </tr>
+                        </template>
+                    </tbody>
+                    </template>
+                    <template if:true={isSING}>
+                        <tbody>
+                            <template iterator:it1={userDocumentListData1}>
+                                <tr class="slds-hint-parent" key = {it1.value.sno}>
+                                    <td data-label="Spec File">
+                                        <div class="slds-cell-wrap">{it1.value.Name}</div>
+                                    </td>
+                                    
+                                    <td data-label="Spec File">
+                                        <img src={uploadedImage}>
+                                    </td>
+                                    
+                                    
+                                    
+                                </tr>
+                            </template>
+                        </tbody>
+                        <tbody>
+                            <template iterator:it2={userDocumentListData2}>
+                                <tr class="slds-hint-parent" key = {it2.value.sno}>
+                                    <td data-label="Spec File1">
+                                        <div class="slds-cell-wrap">{it2.value.Name}</div>
+                                    </td>
+                                    
+                                    <td data-label="Spec File2">
+                                        <img src={notuploadedImage}>
+                                    </td>
+                                    
+                                    
+                                </tr>
+                            </template>
+                        </tbody>
+                        </template>
+                        <template if:true={isWISER}>
+                            <tbody>
+                                <template iterator:it3={userDocumentListData3}>
+                                    <tr class="slds-hint-parent" key = {it3.value.sno}>
+                                        <td data-label="Spec File">
+                                            <div class="slds-cell-wrap">{it3.value.Name} </div>
+                                        </td>
+                                        <td data-label="Spec File">
+                                            <div class="slds-cell-wrap">{it3.value.Contact__r.Name} </div>
+                                        </td>
+                                        <td data-label="Spec File">
+                                            <img src={uploadedImage}>
+                                        </td>
+                                        
+                                        
+                                        
+                                    </tr>
+                                </template>
+                            </tbody>
+                            <tbody>
+                                <template iterator:it4={userDocumentListData4}>
+                                    <tr class="slds-hint-parent" key = {it4.value.sno}>
+                                        <td data-label="Spec File1">
+                                            <div class="slds-cell-wrap">{it4.value.Name} </div>
+                                        </td>
+                                        <td data-label="Spec File">
+                                            <div class="slds-cell-wrap">{it4.value.Contact__r.Name} </div>
+                                        </td>
+                                        <td data-label="Spec File2">
+                                            <img src={notuploadedImage}>
+                                        </td>
+                                        
+                                        
+                                    </tr>
+                                </template>
+                            </tbody>
+                            </template>
+                            <template if:true={isWORKSHOP}>
+                                <tbody>
+                                    <template iterator:it3={userDocumentListData3}>
+                                        <tr class="slds-hint-parent" key = {it3.value.sno}>
+                                            <td data-label="Spec File">
+                                                <div class="slds-cell-wrap">{it3.value.Name} </div>
+                                            </td>
+                                            <td data-label="Spec File">
+                                                <div class="slds-cell-wrap">{it3.value.Contact__r.Name} </div>
+                                            </td>
+                                            <td data-label="Spec File">
+                                                <img src={uploadedImage}>
+                                            </td>
+                                            
+                                            
+                                            
+                                        </tr>
+                                    </template>
+                                </tbody>
+                                <tbody>
+                                    <template iterator:it4={userDocumentListData4}>
+                                        <tr class="slds-hint-parent" key = {it4.value.sno}>
+                                            <td data-label="Spec File1">
+                                                <div class="slds-cell-wrap">{it4.value.Name} </div>
+                                            </td>
+                                            <td data-label="Spec File">
+                                                <div class="slds-cell-wrap">{it4.value.Contact__r.Name} </div>
+                                            </td>
+                                            <td data-label="Spec File2">
+                                                <img src={notuploadedImage}>
+                                            </td>
+                                            
+                                            
+                                        </tr>
+                                    </template>
+                                </tbody>
+                                </template>
+    
+            </table>
+        </div>
+            
+    </lightning-card>
+
+</template>

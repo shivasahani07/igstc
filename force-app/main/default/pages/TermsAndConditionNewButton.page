@@ -1,0 +1,19 @@
+<apex:page standardController="Terms_Condition__c" standardStylesheets="true" showHeader="false">
+<apex:includeLightning />    
+<div id="termsAndConditionsForm" />
+<script>
+    document.addEventListener('lightning__showtoast', event => {
+        sforce.one.showToast(event.toastAttributes);
+    });
+        $Lightning.use("c:termsAndConditionsFormApp", function() {
+        $Lightning.createComponent("c:termsAndConditionsForm",
+        {
+            recordId : '{!$CurrentPage.parameters.id}'
+        },
+        "termsAndConditionsForm", 
+        function(cmp) {
+            console.log('Calling the LWC Component');
+        });
+    });
+</script>
+</apex:page>

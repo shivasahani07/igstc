@@ -1,0 +1,767 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+    <html>
+    <div ng-controller="ProjectDetailCtrl">
+
+        <head>
+            <style>
+                .ta-editor {
+                    min-height: 300px;
+                    height: auto;
+                    overflow: auto;
+                    font-family: inherit;
+                    font-size: 100%;
+                }
+            </style>
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+        </head>
+
+        <body>
+
+            <div class="container mt-5">
+                <div class="row mx-5">
+                    <div class="col-md-12">
+                        <div class="tab-link" ng-show="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ProjectDetailPage')">
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Basic Details</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Consortia')">
+                                        <div class="icon-circle">
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                        <span>Consortium Details</span>
+
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ConsortiaContacts')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>CV Details</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Financial_Overview')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <span>Financial Contribution</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ProjectDetail')">
+                                        <div class="icon-circle">
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Project Details</span>
+                                    </a>
+                                </li>
+                                <!-- <li class="active pb-cursor" ng-hide="secondStage">
+                                        <a ng-click="redirectPageURL('WorkPackages')">
+                                            <div class="icon-circle">
+                                                <i class="fa-solid fa-box"></i>
+                                            </div>
+                                            <span>Work Package</span>
+                                        </a>
+                                    </li> -->
+                            </ul>
+                        </div>
+
+                        <div ng-show="proposalStage">
+                            <div class="tab-link" ng-show="secondStage">
+                                <div class="progress">
+                                    <div class=""></div>
+                                </div>
+                                <ul>
+                                    <!-- <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('WorkPackages')">
+                                            <div class="icon-circle">
+                                                <i class="fa-solid fa-box"></i>
+                                            </div>
+                                            <span>Work Package</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('PIDeliverables')">
+                                            <div class="icon-circle">
+                                                <i class="fa-solid fa-business-time"></i>
+                                            </div>
+                                            <span>PI Deliverables</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Network_Meeting')">
+                                            <div class="icon-circle">
+                                                <i class="fa fa-group"></i>
+                                            </div>
+                                            <span>Network Meeting</span>
+                                        </a>
+                                    </li> -->
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('ExpenseDeclaration')">
+                                            <div class="icon-circle">
+                                                <i class="fa fa-money"></i>
+                                            </div>
+                                            <span>Expense Details</span>
+                                        </a>
+                                    </li>
+                                    <!-- <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('GrantApplication')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-donate"></i>
+                                            </div>
+                                            <span>Grant Application</span>
+                                        </a>
+                                    </li> -->
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Declartion_2plus2')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-donate"></i>
+                                            </div>
+                                            <span>Declaration</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="tab-link" ng-hide="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success"></div>
+                            </div>
+                            <ul>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Basic Details</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Consortium Details</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>CV Details</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <span>Financial Contribution</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Project Details</span>
+                                    </a>
+                                </li>
+                                <!-- <li ng-hide="secondStage">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa-solid fa-box"></i>
+                                            </div>
+                                            <span>Work Package</span>
+                                        </a>
+                                    </li> -->
+                            </ul>
+                        </div>
+
+                        <div ng-hide="proposalStage">
+                            <div class="tab-link" ng-show="secondStage">
+                                <div class="progress">
+                                    <div class=""></div>
+                                </div>
+                                <ul>
+                                    <!-- <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa-solid fa-box"></i>
+                                            </div>
+                                            <span>Work Packages</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa-solid fa-business-time"></i>
+                                            </div>
+                                            <span>PI Deliverables</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa fa-group"></i>
+                                            </div>
+                                            <span>Network Meeting</span>
+                                        </a>
+                                    </li> -->
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa fa-money"></i>
+                                            </div>
+                                            <span>Expense Details</span>
+                                        </a>
+                                    </li>
+                                    <!-- <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-donate"></i>
+                                            </div>
+                                            <span>Grant Details</span>
+                                        </a>
+                                    </li> -->
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-donate"></i>
+                                            </div>
+                                            <span>Declaration</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="row mt-5 mx-5" ng-if="!proposalStage"> -->
+                <div class="col-md-12">
+                    <div ng-hide="isCoordinator=='true'">
+                        <div class="alert bg-color-list font-if" role="alert">
+                            <li class="ps-4"><i class="fa-solid fa-circle text-success me-3"></i>Only the Coordinator
+                                can fill the Basic Project Details.</li>
+                            <li class="ps-4"><i class="fa-solid fa-circle text-success me-3"></i>Click on the Consortium
+                                Details from the Timeline above to fill your respective Details.</li>
+                            <li class="ps-4"><i class="fa-solid fa-circle text-success me-3"></i>Kindly do not change
+                                <i>Project Acronym</i>, <i>Project Title</i> and <i>Subtopics</i> which were filled in
+                                the first stage of the proposal.
+                            </li>
+                        </div>
+                    </div>
+                    <!-- <div ng-if="bulletCondition">
+                        <div class="alert bg-color-list font-if" role="alert">
+                            <li class="ps-4"><i class="fa-solid fa-circle text-success me-3"></i>Kindly do not change
+                                <i>Project Acronym</i>, <i>Project Title</i> and <i>Subtopics</i> which were filled in
+                                the first stage of the proposal.
+                            </li>
+                        </div>
+                    </div> -->
+                </div>
+                <!-- </div> -->
+
+                <!-- <div class="row box-shadow-2 mt-5 mx-5 p-3 mb-3 bg-color-list">
+                    <div class="col-md-12">Document Required at stage 1 and 2 </div>
+                    <div class="col-md-6">
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <label class="font-if mb-3">
+                                    <!-- <b>Stage 1:</b> 
+                                        <br/>DSIR Certificate
+                                    <br />Project Proposal - Stage 1
+                                    <br />Undertaking for Sensitivity-Security Regulations
+                                    <br/>Undertaking format towards acceptance of Grant conditions and signing of Agreement
+                                    <br/>Signature
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <label class="font-if mb-3">
+                                    <!-- <b>Stage 2:</b> 
+                                    <br /> Project Proposal - Stage 2
+                                    <br /> Letter of Consent
+                                    <br />Budget Report
+                                    <br />Quotation for Equipment / Accessories
+                                    <br />
+                                    <b>(For Industry) </b>
+                                    <br />Annual Financial Report - Year 1
+                                    <br />Annual Financial Report - Year 2
+                                    <br />Annual Financial Report - Year 3
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+                <!--
+                <div class="row box-shadow-2 mt-5 mx-5 p-3 mb-3 bg-color-list">
+                    <div class="col-md-12"><b>Document Required at stage 1 and 2</b></div>
+                    <div class="col-md-6">
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <label class="font-if mb-3">
+                                    <!-- <b>Stage 1:</b>
+                                    <ol>
+                                        <li>DSIR Certificate</li>
+                                        <li>Project Proposal - Stage 1</li>
+                                        <li>Undertaking for Sensitivity-Security Regulations</li>
+                                        <li>Undertaking format towards acceptance of Grant conditions and signing of
+                                            Agreement</li>
+                                        <li>Signature</li>
+                                    </ol>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <label class="font-if mb-3">
+                                    <!-- <b>Stage 2:</b>
+                                    <ol>
+                                        <li>Project Proposal - Stage 2</li>
+                                        <li>Letter of Consent</li>
+                                        <li>Budget Report</li>
+                                        <li>Quotation for Equipment / Accessories</li>
+                                        <li> <b>(For Industry)</b> </li>
+                                        <li>Annual Financial Report - Year 1</li>
+                                        <li>Annual Financial Report - Year 2</li>
+                                        <li>Annual Financial Report - Year 3</li>
+                                    </ol>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                -->
+                
+                <!--
+                <div class="row box-shadow-2 mt-5 mx-5 p-3 mb-3 bg-color-list">
+                    <div class="col-md-12"><b>Document Required at stage 1 and 2</b></div>
+                    <div class="col-md-6">
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <label class="font-if mb-3">
+                                    <b>Stage 1:</b>
+                                    <ul class="bullet-list">
+                                        <li><i class="fa-solid fa-circle bullet-icon"></i> DSIR Certificate (For
+                                            Industry)</li>
+                                        <li><i class="fa-solid fa-circle bullet-icon"></i> Project Proposal - Stage 1
+                                        </li>
+                                        <li><i class="fa-solid fa-circle bullet-icon"></i> Undertaking for
+                                            Sensitivity-Security Regulations</li>
+                                        <li><i class="fa-solid fa-circle bullet-icon"></i> Undertaking format towards
+                                            acceptance of Grant conditions and signing of Agreement</li>
+                                        <li><i class="fa-solid fa-circle bullet-icon"></i> Signature</li>
+                                    </ul>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <label class="font-if mb-3">
+                                    <!-- <b>Stage 2:</b>
+                                    <ul class="bullet-list">
+                                        <li><i class="fa-solid fa-circle bullet-icon"></i> Project Proposal - Stage 2
+                                        </li>
+                                        <li><i class="fa-solid fa-circle bullet-icon"></i> Letter of Consent</li>
+                                        <li><i class="fa-solid fa-circle bullet-icon"></i> Budget Report</li>
+                                        <li><i class="fa-solid fa-circle bullet-icon"></i> Quotation for Equipment /
+                                            Accessories</li>
+                                        <li> <b>(For Industry)</b> </li>
+                                        <li><i class="fa-solid fa-circle bullet-icon"></i> Annual
+                                            Financial Report - Year 1</li>
+                                        <li><i class="fa-solid fa-circle bullet-icon"></i> Annual
+                                            Financial Report - Year 2</li>
+                                        <li><i class="fa-solid fa-circle bullet-icon"></i> Annual
+                                            Financial Report - Year 3</li>
+                                    </ul>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                -->
+                
+                <div class="row box-shadow-2 mt-5 mx-5 p-3 mb-3 bg-color-list">
+                    <!-- Stage 1 - Single Column -->
+                    <div class="col-12" ng-show="proposalStageCheck === '1st Stage'|| proposalStageCheck === ''">
+                        <div><b>Document Required at stage 1</b></div>
+                        <label class="font-if mb-3 mt-2">
+                            <ul class="bullet-list">
+                                <li><i class="fa-solid fa-circle bullet-icon"></i> DSIR Certificate</li>
+                                <li><i class="fa-solid fa-circle bullet-icon"></i> Project Proposal</li>
+                                <li><i class="fa-solid fa-circle bullet-icon"></i> Undertaking for Sensitivity-Security Regulations</li>
+                                <li><i class="fa-solid fa-circle bullet-icon"></i> Undertaking format towards acceptance of Grant conditions and signing of Agreement</li>
+                            </ul>
+                        </label>
+                    </div>
+
+                    <!-- Stage 2 - Two Columns Side by Side -->
+                    <div class="col-md-6" ng-show="proposalStageCheck === '2nd Stage'">
+                        <div><b>Document Required at stage 1</b></div>
+                        <label class="font-if mb-3 mt-2">
+                            <ul class="bullet-list">
+                                <li><i class="fa-solid fa-circle bullet-icon"></i> DSIR Certificate</li>
+                                <li><i class="fa-solid fa-circle bullet-icon"></i> Project Proposal</li>
+                                <li><i class="fa-solid fa-circle bullet-icon"></i> Undertaking for Sensitivity-Security Regulations</li>
+                                <li><i class="fa-solid fa-circle bullet-icon"></i> Undertaking format towards acceptance of Grant conditions and signing of Agreement</li>
+                            </ul>
+                        </label>
+                    </div>
+
+                    <div class="col-md-6" ng-show="proposalStageCheck === '2nd Stage'">
+                        <div><b>Document Required at stage 2</b></div>
+                        <label class="font-if mb-3 mt-2">
+                            <ul class="bullet-list">
+                                <li><i class="fa-solid fa-circle bullet-icon"></i> Project Proposal</li>
+                                <li><i class="fa-solid fa-circle bullet-icon"></i> Project Description</li>
+                                <li><i class="fa-solid fa-circle bullet-icon"></i> Letter of Consent</li>
+                                <li><i class="fa-solid fa-circle bullet-icon"></i> Financial Report</li>
+                                <li><i class="fa-solid fa-circle bullet-icon"></i> Quotation for Equipment / Accessories</li>
+                            </ul>
+                        </label>
+                    </div>
+                </div>
+                <form name="formPrjDet">
+                    <div class="row box-shadow-2 mt-5 mx-5 p-3 mb-5">
+                        <div class="col-md-6 mt-5">
+                            <label class="pb-3 color-theme">
+                                Project Acronym (Max. chars 300)
+                            </label>
+                            <span class="required-asterisk" style="color:red;">*</span>
+                            <input ng-focus="removeClass2('Acronym')" id="Acronym" name="Acronym" placeholder="Acronym"
+                                class="form-control" type="text" ng-model="applicantDetails.Acronym__c"
+                                ng-disabled="proposalStage" required="true" ng-required="applicantDetails.Acronym__c"
+                                ng-change="checkCharLimit(applicantDetails, 'Acronym__c', 300)" />
+
+                            <small class="text-danger" ng-if="applicantDetails._charLimitMap &&
+                                        applicantDetails._charLimitMap.Acronym__c">
+                                Maximum 300 chars allowed
+                            </small>
+                        </div>
+
+                        <div class="col-md-6 mt-5">
+                            <label class="pb-3 color-theme">
+                                Title Of Proposal (Max. chars 600)
+                            </label>
+                            <span class="required-asterisk" style="color:red;">*</span>
+                            <input ng-focus="removeClass2('title')" id="title" name="Title Of Proposal"
+                                placeholder="Title Of Proposal" class="form-control" type="text"
+                                ng-model="applicantDetails.Title_Of__c" ng-disabled="proposalStage"
+                                ng-change="checkCharLimit(applicantDetails, 'Title_Of__c', 600)" />
+
+                            <small class="text-danger" ng-if="applicantDetails._charLimitMap &&
+                                        applicantDetails._charLimitMap.Title_Of__c">
+                                Maximum 600 chars allowed
+                            </small>
+                        </div>
+
+                        <div class="col-md-6 mt-5">
+                            <label class="pb-3 color-theme">
+                                Title des Antrages (In German) (Max. chars 600)
+                            </label>
+                            <span class="required-asterisk" style="color:red;">*</span>
+                            <input ng-focus="removeClass2('titleG')" id="titleG" name="Title In German"
+                                placeholder="Title In German" class="form-control" type="text"
+                                ng-model="applicantDetails.Title_In_German__c"
+                                ng-disabled="proposalStage || !isCoordinator"
+                                ng-change="checkCharLimit(applicantDetails, 'Title_In_German__c', 600)" />
+
+                            <small class="text-danger" ng-if="applicantDetails._charLimitMap &&
+                                        applicantDetails._charLimitMap.Title_In_German__c">
+                                Maximum 600 chars allowed
+                            </small>
+                        </div>
+
+                        <div class="col-md-6 mt-5">
+                            <label class="pb-3 color-theme">
+                                Duration In Months (Min 24 Max 36)
+                            </label>
+                            <span class="required-asterisk" style="color:red;">*</span>
+                            <!-- <input name="duration" placeholder="Min -24 months and Maximum – 36 months." class="form-control" type="text" number="applicantDetails.Duration_In_Months_Max_36__c" ng-model="applicantDetails.Duration_In_Months_Max_36__c"
+                                ng-disabled="proposalStage || !isCoordinator" ng-minlength="2" ng-maxlength="2" min="24" max="36" id="txtDuration" ng-focus="removeClass2('txtDuration')"
+                                ng-change="restrictDecimalVal(applicantDetails.Duration_In_Months_Max_36__c)" />
+                                <span ng-if="!formPrjDet.duration.$valid" class="text-danger">duration must be between 24 and 36 Months</span> -->
+
+                            <form name="formPrjDet">
+                                <input name="duration" type="number" class="form-control"
+                                    placeholder="Min 24 months and Max 36 months"
+                                    ng-model="applicantDetails.Duration_In_Months_Max_36__c" ng-disabled="proposalStage"
+                                    min="24" max="36" id="txtDuration" ng-focus="removeClass2('txtDuration')" />
+                                <!-- ng-change="restrictDecimalVal()" -->
+
+                                <span class="text-danger"
+                                    ng-show="formPrjDet.duration.$error.min || formPrjDet.duration.$error.max">
+                                    Duration must be between 24 and 36 months
+                                </span>
+                            </form>
+
+                        </div>
+
+                        <div class="col-md-12 mt-5">
+                            <label class="pb-3 color-theme">Subtopic
+                                <span class="required-asterisk" style="color:red;">*</span>
+                            </label>
+                            <div class="col-md-12">
+                                <div ng-repeat="theme in thematicAreaToDisplay">
+                                    <div>
+                                        <input type="checkbox" ng-checked="theme.checked"
+                                            ng-click="thematicArea(theme.Id,$index)" ng-disabled="proposalStage"
+                                            class="font-if" />&nbsp; <span class="pb-1">{{theme.Name}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="col-md-5 mt-5" ng-show="secondstage">
+                                <label class="pb-3 color-theme">
+                                    <b>Tentative Starting Date</b>
+                                </label>
+                                <span class="required-asterisk" style="color:red;">*</span>
+                                <md-datepicker type="date" ng-disabled="proposalStage" ng-focus="removeClass2('TSD')"
+                                    id="TSD" ng-model="tentitiveStartDate" class="form-control"
+                                    ng-change="validateDate()"></md-datepicker>
+                                <!-- <input name="Tentative Starting Date" placeholder="Tentative Starting Date" ng-change="validateDate()" class="form-control" ng-init="tentitiveStartDate=(tentitiveStartDate | date:'dd-MMM-yyyy')"
+                                type="date" ng-model="tentitiveStartDate | date:'dd-MMM-yyyy'" id="TSD" ng-focus="removeClass2('TSD')"
+                                ng-disabled="proposalStage || !isCoordinator" /> -->
+                            </div>
+                        </div>
+                        <div class="row mt-5">
+                            <div class="col-md-4">
+                                <label class="ps-3 pt-1 color-theme">
+                                    <b>Keywords<span class="required-asterisk" style="color:red;">*</span> (Max. 6)
+                                        <i>(To add click plus sign)</i></b>
+                                </label>
+                            </div>
+                            <div class="col-md-1">
+                                <div>
+                                    <i ng-click="addKeyword()" class="fa-solid fa-2x text-primary fa-circle-plus"
+                                        ng-if="!proposalStage"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div ng-repeat="item in objKeyword" ng-switch="true" on="$index % 2">
+                                <div class="col-md-5" style="display:inline !important" ng-switch-when="0">
+                                    <input id="key" ng-focus="removeClass2('key')" type="text" ng-model="item.keyword"
+                                        class="form-control mb-2" maxlength="255" ng-disabled="proposalStage"
+                                        style="display:inline !important" />
+                                    <!-- <span class="input-group-btn">
+                                            <i class="fa-solid fa-circle-xmark fa-2x text-danger mt-2" ng-click="removeKeyword($index)" ng-if="!proposalStage && isCoordinator" style="display:inline !important"></i>
+                                        </span> -->
+                                </div>
+                                <div class="col-md-1 mt-2 pt-1" style="display:inline !important" ng-switch-when="0">
+                                    <i class="fa-solid fa-circle-xmark fa-2x text-danger mt-2"
+                                        ng-click="removeKeyword($index)" ng-if="!proposalStage"
+                                        style="display:inline !important"></i>
+                                </div>
+                                <div class="col-md-5" style="display:inline !important" ng-show="objKeyword[$index+1]">
+                                    <input id="key" ng-focus="removeClass2('key')" type="text" ng-model="item.keyword"
+                                        class="form-control mb-2" maxlength="255" ng-disabled="proposalStage"
+                                        style="display:inline !important" />
+                                    <!-- <span class="input-group-btn">
+                                            <i class="fa-solid fa-circle-xmark fa-2x text-danger mt-2" ng-click="removeKeyword($index)" ng-if="!proposalStage" style="display:inline !important"></i>
+                                        </span> -->
+                                </div>
+                                <div class="col-md-1 mt-2 pt-1" style="display:inline !important"
+                                    ng-show="objKeyword[$index+1]">
+                                    <i class="fa-solid fa-circle-xmark fa-2x text-danger mt-2"
+                                        ng-click="removeKeyword($index)" ng-if="!proposalStage"
+                                        style="display:inline !important"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mt-5">
+                            <label class="pb-3 color-theme">
+                                <b>Summary (Max. chars Limit Without Space 1000)<span
+                                        class="required-asterisk text-danger">*</span></b>
+                            </label>
+                            <div>
+                                <small class="label-rtf"><b>To use below RTF box more efficiently, make sure you write
+                                        your content in word document first and then copy paste here<br />
+                                        Please use Calibri pt 11 throughout the document, pt 9 for citations. Do NOT
+                                        change margins.</b>
+                                </small>
+                            </div>
+                            <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
+                                aria-labelledby="panelsStayOpen-headingOne">
+                                <ng-ckeditor ng-model="applicantDetails.Summary__c"
+                                    ng-disabled="!isCoordinator || isPartner"
+                                    ng-change="readCharacter(applicantDetails.Summary__c,0)" name="ckSummary2"
+                                    id="ckSummary" maxlength="1006"></ng-ckeditor>
+                                <span>Total chars: {{objRtf[0].charCount}}</span>
+                                <span class="text-danger" ng-if="objRtf[0].errorStatus">maximum character limit is
+                                    1000</span>
+                            </div>
+                            <!-- ng-config="config" -->
+                        </div>
+                        <div class="row mt-3 mb-3" ng-if="!proposalStage">
+                            <div class="col-md-12">
+
+                                <button class="blue-btn float-end" id="btnPreview" ng-click="saveApplication()"
+                                    type="button">
+                                    <i class="fa-solid fa-check me-2"></i>Save and Next</button>
+                                <button class="btn btn-secondary float-end me-2"
+                                    style="padding: 8px 20px !important;font-size: 16px !important;"
+                                    ng-click="redirectToApplicantPortal()" type="button">
+                                    <i class="fa-solid fa-arrow-left me-2"></i>Back
+                                </button>
+                            </div>
+                        </div>
+                        <!-- IF PARTNER THEN SHOW NEXT BUTTON-->
+                        <div class="row mt-3 mb-3" ng-if="isPartner">
+                            <div class="col-md-12">
+
+                                <button class="blue-btn float-end" id="btnPreview" ng-click="saveApplication()"
+                                    type="button">
+                                    <i class="fa-solid fa-check me-2"></i>Next</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="container px-4">
+                <div class="card h-100 m-5">
+                    <div class="card-header">
+                        <h2 class="p-3">
+                            <b>Project Details</b>
+                        </h2>
+                    </div>
+                    <div class="row p-5">
+                        <div class="col-md-6 mb-4">
+                            <label class="control-label">
+                                <b>Project Acronym</b>
+                            </label>
+                            <span class="required-asterisk" style="color:red;">*</span>
+                            <input name="Acronym" placeholder="Acronym" class="form-control" type="text" ng-model="applicantDetails.Acronym__c" maxlength="32768"
+                                ng-disabled="proposalStage || !isCoordinator" required="true" ng-required="applicantDetails.Acronym__c" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="control-label">
+                                <b>Title Of Proposal</b>
+                            </label>
+                            <span class="required-asterisk" style="color:red;">*</span>
+                            <input name="Title Of Proposal" placeholder="Title Of Proposal" class="form-control" type="text" ng-model="applicantDetails.Title_Of__c"
+                                maxlength="32768" ng-disabled="proposalStage" required="true" ng-required="applicantDetails.Title_Of__c"/>
+                        </div>
+                        <div class="col-md-6 mb-5">
+                            <label class="control-label">
+                                <b>Title des Antrages(In German)</b>
+                            </label>
+                            <span class="required-asterisk" style="color:red;">*</span>
+                            <input name="Title In German" placeholder="Title In German" class="form-control" type="text" ng-model="applicantDetails.Title_In_German__c"
+                                maxlength="32768" ng-disabled="proposalStage" required="true" ng-required="applicantDetails.Title_In_German__c"/>
+                        </div>                        
+                        <div class="col-md-6 mb-5">
+                            <label class="control-label">
+                                <b>Duration In Months (Min 24 Max 36)</b>
+                            </label>
+                            <span class="required-asterisk" style="color:red;">*</span>
+                            <input name="duration" placeholder="Min -24 months and Maximum – 36 months." class="form-control" type="Number" ng-model="applicantDetails.Duration_In_Months_Max_36__c"
+                                ng-disabled="proposalStage || !isCoordinator" ng-minlength="2" ng-maxlength="2" min="24" max="36" required="true" id="txtDuration" ng-required="applicantDetails.Duration_In_Months_Max_36__c"
+                                ng-keyup="restrictDecimalVal(applicantDetails.Duration_In_Months_Max_36__c)" />
+                                <span ng-if="!formPrjDet.duration.$valid" class="text-danger">duration must be between 24 and 36 Months</span>
+                        </div>
+                        <fieldset class="border p-2 mb-5">
+                            <legend class="float-none w-auto">Project Theme
+                                <span class="required-asterisk" style="color:red;">*</span>
+                            </legend>
+                            <div class="col-md-12">
+                                <div ng-repeat="theme in thematicAreaToDisplay">
+                                    <div>
+                                        <input type="checkbox" ng-checked="theme.checked" ng-click="thematicArea(theme.Id,$index)" ng-disabled="proposalStage" />&nbsp; {{theme.Name}} </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                      
+                        <div class="col-md-5 mt-3" ng-show="secondstage">
+                            <label class="control-label">
+                                <b>Tentative Starting Date</b>
+                            </label>
+                            <span class="required-asterisk" style="color:red;">*</span>
+                            <input name="Tentative Starting Date" placeholder="Tentative Starting Date" ng-change="validateDate()" class="form-control" ng-init="tentitiveStartDate=(tentitiveStartDate | date:'yyyy-MM-dd')"
+                                type="date" ng-model="tentitiveStartDate" required="true" ng-required="applicantDetails.Tentative_Start_Date__c"
+                                ng-disabled="proposalStage || !isCoordinator" />
+                        </div>
+                    
+                        <div>
+                            <div class="col-md-6 mt-4">
+                                <label class="control-label">
+                                    <b>Keywords</b>
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                </label>
+                                <div class="row" ng-repeat="key in objKeyword">
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="key.keyword" class="form-control mb-2" maxlength="255" required="true" ng-required="key.keyword" ng-disabled="proposalStage" />
+                                    </div>
+                                    <div class="col-md-3">
+                                        <i ng-click="addKeyword()" class="fa-solid fa-2x text-primary fa-circle-plus mt-2 me-3" ng-if="!proposalStage"></i>
+                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger mt-2" ng-click="removeKeyword($index)" ng-if="!proposalStage && isCoordinator"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-4">
+                                <label class="control-label">
+                                    <b><span class="required-asterisk text-danger">*</span> Summary (Max. chars Limit 1000)</b>
+                                </label>                                
+                                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                                        <ng-ckeditor ng-model="applicantDetails.Summary__c" name="ckSummary2" id="ckSummary" ng-config="config" required="true" ng-required="applicantDetails.Summary__c" maxlength="1006"></ng-ckeditor>
+                                        <span ng-if="!formPrjDet.ckEditor.$valid" class="text-danger">maximum chars limit is 1000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer" ng-if="!proposalStage && isCoordinator">
+                        <button type="button" class="blue-btn float-end me-4" ng-click="saveApplication()">
+                            <i class="fa-solid fa-check i-padding"></i>Save and Next</button>
+                    </div>
+                </div>
+            </div> -->
+                </form>
+                <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+                    integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+                <script>
+                    var editor = CKEDITOR.instances.config;
+                    editor.on('key', function (evt) {
+                        // Update the counter with text length of editor HTML output.
+                        // textCounter2( { value : evt.editor.getData() },this.form.grLenght2, 200 );
+                        alert('help');
+                        console.log('ck editor 1');
+                    }, editor.element.$);
+
+                    $("#ckSummary").on("keyup", function () {
+                        alert("Ram");
+                    });
+                </script>
+            </div>
+        </body>
+    </div>
+
+    </html>
+</apex:page>

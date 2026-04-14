@@ -1,0 +1,60 @@
+<template>
+    <template if:true={isLoaded}>   
+          <main>
+            <div class="folder">
+                <lightning-icon size="medium" icon-name="doctype:folder"></lightning-icon>
+                <h1>Folder Name</h1>
+            </div>
+            
+            <div class="folder">
+                <lightning-icon size="medium" icon-name="doctype:folder"></lightning-icon>
+              <h1>Documents</h1>
+            </div>
+            <div class="folder">
+                <lightning-icon size="medium" icon-name="doctype:folder"></lightning-icon>
+              <h1>Music</h1>
+            </div>
+            <div class="folder">
+                <lightning-icon size="medium" icon-name="doctype:folder"></lightning-icon>
+              <h1>Photos</h1>
+            </div>
+            <div class="folder">
+                <lightning-icon size="medium" icon-name="doctype:folder"></lightning-icon>
+              <h1>Photos</h1>
+            </div>
+            <div class="folder">
+                <lightning-icon size="medium" icon-name="doctype:folder"></lightning-icon>
+              <h1>Photos</h1>
+            </div>
+            <div class="folder">
+                <lightning-icon size="medium" icon-name="doctype:folder"></lightning-icon>
+              <h1>Photos</h1>
+            </div>
+            <div class="folder">
+                <lightning-icon size="medium" icon-name="doctype:folder"></lightning-icon>
+              <h1>Photos</h1>
+            </div>
+            <div class="folder">
+                <lightning-icon size="medium" icon-name="doctype:folder"></lightning-icon>
+              <h1>Photos</h1>
+            </div>
+            <div class="folder">
+                <lightning-icon size="medium" icon-name="doctype:folder"></lightning-icon>
+              <h1>Photos</h1>
+            </div>
+            <div class="folder">
+                <lightning-icon size="medium" icon-name="doctype:folder"></lightning-icon>
+              <h1>Photos</h1>
+            </div>
+            <div class="folder">
+                <lightning-icon size="medium" icon-name="doctype:folder"></lightning-icon>
+              <h1>Photos</h1>
+            </div>
+          </main>
+    </template>
+    <template if:false={isLoaded}>
+        <div class="slds-modal__content slds-p-around_medium modalBody">
+            <lightning-spinner alternative-text="Loading" size="medium" class="spinnerClass"></lightning-spinner>
+        </div>
+    </template>
+</template>

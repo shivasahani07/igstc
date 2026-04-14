@@ -1,0 +1,55 @@
+.navbar-nav li a {
+    font-size: 17px;
+}
+
+.banner h1, .become-mentor h1, .about-us h1, .recruiter h1 {
+    font-size: 60px;
+    line-height: 50px;
+}
+.about-us h3 {
+    font-size: 40px;
+}
+
+.banner p, .about-us p {
+    font-size: 20px;
+    padding-right: 110px;
+}
+.heading-border, .heading-border-center {
+    font-size: 50px;
+}
+.options {
+    font-size: 18px;
+}
+.slick-prev, .slick-next {
+    top: -70px;
+}
+.our-mentor {
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+}
+
+/* ------------------------- Become a Mentor ------------------------- */
+.about-mentor p {
+    font-size: 22px;
+}
+
+/* ------------------------- Meet Mentor ------------------------- */
+.about-us {
+    padding: 70px 0 70px 0;
+}
+.about-us h2 {
+    font-size: 24px;
+    line-height: 40px;
+}
+.about-us p {
+    padding-right: 0;
+}
+.about-us .caption {
+    font-size: 20px;
+    bottom: -100px;
+}
+.login .login-form {
+    width: 45%;
+}
+.login .login-form.register {
+    width: 65%;
+}

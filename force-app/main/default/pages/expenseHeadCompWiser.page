@@ -1,0 +1,19 @@
+<apex:page showHeader="true" sidebar="false">
+    <apex:includeLightning />
+
+    <div id="expenseAuraDiv"></div>
+
+    <script>
+        $Lightning.use("c:ExpenseApp", function() {
+            debugger;
+            $Lightning.createComponent(
+                "c:ExpenseHeadCompWISER",
+                { recordId: "{!$CurrentPage.parameters.id}" }, // optional attribute
+                "expenseAuraDiv",
+                function(cmp) {
+                    console.log("Aura Component Loaded Successfully!");
+                }
+            );
+        });
+    </script>
+</apex:page>

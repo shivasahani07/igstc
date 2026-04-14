@@ -1,0 +1,1380 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+  <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+  <apex:stylesheet value="{!$Resource.SlickThemeCSS}" />
+  <apex:stylesheet value="{!$Resource.SlickCss}" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://cdn.tutorialjinni.com/intl-tel-input/17.0.8/css/intlTelInput.css" />
+  <script src="https://cdn.tutorialjinni.com/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+
+  <div ng-controller='home_ctrl'>
+
+    <div class="industrial-felowship" ng-if="showIf">
+      <div class="industrial-banner">
+        <apex:image url="{!$Resource.home_banner}" />
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>Industrial Fellowships</h2>
+              <p>The fellowship is aimed at exposure of PhD students/ Post Docs in a German industrial setup to promote applied
+                research and technology development.</p>
+              <a href="javascript:void(0)" ng-click="redirectPageURL('Dashboard_IF')" class="btn apply-btn">Apply</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="guide-line mb-5">
+          <h1>IGSTC Industrial Fellowships - Call {{Endyear}}</h1>
+          <ol>
+            <li>
+              Kindly read the Call Text, Basic Guidelines and FAQs carefully before applying. The link for same is below :
+              <ul>
+                <li>
+                  <!-- <p>Call Text</p> -->
+                  <span>
+                    <a href="{{LinkCallText}}" class="btn blue-btn" style="min-width: 250px;" target="_blank">Call Text</a>
+                  </span>
+                </li>
+                <li>
+                  <!-- <p>Basic Guidelines</p> -->
+                  <span>
+                    <a href="{{LinkBasicGuidelines}}" class="btn blue-btn" style="min-width: 250px;" target="_blank">Basic Guidelines</a>
+                  </span>
+                </li>
+                <li>
+                  <!-- <p>FAQs</p> -->
+                  <span>
+                    <a href="{{LinkFAQs}}" class="btn blue-btn" style="min-width: 250px;" target="_blank">FAQs</a>
+                  </span>
+                </li>
+              </ul>
+            </li>
+            <li>Please ensure your eligibility before filling the application.</li>
+            <li>Documents required for application submission:</li>
+            <i class="fa-solid fa-circle text-success2 me-3" style="font-size: 10px"></i>Consent Letter from the Host Institution.<br/>
+            <i class="fa-solid fa-circle text-success2 me-3" style="font-size: 10px"></i>The applicant having institutional affiliation needs to submit NOC from the Head of the institution at the time of application. <a href="{!$Resource.NOC}" target="_blank">NOC Format</a><br/>
+            <i class="fa-solid fa-circle text-success2 me-3" style="font-size: 10px"></i>Applicants needs to submit recommendation letter from the mentor at parent organisation.<br/>
+            <i class="fa-solid fa-circle text-success2 me-3" style="font-size: 10px"></i>PDIF applicant not having affiliation with an institution needs to submit 2 letters of reference.<br/>
+            <i class="fa-solid fa-circle text-success2 me-3" style="font-size: 10px"></i>Proof of Date of Birth (Scan copy of Passport/ Aadhar Card).<br/>
+            <i class="fa-solid fa-circle text-success2 me-3" style="font-size: 10px"></i>Proof of Education Qualifications arranged in reverse chronological order.<br/>
+            <i class="fa-solid fa-circle text-success2 me-3" style="font-size: 10px"></i>Proof of Employment.<br/><br/>
+            <li>Queries, if any, should be addressed to
+              <a href="mailto:industrial.fellowship@igstc.org">industrial.fellowship@igstc.org</a>
+            </li>
+            <li>Application Deadline: {{dealLinedate}}</li>
+            <li>You may note that any false information given in the application can lead to disqualification of your candidature
+              at any stage of the process.</li>
+          </ol>
+        </div>
+      </div>      
+      <!-- <div class="container">
+        <h3 class="pt-5 pb-4 text-uppercase">IGSTC Industrial Fellowships - Call 2022</h3>
+        <p>Indo-German Science Technology Centre IGSTC, established by the Department of Science and Technology DST, Government
+          of India, and the Federal Ministry of Education and Research BMBF, Government of Germany invites applications for
+          availing Industrial Fellowships to encourage young researchers towards applied research. This programme is aimed
+          at encouraging PhD students/researchers in ST with appreciable track record and having aptitude for applied research
+          and technology development.</p>
+        <h3 class="pt-5 pb-4 text-uppercase">Fellowships are offered at two levels:</h3>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="level">
+              PhD Industrial Exposure Fellowships (PIEF) – PhD students (science/engineering) enrolled in any research institutions/universities
+              in India and completed at least one year of their PhD curriculum can apply for the Fellowship. Young researchers
+              with high quality research projects that combine innovative approaches towards new concepts and technological
+              development in chosen industrial research set up in Germany may be considered. The duration of the Fellowship
+              is 3-6 months.Age limit: 30 yrs.
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="level">
+              Post Doctoral Industrial Fellowships (PDIF) – Postdoctoral researchers/fresh PhDs who have been awarded their PhD degree
+              in science/engineering within 3 years of the application deadline by any Indian institution/university are
+              eligible to apply. Outstanding researchers not holding a permanent position or having a career break are eligible
+              to apply. Those who have submitted their PhD thesis are also eligible to apply. The Fellowship is granted to
+              work in any industrial research set up in Germany. The duration of the Fellowship is 6-12 months.Age limit:
+              35 yrs.
+            </div>
+          </div>
+        </div>
+        <p class="text-uppercase pt-5 pb-5 mb-5">Applicants would need to identify the industry/industrial research organisation in Germany and have to submit consent
+          letters from the host industry in Germany and their mentor from India.</p>
+        <div class="accordion" id="accordionExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
+                aria-controls="collapseOne">
+                Aim of the programme
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                The proposed programme aims to:
+                <ul>
+                  <li class="py-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Encourage and enable Indo-German collaboration between industry-academia and industry-industry linkages
+                    through outstanding researchers.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Expose researchers to industry and industrial R and D enhancing interest towards applied research.</li>
+                  <li>
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Create avenues for capacity building through doctoral and early career researchers in applied research
+                    through networking with industry.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
+                aria-controls="collapseTwo">
+                Financial Support
+              </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                The financial support will be limited to:
+                <ul>
+                  <li class="py-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>PhD Industrial Exposure Fellowship: € 1500 per month</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Post Doctoral Industrial Fellowship: € 2500 per month</li>
+                  <li>
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Single round trip economy class airfare including visa fees and medical/travel insurance: up to €
+                    1000.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false"
+                aria-controls="collapseThree">
+                Proposal Submission
+              </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                IGSTC will advertise the Fellowship call once in a year through IGSTC website (www.igstc.org) and other means. The prospective
+                candidates need to apply online in the application portal along with required attachments within the deadline
+                as mentioned in the Advertisement / Call text.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFour">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false"
+                aria-controls="collapseFour">
+                Evaluation
+              </button>
+            </h2>
+            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                Applications will be evaluated by a Scientific Committee based on merit and compliance to the eligibility conditions. The
+                decision of the Committee will be considered as final and binding.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFive">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false"
+                aria-controls="collapseFive">
+                Fellowship Requirements
+              </button>
+            </h2>
+            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <ul>
+                  <li class="py-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The applicant must be an Indian citizen.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The applicant must define a detailed activity plan containing objective, execution strategy and expected
+                    outcome for the fellowship duration.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>In both the Fellowships, awardee will be hosted by the industry/industrial research organization
+                    for the duration of the Fellowship. Choice and acceptance from the industry/industrial research organization
+                    is the sole responsibility of the applicant. The applicant should ensure endorsement/consent letter from
+                    the host industry/organisation at the time of the application.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The applicant having institutional affiliation shall submit NOC from the Head of the institution
+                    at the time of application.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Applicants shall submit recommendation letter from the mentor at parent organisation.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>PDIF applicant not having affiliation with an institution may submit 2 letters of reference.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The awardee will abide by the conduct, rules and regulations of the German host organisation and
+                    the country. IGSTC will not be responsible for violation of any Rules and Regulations by the awardee.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>IGSTC grant is only for supporting monthly fellowship, round-trip airfare, visa fees and medical/travel
+                    insurance.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>IGSTC will disburse grant to the Indian bank account of the awardee/parent institution in INR.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The awardee shall commence his/her visit within 6 months from the date of the award letter.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Extension in duration of Fellowship shall not be entertained.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The awardee/host mentor must intimate IGSTC through email/letter if the awardee discontinues the
+                    Fellowship before completion of the tenure.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Within 4 weeks of completion of the Fellowship, the awardee must submit a detailed Fellowship completion
+                    report endorsed by the host mentor in the prescribed format along with representative photos to IGSTC.</li>
+                  <li>
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The awardee must recognise and acknowledge IGSTC Industrial Fellowship in all online/print documents,
+                    communication, reports, publications, PhD thesis, etc. on work resulting from the Fellowship.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </div>
+    <div class="industrial-felowship" ng-if="showSing">
+      <div class="industrial-banner">
+        <apex:image url="{!$Resource.home_banner}" />
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>SING</h2>
+              <p>The Indo-German Science and Technology Centre(IGSTC), a joint initiative by the Department of Science and Technology(DST),
+                Government of India and the Federal Ministry of Education and Research(BMBF), Government of Germany invites
+                proposals for Small Immediate Need Grants towards joint initiatives that requires modest funding and has
+                the potential to embark on Indo-German collaboration.</p>
+              <a href="javascript:void(0)" ng-click="redirectPageURL('ApplicantInformationSing')" class="btn apply-btn">Apply</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="guide-line mb-5">
+          <h1>IGSTC SING - Call {{Endyear}}</h1>
+          <ol>
+            <li>
+              Kindly read the Call Text carefully before applying. The link for same is below :
+              <ul>
+                <li>
+                  <!-- <p>Call Text</p> -->
+                  <span>
+                    <a href="{{LinkCallText}}" class="btn blue-btn" style="min-width: 250px;" target="_blank">Call Text</a>
+                  </span>
+                </li>
+                <!-- <li>
+                  <span>
+                    <a href="{{LinkBasicGuidelines}}" class="btn blue-btn" style="min-width: 250px;" target="_blank">Basic Guidelines</a>
+                  </span>
+                </li>
+                <li>
+                  <span>
+                    <a href="{{LinkFAQs}}" class="btn blue-btn" style="min-width: 250px;" target="_blank">FAQs</a>
+                  </span>
+                </li> -->
+              </ul>
+            </li>
+            <li>Please ensure your eligibility before filling the application.</li>
+            <li>Documents required for application submission:<br/><br/>
+            <i class="fa-solid fa-circle text-success2 me-3" style="font-size: 10px"></i>Consent Letter/No Objection Certificate from the Parent Institution.<br/>
+            <i class="fa-solid fa-circle text-success2 me-3" style="font-size: 10px"></i>Invitation/Support Letter from the Host Institution.<br/>
+            <i class="fa-solid fa-circle text-success2 me-3" style="font-size: 10px"></i>Supporting documents in favour of your application, including CV.<br/>
+
+            </li>
+            <li>Queries, if any, should be addressed to
+              <a href="mailto:sing@igstc.org">sing@igstc.org</a>
+            </li>
+            <li>Application submission: Open throughout the year</li>
+            <li>You may note that any false information given in the application can lead to disqualification of your candidature
+              at any stage of the process.</li>
+          </ol>
+        </div>
+      </div>           
+      <!-- <div class="container">
+        <h3 class="pt-5 pb-4 text-uppercase">SMALL IMMEDIATE NEED GRANTS</h3>
+        <p>IGSTC supports 2+2 Projects involving industry, academia and research partners, Indo-German Joint Workshops and Industrial
+          Fellowships targeted to young researchers in India to get exposure at German industrial set up in Germany. These
+          are major programmes and grants are disbursed after due procedures and processes with a specific time frame. The
+          German and Indian “Engineering, Academic and Research” (EAR) community is large and exceeds half a million in numbers.
+          However, our existing programme lines are defined and do not offer the possibility to provide quick assistance
+          to kick off ad-hoc opportunities. There are several other modes and initiatives which require minor funding that
+          the EAR community could utilize to formulate and collaborate for enhancing Indo-German S and T collaboration. IGSTC
+          can support such initiatives for quick turnaround decisions to address this gap. Through this initiative, support
+          will be given for a proposal that requires modest funding and has the potential to embark on good bilateral Indo-German
+          collaboration.</p>
+        <p class="text-uppercase pt-5 pb-5 mb-5">Application submission: 1 February to 31 March every year</p>
+        <div class="accordion" id="accordionExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
+                aria-controls="collapseOne">
+                Objectives
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                To support seed/modest funding for proposals towards:
+                <ul>
+                  <li class="py-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Joint initiatives/ideas that have a scope to ignite and open avenues for long term connect/technology
+                    development/new areas of collaboration.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Joint activity towards innovation, rapid prototyping, technology demonstration or industrial R and
+                    D.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Individual proposals that have a high potential of involving industrial sectors.</li>
+                  <li>
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Utilizing scientific events to share intellectual thoughts/ideas that can explore avenues for bilateral
+                    cooperation.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
+                aria-controls="collapseTwo">
+                Who can apply?
+              </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <ul>
+                  <li class="py-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Individuals or groups from industry, academic and research institutions.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Members/participants in any of the IGSTC programs including workshops.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>EAR community from ongoing inter-institutional MoUs between India and Germany.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Personnel from the industry with specific requirements in applied research, technology development
+                    and entrepreneurship.</li>
+                  <li>
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Age limit: below 55 years.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false"
+                aria-controls="collapseThree">
+                Funding support
+              </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                Up to ₹ 9 lakhs (€ 10000) per proposal.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFour">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false"
+                aria-controls="collapseFour">
+                Applicable categories/areas
+              </button>
+            </h2>
+            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                The specific areas/categories may include but not be limited to the following:
+                <ul>
+                  <li class="py-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Joint patent applications.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>To develop a working prototype based on a joint patent.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Seed funding for an innovative idea resulting from the networking and connect facilitated through
+                    IGSTC.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>One time grant for initiating basic joint experiments (consumables or per diem) at partner (India/Germany)
+                    countries.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Applicants shall submit recommendation letter from the mentor at parent organisation.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Support towards utilization of mega/lab facilities for experiments.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>German and Indian visiting fellows (researchers and academicians) who need ‘additional’ support to
+                    expand on networking visits and discussions in their visiting countries.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Registration cost for participation in internationally reputed scientific conferences in India/Germany
+                    (Only on acceptance of paper. Poster presentation and invitation as a speaker may not be considered).</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Activity related to technology demonstration of a product.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>A new concept that can enhance networking or collaboration.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Conducting intergroup/institutional joint experiments.</li>
+                  <li>
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Partial support towards organization of/participation in an event.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFive">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false"
+                aria-controls="collapseFive">
+                How to apply?
+              </button>
+            </h2>
+            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                The application must be sent via “email” to sing@igstc.org as a single PDF document.
+                <p>
+                  <b>Results will be intimated approximately within 8 weeks of submission.</b>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </div>
+    <div class="industrial-felowship" ng-if="showWiser">
+      <div class="industrial-banner">
+        <apex:image url="{!$Resource.home_banner_wiser}" />
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>Women Involvement in Science and Engineering Research (WISER)</h2>
+              <p>This scheme intends to build scientific capacity, retain and promote women researchers from India and Germany. It invites proposals in paired mode from women researchers to foster innovation in the field of STEM.</p>
+              <a href="javascript:void(0)" ng-click="redirectPageURL('WiserApplicationPage')" class="btn apply-btn">Apply</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="guide-line mb-5">
+          <h1>Women Involvement in Science and Engineering Research (WISER)</h1>
+          <ol>
+            <li>
+              Kindly read the Call Text, Basic Guidelines and FAQs carefully before applying. The link for same is below :
+              <ul>
+                <li>
+                  <p>Call Text</p>
+                  <span>
+                    <a href="{{LinkCallText}}" class="btn blue-btn" style="min-width: 250px;" target="_blank">Call Text</a>
+                  </span>
+                </li>
+                <li>
+                  <p>Basic Guidelines</p>
+                  <span>
+                    <a href="{{LinkBasicGuidelines}}" class="btn blue-btn" style="min-width: 250px;" target="_blank">Basic Guidelines</a>
+                  </span>
+                </li>
+                <li>
+                  <p>FAQs</p>
+                  <span>
+                    <a href="{{LinkFAQs}}" class="btn blue-btn" style="min-width: 250px;" target="_blank">FAQs</a>
+                  </span>
+                </li>
+              </ul>
+            </li>
+            <li>Please ensure your eligibility before filling the application.</li>
+            <li>Documents required for application submission:<br/><br/>
+                <i class="fa-solid fa-circle text-success2 me-3" style="font-size: 10px"></i>No Objection Certificate (NOC)/Endorsement letter from the head of the institution(present organisation).<br/>
+                <i class="fa-solid fa-circle text-success2 me-3" style="font-size: 10px"></i>Endorsement/consent letter from the Indian/German pairing collaborator<br/>
+            </li>
+            <li>Queries, if any, should be addressed to
+              <a href="mailto:wiser@igstc.org">wiser@igstc.org</a>
+            </li>
+            <li>Application submission: 1 February to 31 March every year</li>
+            <!-- <li>Cut-off dates: {{cutOffSD}} and {{cutOffED}}</li> -->
+            <li>You may note that any false information given in the application can lead to disqualification of your candidature
+              at any stage of the process.</li>
+          </ol>
+        </div>
+      </div>     
+      <!-- <div class="container">
+        <h3 class="pt-5 pb-4 text-uppercase">Women Involvement in Science and Engineering Research (WISER)</h3>
+        <p>Indo-German Science and Technology Centre (IGSTC), established by the Department of Science and Technology (DST),
+          Government of India and the Federal Ministry of Education and Research (BMBF), Government of Germany invites applications
+          from women researchers in India/Germany to participate and collaborate in an ongoing R and D and I project without
+          applying for fresh project grant in partnering countries.</p>
+        <p>Women researchers are still underrepresented in Science, Technology, Engineering and Mathematics (STEM) due to varied
+          reasons. The situation has improved to a certain extent over the last few years, but an imbalance remains. Keeping
+          in view the above scenario, this scheme intends to build scientific capacity, retain and promote women researchers
+          in India/Germany by utilising complementary expertise in science, technology, innovation and research partnerships.</p>
+        <h3 class="pt-5 pb-4 text-uppercase">This programme intends to:</h3>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="level">
+              Enhance the representation and progression of women researchers in Science, Technology, Engineering and Mathematics (STEM).
+              Create avenues for networking, interaction and long-term research collaboration.
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="level">
+              Improve existing projects by adding an additional research component to get new and better results. Promote women to lead
+              consortium based bilateral projects for IGSTC programmes and other funding schemes.
+            </div>
+          </div>
+        </div>
+        <p class="text-uppercase pt-5 pb-5 mb-5">Women Involvement in Science and Engineering Research (WISER) aims to build scientific capacity, retain, encourage,
+          and promote women researchers.</p>
+        <div class="accordion" id="accordionExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
+                aria-controls="collapseOne">
+                Programme Details
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <ul>
+                  <li class="py-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>This scheme is designed for woman researchers holding a regular/long-term research position in academia/research
+                    institute/industry in India or Germany.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>It is open to all areas of STEM. It is a unique opportunity to be a part of an ongoing research project
+                    without applying for fresh project grant.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The tenure of the grant is for 3 years or till completion of the project whichever is earlier and
+                    will cover one visit per year for short stay up to 1 month.</li>
+                  <li>
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>WISER programme has no age-limit (Preference to Early/Mid-career researchers).</li>
+                </ul>
+                <p>
+                  <b>Applicants are expected to identify the project in host country and receive endorsement from the host Project
+                    Investigator (PI).</b>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
+                aria-controls="collapseTwo">
+                Financial Assistance
+              </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <b>Indian awardee</b>
+                <ul>
+                  <li class="py-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Travel (including visa fee and insurance) approximately ₹ 1 lakh</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Project cost up to ₹ 12 lakhs/year (including research staff, consumables, contingency and per diem
+                    @ € 2300/month in Germany)</li>
+                </ul>
+                <b>German awardee</b>
+                <ul>
+                  <li class="py-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Travel (including visa fee and insurance) approximately € 1500</li>
+                  <li>
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Project cost up to € 14500/year (including consumables, contingency and per diem @ € 2300/month in
+                    India)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFour">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false"
+                aria-controls="collapseFour">
+                Evaluation
+              </button>
+            </h2>
+            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                Applications will be evaluated by a Joint Committee based on merit and compliance to the eligibility conditions. Evaluation
+                will be based on credentials of the applicant, relevance to STEM, scope, feasibility, content, quality of
+                proposed plan, expected outcome and future potential. The decision of the Committee will be considered as
+                final and binding.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFive">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false"
+                aria-controls="collapseFive">
+                Programme Requirements/Conditions
+              </button>
+            </h2>
+            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <ul>
+                  <li class="py-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The applicant must be working either in India or Germany.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The applicant must define her role in the project, provide details of the objective, execution strategy
+                    and expected outcome.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The applicant shall specify the value-addition to the project at the host country.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Choice and acceptance from the host is the sole responsibility of the applicant. The applicant should
+                    ensure endorsement/consent letter from the host at the time of the application.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The applicant shall submit No Objection Certificate (NOC)/Endorsement letter from the head of the
+                    institution(present organisation).</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The awardee shall commence her visit within 12 months from the date of the award letter.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The awardee will abide by the conduct, rules and regulations of the host and the host country. IGSTC
+                    will not be responsible for violation of any Rules and Regulations by the awardee.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The awardee and host must intimate IGSTC through email/letter in case of discontinuation by the awardee.</li>
+                  <li>
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The awardee must recognise and acknowledge IGSTC in all online/print documents, communications, reports,
+                    publications, conferences, theses, etc. on work emanating from the grant.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </div>
+    <div class="industrial-felowship" ng-if="showWorkshop">
+      <div class="industrial-banner">
+        <apex:image url="{!$Resource.home_banner}" />
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>IGSTC Workshop Call</h2>
+              <p>Persons holding regular positions in public or private non-profit research organisations, institutions of higher
+                education and universities are eligible to submit applications. The application should be submitted by the
+                coordinating host institution / coordinator.</p>
+              <a href="javascript:void(0)" ng-click="redirectPageURL('Coordinators_Page')" class="btn apply-btn">Apply</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="guide-line mb-5">
+          <h1>IGSTC Workshop - Call {{Endyear}}</h1>
+          <ol>
+            <li>
+              Kindly read the Call Text carefully before applying. The link for same is below :
+              <ul>
+                <li>
+                  <span>
+                    <a href="{{LinkCallText}}" class="btn blue-btn" style="min-width: 250px;" target="_blank">Call Text</a>
+                  </span>
+                </li>
+                <!-- <li>
+                  <p>Basic Guidelines</p>
+                  <span>
+                    <a href="{{LinkBasicGuidelines}}" class="btn blue-btn" style="min-width: 250px;" target="_blank">Basic Guidelines</a>
+                  </span>
+                </li>
+                <li>
+                  <p>FAQs</p>
+                  <span>
+                    <a href="{{LinkFAQs}}" class="btn blue-btn" style="min-width: 250px;" target="_blank">FAQs</a>
+                  </span>
+                </li> -->
+              </ul>
+            </li>
+            <li>Please ensure your eligibility before filling the application.</li>
+            <li>Queries, if any, should be addressed to
+              <a href="mailto:industrial.fellowship@igstc.org">info.igstc@igstc.org</a>
+            </li>
+            <li>Cut-off dates: <b>{{cutOffSD}} and {{cutOffED}}</b></li>
+            <li>You may note that any false information given in the application can lead to disqualification of your candidature
+              at any stage of the process.</li>
+          </ol>
+        </div>
+      </div>     
+      <!-- <div class="container">
+        <h3 class="pt-5 pb-4 text-uppercase">IGSTC Workshop 2022</h3>
+        <p>The Indo-German Science and Technology Centre (IGSTC) invites proposals for organising Indo-German workshops on areas
+          of mutual interest with an aim towards creating platforms for substantive interactions between scientists / researchers
+          from academia and industry. The workshops have to take place in India or in Germany and to be designed around a
+          specific research topic out of thematic areas relevant to both DST and BMBF, which includes the thematic areas
+          of 2+2 project calls. Any other relevant topics of very high importance may also be considered. Proposals with
+          a potential for generating follow up activities including joint projects are preferred. Training workshops as well
+          as meetings between two institutions do not fall under the scope of this call.</p>
+        <div class="accordion mt-5" id="accordionExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
+                aria-controls="collapseOne">
+                Type and Extent of Support
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <ul>
+                  <li class="py-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Event costs for typically not more than 25-30 participants (organisational and logistics expenses,
+                    catering, printing and publicity, miscellaneous expenses).</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>International and domestic airfare for participants including transfer to the airport / venue and
+                    return. Only those participants with an active role (oral presentation) will be funded.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Accommodation (expenses for accommodation in a standard hotel / guest house on actual costs for normally
+                    not more than four days).</li>
+                  <li>
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>One official dinner.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
+                aria-controls="collapseTwo">
+                Conditions
+              </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <ul>
+                  <li class="py-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Funding from IGSTC is only supplementary. It is expected that the organisers also contribute to the
+                    event. In kind contributions – e.g. venue, personnel – are creditable.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Event should be held at the organiser’s premises and this cost is not covered.</li>
+                  <li class="py-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>IGSTC will not pay any daily allowance nor cover any personnel costs.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>IGSTC will not provide travel support to researchers who are not based in India or Germany.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Participation of relevant industries is expected.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>A detailed draft program including a list of the expected participants has to be submitted along
+                    with a brief background document illustrating the importance of the workshop.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Involvement of young scientists is highly recommended. Travel support will be provided only to scientists
+                    who are pursuing at least their Ph.D., but access to the workshop for younger scientists working in the
+                    locality of the venue should be possible.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>It is expected that the workshop participants belong to various institutions.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The utilisation of IGSTC format is mandatory for the application.</li>
+                  <li>
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>IGSTC banner should be displayed in prominent places.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false"
+                aria-controls="collapseThree">
+                Evaluation
+              </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                Proposals submitted throughout the year will be evaluated (cut-off dates 31st January and 31st July) by an Indo-German Committee
+                considering:
+                <ul>
+                  <li class="py-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Compliance of the thematic area to the portfolio of DST and BMBF</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Scientific scope and novelty</li>
+                  <li class="py-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Scientific credentials and competitiveness of the participants, hailing from various institutions</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Presence of topic experts in the participants list</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>PAN-India/Germany presence of participants</li>
+                  <li>
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Number of participants from the industry</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFour">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false"
+                aria-controls="collapseFour">
+                Workshop Grant Conditions
+              </button>
+            </h2>
+            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                The release of the grant is subject to the compliance of the following conditions by the grantee institute and the Workshop
+                Coordinator:
+                <ul>
+                  <li class="py-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Re-appropriation of funds from one head of expenditure to another is not admissible, without prior
+                    approval of IGSTC.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Air ticketing should be done for the shortest route. No date change/penalty/rerouting/cancellation
+                    costs are admissible under IGSTC rules.</li>
+                  <li class="py-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>IGSTC support should be duly acknowledged in all the scientific publications, backdrops, printed
+                    materials etc. of the Workshop.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Only outstation speakers are eligible for travel and accommodation support from IGSTC.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The Workshop Coordinator will forward a Certificate of Participation duly signed by each Indian and
+                    German delegates who had been provided with travel support out of IGSTC grant immediately after the Workshop
+                    (within two weeks).</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The Workshop Coordinator should forward the photocopies of air tickets pertaining to German / Indian
+                    delegates along with receipts (within two weeks).</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The grantee Institution will submit an Utilisation Certificate and Statement of Expenditure (UC/SE)
+                    to the IGSTC within 2 months after the completion of the workshop.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Unspent balance, if any, will be refunded to Indo-German Science and Technology Centre by a demand
+                    draft payable at New Delhi/electronic transfer</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The organising Indian and German Workshop Coordinators will submit a brief report containing summary
+                    highlights of the Joint Workshop for posting in the IGSTC website. This should include a brief on the
+                    deliberations, technical sessions held, salient outcome in terms of furthering Indo-German co-operation.
+                    At least two representative photographs are to be included in the brief (within two weeks).</li>
+                  <li>
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Within two months of completion of the event, the Workshop Coordinator is required to submit a Workshop/Round
+                    Table discussion report highlighting all proceedings, discussions, list of all participants with affiliations
+                    and E-mail, recommendations, photographs, specific outcome in terms of bilateral Science and Technology
+                    co-operation and future plans emerging out of the conference</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFive">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false"
+                aria-controls="collapseFive">
+                Fellowship Requirements
+              </button>
+            </h2>
+            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <ul>
+                  <li class="py-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The applicant must be an Indian citizen.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The applicant must define a detailed activity plan containing objective, execution strategy and expected
+                    outcome for the fellowship duration.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>In both the Fellowships, awardee will be hosted by the industry/industrial research organization
+                    for the duration of the Fellowship. Choice and acceptance from the industry/industrial research organization
+                    is the sole responsibility of the applicant. The applicant should ensure endorsement/consent letter from
+                    the host industry/organisation at the time of the application.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The applicant having institutional affiliation shall submit NOC from the Head of the institution
+                    at the time of application.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Applicants shall submit recommendation letter from the mentor at parent organisation.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>PDIF applicant not having affiliation with an institution may submit 2 letters of reference.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The awardee will abide by the conduct, rules and regulations of the German host organisation and
+                    the country. IGSTC will not be responsible for violation of any Rules and Regulations by the awardee.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>IGSTC grant is only for supporting monthly fellowship, round-trip airfare, visa fees and medical/travel
+                    insurance.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>IGSTC will disburse grant to the Indian bank account of the awardee/parent institution in INR.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The awardee shall commence his/her visit within 6 months from the date of the award letter.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Extension in duration of Fellowship shall not be entertained.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The awardee/host mentor must intimate IGSTC through email/letter if the awardee discontinues the
+                    Fellowship before completion of the tenure.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Within 4 weeks of completion of the Fellowship, the awardee must submit a detailed Fellowship completion
+                    report endorsed by the host mentor in the prescribed format along with representative photos to IGSTC.</li>
+                  <li>
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The awardee must recognise and acknowledge IGSTC Industrial Fellowship in all online/print documents,
+                    communication, reports, publications, PhD thesis, etc. on work resulting from the Fellowship.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </div>
+    <div class="industrial-felowship" ng-if="show2plus2">
+      <div class="industrial-banner">
+        <apex:image url="{!$Resource.home_banner}" />
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>2+2 Call</h2>
+              <p>To support R and D + I project in 2+2 mode of partnership with the participation of at least one research/academic
+                institution and one industry from both India and Germany.</p>
+              <a href="javascript:void(0)" ng-click="redirectPageURL('ProjectDetailPage')" class="btn apply-btn">Apply</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="guide-line mb-5">
+          <h1>IGSTC 2+2 Call - 2025</h1>
+          <ol>
+            <li>
+              Kindly read the Call Text, Basic Guidelines and FAQs carefully before applying. The link for same is below :
+              <ul>
+                <li>
+                  <p>Call Text</p>
+                  <span>
+                    <a href="{{LinkCallText}}" class="btn blue-btn" style="min-width: 250px;" target="_blank">Call Text</a>
+                  </span>
+                </li>
+                <li>
+                  <p>Basic Guidelines</p>
+                  <span>
+                    <a href="{{LinkBasicGuidelines}}" class="btn blue-btn" style="min-width: 250px;" target="_blank">Basic Guidelines</a>
+                  </span>
+                </li>
+                <li>
+                  <p>FAQs</p>
+                  <span>
+                    <a href="{{LinkFAQs}}" class="btn blue-btn" style="min-width: 250px;" target="_blank">FAQs</a>
+                  </span>
+                </li>
+              </ul>
+            </li>
+            <li>Download the First Stage "Project Details" upload format from
+              <a href="https://www.igstc.org/home/scheme_forms">here</a>
+            </li>
+            <li>Download the Standing Instructions and User Manual for First Stage proposal Submission from
+              <a href="https://www.igstc.org/home/scheme_forms">here</a>
+            </li>
+            <li>Please ensure your eligibility before filling the application.</li>
+            <li>Queries, if any, should be addressed to
+              <a href="mailto:info.igstc@igstc.org">info.igstc@igstc.org</a>
+            </li>
+            <li>Application Deadline: {{dealLinedate}}</li>
+            <li>You may note that any false information given in the application can lead to disqualification of your candidature
+              at any stage of the process.</li>
+            <li>Please refresh the page with <b>Ctrl+Shift+R</b> and clear cache in case you face a lag or recurring error in the portal.</li>
+          </ol>
+        </div>
+      </div>     
+      <!-- <div class="container">
+        <h3 class="pt-5 pb-4 text-uppercase">Thematic Area of 2+2</h3>
+        <p>Indo-German Science and Technology Centre (IGSTC), established by the Department of Science and Technology (DST),
+          Government of India, and the Federal Ministry of Education and Research (BMBF), Government of Germany to promote
+          research partnership of industrial relevance invites First Stage Proposals for joint R and D and I projects of
+          industrial relevance in 2+2 Mode of Partnership in the thematic areas of Waste to Wealth and Sustainable Packaging
+          with subtopics
+        </p>
+        <h3 class="pt-5 pb-4 text-uppercase">The Centre envisions to:</h3>
+        <div class="row">
+          <div class="col-md-3">
+            <div class="level">
+              Electronic, industrial, domestic and construction waste recycling
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="level">
+              Secondary raw materials from waste
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="level">
+              Urban mining / Landfill mining
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="level">
+              Eco-friendly/green packaging materials, Design for recycle, Circular economy around the packaging for extending its lifecycle
+              and usability
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion mt-5" id="accordionExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
+                aria-controls="collapseOne">
+                Partnership Model and Thematic Area
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                IGSTC intends to catalyse innovation centric R and D and I projects by synergising the strength of research/academic institute
+                and public/private industry from India and Germany. This Call for proposals is aimed at supporting joint
+                R and D and I projects of industrial relevance by means of “2+2 Mode of Partnership” in the overall thematic
+                areas Waste to Wealth and Sustainable Packaging with subtopics:
+                <ul>
+                  <li class="py-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Electronic, industrial, domestic and construction waste recycling</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Secondary raw materials from waste</li>
+                  <li>
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Urban mining / Landfill mining</li>
+                  <li>
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Eco-friendly/green packaging materials, Design for recycle, Circular economy around the packaging
+                    for extending its lifecycle and usability</li>
+                </ul>
+                <h3>The project should have starting Technology Readiness Level 3.</h3>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
+                aria-controls="collapseTwo">
+                Basic Principles
+              </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <ul>
+                  <li class="py-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>To apply applicants have to build a consortium consisting of one research / academic institute and
+                    one public / private industry from both of the countries. A maximum of three partners from each side
+                    is acceptable. Each consortium shall determine one coordinator. All correspondence of IGSTC will be channeled
+                    through the coordinator.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Project proposal is expected to provide insights and exploitable research results leading to new
+                    technologies, products and/or services. The benefits of partnership should be clearly identifiable. It
+                    is mandatory to use format given by IGSTC.</li>
+                  <li>
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Project proposal should ensure that all the project partners contribute substantially to and benefit
+                    from an equitable and balanced cooperation with adequate protection for intellectual property rights
+                    used in and generated during the joint efforts.</li>
+                  <li>
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>IGSTC will execute a twostep evaluation process with the support of a Joint Scientific Committee.
+                    Each evaluation step might take up to three months. The projects which are finally selected will be supported
+                    by IGSTC initially for a maximum period of three years. An additional funding period of up to two years
+                    may be granted in exceptional cases.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false"
+                aria-controls="collapseThree">
+                Financial Support
+              </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <p>Funding is provided in the form of grants amounting about Euro 450.000 per project to the German partners
+                  and INR 350 Lakhs to the Indian partners (this includes INR 150 Lakhs for Indian industry) including overheads
+                  / Projektpauschale. The entire project funding will be provided under the umbrella of Indo-German Science
+                  and Technology Centre (IGSTC). Financial support for the Indian partners will be released by IGSTC in India
+                  and financial support for the German partners will be released through DLR-PT in Germany.</p>
+                <p>
+                  <b>Indian Partners:</b> 100% of the eligible costs in the form of grant to institutional partner (research
+                  / academic) and up to 50% of the eligible costs in the form of grant (with a limit of INR 150 Lakhs) to
+                  industrial partner.</p>
+                <p>
+                  <b>German Partners:</b> 100% of the eligible costs in the form of grant to institutional partner (research
+                  / academic) and usually 50% of the eligible costs in the form of grant to industrial partner. Calculation
+                  of the funding quota has to consider the AGVO (for details, see German Call text). For the research establishments,
+                  which receive basic funding from the Federal or State Governments, project funding to cover additional
+                  expenditure can be granted only under certain conditions.</p>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFour">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false"
+                aria-controls="collapseFour">
+                Eligible Costs
+              </button>
+            </h2>
+            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <div class="col-md-6">
+                  <ul>
+                    <li class="py-3">
+                      <i class="fas fa-hand-point-right fa-md pe-3"></i>Costs for personnel involved in the project</li>
+                    <li class="pb-3">
+                      <i class="fas fa-hand-point-right fa-md pe-3"></i>Specific equipment / demonstration unit / pilot plant including software licensing for the project
+                      (equipment that is not part of the applicant’s basic equipment)</li>
+                    <li>
+                      <i class="fas fa-hand-point-right fa-md pe-3"></i>Consumables / materials.</li>
+                    <li>
+                      <i class="fas fa-hand-point-right fa-md pe-3"></i>Mobility costs (international / domestic travel and hospitality cost). Long term (up to three months)
+                      exchange visits of young researchers are encouraged</li>
+                    <li>
+                      <i class="fas fa-hand-point-right fa-md pe-3"></i>Networking events (organising project related workshops / brain-storming meetings)</li>
+                    <li>
+                      <i class="fas fa-hand-point-right fa-md pe-3"></i>Outsourcing / subcontract</li>
+                    <li>
+                      <i class="fas fa-hand-point-right fa-md pe-3"></i>Contingency</li>
+                    <li>
+                      <i class="fas fa-hand-point-right fa-md pe-3"></i>Overheads</li>
+                  </ul>
+                </div>
+                <div class="col-md-6">
+                  <div class="level">
+                    <h3>Indian Partners</h3>
+                    <p>Contingency and overhead amounts should be limited to 5% and 10% of eligible cost, respectively. In this
+                      case, cost of equipment should not be included in calculating total eligible costs. Industry partner
+                      is not eligible for overhead cost.</p>
+                    <h3>German Partners:</h3>
+                    <p>In accordance to German funding procedures, cost based proposals will be able to ask for overheads, whereas
+                      German Universities are eligible for 20% “Projektpauschale” in case it is a non-profit research project.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFive">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false"
+                aria-controls="collapseFive">
+                Evaluation
+              </button>
+            </h2>
+            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <p>IGSTC will execute a two-step evaluation process. Initially First Stage Proposals will undergo an eligibility
+                  check by the project management team, followed by an evaluation by the Joint Scientific Committee.</p>
+                <p>In the second step, shortlisted consortium will be requested to submit a more detailed Second Stage Proposals.
+                  consortium will be invited to present their project in front of the Joint Scientific Committee. Based on
+                  the written proposal and the presentation the Joint Scientific Committee will give a final recommendation
+                  for funding.</p>
+                <h3 class="pt-5 pb-4 text-uppercase">The evaluation process will consider:</h3>
+                <div class="row">
+                  <div class="col-md-2">
+                    <div class="level">
+                      Compliance to the formal criteria
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="level">
+                      Scientific quality and originality of the project idea
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="level">
+                      Feasibility of the project
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="level">
+                      Scientific credentials and global competitiveness of the partners
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="level">
+                      Level of contribution of each partner / collaborative interaction and added value
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="level">
+                      Innovative potential for industrial application (prospects for commercial success / commercial exploitability)
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </div>
+    <div class="industrial-felowship" ng-if="showPecfar">
+      <div class="industrial-banner">
+        <apex:image url="{!$Resource.home_banner}" />
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>PECFAR</h2>
+              <p>This fellowship encourages two-way exchange of young researchers in pairs and provides an opportunity to
+                explore the Indo-German research landscape.</p>
+              <a href="javascript:void(0)" ng-click="redirectPageURL('Pairing_Page')" class="btn apply-btn">Apply</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="guide-line mb-5">
+          <h1>Paired Early Career Fellowship in Applied Research (PECFAR) - Call {{Endyear}}</h1>
+          <ol>
+            <li>
+              Kindly read the Call Text, Basic Guidelines and FAQs carefully before applying. The link for same is below :
+              <ul>
+                <li>
+                  <!-- <p>Call Text</p> -->
+                  <span>
+                    <a href="{{LinkCallText}}" class="btn blue-btn" style="min-width: 250px;" target="_blank">Call Text</a>
+                  </span>
+                </li>
+                <li>
+                  <!-- <p>Basic Guidelines</p> -->
+                  <span>
+                    <a href="{{LinkBasicGuidelines}}" class="btn blue-btn" style="min-width: 250px;" target="_blank">Basic Guidelines</a>
+                  </span>
+                </li>
+                <li>
+                  <!-- <p>FAQs</p> -->
+                  <span>
+                    <a href="{{LinkFAQs}}" class="btn blue-btn" style="min-width: 250px;" target="_blank">FAQs</a>
+                  </span>
+                </li>
+              </ul>
+            </li>
+            <li>Please ensure your eligibility before filling the application.</li>
+            <li>Documents required for application submission:<br/><br/>
+              <i class="fa-solid fa-circle text-success2 me-3" style="font-size: 10px"></i>No Objection Certificate from the Parent institution.<br/>
+            <i class="fa-solid fa-circle text-success2 me-3" style="font-size: 10px"></i>Invitation Letter from the host institution.<br/>
+            <i class="fa-solid fa-circle text-success2 me-3" style="font-size: 10px"></i>Proof of Date of Birth (Scan copy of Passport/ Aadhar Card).<br/>
+            <i class="fa-solid fa-circle text-success2 me-3" style="font-size: 10px"></i>Proof of Education Qualifications arranged in reverse chronological order.<br/>
+            <i class="fa-solid fa-circle text-success2 me-3" style="font-size: 10px"></i>Proof of Current Employment/Fellowship Award Letter.<br/>
+
+            </li>
+            <li>Queries, if any, should be addressed to
+              <a href="mailto:pecfar@igstc.org">pecfar@igstc.org</a>
+            </li>
+            <li>Application Deadline: {{dealLinedate}}</li>
+            <li>You may note that any false information given in the application can lead to disqualification of your candidature
+              at any stage of the process.</li>
+          </ol>
+        </div>
+      </div>     
+      <!-- <div class="container">
+        <h3 class="pt-5 pb-4 text-uppercase">Paired Early Career Fellowship in Applied Research (PECFAR)</h3>
+        <p>The Indo-German Science and Technology Centre (IGSTC), established as a joint initiative of the Department of Science
+          and Technology (DST), Government of India and the Federal Ministry of Education and Research (BMBF), Government
+          of Germany invites applications for Paired Early Career Fellowship in Applied Research (PECFAR) from early-career
+          Indian and German researchers to explore, connect and network for research collaboration.</p>
+        <h3 class="pt-5 pb-4 text-uppercase">Overview of the Fellowship</h3>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="level">
+              This fellowship intends to facilitate a pair of early career researchers to have a short visit to India/Germany for networking
+              and exploring avenues for collaboration and innovation in Science, Technology, Engineering and Mathematics
+              (STEM). The pair* will be formed by an Indian and a German early career researcher who shall submit a joint
+              proposal for availing the fellowship. The duration of the fellowship will be 1-2 months (minimum 3 weeks).
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="level">
+              One-time grant will be provided to cover the travel, accommodation and daily expenses. The paired fellows can jointly plan
+              the fellowship visits to the partner country (India/Germany) accordingly. The fellows may also utilise this
+              award to connect and travel to other institutions in India/Germany and strengthen their network.
+            </div>
+          </div>
+        </div>
+        <p class="text-uppercase pt-5 pb-5 mb-5">*Applicants are solely responsible for identifying and forming their respective pair and acquiring an acceptance
+          letter from the institute/organization of the paired fellow. For more information, please visit Basic guidelines.</p>
+        <div class="accordion" id="accordionExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
+                aria-controls="collapseOne">
+                Aim of the Fellowship
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                The fellowship intends to:
+                <ul>
+                  <li class="py-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Support early career researchers to network and explore possibilities to grow in applied research;</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Enhance the research capabilities and opportunities in the partner country on various aspects of
+                    S and T, entrepreneurship, innovation and lab utilization;</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Create impetus to expand bilateral collaboration and research among young researchers;</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Build well-knitted long-term cooperation with complementary partnerships through networking and interaction.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
+                aria-controls="collapseTwo">
+                Fellowship Details
+              </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <ul>
+                  <li class="py-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>This fellowship is designed to facilitate a pair of early career researchers to have a short visit
+                    to India/Germany for networking and exploring avenues for collaboration and innovation in applied research.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The pair will be formed by an Indian and a German early career researcher who shall submit a joint
+                    proposal.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The duration of the fellowship will be 1-2 months (minimum 3 weeks).</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>One-time grant will be provided to cover the travel, accommodation and daily expenses.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The paired fellows can jointly plan the fellowship visits to the partner country (India/Germany).</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The fellows may also utilise this award to connect and travel to other institutions in India/Germany
+                    and strengthen their network.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false"
+                aria-controls="collapseThree">
+                How to form a Pair?
+              </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <ul>
+                  <li class="py-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Applicants shall form a pair consisting of one Indian and German early career researcher holding
+                    regular position in academia/research institution/industry or holding a long-term nationally recognized
+                    fellowships.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Applicants may build his/her pair through networking and 1:1 matching using B2 Match.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>However, Applicants are solely responsible for identifying and forming their respective pairs and
+                    acquiring acceptance letters from institutes/organizations of the paired fellows.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFour">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false"
+                aria-controls="collapseFour">
+                Financial Support
+              </button>
+            </h2>
+            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                The financial support shall be provided as one time grant and it will be limited to:
+                <ul>
+                  <li class="py-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Fellowship: € 2300 per month/fellow.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The fellowship will be provided on pro-rata basis depending on the duration of the stay.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Single round trip economy class airfare including visa fees and medical/travel insurance approximately
+                    ₹ 1 lakh (for Indian fellow) and € 1500 (for German fellow).</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFive">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false"
+                aria-controls="collapseFive">
+                Instructions for Submission of the Application
+              </button>
+            </h2>
+            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <ul>
+                  <li class="py-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Check your eligibility before applying for the fellowship.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>It is advisable to form the pair before starting the application.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>The pair should fill the application form jointly and sent via email to pecfar@igstc.org as a single
+                    document.</li>
+                  <li class="pb-3">
+                    <i class="fas fa-hand-point-right fa-md pe-3"></i>Applicant must strictly follow the instructions given in the application form.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+  <script>
+    var input = document.querySelector("#phone");
+    window.intlTelInput(input, {
+      separateDialCode: true,
+      excludeCountries: ["in", "il"],
+      preferredCountries: ["ru", "jp", "pk", "no"]
+    });
+  </script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</apex:page>

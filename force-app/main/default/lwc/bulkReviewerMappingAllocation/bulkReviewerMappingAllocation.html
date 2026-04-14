@@ -1,0 +1,107 @@
+<template>
+    <div class="main-container">
+        <header class="header">
+            <h4>Bulk Record Uploader</h4>
+        </header>
+        <div class="button-container">
+            <button class="cst-btn downloadTemplate" onclick={downloadTemplate}>
+                <lightning-icon icon-name="utility:download" size="x-small" class="icon"></lightning-icon>
+                Download Template
+            </button>
+            <button class="cst-btn uploadCSV" onclick={uploadTemplate}>
+                Upload CSV
+            </button>
+            <input class="upload" type="file" accept=".csv,text/csv" onchange={handleFileUpload} style="display: none;"/>
+        </div>
+        <template if:true={headerErrorMessage}>
+            <div class="error-summary header-error">
+                <strong>Header Errors:</strong> {headerErrorMessage}
+            </div>
+            <p class="error-note">
+                **Please download and use the correct template format.**
+            </p>
+        </template>
+        <template if:true={errorRowNumbers.length}>
+            <div class="error-summary">
+                <strong>Rows with Errors:</strong> {errorRowNumbers}
+            </div>
+            <p class="error-note">
+                **Please resolve the errors in these rows before proceeding.**
+            </p>
+        </template>
+
+        <template if:true={previewData.length}>
+            <div class="table-container">
+                <table class="preview-table">
+                    <thead class="table-header">
+                        <tr>
+                            <template for:each={columns} for:item="col">
+                                <th key={col}>{col}</th>
+                            </template>
+                        </tr>
+                    </thead>
+                    <tbody class="table-body">
+                        <template for:each={paginatedData} for:item="row" for:indexvar="rowIndex">
+                            <tr key={rowIndex}>
+                                <template for:each={row.cells} for:item="cell" for:indexvar="cellIndex">
+                                    <td key={cellIndex} class={cell.class}>{cell.value}</td>
+                                </template>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+            <div class="footer-container">
+                <button class={submitClass} id="sbmt" onclick={handleSubmit} disabled={isSubmitDisabled}>Submit</button>
+                <c-reusable-pagination page-size=10 list={previewData} onpagechange={handlePagination}></c-reusable-pagination>
+            </div>
+        </template>
+    </div>
+</template>
+
+
+<!-- <template>
+    <div class="container">
+        <header class="header">
+            <h1>Bulk Record Uploader</h1>
+        </header>
+        <div class="slds-grid" style="justify-content: space-around;">
+            <button class="slds-col slds-size_1-of-3 cst-btn downloadTemplate" onclick={downloadTemplate}><lightning-icon icon-name="utility:download" size="x-small" class="icon"></lightning-icon>&nbsp;&nbsp;Download Template</button>
+            <button class="slds-col slds-size_1-of-3 cst-btn uploadCSV" onclick={uploadTemplate}>Upload CSV</button>
+            <input class="slds-col slds-size_1-of-3 upload" type="file" accept=".csv,text/csv" onchange={handleFileUpload} style="display: none;"/>
+        </div>
+        <template if:true={errorRowNumbers.length}>
+            <div class="error-summary">
+                <strong>Rows with Errors:</strong> {errorRowNumbers}
+            </div>
+            <p class="error-note">
+                **Please resolve the errors in these rows before proceeding.**
+            </p>
+        </template>
+
+        <template if:true={previewData.length}>
+            <table class="preview-table">
+                <thead>
+                    <tr>
+                        <template for:each={columns} for:item="col">
+                            <th key={col}>{col}</th>
+                        </template>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={paginatedData} for:item="row" for:indexvar="rowIndex">
+                        <tr key={rowIndex}>
+                            <template for:each={row.cells} for:item="cell" for:indexvar="cellIndex">
+                                <td key={cellIndex} class={cell.class}>{cell.value}</td>
+                            </template>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            <c-reusable-pagination class="slds-p-around_medium slds-float_right" page-size=10 style="font-size: medium;" list={previewData} onpagechange={handlePagination}></c-reusable-pagination>
+            <div class="slds-align_absolute-center">
+                <button class={submitClass} id="sbmt" onclick={handleSubmit} disabled={isSubmitDisabled}>Submit</button>
+            </div>
+        </template>
+    </div>
+</template> -->

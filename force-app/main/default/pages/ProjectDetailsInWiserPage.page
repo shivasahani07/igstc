@@ -1,0 +1,1024 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+    <html>
+    <div ng-controller="ProjectDetailInWiserCtrl">
+
+        <head>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+            <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+            <style>
+                .ta-editor {
+                    min-height: 300px;
+                    height: auto;
+                    overflow: auto;
+                    font-family: inherit;
+                    font-size: 100%;
+                }
+            </style>
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+
+            <script>
+                function myFunction() {
+                    debugger;
+                    var dots = document.getElementById("dots");
+                    var moreText = document.getElementById("more");
+                    var btnText = document.getElementById("myBtn");
+
+                    if (dots.style.display === "none") {
+                        dots.style.display = "inline";
+                        btnText.innerHTML = "Read more....";
+                        moreText.style.display = "none";
+                    } else {
+                        dots.style.display = "none";
+                        btnText.innerHTML = "Read less....";
+                        moreText.style.display = "inline";
+                    }
+                }
+            </script>
+        </head>
+
+        <body>
+
+            <!-- Loading Spinner -->
+            <div ng-show="isLoading"
+                style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); z-index: 9999; display: flex; justify-content: center; align-items: center;">
+                <div style="text-align: center;">
+                    <i class="fa-solid fa-spinner fa-spin-pulse" style="font-size: 48px; color: #007bff;"></i>
+                    <p style="margin-top: 20px; font-size: 18px; color: #007bff;">Loading...</p>
+                </div>
+            </div>
+
+            <div class="container mt-5">
+                <div class="row mx-5">
+                    <div class="col-md-12">
+                        <div class="tab-link" ng-show="proposalStage"><!-- || isCurrentUserSubmitted -->
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <!-- Not Confirmed Yet -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
+                                        <div class="icon-circle">
+                                            <!-- <i class="fa fa-home"></i> -->
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Pairing Details</span>
+                                    </a>
+                                </li>
+
+                                <!-- Pair Project Details -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('HostProjectDetails')">
+                                        <div class="icon-circle">
+                                            <!-- <i class="far fa-address-card"></i> -->
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Paired Project Details</span>
+                                    </a>
+                                </li>
+
+                                <!-- Pair Details -->
+                                <!-- <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('HostInfoApplicationPage')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Host Details</span>
+                                    </a>
+                                </li> -->
+
+                                <!-- Applicant Details -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('WiserApplicationPage')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Applicant Details</span>
+                                    </a>
+                                </li>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('CV_Wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li>
+
+                                <!-- Financial Details -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('FinancialOverview_wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <span>Financial Overview</span>
+                                    </a>
+                                </li>
+
+                                <!-- <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Applicant Project Details</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('WiserApplicationPage')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Applicant Details</span>
+                                    </a>
+                                </li>
+                                
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('HostInfoApplicationPage')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Pair Details</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('FinancialOverview_wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <span>Financial Overview</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('HostProjectDetails')">
+                                        <div class="icon-circle">
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Pair Project Details</span>
+                                    </a>
+                                </li>    -->
+                            </ul>
+                        </div>
+                        <div class="tab-link" ng-hide="proposalStage"><!-- || isCurrentUserSubmitted -->
+                            <div class="progress">
+                                <div class="progress-success wp-2"></div>
+                            </div>
+                            <ul>
+
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Pairing Details</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <!-- <i class="fas fa-user-alt"></i> -->
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Paired Project Details</span>
+                                    </a>
+                                </li>
+                                <!-- <li >
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Host Details</span>
+                                    </a>
+                                </li> -->
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <!-- <i class="fa fa-home"></i> -->
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Applicant Details</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <span>Financial Overview</span>
+                                    </a>
+                                </li>
+
+
+                                <!-- <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Applicant Project Dnendeetails</span>
+                                    </a>
+                                </li>
+
+                                 <li class="">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Applicant Details</span>
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Pair Details</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <span>Financial Overview</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Pair Project Details</span>
+                                    </a>
+                                </li> -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mx-5">
+                    <div class="col-md-12">
+                        <div class="tab-link" ng-show="proposalStage || isCurrentUserSubmitted">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ExistingGrantWISER')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-money-bill"></i>
+                                        </div>
+                                        <span>Other Grants</span>
+                                    </a>
+                                </li>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('TwoReferenceWiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-friends"></i>
+                                        </div>
+                                        <span>References</span>
+                                    </a>
+                                </li>
+
+
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('AttachmentsInWiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-upload"></i>
+                                        </div>
+                                        <span>Attachments</span>
+                                    </a>
+                                </li>
+
+                                <!-- <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('CV_Wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li> -->
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Declaration_Wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                        <span>Declaration</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-link" ng-hide="proposalStage"><!-- || isCurrentUserSubmitted -->
+                            <div class="progress">
+                                <div class="progress-success wp-0"></div>
+                            </div>
+                            <ul>
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-money-bill"></i>
+                                        </div>
+                                        <span>Other Grants
+
+                                        </span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-friends"></i>
+                                        </div>
+                                        <span>References</span>
+                                    </a>
+                                </li>
+
+
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-upload"></i>
+                                        </div>
+                                        <span>Attachments</span>
+                                    </a>
+                                </li>
+
+                                <!-- <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li> -->
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                        <span>Declaration</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal" id="filePreview">
+                    <div class="modal-dialog" style="min-width:120rem">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">
+                                    <div class="d-flex" style="background:unset;">
+                                        <h3 style="text-align: center"><b>{{selectedFile.userDocument.Name}}</b></h3>
+                                    </div>
+                                </h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <iframe style="width:100%;height:75vh;border: 0px;border-radius: 10px;" id="file_frame"
+                                    title="File"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- ***************************************    START :- Commented by Harsh  for Pairing Detail Page    *************************************** -->
+                <!-- <form name="formPrjDet">
+                        <div class="row mt-5 mx-5">
+
+                          <div class="col-md-6">
+                            <label class="font-if color-theme"><b>Title of project</b><span class="required-asterisk text-danger">*</span></label>
+                            <input name="Title Of Proposal" class="form-control" type="text" ng-focus="removeClass('txtTitle')" id="txtTitle" ng-model="applicantDetails.Title_Of__c" ng-disabled="proposalStage" />
+                          </div>
+                          
+                          <div class="col-md-6">
+                            <label class="font-if color-theme"><b>Broad area of research</b><span class="required-asterisk text-danger">*</span></label>
+                            <input class="form-control" type="text" ng-focus="removeClass('txtResearch')" id="txtResearch" ng-model="applicantDetails.Broad_area_of_research__c" ng-disabled="proposalStage" />
+                          </div>
+                        </div>
+
+                        <div class="row mt-5 mx-5">
+
+                            <div class="col-md-6">
+                                <label class="font-if color-theme"><b>Duration in months (Min 24 Max 36)</b><span class="required-asterisk text-danger">*</span></label>
+                                <input name="duration" placeholder="Min -24 months and Maximum – 36 months." class="form-control mt-3" number="applicantDetails.Duration_In_Months_Max_36__c" type="text" ng-model="applicantDetails.Duration_In_Months_Max_36__c"
+                                ng-focus="removeClass('txtDuration')" id="txtDuration" ng-disabled="proposalStage" ng-maxlength="2" ng-minlength="2" min="24" max="36" ng-keyup="restrictDecimalVal(applicantDetails.Duration_In_Months_Max_36__c)" />
+                                <span ng-if="!formPrjDet.duration.$valid" class="text-danger">duration must be between 24 and 36 Months</span>
+                              </div>
+
+                              <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-10"><label class="font-if color-theme"><b>Keywords</b><span class="required-asterisk text-danger">*</span></label></div>
+                                    <div class="col-md-2"><i ng-click="addKeyword()" class="fa-solid fa-2x text-primary fa-circle-plus mt-2" ng-if="!proposalStage"></i></div>
+                                </div>
+                                <div class="row" ng-repeat="key in objKeyword">
+                                    <div class="col-md-10">
+                                        <input type="text" ng-focus="removeClass('txtKeyword')" id="txtKeyword" ng-model="key.keyword" class="form-control mb-2" maxlength="255" required="true" ng-required="key.keyword" ng-disabled="proposalStage" />
+                                    </div>
+                                    <div class="col-md-2">
+                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger mt-2" ng-click="removeKeyword($index)" ng-if="!proposalStage"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                <!-- ********************************************************     END :- Commented by Harsh  for Pairing Detail Page **************************************** -->
+
+
+
+                <!-- <div class="row mt-5 mx-5">
+                            <div class="col-md-12">
+                                <label class="pb-3 color-theme">
+                                    <b>Keywords</b>
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                </label>
+                                <i ng-click="addKeyword()" class="fa-solid fa-2x text-primary fa-circle-plus mt-2 me-3" ng-if="!proposalStage"></i>
+                                
+                                <div ng-repeat="item in objKeyword" ng-switch="true" on="$index % 2">
+                                        <div class="col-md-5" style="display:inline !important; padding-left: 0px !important;" ng-switch-when="0">
+                                            <input type="text" ng-model="item.keyword" class="form-control mb-2" maxlength="255" required="true" ng-required="item.keyword" ng-disabled="proposalStage"  style="display:inline !important"/>
+                                        </div>
+                                        <div class="col-md-1" style="display:inline !important" ng-switch-when="0">
+                                            <i class="fa-solid fa-circle-xmark fa-2x text-danger mt-2" ng-click="removeKeyword($index)" ng-if="!proposalStage" style="display:inline !important"></i>
+                                        </div>
+                                      <div class="col-md-5"  style="display:inline !important; padding-left: 0px !important;" ng-show="objKeyword[$index+1]">
+                                            <input type="text" ng-model="item.keyword" class="form-control mb-2" maxlength="255" required="true" ng-required="item.keyword" ng-disabled="proposalStage" style="display:inline !important"/>
+                                        </div>
+                                        <div class="col-md-1" style="display:inline !important" ng-show="objKeyword[$index+1]">
+                                            <i class="fa-solid fa-circle-xmark fa-2x text-danger mt-2" ng-click="removeKeyword($index)" ng-if="!proposalStage" style="display:inline !important"></i>  
+                                        </div>
+                                </div>
+                            </div>
+                        </div> -->
+
+
+
+                <!-- ***************************************    START :- Commented by Harsh  for Pairing Detail Page    *************************************** -->
+                <!-- <div class="row mt-5 mx-5">
+                            <div class="col-md-12">
+                                <label class="font-if color-theme"><b>Abstract of proposed work (Max. 600 characters without  space)</b><span class="required-asterisk text-danger">*</span></label><br/>
+                                <small class="label-rtf"><b>To use the below RTF box more efficiently, make sure you write your content in word document first and then copy paste here</b></small>
+                                <ng-ckeditor ng-focus="removeClass('txtAbstract')" ng-change="readCharacter(applicantDetails.Abstract_of_proposed_work__c,0)" id="txtAbstract" ng-model="applicantDetails.Abstract_of_proposed_work__c" ng-config="config600" name="ckEditor2" maxlength="600" ></ng-ckeditor>
+                                <span>Total characters : {{objRtf[0].charCount}}</span>
+                                <span class="text-danger" ng-if="objRtf[0].errorStatus">maximum character limit is 600</span>
+                            </div>
+
+                        </div> -->
+                <!-- ********************************************************     END :- Commented by Harsh  for Pairing Detail Page **************************************** -->
+
+
+
+                <!-- <div class="row mt-5 mx-5">
+                            <div class="col-md-12">
+                                <label class="font-if color-theme"><b>Project description (including specific objectives, methodologies, expected outcome and value addition to the host/parent institutions in max 4500 characters without space):</b><span class="required-asterisk text-danger">*</span></label><br/>
+                                <small class="label-rtf"><b>To use the below RTF box more efficiently, make sure you write your content in word document first and then copy paste here</b></small>
+                                <ng-ckeditor ng-focus="removeClass('txtDescription')" id="txtDescription" ng-change="readCharacter(applicantDetails.Project_Description__c,1)" ng-model="applicantDetails.Project_Description__c" ng-config="config" name="ckEditor1" maxlength="4500"></ng-ckeditor>
+                                <span>Total characters : {{objRtf[1].charCount}}</span>
+                                <span class="text-danger" ng-if="objRtf[1].errorStatus">maximum character limit is 4500</span>
+                            </div>
+                        </div> -->
+
+                <!-- <div class="row mt-5 mx-5">
+                            <label class="font-if color-theme pt-2">Upload the project proposal in a PDF format with a min of 30Kb and max 1Mb.<span class="required-asterisk text-danger">*</span></label>
+                            <div class="input-group input-group-lg col-md-6">
+                            <input type="file" required="true" accept=".pdf" ng-disabled="proposalStage" id="{{doc.userDocument.Name}}" class="form-control "/>
+                                <span class="input-group-btn" ng-hide="proposalStage">
+                                <button class="btn btn-success" ng-click="uploadFile(doc.userDocument.Name, userdocsIds,'',1048576)" type="button">Upload</button>
+                                </span>
+                        </div>
+                        <div class="col-md-1" ng-show="doc.userDocument.Status__c=='Uploaded'" style="margin-left: 10px">
+                            <a class="blue-btn float-end py-3" ng-click="filePreviewHandler(doc)">View</a>
+                        </div>
+                    </div>
+                    <p style="margin-left: 40px">Click on the <a href="{!$Resource.project_Description_format}" target="_blank">download link</a> to get the project description format<br/> fill the doc save as pdf and upload.</p> -->
+
+
+                <!-- ***************************************    START :- Commented by Harsh  for Pairing Detail Page    *************************************** -->
+
+                <!-- <div class="row mt-5 mx-5 mb-3" ng-if="!proposalStage">
+                            <div class="col-md-12">
+                                <button class="blue-btn float-end" ng-click="saveApplication()" type="button">
+                                    <i class="fa-solid fa-check me-2"></i>Save and Next</button> -->
+                <!-- <button class="blue-bordered-btn float-end me-2" ng-click="redirectPageURL('HostInfoApplicationPage')" type="button">
+                                    <i class="fa-solid fa-arrow-left me-2"></i>Previous</button> -->
+                <!-- </div>
+                        </div>
+                    </form> -->
+
+                <!-- ********************************************************     END :- Commented by Harsh for Pairing Detail Page **************************************** -->
+
+
+                <!--pairing details(new Page Added By karthik-->
+                <form name="formPrjDet">
+                    <br></br>
+                    <br></br>
+                    <div class="row mx-5">
+
+                        <!--
+                        <div class="col-md-12 alert bg-color-list" role="alert">
+                            <div ng-show="!showFullInfoBox">
+                                <ul class="font-if">
+                                    <li>
+                                        <h4 class="color-theme pb-4">
+                                            <b> Instructions for Application Submission </b>
+                                        </h4>
+                                    </li>
+
+                                    <li>
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        Please check your eligibility before applying for the WISER Grant.
+                                    </li>
+                                    <br />
+
+                                    <li>
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        The one who starts the application first (from the Pair) will be known as the
+                                        Primary applicant.
+                                    </li>
+                                    <br />
+
+                                    <li>
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        Registration on the IGSTC portal must be completed by both applicants of the pair.
+                                        Once the registration is completed, the primary applicant will be able to add her
+                                        paired applicant from India/Germany to the application.
+                                    </li>
+                                    <br />
+
+                                    <li>
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        Please enter the email address of the paired applicant, which they have used to
+                                        register in the portal. The paired partner will receive a system generated link to
+                                        access and start filling their part of the application.
+                                    </li>
+                                    <br />
+
+                                    <li>
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        In case the paired applicant does not receive the email, please check the 'SPAM' or
+                                        'JUNK' folder. If the email is still not found, please raise a ticket at 'Get Help'
+                                        or 'Contact Us' in the portal.
+                                    </li>
+                                    <br />
+                                </ul>
+                                <a href="javascript:void(0);" ng-click="showFullInfoBox = true" class="text-primary" style="text-decoration: underline; cursor: pointer; display: inline-block;">
+                                    <i class="fa-solid fa-chevron-down me-1"></i>Show more
+                                </a>
+                            </div>
+                            <div ng-show="showFullInfoBox">
+                                <ul class="font-if">
+                                    <li>
+                                        <h4 class="color-theme pb-4">
+                                            <b> Instructions for Application Submission </b>
+                                        </h4>
+                                    </li>
+
+                                    <li>
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        Please check your eligibility before applying for the WISER Grant.
+                                    </li>
+                                    <br />
+
+                                    <li>
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        The one who starts the application first (from the Pair) will be known as the
+                                        Primary applicant.
+                                    </li>
+                                    <br />
+
+                                    <li>
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        Registration on the IGSTC portal must be completed by both applicants of the pair.
+                                        Once the registration is completed, the primary applicant will be able to add her
+                                        paired applicant from India/Germany to the application.
+                                    </li>
+                                    <br />
+
+                                    <li>
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        Please enter the email address of the paired applicant, which they have used to
+                                        register in the portal. The paired partner will receive a system generated link to
+                                        access and start filling their part of the application.
+                                    </li>
+                                    <br />
+
+                                    <li>
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        In case the paired applicant does not receive the email, please check the 'SPAM' or
+                                        'JUNK' folder. If the email is still not found, please raise a ticket at 'Get Help'
+                                        or 'Contact Us' in the portal.
+                                    </li>
+                                    <br />
+
+                                <li>
+                                    <i class="fa-solid fa-circle text-success me-3"></i>
+                                    Both the paired members (from India and Germany) must individually complete their
+                                    part within the same application. Once completed, the final submission of the
+                                    application will be done by the Primary applicant only.
+                                </li>
+                                <br />
+
+                                <li>
+                                    <i class="fa-solid fa-circle text-success me-3"></i>
+                                    Both applicants shall jointly access and complete the ‘Paired Project Details’
+                                    section; this is the only common section of the application shared by both
+                                    applicants and must be filled collaboratively.
+                                </li>
+                                <br />
+
+                                <li>
+                                    <i class="fa-solid fa-circle text-success me-3"></i>
+                                    The Primary applicant shall be able to do the final submission only when all the
+                                    sections of the application are completed by both paired members.
+                                </li>
+                                <br />
+
+                                <li>
+                                    <i class="fa-solid fa-circle text-success me-3"></i>
+                                    Applicants must strictly follow the directions and framework for filing the
+                                    application. Failure to do so may result in cancellation of the application.
+                                </li>
+                                <br />
+
+                                <li>
+                                    <i class="fa-solid fa-circle text-success me-3"></i>
+                                    If there is a problem in saving pages or lag in the application, kindly press
+                                    "CTRL+Shift+R" in one go and try again. If the problem persists, please raise a
+                                    ticket at 'Get Help' or 'Contact Us' in the portal.
+                                </li>
+                                <br />
+                                </ul>
+                                <a href="javascript:void(0);" ng-click="showFullInfoBox = false" class="text-primary mt-2" style="text-decoration: underline; cursor: pointer; display: inline-block;">
+                                    <i class="fa-solid fa-chevron-up me-1"></i>Show less
+                                </a>
+                            </div>
+                        </div>
+                        -->
+                        <div class="col-md-12 alert bg-color-list" role="alert">
+                            <h5 class="color-theme pb-4"><b>Instructions for submission of the application</b></h5>
+                            
+                            <ul class="font-if" style="list-style: none; padding-left: 0; margin-bottom: 0;">
+                                <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                    <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    <span style="flex: 1;">Applicants must check their eligibility before applying for the grant.</span>
+                                </li>
+                                <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                    <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    <span style="flex: 1;">Applicants are advised to initiate their applications at least five days in advance to avoid any last-minute rush.</span>
+                                </li>
+                                <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                    <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    <span style="flex: 1;">The application must be submitted online via the "Application Portal" only.</span>
+                                </li>
+                                <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                    <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    <span style="flex: 1;">Both applicants (India and Germany) must register individually on the portal using their email addresses.</span>
+                                </li>
+                                <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                    <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    <span style="flex: 1;">Ensure that correct and active email addresses are used, as a verification link will be sent to complete registration.</span>
+                                </li>
+                                <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                    <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    <span style="flex: 1;">After successful registration, either applicant may log in and initiate the WISER application.</span>
+                                </li>
+                                <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                    <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    <span style="flex: 1;">The applicant who starts the application will be designated as the Primary Applicant.</span>
+                                </li>
+                                <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                    <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    <span style="flex: 1;">The Primary Applicant must add the Paired Applicant (India/Germany) within the application portal.</span>
+                                </li>
+                                <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                    <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    <span style="flex: 1;">The Paired Applicant will then receive a link via email to log in and complete their respective part of the application.</span>
+                                </li>
+                                <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                    <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    <span style="flex: 1;">Both applicants shall jointly access and complete the 'Paired Project Details' section. This is the only common section of the application shared by both applicants and must be completed collaboratively.</span>
+                                </li>
+                                <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                    <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    <span style="flex: 1;">Both applicants must, individually complete their respective parts, save the entries as a draft version.</span>
+                                </li>
+                                <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                    <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    <span style="flex: 1;">Only the Primary Applicant can upload the Project Proposal PDF in the Attachments section.</span>
+                                </li>
+                                <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                    <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    <span style="flex: 1;">The final submission can be done only by the Primary Applicant, and only after all sections have been duly completed by both paired applicants.</span>
+                                </li>
+                                <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                    <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    <span style="flex: 1;">It is the responsibility of the Primary Applicant to ensure that the Paired Applicant has fully completed their section before submission.</span>
+                                </li>
+                                <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                    <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    <span style="flex: 1;">In case emails are not received or any technical issues are encountered, applicants should raise a ticket via 'Get Help' or 'Contact Us' in the IGSTC Application Portal. The IGSTC Support Team will respond within 48 hours.</span>
+                                </li>
+                                <li style="margin-bottom: 0; display: flex; align-items: flex-start;">
+                                    <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                    <span style="flex: 1;">Applicants must strictly follow all instructions provided. Failure to comply may result in rejection of the application.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div class="row mx-5 mb-3">
+                                <div class="col-md-12 p-3">
+                                    <i ng-show="pairingDetails.MailingCountry == 'India'">
+                                        <apex:image url="{!$Resource.indiaFlag}" styleClass="img-fluid"
+                                            style="max-width:30px;" />
+                                    </i>
+                                    <i ng-show="pairingDetails.MailingCountry == 'Germany'">
+                                        <apex:image url="{!$Resource.germanyFlag}" styleClass="img-fluid"
+                                            style="max-width:30px;" />
+                                    </i>
+                                    <h4 class="pb-3 pt-2 color-theme w-75 float-end" style="font-weight:700">
+                                        {{country1}} Member of the Pair</h4>
+                                </div>
+                            </div>
+
+                            <div class="row box-shadow-3 ms-1 me-2">
+                                <div class="col-md-12 mt-5">
+                                    <label class="font-if">
+                                        Email<span class="required-asterisk" style="color:red;">*</span></label>
+                                    <input type="text" class="form-control" ng-model="pairingDetails.Email"
+                                        ng-focus="removeClass('txtIndEmail')" id="txtIndEmail"
+                                        ng-disabled="proposalStage || primary || (pairingDetails.Id && pairingDetails.Id !== '' && pairList.Id && pairList.Id !== '')" /><!-- || isCurrentUserSubmitted -->
+                                    <!-- ng-change="checkEmail(pairingDetails.Email, pairingDetails.Id)" -->
+                                </div>
+                                <div class="col-md-12 mt-5">
+                                    <label class="font-if">
+                                        First Name<span class="required-asterisk" style="color:red;">*</span></label>
+                                    <input type="text" class="form-control" ng-focus="removeClass('txtIndFN')"
+                                        id="txtIndFN" ng-model="pairingDetails.FirstName"
+                                        ng-disabled="proposalStage || primary" /><!-- || isCurrentUserSubmitted -->
+                                </div>
+                                <div class="col-md-12 mt-5">
+                                    <label class="font-if">Last Name<span class="required-asterisk"
+                                            style="color:red;">*</span></label>
+                                    <input type="text" class="form-control" ng-focus="removeClass('txtIndLN')"
+                                        id="txtIndLN" ng-model="pairingDetails.LastName"
+                                        ng-disabled="proposalStage || primary" /><!-- || isCurrentUserSubmitted -->
+                                </div>
+                                <div class="col-md-12 mt-5">
+                                    <label class="font-if">
+                                        Institution / Organization<span class="required-asterisk"
+                                            style="color:red;">*</span></label>
+                                    <input type="text" class="form-control" ng-focus="removeClass('txtIndOrg')"
+                                        id="txtIndOrg" ng-model="pairingDetails.Account.Name"
+                                        ng-disabled="proposalStage || primary" /><!-- || isCurrentUserSubmitted -->
+                                </div>
+                                <!-- <div class="col-md-12 mt-5 mb-5">
+                                    <label class="font-if">Date of Birth
+                                        <span class="required-asterisk" style="color:red;">*</span></label>
+                                    <! <md-datepicker ng-disabled="proposalStage" ng-model="pairingDetails.Birthdate" ng-focus="removeClass('txtIndBD')" id="txtIndBD" md-placeholder="Birthdate" class="form-control" md-current-view="year"></md-datepicker> ==>
+                                    <input type="date" class="form-control" ng-focus="removeClass('txtIndBD')"
+                                        id="txtIndBD" ng-model="pairingDetails.Birthdate"
+                                        ng-disabled="proposalStage || primary" />
+                                </div> -->
+
+                                <div class="col-md-12 mt-5 mb-5">
+                                    <label class="font-if">
+                                        Date of Birth
+                                        <span class="required-asterisk" style="color:red;">*</span>
+                                    </label>
+
+                                    <input type="date" class="form-control" name="dobPrimary" id="txtIndBD"
+                                        ng-model="pairingDetails.Birthdate" ng-focus="removeClass('txtIndBD')"
+                                        ng-disabled="proposalStage || primary"
+                                        required="true" /><!-- || isCurrentUserSubmitted -->
+                                    <!-- ng-change="validateDOB(pairingDetails.Birthdate, 'dobPrimary')" -->
+
+                                    <!-- Error message -->
+                                    <!-- <div class="text-danger mt-1"
+                                        ng-show="formPrjDet.dobPrimary.$error && dobErrors.dobPrimary">
+                                        Age must be more than 26 years and less than 55 years.
+                                    </div> -->
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="row mx-5 mb-3">
+                                <div class="col-md-12 p-3">
+                                    <i ng-show="pairList.MailingCountry == 'India'">
+                                        <apex:image url="{!$Resource.indiaFlag}" styleClass="img-fluid"
+                                            style="max-width:30px;" />
+                                    </i>
+                                    <i ng-show="pairList.MailingCountry == 'Germany'">
+                                        <apex:image url="{!$Resource.germanyFlag}" styleClass="img-fluid"
+                                            style="max-width:30px;" />
+                                    </i>
+                                    <h4 class="pb-3 pt-2 color-theme w-75 float-end" style="font-weight:700">
+                                        {{country2}} Member of the Pair</h4>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-12 my-4" style="padding-left: 0px;">
+                                <label class="color-theme ms-2">German Counter Part</label>
+                                </div> -->
+
+                            <div class="row box-shadow-3 ms-1 me-2">
+                                <div class="col-md-12 mt-5">
+                                    <label class="font-if">
+                                        Email<span class="required-asterisk" style="color:red;">*</span></label>
+                                    <input type="text" class="form-control" ng-focus="removeClass('txtGerEmail')"
+                                        id="txtGerEmail" ng-model="pairList.Email" ng-disabled="proposalStage || (pairingDetails.Id && pairingDetails.Id !== '' && pairList.Id && pairList.Id !== '')"
+                                        ng-change="checkEmail(pairList.Email,pairList.Id)" /><!-- || isCurrentUserSubmitted -->
+                                    <div ng-show="emailCheck && pairList.Id" class="text-success mt-2"
+                                        style="font-size: 14px;">
+                                        <i class="fa-solid fa-check-circle me-2"></i>Contact exists in the system
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mt-5">
+                                    <label class="font-if">
+                                        First Name<span class="required-asterisk" style="color:red;">*</span></label>
+                                    <input type="text" class="form-control" ng-focus="removeClass('txtGerFN')"
+                                        id="txtGerFN" ng-model="pairList.FirstName"
+                                        ng-disabled="proposalStage" /><!-- || isCurrentUserSubmitted -->
+                                </div>
+                                <div class="col-md-12 mt-5">
+                                    <label class="font-if">Last Name<span class="required-asterisk"
+                                            style="color:red;">*</span></label>
+                                    <input type="text" class="form-control" ng-focus="removeClass('txtGerLn')"
+                                        id="txtGerLn" ng-model="pairList.LastName"
+                                        ng-disabled="proposalStage" /><!-- || isCurrentUserSubmitted -->
+                                </div>
+                                <div class="col-md-12 mt-5">
+                                    <label class="font-if">
+                                        Institution / Organization<span class="required-asterisk"
+                                            style="color:red;">*</span></label>
+                                    <input type="text" class="form-control" ng-focus="removeClass('txtGerOrg')"
+                                        id="txtGerOrg" ng-model="pairList.Account.Name"
+                                        ng-disabled="proposalStage || (pairingDetails.Id && pairingDetails.Id !== '' && pairList.Id && pairList.Id !== '')" /><!-- || isCurrentUserSubmitted -->
+                                </div>
+
+                                <!-- <div class="col-md-12 mt-5 mb-5">
+                                <label class="font-if">Date of Birth
+                                        <span class="required-asterisk" style="color:red;">*</span></label>
+                                    <! <md-datepicker ng-disabled="proposalStage" ng-model="pairList.Birthdate" ng-focus="removeClass('txtGerBD')" id="txtGerBD" md-placeholder="Birthdate" class="form-control" md-current-view="year"></md-datepicker> ==>
+                                    <input type="date" class="form-control" ng-focus="removeClass('txtGerBD')"
+                                        id="txtGerBD" ng-model="pairList.Birthdate"
+                                        ng-init="pairList.Birthdate=(pairList.Birthdate | date:'')"
+                                        ng-disabled="proposalStage" />
+                                </div> -->
+                                <!-- {{ pairList.Birthdate }} {{mydate}} -->
+
+                                <div class="col-md-12 mt-5 mb-5">
+                                    <label class="font-if">
+                                        Date of Birth
+                                        <span class="required-asterisk" style="color:red;">*</span>
+                                    </label>
+
+                                    <input type="date" class="form-control" name="dobSecondary" id="txtGerBD"
+                                        ng-model="pairList.Birthdate" ng-focus="removeClass('txtGerBD')"
+                                        ng-disabled="proposalStage || primary"
+                                        required="true" /><!-- || isCurrentUserSubmitted -->
+                                    <!-- ng-change="validateDOB(pairList.Birthdate, 'dobSecondary')" -->
+
+                                    <!-- Error message -->
+                                    <!-- <div class="text-danger mt-1"
+                                        ng-show="formPrjDet.dobSecondary.$error && dobErrors.dobSecondary">
+                                        Age must be more than 26 years and less than 55 years.
+                                    </div> -->
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12 my-4 mb-5 mt-5" ng-if="!proposalStage"><!-- && !isCurrentUserSubmitted -->
+                            <button class="blue-btn float-end" id="btnPreview" ng-click="insertPairingDetailsinWiser()"
+                                type="button">
+                                <i class="fa-solid fa-check me-2"></i>Save and Next</button>
+                            <button class="blue-bordered-btn float-end me-2" ng-click="redirectToApplicantPortal()"
+                                type="button">
+                                <i class="fa-solid fa-arrow-left me-2"></i>Back</button>
+                            <!-- <button class="blue-bordered-btn float-end me-2" ng-click="redirectToApplicantPortal()"
+                                type="button">
+                                <i class="fa-solid fa-check me-2"></i>Back</button> &nbsp; &nbsp; -->
+                        </div>
+                    </div>
+
+
+                </form>
+                <!--pairing details(new Page Added By karthik-->
+
+
+            </div>
+            <!-- <div class="container px-4">
+                    <div class="card h-100 m-5">
+                         <div class="card-header">
+                              <h2 class="p-3">
+                                      <b>Project Details</b>
+                              </h2>
+                          </div>
+
+                          <div class="row p-3">
+                              <div class="col-md-6">
+                                   <label class="control-label">
+                                       <b>Title Of Proposal</b>
+                                   </label>
+                                   <span class="required-asterisk" style="color:red;">*</span>
+                                   <input name="Title Of Proposal" placeholder="Title Of Proposal" class="form-control" type="text" ng-model="applicantDetails.Title_Of__c"
+                                       maxlength="255" ng-disabled="disable" required="true" ng-required="applicantDetails.Title_Of__c" />
+                               </div>
+                               <div class="col-md-6">
+                                <label class="control-label">
+                                    <b>Broad Area Of Research:</b>
+                                </label>
+                                <input name="Title Of Proposal" placeholder="Title Of Proposal" class="form-control" type="text" ng-model="applicantDetails.Broad_area_of_research__c"
+                                    maxlength="255" ng-disabled="disable" required="true" ng-required="applicantDetails.Broad_area_of_research__c" />
+                                  
+                               </div>
+                            </div>
+
+                            <div class="row p-3">
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>Abstract of proposed work</b>
+                                    </label>
+                                    <div>
+                                     <ng-ckeditor ng-model="applicantDetails.Abstract_of_proposed_work__c" ng-config="config" required="true" ng-required="applicantDetails.Abstract_of_proposed_work__c"></ng-ckeditor>
+                                    </div>
+                                </div>   
+                           
+                            <div class="col-md-6">
+                            
+                                 <label class="control-label">
+                                     <b>Project Description</b>
+                                 </label>
+                                 <div>
+                                     <ng-ckeditor ng-model="applicantDetails.Project_Description__c" ng-config="config" required="true" ng-required="applicantDetails.Project_Description__c"></ng-ckeditor>
+                                 </div>
+                            </div>
+                            </div>
+
+                            <div class="row p-3">
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        <b>Duration In Months (Min 24 Max 36)</b>
+                                    </label>
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                    <input name="duration" placeholder="Min -24 months and Maximum – 36 months." class="form-control" type="Number" ng-model="applicantDetails.Duration_In_Months_Max_36__c"
+                                    ng-disabled="proposalStage" ng-minlength="2" ng-maxlength="2" min="24" max="36" required="true" id="txtDuration" ng-required="applicantDetails.Duration_In_Months_Max_36__c"
+                                    ng-keyup="restrictDecimalVal(applicantDetails.Duration_In_Months_Max_36__c)" />
+                                    <span ng-if="!formPrjDet.duration.$valid" class="text-danger">duration must be between 24 and 36 Months</span>
+                                    </div>
+    
+                                    <div class="col-md-6">
+                                        <label class="control-label">
+                                            <b>Keywords</b>
+                                            <span class="required-asterisk" style="color:red;">*</span>
+                                            <i ng-click="addKeyword()" class="fa-solid fa-2x text-primary float-end fa-circle-plus ms-5" ng-if="!proposalStage"></i>
+                                        </label>
+                                        <div class="row" ng-repeat="key in objKeyword">
+                                            <div class="col-md-10">
+                                                <input type="text" ng-model="key.keyword" class="form-control mb-2" maxlength="255" required="true" ng-required="key.keyword" ng-disabled="proposalStage" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <i class="fa-solid fa-circle-xmark fa-2x text-danger float-start mt-2" ng-click="removeKeyword($index)" ng-if="!proposalStage"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                            
+             
+                               <div class="card-footer">
+                                       <button type="button" class="blue-btn float-end me-4" ng-click="saveApplication()"><i class="fa-solid fa-check i-padding"></i>Save and Next</button>
+                               </div>
+
+                    </div>
+               </div> -->
+            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+        </body>
+    </div>
+
+    </html>
+</apex:page>

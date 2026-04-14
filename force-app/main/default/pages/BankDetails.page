@@ -1,0 +1,112 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="IndustrialFellowshipController">
+    <html>
+        <div ng-controller="BankDetails_Ctrl">
+    
+            <head>
+                <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+            </head>    
+                <body>
+                    <div class="container px-4 mt-5">
+                        <div class="row mx-4">
+                            <div class="col-md-12">
+                    <ul class="nav nav-pills nav-fill gap-2 p-1 small bg-white border rounded-5 shadow-sm" id="pillNav2" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a href="#" ng-click="redirectPageURL('ProjectDetailPage')" class="nav-link rounded-5" id="basic_tab" data-bs-toggle="tab"
+                                type="button" role="tab" aria-selected="true">
+                                <i class="fa fa-home i-padding"></i>Project Details</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a href="#" ng-click="redirectPageURL('Consortia')" class="nav-link rounded-5" id="consortia_tab" data-bs-toggle="tab"
+                                type="button" role="tab" aria-selected="false">
+                                <i class="fa-solid fa-people-group i-padding"></i>Consortia Details</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a href="#" ng-click="redirectPageURL('ConsortiaContacts')" class="nav-link rounded-5" id="consortia_tab" data-bs-toggle="tab"
+                                type="button" role="tab" aria-selected="false">
+                                <i class="fa-solid fa-people-group i-padding"></i>Consortia Partner Details</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a href="#" ng-click="redirectPageURL('Financial_Overview')" class="nav-link rounded-5" id="finance_tab" data-bs-toggle="tab"
+                                type="button" role="tab" aria-selected="false">
+                                <i class="fa-solid fa-money-bill-trend-up i-padding"></i>Finance Contribution</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a href="#" ng-click="redirectPageURL('ProjectDetail')" class="nav-link rounded-5" id="project_tab" data-bs-toggle="tab"
+                                type="button" role="tab" aria-selected="false">
+                                <i class="fa-solid fa-arrows-to-dot i-padding"></i>Project Details</a>
+                        </li>
+                        <li class="nav-item" role="presentation" ng-hide="secondStage">
+                            <a href="#" ng-click="redirectPageURL('WorkPackages')" class="nav-link rounded-5" id="packge_tab" data-bs-toggle="tab" type="button"
+                                role="tab" aria-selected="false">
+                                <i class="fa-solid fa-box i-padding"></i>Work Package</a>
+                        </li>
+                        <li class="nav-item" role="presentation" ng-hide="secondStage">
+                            <a href="#" ng-click="redirectPageURL('BankDetails')" class="nav-link active rounded-5" id="packge_tab" data-bs-toggle="tab" type="button"
+                                role="tab" aria-selected="false">
+                                <i class="fa-solid fa-box i-padding"></i>Bank Details</a>
+                        </li>
+                        </ul>
+</div>
+</div>
+</div>
+                <div class="container">
+                    <div class="card m-5">
+                        <div class="card-header">                            
+                            <h2 class="p-3">
+                                <b>Bank Details</b>
+                            </h2>
+                        </div>
+                        <div class="card-text ps-3">
+                            <div class="row mt-5">
+                                <div class="col-md-8 offset-2">
+                                    <label>{{objAccount.Name}}</label>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-4 offset-2">
+                                    <label>Account Name</label>
+                                    <input ng-model="objAccount.Bank_Details__r[0].Account_Name__c" maxlength="255" class="form-control" type="text"/>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Account No.</label>
+                                    <input ng-model="objAccount.Bank_Details__r[0].Bank_Account_Number__c" maxlength="255" class="form-control" type="text"/>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-4 offset-2">
+                                    <label>IFSC Code</label>
+                                    <input ng-model="objAccount.Bank_Details__r[0].Bank_IFSC_Code__c" maxlength="255" class="form-control" type="text"/>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Bank Name</label>
+                                    <input ng-model="objAccount.Bank_Details__r[0].Bank_Name__c" maxlength="255" class="form-control" type="text"/>
+                                </div>
+                                
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-4 offset-2">
+                                    <label>Bank address</label>
+                                    <textarea ng-model="objAccount.Bank_Details__r[0].Bank_Address__c" maxlength="1000" class="form-control"></textarea>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Attach Proof in Single PDF File</label>
+                                    <div class="input-group input-group-lg">
+                                        <input type="file" accept=".pdf" id="fileUpload0" class="form-control "/>
+                                        <span class="input-group-btn" ng-hide="proposalStage">
+                                          <button class="btn btn-success" ng-click="uploadFile('fileUpload0','')" type="button">Upload</button>
+                                        </span>
+                                      </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3 mb-5">
+                                <div class="col-md-8 offset-2">
+                                    <button type="button" ng-click="saveBankDetails()" class="btn btn-success">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </body>
+                </div>
+                </html>
+</apex:page>

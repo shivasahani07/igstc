@@ -1,0 +1,1238 @@
+<apex:page controller="ApplicantPortal_Contoller" showHeader="false" sidebar="false" docType="html-5.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <c:Libraries />
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet"/>
+
+    <style>
+        
+        body {
+            font-family: "Nunito Sans", sans-serif;
+            background-color: #f1f1f1;
+            margin: 0;
+            padding: 0;
+        /*  min-height: 100vh; */ 
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin: 1rem 0 1rem 0;
+        }
+
+        .header img {
+            width: 10rem;
+            height: auto;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #4b0082;
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        /* Main container */
+        .main-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: stretch;
+        /*  flex-wrap: wrap; */
+            /* width: 90%; */
+          height: 83vh; 
+            max-width: 1100px;
+            background-color: #f6f6f6;
+            border-radius: 24px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+        /*   margin-bottom: 2rem; */
+        }
+        
+        @media (min-width: 1400px){
+        .main-container{
+        height: 63vh;
+        }
+        /*  .form-input{
+        height: 48px;
+        }
+        .form-label{
+        font-size: 18px;
+        }
+        .login-btn{
+        height: 48px;
+        font-size: 22px;
+        }
+        
+        .forgot-password a{
+        font-size: 18px;
+        } */
+        
+        }
+
+        /* Left: Login section */
+        .login-section {
+            flex: 1 1 400px;
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            padding: 1rem 2rem;
+        }
+
+        .signup-section {
+            background: #f6f6f6;
+            max-width: 1000px;
+             width: 850px; 
+            margin: 1.5rem auto;
+            border-radius: 20px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem 3rem;
+            text-align: center;
+            height: auto; /* viewport minus header + gaps */
+        /*  overflow: auto;     */           /* internal scroll if content too tall */
+        /* -webkit-overflow-scrolling: touch; */
+        }
+
+        .signup-section .input-group {
+            display: flex;
+        flex-direction: row;
+        
+        }
+        
+        
+        
+        
+        .signup-section .form-select:focus,
+        .signup-section .form-control:focus {
+            border-color: #4b0082;
+            box-shadow: 0 0 0 0.2rem rgba(75, 0, 130, 0.25);
+        background: red;
+        }
+
+        .login-icon {
+            width: 5rem;
+            height: auto;
+            margin: 0 auto 1rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .signup-icon {
+            width: 5rem;
+            height: auto;
+            margin: 0 auto 1rem;
+            background: #fff; 
+            padding: 0.75rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-title {
+            text-align: center;
+            font-size: 2rem !important;
+            font-weight: 700 !important;
+            color: #4F1BA3;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 1.2rem;
+        }
+
+        .form-label {
+            font-weight: 500 !important;
+            color: #4b0082;
+            font-size: 18px !important;
+            margin-bottom: 0.25rem;
+            display: block;
+        }
+
+        .form-label .required {
+            color: red;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 8px 11px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            height: 48px;
+            font-weight: 400px;
+            box-sizing: border-box;
+        outline: none;
+        }
+        
+        .select-input{
+        width: 100%;
+        }
+        
+        .first-name{
+        width: 80%;
+        }
+
+        .captcha-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .captcha-code {
+            font-size: 1.7rem;
+            font-weight: 600;
+            color: #333;
+            background: #f5f5f5;
+            padding: 8px 12px;
+            border-radius: 4px;
+            letter-spacing: 2px;
+            white-space: nowrap;
+        }
+
+        .refresh-icon {
+            width: 2rem;
+            height: auto;
+            cursor: pointer;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: #4b0082;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 22px;
+            font-weight: 700;
+            padding: 18px;
+            margin-top: 0.5rem;
+            height: 48px !important;
+            transition: background 0.3s ease;
+            display: flex;
+        align-items: center;
+        justify-content: center;
+        }
+
+        .login-btn:hover {
+            background: #6e40aa;
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 1.7rem !important;
+            color: #555;
+        }
+
+        .signup-link span {
+            color: #4F1BA3;
+            font-weight: 700;
+        }
+        .signup-link span:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        } 
+
+        /* Right: Image Section */
+        .image-section {
+            flex: 1 1 400px;
+            max-width: 520px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .image-container {
+            width: 100%;
+            overflow: hidden;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .shuffle-image {
+            display: none;
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 8px;
+            opacity: 0;
+            transform: scale(1.05);
+            transition: opacity 1s ease-in-out, transform 1.5s ease-in-out;
+        }
+
+        .shuffle-image.active {
+            display: block;
+            opacity: 1;
+            transform: scale(1);
+            z-index: 2;
+        }
+
+        .dots-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ccc;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .dot.active {
+            background: #4b0082;
+            width: 20px;
+            border-radius: 10px;
+        }
+
+        .form-input.ng-invalid.ng-dirty {
+            border-color: red;
+        }
+
+        .error-msg {
+            color: red;
+            font-size: 0.85rem;
+            margin-top: 2px;
+        }
+
+        /* Loader CSS */
+        .loader {
+            height: 60px;
+            aspect-ratio: 2;
+            border-bottom: 3px solid #0000;
+            background:
+            linear-gradient(90deg, white 50%, transparent 0) -25% 100%/50% 3px repeat-x border-box;
+            position: relative;
+            animation: l3-0 .75s linear infinite;
+        }
+
+        .loader:before {
+            content: "";
+            position: absolute;
+            inset: auto 42.5% 0;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: #4b0082;
+            animation: l3-1 .75s cubic-bezier(0, 900, 1, 900) infinite;
+        }
+
+        @keyframes l3-0 {
+            to {
+                background-position: -125% 100%
+            }
+        }
+
+        @keyframes l3-1 {
+            0%,2% {
+                bottom: 0%
+            }
+
+            98%,
+            to {
+                bottom: .1%
+            }
+        }
+
+        /* Responsive */
+         @media (max-width: 992px) {
+            .main-container {
+                height: fit-content;
+                flex-direction: column;
+                padding: 1.5rem;
+            
+            }
+            .login-section, .image-section {
+                max-width: 100%;
+                padding: 1rem;
+            }
+        } 
+
+         @media (max-width: 600px) {
+            .header p {
+                font-size: 1.3rem;
+            }
+            .login-title {
+                font-size: 1.3rem;
+            }
+            .form-input, .login-btn {
+                font-size: 1rem;
+            }
+        } 
+        .forgot-password {
+    text-align: right;
+    margin: -0.5px 0 1px 0;
+}
+.forgot-password a {
+    color: #4b0082;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 500;
+}
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+         /* Add this new modal style */
+        .forgot-password-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .forgot-password-content {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 450px;
+            padding: 2rem;
+            text-align: center;
+        }
+        .swal2-popup {
+    font-size: 16px !important;
+    width: 500px !important;
+    min-height: 300px !important;
+    padding: 30px !important;
+    border-radius: 20px !important;
+}
+
+.swal2-title {
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    color: #4b0082 !important;
+    margin-bottom: 20px !important;
+}
+
+.swal2-html-container {
+    font-size: 18px !important;
+    color: #555 !important;
+    margin: 20px 0 !important;
+}
+
+.swal2-confirm {
+    background: #4b0082 !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    padding: 12px 35px !important;
+    margin-top: 20px !important;
+    width: auto !important;
+    min-width: 120px !important;
+}
+
+.swal2-confirm:hover {
+    background: #6a0dad !important;
+    transform: translateY(-2px) !important;
+}
+
+.swal2-icon {
+    width: 80px !important;
+    height: 80px !important;
+    margin: 20px auto 10px !important;
+}
+
+.swal2-icon .swal2-icon-content {
+    font-size: 50px !important;
+}
+        #message {
+    text-align: left;
+    margin-top: 10px;
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 6px;
+}
+
+#message h6 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 12px;
+    color: #4b0082;
+}
+
+#message span {
+    display: block;
+    margin-bottom: 4px;
+    margin-left: 20px;
+    font-weight: 400;
+    font-size: 11px;
+}
+
+.valid {
+    color: green;
+}
+
+.valid:before {
+    position: relative;
+    left: -10px;
+    content: "✓";
+}
+
+.invalid {
+    color: red;
+}
+
+.invalid:before {
+    position: relative;
+    left: -10px;
+    content: "✗";
+}
+    </style>
+
+    <body ng-app="captchaApp" ng-controller="captchaCtrl" class="no-bs">
+        <div ng-if="isLoading">
+            <div class="modal fade show d-block" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered justify-content-center" role="document">
+                    <span class="loader"></span>
+                </div>
+            </div>
+        <div class="modal-backdrop fade show"></div>
+
+        </div>
+        <div ng-else="isLoading">
+            <!-- Header -->
+            <header class="header">
+                <img src="{!URLFOR($Resource.Logo)}" alt="IGSTC Logo"/>
+                <p class="welcome">Welcome to IGSTC Portal</p>
+            </header>
+
+            <!-- Main Container -->
+            <div class="main-container" ng-show="showLogInForm">
+                <!-- Login Section -->
+                <section class="login-section">
+                    <img src="{!URLFOR($Resource.Vector)}" class="login-icon" alt="Login Icon"/>
+                    <div class="login-title">Sign In</div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-envelope"></i> Email Address <span class="required">*</span>
+                        </label>
+                        <input type="text" class="form-input" ng-model="user.email" placeholder="Enter your Email"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-lock"></i> Password <span class="required">*</span>
+                        </label>
+                        <div style="position:relative;">
+                            <input type="{{showPassword ? 'text' : 'password'}}" class="form-input" ng-model="user.password" placeholder="Enter your Password"/>
+                            <i class="fa-solid" ng-class="showPassword ? 'fa-eye': 'fa-eye-slash'" 
+                                ng-click="showPassword = !showPassword"
+                                style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; color:#4b0082;">
+                            </i>
+                        </div>
+                    </div>
+                   <div class="forgot-password">
+                        <a href="/apex/PortalForgotPassword" ng-click="forgotPassword(f)">Forgot Password?</a>
+                    </div>
+                    <!-- <div class="forgot-password">
+                        <a href="javascript:void(0)" ng-click="openSupport()">
+                            Contact Support
+                        </a>
+                    </div> -->
+
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-shield-alt"></i> Captcha Verification <span class="required">*</span>
+                        </label>
+                        <div class="captcha-row">
+                            <input type="text" class="form-input" ng-model="user.captcha" placeholder="Enter Captcha Code" style="flex:1;"/>
+                            <span class="captcha-code">{{captchaDisplay}}</span>
+                            <img src="{!URLFOR($Resource.VectorRecycle)}" class="refresh-icon" ng-click="refreshCaptcha()" alt="Refresh Captcha"/>
+                        </div>
+                    </div>
+
+                    <button class="login-btn" ng-click="validateForm()">Login</button>
+
+                    <div class="signup-link">
+                        Don't have an account? <span ng-click="toggleForm('signUp')">Sign Up</span>
+                    </div>
+                    <div class="signup-link">
+                        Need help?
+                        <span ng-click="openSupport()">Contact Support</span>
+                    </div>
+                </section>
+
+                <!-- Image Section -->
+                <section class="image-section">
+                    <div class="image-container">
+                        <img src="{!URLFOR($Resource.IGSTCposters03)}" class="shuffle-image active" alt="Poster 1"/>
+                        <img src="{!URLFOR($Resource.IGSTCposters02)}" class="shuffle-image" alt="Poster 2"/>
+                        <img src="{!URLFOR($Resource.IGSTCposters01)}" class="shuffle-image" alt="Poster 3"/>
+                    </div>
+                    <div class="dots-container"></div>
+                </section>
+            </div>
+            <div class="signup-section" ng-show="showSignUpForm">
+                <div class="signup-icon">
+                    <i class="fa-solid fa-file-pen" style="font-size: 2rem; color: #4F1BA3;"></i>
+                </div>
+                <div class="login-title">Sign Up</div>
+
+                <!-- Row 1 -->
+                <div class="form-row" style="display:flex; gap:15px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label class="form-label">
+                            <i class="fas fa-user"></i> First Name <span class="required">*</span>
+                        </label>
+                        <div class="input-group">
+                            <!-- Salutation Select -->
+                            <div class="input-group-prepend">
+                                <select class="form-input select-input" ng-model="newUser.title" 
+                                        style="border-radius:6px 0 0 6px;"
+                                        ng-class="{'ng-invalid': errors.title}">
+                                    <option value="Prof.">Prof.</option>
+                                    <option value="Dr.">Dr.</option>
+                                    <option value="Mr.">Mr.</option>
+                                    <option value="Ms.">Ms.</option>
+                                </select>
+                            </div>
+
+                            <!-- First Name Input -->
+                            <input type="text" class="form-input first-name" ng-model="newUser.firstName" 
+                                placeholder="Enter your first name" style="border-radius:0 6px 6px 0;"
+                                ng-class="{'ng-invalid': errors.firstName}"/>
+                        </div>
+                        <div class="error-msg" ng-show="errors.title">{{errors.title}}</div>
+                        <div class="error-msg" ng-show="errors.firstName">{{errors.firstName}}</div>
+                    </div>
+                    <div class="form-group" style="flex:1;">
+                        <label class="form-label">
+                            <i class="fas fa-user"></i> Last Name <span class="required">*</span>
+                        </label>
+                        <input type="text" class="form-input" ng-class="{'ng-invalid': errors.lastName}" ng-model="newUser.lastName" placeholder="Enter your Last Name"/>
+                        <div class="error-msg" ng-show="errors.lastName">{{errors.lastName}}</div>
+                    </div>
+                </div>
+
+                <!-- Row 2 -->
+                <div class="form-row" style="display:flex; gap:15px;">
+                    <div class="form-group" style="flex:1;">
+                        <label class="form-label">
+                            <i class="fas fa-envelope"></i> Email Address <span class="required">*</span>
+                        </label>
+                        <input type="email" class="form-input" ng-class="{'ng-invalid': errors.email}" ng-model="newUser.email" placeholder="Enter your Email Address"/>
+                        <div class="error-msg" ng-show="errors.email">{{errors.email}}</div>
+                    </div>
+                    <div class="form-group" style="flex:1;">
+                        <label class="form-label">
+                            <i class="fas fa-calendar-alt"></i> Date of Birth <span class="required">*</span>
+                        </label>
+                        <input type="date" class="form-input" ng-class="{'ng-invalid': errors.birthdate}" ng-model="newUser.birthdate" placeholder="Select Date of Birth"/>
+                        <div class="error-msg" ng-show="errors.birthdate">{{errors.birthdate}}</div>
+                    </div>
+                </div>
+                
+                <!-- Row 2.5 -->
+                <div class="form-row" style="display:flex; gap:15px;">
+                    <div class="form-group" style="flex:1;">
+                        <label class="form-label">
+                            <i class="fas fa-building"></i> Institution/Organization <span class="required">*</span>
+                        </label>
+                        <input type="text" class="form-input" ng-class="{'ng-invalid': errors.org}" ng-model="newUser.org" placeholder="Enter your Organization"/>
+                        <div class="error-msg" ng-show="errors.org">{{errors.org}}</div>
+                    </div>
+                </div>
+
+                
+                <!-- Row 3 - Password Section -->
+<div class="form-row" style="display:flex; gap:15px;">
+    <div class="form-group" style="flex:1;">
+        <label class="form-label">
+            <i class="fas fa-lock"></i> Password <span class="required">*</span>
+        </label>
+        <div style="position:relative;">
+            <input type="{{showPassword1 ? 'text' : 'password'}}" 
+                   ng-class="{'ng-invalid': errors.password}" 
+                   class="form-input" 
+                   ng-model="newUser.password" 
+                   ng-focus="showPasswordHints = true"
+                   ng-blur="hidePasswordHints()"
+                   ng-keyup="validatePasswordCriteria()"
+                   placeholder="Create your password"
+                   id="psw"/>
+            <i class="fa-solid" ng-class="showPassword1 ? 'fa-eye':'fa-eye-slash' " 
+               ng-click="showPassword1 = !showPassword1"
+               style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; color:#4b0082;">
+            </i>
+        </div>
+        
+        <!-- Password Hints Container - Only show when typing or focused -->
+        <div id="message" ng-show="showPasswordHints && newUser.password">
+    <h6><b>Password must contain the following:</b></h6>
+    <span id="capital" ng-class="passwordCriteria.capital ? 'valid' : 'invalid'">A <b>capital (uppercase)</b> letter</span>
+    <span id="letter" ng-class="passwordCriteria.letter ? 'valid' : 'invalid'">A <b>lowercase</b> letter</span>
+    <span id="number" ng-class="passwordCriteria.number ? 'valid' : 'invalid'">A <b>number</b></span>
+    <span id="length" ng-class="passwordCriteria.length ? 'valid' : 'invalid'">Minimum <b>8 characters</b></span>
+    <span id="spclChrctr" ng-class="passwordCriteria.special ? 'valid' : 'invalid'">A <b>special character</b></span>
+    <span id="mxLen" ng-class="passwordCriteria.maxLength ? 'valid' : 'invalid'">Maximum <b>15 characters</b></span>
+</div>
+        
+        <div class="error-msg" ng-show="errors.password">{{errors.password}}</div>
+    </div>
+    
+    <div class="form-group" style="flex:1;">
+        <label class="form-label">
+            <i class="fas fa-lock"></i> Re-Enter Password <span class="required">*</span>
+        </label>
+        <input type="password" class="form-input" ng-class="{'ng-invalid': errors.confirmPassword}" ng-model="newUser.confirmPassword" placeholder="Re-Enter your Password"/>
+        <div class="error-msg" ng-show="errors.confirmPassword">{{errors.confirmPassword}}</div>
+    </div>
+</div>
+                
+        <!--        
+                <div class="form-row" style="display:flex; gap:15px;">
+                    <div class="form-group" style="flex:1;">
+                        <label class="form-label">
+                            <i class="fas fa-lock"></i> Password <span class="required">*</span>
+                        </label>
+                        <div style="position:relative;">
+                            <input type="{{showPassword1 ? 'text' : 'password'}}" ng-class="{'ng-invalid': errors.password}" class="form-input" ng-model="newUser.password" placeholder="Create your password"/>
+                            <i class="fa-solid" ng-class="showPassword1 ? 'fa-eye-slash' : 'fa-eye'" 
+                            ng-click="showPassword1 = !showPassword1"
+                            style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; color:#4b0082;">
+                            </i>
+                        </div>
+                        <div class="error-msg" ng-show="errors.password">{{errors.password}}</div>
+                    </div>
+                    <div class="form-group" style="flex:1;">
+                        <label class="form-label">
+                            <i class="fas fa-lock"></i> Re-Enter Password <span class="required">*</span>
+                        </label>
+                        <input type="password" class="form-input" ng-class="{'ng-invalid': errors.confirmPassword}" ng-model="newUser.confirmPassword" placeholder="Re-Enter your Password"/>
+                        <div class="error-msg" ng-show="errors.confirmPassword">{{errors.confirmPassword}}</div>
+                    </div>
+                </div>
+-->
+                
+                
+                <!-- Row 4 -->
+                <div class="form-row" style="display:flex; gap:15px;">
+                    <div class="form-group" style="flex:1;">
+                        <label class="form-label">
+                            <i class="fa-solid fa-flag"></i> Country of applicant <span class="required">*</span>
+                        </label>
+                        <select class="form-input" ng-class="{'ng-invalid': errors.country}" ng-model="newUser.country">
+                            <option value="India">India</option>
+                            <option value="Germany">Germany</option>
+                        </select>
+                        <div class="error-msg" ng-show="errors.country">{{errors.country}}</div>
+                    </div>
+                    <div class="form-group" style="flex:1;">
+                        <label class="form-label">
+                            <i class="fas fa-shield-alt"></i> Captcha Verification <span class="required">*</span>
+                        </label>
+                        <div class="captcha-row">
+                            <input type="text" class="form-input" ng-model="newUser.captcha" ng-class="{'ng-invalid': errors.captcha}" placeholder="Enter Captcha Code" style="flex:1;"/>
+                            <span class="captcha-code">{{captchaDisplay}}</span>
+                            <i class="fas fa-rotate-right" ng-click="refreshCaptcha()" style="color:#4F1BA3; cursor:pointer; font-size:1.2rem;"></i>
+                        </div>
+                        <div class="error-msg" ng-show="errors.captcha">{{errors.captcha}}</div>
+                    </div>
+                </div>
+
+                <button class="login-btn" ng-click="registerUser()">Register</button>
+
+                <div class="signup-link">
+                    Already have an account? 
+                    <span ng-click="toggleForm('signIn')">Sign In</span>
+                </div>
+                <div class="signup-link">
+                    Need help?
+                    <span ng-click="openSupport()">Contact Support</span>
+                </div>
+            </div>
+        </div>
+        <!-- ================= SUPPORT MODAL ================= -->
+            <div class="forgot-password-modal"
+                ng-show="showSupportModal"
+                style="display:flex;">
+
+                <div class="forgot-password-content"
+                    style="width:90%; max-width:900px; height:80vh; padding:0;">
+
+                    <!-- Modal Header -->
+                    <div style="display:flex; justify-content:space-between;
+                                align-items:center; padding:15px 20px;
+                                border-bottom:1px solid #ddd;">
+                        <h3 style="margin:0; color:#4b0082;">IGSTC Support</h3>
+                        <i class="fa-solid fa-xmark"
+                        style="cursor:pointer; font-size:20px;"
+                        ng-click="closeSupport()"></i>
+                    </div>
+
+                    <!-- Support VF Page -->
+                    <iframe src="/apex/IGSTCSupportCase"
+                            style="width:100%; height:100%; border:none;">
+                    </iframe>
+
+                </div>
+            </div>
+        <!-- ================= END SUPPORT MODAL ================= -->
+
+
+        <!-- JS logic -->
+           <script>
+            var app = angular.module('captchaApp', []);
+            app.controller('captchaCtrl', function($scope) {
+                $scope.user = {email: ""};
+                $scope.captchaDisplay = '';
+                $scope.captchaValue = '';
+                $scope.showSignUpForm = false;
+                $scope.showLogInForm = true;
+                $scope.newUser = {firstName: ""};
+                $scope.errors = {};
+                $scope.isLoading = false;
+                localStorage.clear();
+
+                // Safety timeout to prevent permanent freezing
+                $scope.safetyTimeout = null;
+
+
+
+                // Support modal controls
+                $scope.showSupportModal = false;
+
+                $scope.openSupport = function () {
+                    $scope.showSupportModal = true;
+                };
+
+                $scope.closeSupport = function () {
+                    $scope.showSupportModal = false;
+                };
+
+
+                $scope.setLoadingWithTimeout = function() {
+                    $scope.isLoading = true;
+                    // Clear any existing timeout
+                    if ($scope.safetyTimeout) {
+                        clearTimeout($scope.safetyTimeout);
+                    }
+                    // Set new safety timeout - if still loading after 30 seconds, force stop
+                    $scope.safetyTimeout = setTimeout(function() {
+                        if ($scope.isLoading) {
+                            $scope.isLoading = false;
+                            $scope.$apply();
+                            console.warn('Loading timeout - forced stop');
+                            alert('Request timed out. Please try again.');
+                        }
+                    }, 30000);
+                };
+
+                $scope.clearLoading = function() {
+                    $scope.isLoading = false;
+                    if ($scope.safetyTimeout) {
+                        clearTimeout($scope.safetyTimeout);
+                        $scope.safetyTimeout = null;
+                    }
+                };
+
+                ApplicantPortal_Contoller.generateCaptcha(function(result, event) {
+                    if(event.status) {
+                        $scope.captchaDisplay = result.captchaDisplay;
+                        $scope.captchaValue = result.captchaValue;
+                        $scope.$apply();
+                    }
+                });
+
+                $scope.refreshCaptcha = function() {
+                    ApplicantPortal_Contoller.generateCaptcha(function(result, event) {
+                        if(event.status) {
+                            $scope.captchaDisplay = result.captchaDisplay;
+                            $scope.captchaValue = result.captchaValue;
+                            $scope.userInput = '';
+                            $scope.$apply();
+                        }
+                    });
+                };
+
+                $scope.validateForm = function() {
+    
+    if(!$scope.user.email || !$scope.user.password || !$scope.user.captcha) {
+        alert('Please fill all required fields.');
+        return;
+    }
+    
+    if($scope.user.captcha != $scope.captchaValue){
+        alert('Entered captcha value is not correct');
+        return;
+    }
+    
+    $scope.setLoadingWithTimeout();
+    
+    ApplicantPortal_Contoller.validateFormRemote($scope.user.email, $scope.user.password, $scope.user.captcha, function(result, event) {
+        try {
+            if(event.status) {
+                // Check if email is not verified - THIS SHOULD BE FIRST
+                if(result.emailVerified === false) {
+                    Swal.fire({
+                        title: 'Email Verification Required',
+                        text: 'Please verify your email before logging in. Check your inbox for verification instructions.',
+                        icon: 'info',
+                        confirmButtonColor: '#4b0082',
+                        confirmButtonText: 'OK'
+                    });
+                    $scope.user.captcha = '';
+                    $scope.refreshCaptcha();
+                    $scope.clearLoading(); 
+                    return;
+                }
+                
+                // Then check if login was successful
+                if(result.success) {
+                    localStorage.setItem('hashCode', result.hashCode);
+                    let newUrl = result.redirectUrl.replace(/&amp;/g, '&');
+                    window.location.href = newUrl;
+                    $scope.user = {email: ""};
+                } else {
+                    alert(result.message);
+                    $scope.user.captcha = '';
+                    $scope.refreshCaptcha();
+                }
+            } else {
+                alert('Error: ' + event.message);
+                $scope.user.captcha = '';
+                $scope.refreshCaptcha();
+            }
+        } catch (error) {
+            console.error('Error in login callback:', error);
+            alert('An unexpected error occurred during login.');
+            $scope.user.captcha = '';
+            $scope.refreshCaptcha();
+        } finally {
+            $scope.clearLoading();
+            $scope.$apply();
+        }
+    });
+};
+
+                $scope.validateEmail = function(email) {
+                    var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    return re.test(email);
+                };
+
+           
+                $scope.validatePassword = function(password) {
+                    if (!password) return false;
+                    
+                    var lowerCaseLetters = /[a-z]/;
+                    var upperCaseLetters = /[A-Z]/;
+                    var numbers = /[0-9]/;
+                    // Special characters: !@#$%^&*~=+'",._|{}-
+                    var specialChars = /[!@#$%^&*~=+'",._|{}\-]/;
+                    
+                    var hasLower = lowerCaseLetters.test(password);
+                    var hasUpper = upperCaseLetters.test(password);
+                    var hasNumber = numbers.test(password);
+                    var hasSpecial = specialChars.test(password);
+                    var validLength = password.length >= 8 && password.length <= 15;
+                    
+                    return hasLower && hasUpper && hasNumber && hasSpecial && validLength;
+                };
+                
+                // Password hint - UPDATED to match the correct criteria
+                $scope.showPasswordHints = false;
+                $scope.passwordCriteria = {
+                    lowercase: false,
+                    uppercase: false,
+                    number: false,
+                    special: false,
+                    length: false,
+                    maxLength: true
+                };
+                
+                $scope.validatePasswordCriteria = function() {
+    var password = $scope.newUser.password || '';
+    
+    // Update password criteria with CORRECT property names
+    $scope.passwordCriteria = {
+        capital: /[A-Z]/.test(password),
+        letter: /[a-z]/.test(password),
+        number: /[0-9]/.test(password),
+        special: /[!@#$%^&*~=+'",._|{}\-]/.test(password),
+        length: password.length >= 8,
+        maxLength: password.length <= 15
+    };
+                    
+                    // Apply the changes
+                    if (!$scope.$$phase) {
+                        $scope.$apply();
+                    }
+                };
+
+                $scope.hidePasswordHints = function() {
+                    $scope.showPasswordHints = false;
+                    if (!$scope.$$phase) {
+                        $scope.$apply();
+                    }
+                };
+
+                // UPDATED registerUser function with detailed password validation
+                $scope.registerUser = function() {
+                    $scope.errors = {};
+                    
+                    // Required field validation
+                    if(!$scope.newUser.title) $scope.errors.title = "Please select a salutation.";
+                    if(!$scope.newUser.firstName) $scope.errors.firstName = "First Name is required.";
+                    if(!$scope.newUser.lastName) $scope.errors.lastName = "Last Name is required.";
+                    if(!$scope.newUser.email) $scope.errors.email = "Email is required.";
+                    else if(!$scope.validateEmail($scope.newUser.email)) $scope.errors.email = "Invalid Email format.";
+                    if(!$scope.newUser.birthdate) $scope.errors.birthdate = "Date of Birth is required.";
+                    else {
+                        // Validate date is not in the future
+                        var birthDate = new Date($scope.newUser.birthdate);
+                        var today = new Date();
+                        if(birthDate > today) {
+                            $scope.errors.birthdate = "Date of Birth cannot be in the future.";
+                        }
+                    }
+                    if(!$scope.newUser.org) $scope.errors.org = "Organization is required.";
+                    
+                    // Detailed password validation - check ALL conditions
+                    if(!$scope.newUser.password) {
+                        $scope.errors.password = "Please Enter your password";
+                    } else {
+                        var password = $scope.newUser.password;
+                        var lowerCaseLetters = /[a-z]/;
+                        var upperCaseLetters = /[A-Z]/;
+                        var numbers = /[0-9]/;
+                        // Special characters: !@#$%^&*~=+'",._|{}-
+                        var specialChars = /[!@#$%^&*~=+'",._|{}\-]/;
+                        var errorMessages = [];
+                        
+                        // Check all conditions and collect errors
+                        if(password.length < 8) {
+                            errorMessages.push("at least 8 characters");
+                        }
+                        if(password.length > 15) {
+                            errorMessages.push("maximum 15 characters");
+                        }
+                        if(!lowerCaseLetters.test(password)) {
+                            errorMessages.push("one lowercase letter");
+                        }
+                        if(!upperCaseLetters.test(password)) {
+                            errorMessages.push("one uppercase letter");
+                        }
+                        if(!numbers.test(password)) {
+                            errorMessages.push("one number");
+                        }
+                        if(!specialChars.test(password)) {
+                            errorMessages.push("one special character (!@#$%^&*~=+'\",._|{}-)");
+                        }
+                        
+                        // Set error message if any validation failed
+                        if(errorMessages.length > 0) {
+                            $scope.errors.password = "Password must contain: " + errorMessages.join(", ") + ".";
+                        }
+                    }
+                    
+                    if(!$scope.newUser.confirmPassword) {
+                        $scope.errors.confirmPassword = "Please confirm your password.";
+                    } else if($scope.newUser.password !== $scope.newUser.confirmPassword) {
+                        $scope.errors.confirmPassword = "Passwords do not match.";
+                    }
+                    
+                    if(!$scope.newUser.country) $scope.errors.country = "Select applicant type.";
+                    
+                    if(!$scope.newUser.captcha) {
+                        $scope.errors.captcha = "Captcha is required.";
+                    } else if($scope.newUser.captcha !== $scope.captchaValue) {
+                        $scope.errors.captcha = "Captcha does not match.";
+                    }
+
+                    // If there are validation errors, stop here without loading
+                    if(Object.keys($scope.errors).length > 0) {
+                        $scope.$apply();
+                        return;
+                    }
+
+                    // If validation passes, proceed with registration
+                    $scope.setLoadingWithTimeout();
+                    
+                    delete($scope.newUser.confirmPassword);
+                    delete($scope.newUser.captcha);
+                    
+                    ApplicantPortal_Contoller.insertNewUser($scope.newUser, function(result, event) {
+                        try {
+                            if(event.status) {
+                                if(result.includes('success')) {
+                                    Swal.fire({
+                                        title: 'Success',
+                                        text: result,
+                                        icon: 'success',
+                                        confirmButtonColor: '#4b0082', 
+                                        confirmButtonText: 'OK',
+                                        
+                                    });
+                                    $scope.toggleForm('signIn');
+                                } else {
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: result,
+                                        icon: 'error',
+                                        confirmButtonColor: '#4b0082',
+                                        confirmButtonText: 'OK'
+                                    });
+                                }
+                            } else {
+                                Swal.fire({
+                                title: 'Error',
+                                text: 'Error creating new user: ' + event.message,
+                                icon: 'error',
+                                confirmButtonColor: '#4b0082',
+                                confirmButtonText: 'OK'
+                            });
+                            }
+                        } catch (error) {
+                            console.error('Error in registration callback:', error);
+                            swal(
+                                'Error',
+                                'An unexpected error occurred during registration.',
+                                'error'
+                            );
+                        } finally {
+                            $scope.clearLoading();
+                            $scope.$apply();
+                        }
+                    });
+                };
+
+                $scope.toggleForm = function(val) {
+                    if(val == "signUp") {
+                        $scope.showSignUpForm = true;
+                        $scope.showLogInForm = false;
+                        $scope.refreshCaptcha();
+                    } else if(val == "signIn") {
+                        $scope.showSignUpForm = false;
+                        $scope.showLogInForm = true;
+                        $scope.refreshCaptcha();
+                    }
+                };
+
+                $(document).ready(function () {
+                    const images = $(".shuffle-image");
+                    let index = 0;
+
+                    // Show first image
+                    images.eq(index).addClass("active");
+
+                    // Add navigation dots
+                    const dotsContainer = $(".dots-container");
+                    images.each((i) => dotsContainer.append(`<div class="dot" data-index="${i}"></div>`));
+                    const dots = $(".dot");
+                    dots.eq(index).addClass("active");
+
+                    // Image switch function with fade + smooth transform
+                    function showImage(newIndex) {
+                        if (newIndex === index) return;
+                        images.eq(index).removeClass("active");
+                        dots.eq(index).removeClass("active");
+                        images.eq(newIndex).addClass("active");
+                        dots.eq(newIndex).addClass("active");
+                        index = newIndex;
+                    }
+
+                    // Auto shuffle every 5 seconds
+                    setInterval(() => {
+                        const next = (index + 1) % images.length;
+                        showImage(next);
+                    }, 5000);
+
+                    // Manual dot click
+                    dotsContainer.on("click", ".dot", function () {
+                        const newIndex = $(this).data("index");
+                        showImage(newIndex);
+                    });
+                });
+            });
+        </script>
+
+        <script>
+            window.addEventListener('message', function(event) {
+
+                /* =========================
+                SUPPORT SUBMIT HANDLER
+                ========================== */
+                if (event.data && event.data.type === 'IGSTC_SUPPORT_SUBMIT') {
+
+                    var d = event.data.data;
+
+                    ApplicantPortal_Contoller.createSupportCase(
+                        d.name,
+                        d.email,
+                        d.comment,
+                        d.proposalId,
+                        d.program,
+                        function(result, ev) {
+
+                            var iframe = document.querySelector(
+                                'iframe[src="/apex/IGSTCSupportCase"]'
+                            );
+
+                            if (iframe && iframe.contentWindow) {
+                                iframe.contentWindow.postMessage({
+                                    type: 'IGSTC_SUPPORT_RESPONSE',
+                                    success: ev.status && result.success,
+                                    message: result.message
+                                }, '*');
+                            }
+                        }
+                    );
+                }
+
+                /* =========================
+                SUPPORT SUCCESS HANDLER
+                ========================== */
+                if (event.data && event.data.type === 'IGSTC_SUPPORT_SUCCESS') {
+
+                    Swal.fire({
+                        title: 'Support Request Submitted',
+                        text: 'Please note that resolution of tickets may take up to 48 hours during official working hours.',
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#4b0082',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    }).then(function () {
+
+                        // Close modal ONLY after OK
+                        var scope = angular.element(document.body).scope();
+                        scope.$apply(function () {
+                            scope.showSupportModal = false;
+                        });
+
+                    });
+                }
+            });
+        </script>
+
+
+
+    </body>
+</apex:page>

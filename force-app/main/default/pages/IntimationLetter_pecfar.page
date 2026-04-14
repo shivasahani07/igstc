@@ -1,0 +1,64 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+            <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+    </head>
+    <div ng-controller="intimation_pecfar_ctrl">
+        <body>
+
+            <div class="container mt-5">
+                        <div class="row mx-5 mt-5">
+                            <div class="col-md-12">
+                                <p class="ps-5 ms-5 font-if">
+                                    <center><b>IGSTC PECFAR </b></center>
+                                        <br/>
+                                    </p>
+                                <p class="ps-5 ms-5 font-if">
+                                    <center><b>Congratulations on your selection for the IGSTC PECFAR Program!  </b></center>
+                                        <br/>
+                                    </p>
+                                
+                                    <!-- /*I hereby declare that the information furnished above is true, complete and correct to the
+best of my knowledge and belief. I understand that in the event of my information being found false or
+incorrect at any stage, my fellowship / award shall be liable to cancellation / termination without notice or any
+compensation in lieu thereof.*/ -->
+                               <center>
+                                        <p class="ps-5 ms-5 font-if">
+                                        I hereby accept the PECFAR Award.
+                                        <br/>
+                                        </p>
+                                        </center>
+                            </div>
+                        </div>
+
+                        <div class="row mx-5 mt-5">
+                            <div class="col-md-5 mt-2">
+                                <!-- /*Intimation Letter Accepted ? */ -->
+                                <Label class="font-if" style="margin-left: 60px"> Accept fellowship  &nbsp; </Label> <input type="checkbox" ng-model="intimationLetter.Intimation_Letter_Accepted__c"/>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="row">
+                                    
+                            <div class="col-md-7">
+                                    <div style="margin-right: -400px;">
+                                        <div class="col-md-10">
+                                            <button class="blue-btn float-end" ng-click="saveAcceptance()" type="button">
+                                                <i class="fa-solid fa-check me-2"></i>Submit</button>
+            
+                                        </div>
+                                    </div>
+                        </div>
+                              </div>
+                              </div>
+                        </div>
+</div>
+
+
+            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        </body>
+    </div>
+</html>
+</apex:page>

@@ -1,0 +1,86 @@
+<apex:page standardController="Disbursement_Schedule__c" extensions="fileUploadDisbursement_connectplus" lightningStylesheets="true">
+    
+    <apex:form >
+        
+        <div style="margin-top:8%; margin-left:15%; margin-right:15%; padding-right:15%">
+            <apex:pageBlock >
+                <apex:pageMessages />  
+                <h1>
+                    <b> Dear {!contactName} ,
+                        <br/>
+                        <br/>
+                    </b>
+                </h1>
+                            
+                <apex:pageBlockSection >
+                <apex:pageBlockSectionItem dataStyle="width:100%" labelStyle="width:23%" >
+                    <apex:outputLabel >
+                        <h2>
+                        <b>Please upload SE/UC Report -</b>
+                        </h2>
+                    </apex:outputLabel>
+                </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection >         
+                    <apex:inputFile value="{!filebody1}" fileName="{!filename1}">
+                    </apex:inputFile>
+                    
+                    <apex:commandButton value="Upload attachment" action="{!upload1}"/>
+                </apex:pageBlockSection>
+                <br/>
+                <apex:pageBlockSection >
+                    
+                <apex:pageBlockSectionItem dataStyle="width:100%" labelStyle="width:23%" >
+                    <apex:outputLabel >
+                        <h2>
+                        <b>Please upload Visit Report -</b>
+                        </h2>
+                    </apex:outputLabel>
+                </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection >
+                    <apex:inputFile value="{!filebody2}" fileName="{!filename2}">
+                    </apex:inputFile>
+                    
+                    <apex:commandButton value="Upload attachment" action="{!upload2}"/>
+                </apex:pageBlockSection>              
+                <br/>
+                <apex:outputpanel rendered="{!countryType == 'Germany'}">
+                <apex:pageBlockSection >
+                <apex:pageBlockSectionItem dataStyle="width:100%" labelStyle="width:23%" >
+                    <apex:outputLabel >
+                        <h2>
+                        <b>Please upload Euro Remittance invoice -</b>
+                        </h2>
+                    </apex:outputLabel>
+                </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection >
+                    <apex:inputFile value="{!filebody3}" fileName="{!filename3}">
+                    </apex:inputFile>
+                    
+                    <apex:commandButton value="Upload attachment" action="{!upload3}"/>
+                </apex:pageBlockSection>              
+                <br/>
+                <apex:pageBlockSection >
+                <apex:pageBlockSectionItem dataStyle="width:100%" labelStyle="width:23%" >
+                    <apex:outputLabel >
+                        <h2>
+                        <b>Please upload Bank account details form for German Awardee -</b>
+                        </h2>
+                    </apex:outputLabel>
+                </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection >
+                    <apex:inputFile value="{!filebody4}" fileName="{!filename4}">
+                    </apex:inputFile>
+                    
+                    <apex:commandButton value="Upload attachment" action="{!upload4}"/>
+                </apex:pageBlockSection>              
+                <br/>
+                </apex:outputpanel>
+            </apex:pageBlock>
+            
+        </div>      
+    </apex:form>
+</apex:page>

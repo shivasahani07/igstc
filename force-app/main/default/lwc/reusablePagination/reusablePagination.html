@@ -1,0 +1,15 @@
+<template>
+    <button class="prevnext"  onclick={handlePrevButton}>Prev</button>
+    <template if:true={hasRecordsToPaginate}>
+        <template for:each={pagesCountArray} for:item="curr">
+            <template if:true={curr.isCurrent}>
+                <button class="currentPage" key={curr.number}  data-field={curr.number}  onclick={handlePageNumChange} >{curr.number}</button>
+            </template>
+            <template if:false={curr.isCurrent}>
+                <button class="randed-1 pagenum" key={curr.number}  data-field={curr.number}  onclick={handlePageNumChange} >{curr.number}</button>
+                </template>
+        </template>
+    </template>
+    <button class="prevnext" onclick={handleNextButton}>Next</button>
+    
+</template>

@@ -1,0 +1,303 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="IndustrialFellowshipController">
+    <html>
+        <div ng-controller="sign_Ctrl">
+            <head>
+                <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+            <script>
+                var userId = '{!$CurrentPage.parameters.id}';
+            </script>
+            </head>
+
+            <body>
+                <div class="container mt-5">
+                    <div class="row mx-5">
+                        <div class="col-md-12">
+                            <div class="tab-link" ng-show="proposalStage">
+                                <div class="progress">
+                                    <div class="progress-success w-100"></div>
+                                </div>
+                                <ul>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Coordinators_Page')">
+                                            <div class="icon-circle">
+                                                <i class="fab fa-wpforms"></i>
+                                            </div>
+                                            <span>Co-ordinators Detail</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('BasicDetails_Page')">
+                                            <div class="icon-circle">
+                                                <i class="fa-regular fa-building-o"></i>
+                                            </div>
+                                            <span>Basic Details</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Proposal_Details')">
+                                            <div class="icon-circle">
+                                                <i class="fa-solid fa-address-book"></i>
+                                            </div>
+                                            <span>Proposal Details</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Participants')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-file-invoice"></i>
+                                            </div>
+                                            <span>Participants</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Financial_Details')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-box"></i>
+                                            </div>
+                                            <span>Budget Details</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Curriculum_vitae')">
+                                            <div class="icon-circle">
+                                                <i class="fab fa-meetup"></i>
+                                            </div>
+                                            <span>Curriculum vitae</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Meeting_Theme')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-people-group"></i>
+                                            </div>
+                                            <span>Workshop Agenda</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('SignatureOfCoordinators')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-file-signature"></i>
+                                            </div>
+                                            <span>Signature</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="tab-link" ng-hide="proposalStage">
+                                <div class="progress">
+                                    <div class="progress-success w-100"></div>
+                                </div>
+                                <ul>
+                                    <li class="active">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fab fa-wpforms"></i>
+                                            </div>
+                                            <span>Co-ordinators Detail</span>
+                                        </a>
+                                    </li>
+                                    <li class="active">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa-regular fa-building-o"></i>
+                                            </div>
+                                            <span>Basic Details</span>
+                                        </a>
+                                    </li>
+                                    <li class="active">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa-solid fa-address-book"></i>
+                                            </div>
+                                            <span>Proposal Details</span>
+                                        </a>
+                                    </li>
+                                    <li class="active">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-file-invoice"></i>
+                                            </div>
+                                            <span>Participants</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li class="active">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-box"></i>
+                                            </div>
+                                            <span>Budget Details</span>
+                                        </a>
+                                    </li>
+                                    <li class="active">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fab fa-meetup"></i>
+                                            </div>
+                                            <span>Curriculum vitae</span>
+                                        </a>
+                                    </li>
+                                    <li class="active">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-people-group"></i>
+                                            </div>
+                                            <span>Workshop Agenda</span>
+                                        </a>
+                                    </li>
+                                    <li class="active">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-file-signature"></i>
+                                            </div>
+                                            <span>Signature</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            </div>
+                        </div>
+
+                        <div class="modal" id="filePreview">
+                            <div class="modal-dialog" style="min-width:120rem">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">
+                                            <div class="d-flex" style="background:unset;">
+                                                <h3 style="text-align: center"><b>{{selectedFile.userDocument.Name}}</b></h3>
+                                            </div>
+                                        </h4>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <iframe style="width:100%;height:75vh;border: 0px;border-radius: 10px;" id="file_frame" title="File"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                <div class="row mx-5 mt-5">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-10">
+                                <div class="alert alert-primary" role="alert">
+                                        <b class="me-2">NOTE - </b>
+                                        <ul>
+                                        <!-- <i class="fa-solid fa-circle-info text-success me-2"></i>Before Submission, please make sure that all partners have filled all their details.<br/> -->
+                                        <i class="fa-solid fa-circle-info text-success me-2"></i>Once submitted, you won’t be able to edit the application.<br/>
+                                        <i class="fa-solid fa-circle-info text-success me-2"></i>Click on upload button to upload your signature.<br/>
+                                        <i class="fa-solid fa-circle-info text-success me-2"></i>Kindly upload signature in jpg/jpeg with 5-30 kb of size.
+                                        </ul>
+                                  </div>
+                            </div>
+                            <div class="col-md-1"></div>
+
+
+                        <div class="row mx-5 mt-5">
+
+                            <div class="col-md-12 mt-5">
+                                <p class="font-if" style="margin-right: 6%;">
+                                    We hereby declare that the information furnished above is true, complete and correct to the
+                                    best of our knowledge and belief. I understand that in the event of the information given by me found false or 
+                                    incorrect at any stage, my application/proposal shall be liable to cancellation without notice or any
+                                    compensation in lieu thereof.
+                                </p>
+                            </div>
+
+                            <div class="col-md-6 mt-5">
+                                <div class="row">
+                                    
+                            <div class="col-md-6">
+                                <div style="margin-right: -100px;">
+                                <label class="font-if">{{checkbox.Contacts__r[0].Name}} Signature<span class="text-danger ms-2">*</span></label>
+                                <div class="input-group input-group-lg float-end">
+                                <input type="file" accept=".png,.jpg,.jpeg" ng-disabled="proposalStage" id="{{doc.userDocument.Name}}" class="form-control float-end"/>
+                                <span class="input-group-btn" ng-hide="proposalStage">
+                                  <button class="btn btn-success" ng-click="uploadFile(doc.userDocument.Name,doc.userDocument.Id,'','30720','5120')" type="button">Upload</button>
+                                </span>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5 mt-3">
+                            <div ng-show="doc.userDocument.Status__c=='Uploaded'">
+                                <a class="blue-btn float-end mt-4 py-3"  ng-click="filePreviewHandler(doc)">View</a>
+                            </div>
+                        </div>
+                              </div>
+                              </div>
+                            <div class="col-md-6 mt-5">
+                                <div class="row">
+                                    
+                            <div class="col-md-6">
+                                <div style="margin-right: -100px;">
+                                <label class="font-if">{{checkbox.Contacts__r[1].Name}}<span class="text-danger ms-2">*</span></label>
+                                <div class="input-group input-group-lg float-end">
+                                <input type="file" accept=".png,.jpg,.jpeg" ng-disabled="proposalStage" id="{{doc2.userDocument.Name}}" class="form-control float-end"/>
+                                <span class="input-group-btn" ng-hide="proposalStage">
+                                  <button class="btn btn-success" ng-click="uploadFile(doc2.userDocument.Name,doc2.userDocument.Id,'','30720','5120')" type="button">Upload</button>
+                                </span>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div ng-show="doc2.userDocument.Status__c=='Uploaded'">
+                                <a class="blue-btn float-end mt-5 py-3"  ng-click="filePreviewHandler(doc2)">View</a>
+                            </div>
+                        </div>
+                              </div>
+                              </div>
+                              <div class="col-md-6 mt-5">
+                                <Label class="font-if">Date:</Label> <input type="date" disabled="disabled" ng-model="signDate" class="form-control w-50"/>
+                            </div>
+                            <div class="col-md-6 mt-5">
+                                <Label class="font-if">Date:</Label> <input type="date" disabled="disabled" ng-model="signDate2" class="form-control w-50"/>
+                            </div>
+                        </div>
+
+                        
+                        <!-- <div class="row mt-5">
+                            <div class="col-md-4">
+                            <div>
+                                <input class="form-check-input" type="checkbox" ng-model="checkbox.Privacy_Policy_Accepted__c" id="flexCheckDefault" ng-disabled="proposalStage" />
+                                <label class="font-if" for="flexCheckDefault">
+                                    Privacy Policy Accepted?
+                                </label>
+                                <span class="required-asterisk" style="color:red;">*</span>
+                              </div>
+                            </div>
+
+                            <div class="col-md-3"></div>
+                            <div class="col-md-5">
+                                <label class="font-if">Upload Signature(PDF only, Max 1 Mb)</label> <span class="ms-2 text-danger">*</span>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                            <a href="#/PrivacyPolicyIGSTC" target="_blank" class="font-if"><u>Click to View Privacy Policy</u></a>
+                        </div>
+                        <div class="col-md-3"></div>
+                        <div class="col-md-5 input-group input-group-lg">
+                            <input type="file" accept=".pdf" class="form-control float-end" id="{{doc.userDocument.Name}}" ng-disabled="proposalStage"/><br/>
+                                <span class="input-group-btn" ng-hide="proposalStage">
+                                    <button class="btn btn-success" ng-click="uploadFile(doc.userDocument.Name,doc.userDocument.Id,'')" type="button">Upload</button>
+                                </span>
+                    <a href="https://indo-germansciencetechnologycentre--dev.my.salesforce.com/sfc/p/1y0000008pkO/a/1y0000004VmY/pb6fDclr7vdjIkYmceGc_dhTYKDJURWPU5HboOjv8hc" ng-hide="disableUploadButton"><i class="fa-solid fa-eye me-3"></i>view</a>
+                        </div>
+                        </div> -->
+
+                        <div class="row mt-5"></div>
+                        <div class="row my-5" ng-if="!proposalStage">
+                            <div class="col-md-12">
+                                <button type="button" class="blue-btn float-end" style="padding: 8px 20px !important;font-size: 16px !important;" ng-click="submit()">
+                                    <i class="fa-solid fa-check me-2"></i>Submit</button>
+                                <button type="button" class="blue-btn float-end me-2" style="padding: 8px 20px !important;font-size: 16px !important;" ng-click="saveAsDraftWorkshop()">Save As Draft</button>
+                                <button type="button" class="btn btn-secondary float-end me-2" style="padding: 8px 20px !important;font-size: 16px !important;" ng-click="redirectPageURL('Meeting_Theme')">
+                                    <i class="fa-solid fa-arrow-left i-padding"></i>Back</button>
+                            </div>
+                          </div>
+                </div>
+                </div>
+            </body>
+        </div>
+    </html>
+</apex:page>

@@ -1,0 +1,1193 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="IndustrialFellowshipController">
+    <html>
+    <div ng-controller="financialWiser_Ctrl">
+
+        <head>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+            <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+        </head>
+
+        <body>
+
+            <div class="container mt-5">
+                <div class="row mx-5">
+                    <div class="col-md-12">
+                        <div class="tab-link" ng-show="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <!-- Pair Project Details -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
+                                        <div class="icon-circle">
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Pairing Details</span>
+                                    </a>
+                                </li>
+
+                                <!-- Not Confirmed Yet -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('HostProjectDetails')">
+                                        <div class="icon-circle">
+                                            <!-- <i class="fa fa-home"></i> -->
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Paired Project Details</span>
+                                    </a>
+                                </li>
+
+                                <!-- Pair Details -->
+                                <!-- <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('HostInfoApplicationPage')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Host Details</span>
+                                    </a>
+                                </li> -->
+
+                                <!-- Applicant Details -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('WiserApplicationPage')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Applicant Details</span>
+                                    </a>
+                                </li>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('CV_Wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li>
+
+                                <!-- Financial Details -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('FinancialOverview_wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <span>Financial Overview</span>
+                                    </a>
+                                </li>
+
+
+                            </ul>
+                        </div>
+                        <div class="tab-link" ng-hide="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <!-- <i class="fas fa-user-alt"></i> -->
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Pairing Details</span>
+                                    </a>
+                                </li>
+
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <!-- <i class="far fa-address-card"></i> -->
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Paired Project Details</span>
+                                    </a>
+                                </li>
+                                <!-- <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Host Details</span>
+                                    </a>
+                                </li> -->
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <!-- <i class="fa fa-home"></i> -->
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Applicant Details</span>
+                                    </a>
+                                </li>
+
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li>
+
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <span>Financial Overview</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mx-5">
+                    <div class="col-md-12">
+                        <div class="tab-link" ng-show="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ExistingGrantWISER')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-money-bill"></i>
+                                        </div>
+                                        <span>Other Grants</span>
+                                    </a>
+                                </li>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('TwoReferenceWiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-friends"></i>
+                                        </div>
+                                        <span>References</span>
+                                    </a>
+                                </li>
+
+
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('AttachmentsInWiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-upload"></i>
+                                        </div>
+                                        <span>Attachments</span>
+                                    </a>
+                                </li>
+
+                                <!-- <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('CV_Wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li> -->
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Declaration_Wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                        <span>Declaration</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-link" ng-hide="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success wp-0"></div>
+                            </div>
+                            <ul>
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-money-bill"></i>
+                                        </div>
+                                        <span>Other Grants</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-friends"></i>
+                                        </div>
+                                        <span>References</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-upload"></i>
+                                        </div>
+                                        <span>Attachments</span>
+                                    </a>
+                                </li>
+
+                                <!-- <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li> -->
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                        <span>Declaration</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-5 mx-5">
+                    <div class="col-md-12">
+                        <div class="alert bg-color-list font-if" role="alert" ng-show="isIndia()">
+                            <i class="fa-solid fa-circle-info text-success me-2"></i>
+                            <b>Indian awardee</b>
+                            <div ng-show="!showFullInfoBox">
+                                <ul>
+                                    <li class="ps-4">
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        Travel support (including visa fee and insurance) up to ₹ 1 lakh/visit.
+                                    </li>
+                                    <br/>
+                                    <li class="ps-4">
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        Research stay in Germany per diem @ € 2300/30 days on pro rata basis according to the number of days spent in Germany, equivalent
+                                        funds in INR will be provided as per an appropriate exchange rate determined by IGSTC.
+                                    </li>
+                                    <br/>
+                                    <li class="ps-4">
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        The remaining amount per year is dedicated for Research costs (including research staff, consumables, minor equipment, contingency
+                                        and overheads up to 10% (if required)).
+                                    </li>
+                                    <br/>
+                                    <li class="ps-4">
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        Total funding including all heads will be limited to
+                                        <b>₹ 13 lakhs/year</b>.
+                                    </li>
+                                    <br/>
+                                </ul>
+                                <a href="javascript:void(0);" ng-click="showFullInfoBox = true" class="text-primary" style="text-decoration: underline; cursor: pointer; display: inline-block;">
+                                    <i class="fa-solid fa-chevron-down me-1"></i>Show more
+                                </a>
+                            </div>
+                            <div ng-show="showFullInfoBox">
+                                <ul>
+                                    <li class="ps-4">
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        Travel support (including visa fee and insurance) up to ₹ 1 lakh/visit.
+                                    </li>
+                                    <br/>
+                                    <li class="ps-4">
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        Research stay in Germany per diem @ € 2300/30 days on pro rata basis according to the number of days spent in Germany, equivalent
+                                        funds in INR will be provided as per an appropriate exchange rate determined by IGSTC.
+                                    </li>
+                                    <br/>
+                                    <li class="ps-4">
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        The remaining amount per year is dedicated for Research costs (including research staff, consumables, minor equipment, contingency
+                                        and overheads up to 10% (if required)).
+                                    </li>
+                                    <br/>
+                                    <li class="ps-4">
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        Total funding including all heads will be limited to
+                                        <b>₹ 13 lakhs/year</b>.
+                                    </li>
+                                    <br/>
+                                    <li class="ps-4">
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        <b>Please provide a detailed Description for each Expense Head, specifying the items
+                                            considered under each category.</b>
+                                    </li>
+                                    <br/>
+                                </ul>
+                                <a href="javascript:void(0);" ng-click="showFullInfoBox = false" class="text-primary mt-2" style="text-decoration: underline; cursor: pointer; display: inline-block;">
+                                    <i class="fa-solid fa-chevron-up me-1"></i>Show less
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="alert bg-color-list font-if" role="alert" ng-show="isGermany()">
+                            <i class="fa-solid fa-circle-info text-success me-2"></i>
+                            <b>German awardee</b>
+                            <div ng-show="!showFullInfoBox">
+                                <ul>
+                                    <li class="ps-4">
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        Travel (including visa fee and insurance) up to € 1500/visit.
+                                    </li>
+                                    <br/>
+                                    <li class="ps-4">
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        Research stay per diem @ € 2300/30 days in India/Germany on pro rata basis according to the number of days spent in India.
+                                    </li>
+                                    <br/>
+                                    <li class="ps-4">
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        The remaining amount per year is dedicated for Research costs (including research staff, consumables, minor equipment, contingency
+                                        and overheads up to 10% (if required)).
+                                    </li>
+                                    <br/>
+                                    <li class="ps-4">
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        Total funding including all heads will be limited to
+                                        <b>€ 16000/year</b>.
+                                    </li>
+                                    <br/>
+                                </ul>
+                                <a href="javascript:void(0);" ng-click="showFullInfoBox = true" class="text-primary" style="text-decoration: underline; cursor: pointer; display: inline-block;">
+                                    <i class="fa-solid fa-chevron-down me-1"></i>Show more
+                                </a>
+                            </div>
+                            <div ng-show="showFullInfoBox">
+                                <ul>
+                                    <li class="ps-4">
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        Travel (including visa fee and insurance) up to € 1500/visit.
+                                    </li>
+                                    <br/>
+                                    <li class="ps-4">
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        Research stay per diem @ € 2300/30 days in India/Germany on pro rata basis according to the number of days spent in India.
+                                    </li>
+                                    <br/>
+                                    <li class="ps-4">
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        The remaining amount per year is dedicated for Research costs (including research staff, consumables, minor equipment, contingency
+                                        and overheads up to 10% (if required)).
+                                    </li>
+                                    <br/>
+                                    <li class="ps-4">
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        Total funding including all heads will be limited to
+                                        <b>€ 16000/year</b>.
+                                    </li>
+                                    <br/>
+                                    <li class="ps-4">
+                                        <i class="fa-solid fa-circle text-success me-3"></i>
+                                        <b>Please provide a detailed Description for each Expense Head, specifying the items
+                                            considered under each category.</b>
+                                    </li>
+                                    <br/>
+                                </ul>
+                                <a href="javascript:void(0);" ng-click="showFullInfoBox = false" class="text-primary mt-2" style="text-decoration: underline; cursor: pointer; display: inline-block;">
+                                    <i class="fa-solid fa-chevron-up me-1"></i>Show less
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--
+                <div class="row mt-5 mx-5">
+                    <div class="col-md-3 py-3 ms-3 box-shadow-1">
+                        <h4 class="pb-3 color-theme w-75 float-end" style="font-weight:800">{{accDetails.Name}}</h4>
+                    </div>
+                </div>
+
+                <div class="row mt-5 mx-5" ng-repeat="expence in expenseList">
+                    <div class="accordion" stle="background-color: white !important" id="accordionPanelsStayOpenExample{{$index}}">
+                        <div class="accordion-item" style="border: none;">
+                            <div class="col-md-12 box-shadow-1 accordion-header" id="panelsStayOpen-heading{{$index}}" style="padding: none !important;margin-bottom: 1%;">
+                                <button class="accordion-button" style="background-color: white !important; box-shadow: none !important;" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#panelsStayOpencollapse{{$index}}" aria-expanded="true" aria-controls="panelsStayOpencollapse{{$index}}">
+                                    <h4 class="pb-3 color-theme" style="font-weight:600;">{{expence.Name}}</h4>
+                                </button>
+                            </div>
+
+                            <div id="panelsStayOpencollapse{{$index}}" ng-clock="true" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-heading{{$index}}">
+                                <table class="table basic">
+                                    <thead>
+                                        <tr>
+                                            <th class="pb-3 color-theme" style="width:5%;">S.No.</th>
+                                            <th class="pb-3 color-theme" style="width:35%;">Description
+                                                <span class="required-asterisk" style="color:red;">*</span>
+                                            </th>
+                                            <th class="pb-3 color-theme" style="width:20%;">Year-1</th>
+                                            <th class="pb-3 color-theme" style="width:20%;" ng-show="Showyear2">Year-2</th>
+                                            <th class="pb-3 color-theme" style="width:20%;" ng-show="Showyear3">Year-3</th>
+                                            <th ng-hide="proposalStage" class="text-center">
+                                                <i class="fas fa-plus-circle icon" ng-click="addRow($index)" style="width:3%; font-size: 24px;"></i>
+                                            </th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr ng-repeat="lineItem in expence.Expense_Line_Items__r">
+                                            <td>
+                                                {{$index + 1}}
+                                            </td>
+                                            <td>
+                                                <input class="form-control" type="text" id="Man Power" ng-model="lineItem.Description__c" ng-disabled="proposalStage" />
+                                            </td>
+                                            <td>
+                                                <input class="form-control w-100" number="lineItem.Year1_Expense__c" type="text" ng-model="lineItem.Year1_Expense__c" ng-keyup="calculateOtherField()"
+                                                    ng-change="calculateOtherField()" ng-keypress="calculateOtherField()" ng-disabled="proposalStage"
+                                                />
+                                            </td>
+                                            <td ng-show="Showyear2">
+                                                <input class="form-control" number="lineItem.Year2_Expense__c" type="text" ng-model="lineItem.Year2_Expense__c" ng-keyup="calculateOtherField2()"
+                                                    ng-change="calculateOtherField2()" ng-keypress="calculateOtherField2()" ng-disabled="proposalStage"
+                                                />
+                                            </td>
+                                            <td ng-show="Showyear3">
+                                                <input class="form-control" number="lineItem.Year3_Expense__c" type="text" ng-model="lineItem.Year3_Expense__c" ng-keyup="calculateOtherField3()"
+                                                    ng-change="calculateOtherField3()" ng-keypress="calculateOtherField3()" ng-disabled="proposalStage"
+                                                />
+                                            </td>
+                                            <td ng-hide="proposalStage" class="text-center">
+                                                <i class="fas fa-times-circle icon" ng-click="deleteRow($parent.$index,$index)"></i>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-5 px-2 mx-5">
+                    <table class="table basic">
+                        <thead>
+                            <tr>
+                                <th class="pb-3 color-theme" style="width:5%;">S.No.</th>
+                                <th class="pb-3 color-theme" style="width:32%;">Description</th>
+                                <th class="pb-3 color-theme" style="width:18%;">Year-1 Expense</th>
+                                <th class="pb-3 color-theme" style="width:18%;" ng-show="Showyear2">Year-2 Expense</th>
+                                <th class="pb-3 color-theme" ng-show="Showyear3">Year-3 Expense</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-show="accDetails.Contacts[0].MailingCountry == 'India'">
+                                <td>Required</td>
+                                <td>All Total Required</td>
+                                <td>Max ₹ 13 lakh</td>
+                                <td ng-show="Showyear2">Max ₹ 13 lakh</td>
+                                <td ng-show="Showyear3">Max ₹ 13 lakh</td>
+                            </tr>
+
+                            <tr ng-hide="accDetails.Contacts[0].MailingCountry == 'India'">
+                                <td>Required</td>
+                                <td>All Total Required</td>
+                                <td>Max 16000 €</td>
+                                <td ng-show="Showyear2">Max 16000 €</td>
+                                <td ng-show="Showyear3">Max 16000 €</td>
+                            </tr>
+                            <tr ng-show="accDetails.Contacts[0].MailingCountry == 'India'">
+                                <td>Total</td>
+                                <td>All total Expenses</td>
+                                <td>
+                                    <input class="form-control" ng-model="year1" ng-disabled="true" />
+                                </td>
+                                <td ng-show="Showyear2">
+                                    <input class="form-control" ng-model="year2" ng-disabled="true" />
+                                </td>
+                                <td ng-show="Showyear3">
+                                    <input class="form-control" ng-model="year3" ng-disabled="true" />
+                                </td>
+                          </tr>
+                            <tr ng-hide="accDetails.Contacts[0].MailingCountry == 'India'">
+                                <td>Total</td>
+                                <td>All total Expenses</td>
+                                <td>
+                                    <input class="form-control" ng-model="year1Germany" ng-disabled="true" />
+                                </td>
+                                <td ng-show="Showyear2">
+                                    <input class="form-control" ng-model="year2Germany" ng-disabled="true" />
+                                </td>
+                                <td ng-show="Showyear3">
+                                    <input class="form-control" ng-model="year3Germany" ng-disabled="true" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                -->
+
+                <div>
+                    <table class="budget-table">
+                        <thead>
+                            <tr>
+                                <th class="head-col">Expense Head</th>
+                                <th class="desc-col">Description</th>
+                                <th class="desc-col"></th>
+                                <th>Year 1
+                                    <br/>
+                                </th>
+                                <th ng-show="Showyear2">Year 2
+                                    <br/>
+                                </th>
+                                <th ng-show="Showyear3">Year 3
+                                    <br/>
+                                </th>
+                                <th class="total-col">Total
+                                    <br/>
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <!-- Research Stay -->
+                            <tr>
+                                <td rowspan="2">
+                                    <b>Research stay (India/Germany)</b>
+                                    <br/>
+                                    <span class="sub-text section-title">(per diem @ € 2300/month)</span>
+                                </td>
+                                <td rowspan="2">
+                                    <textarea class="form-control tbl-input" ng-model="budgetResearchStay.description" ng-disabled="proposalStage" rows="2" style="min-width: 100%;"></textarea>
+                                    <small ng-if="budgetResearchStay.description && budgetResearchStay.description.length > 250" class="text-danger">
+                                        Max limit: 250 characters (Current: {{budgetResearchStay.description.length}})
+                                    </small>
+                                </td>
+                                <td class="orange-text">No. of days</td>
+                                <td>
+                                    <input type="number" class="tbl-input" ng-model="budgetResearchStay.daysYear1" ng-change="recalculateAll()" ng-disabled="proposalStage"
+                                        step="1" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 0 || event.charCode === 8"
+                                        oninput="removeDecimals(event)" />
+                                    <span class="text-danger" ng-if="researchStayError.year1">
+                                        Stay must be between 10–{{proposalDurationMonths === 24 ? 30 : 45}} days
+                                    </span>
+                                </td>
+                                <td ng-show="Showyear2">
+                                    <input type="number" class="tbl-input" ng-model="budgetResearchStay.daysYear2" ng-change="recalculateAll()" ng-disabled="proposalStage"
+                                        step="1" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 0 || event.charCode === 8"
+                                        oninput="removeDecimals(event)" />
+                                    <span class="text-danger" ng-if="researchStayError.year2">
+                                        Stay must be between 10–{{proposalDurationMonths === 24 ? 30 : 45}} days
+                                    </span>
+                                </td>
+                                <td ng-show="Showyear3">
+                                    <input type="number" class="tbl-input" ng-model="budgetResearchStay.daysYear3" ng-change="recalculateAll()" ng-disabled="proposalStage"
+                                        step="1" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 0 || event.charCode === 8"
+                                        oninput="removeDecimals(event)" />
+                                    <span class="text-danger" ng-if="researchStayError.year3">
+                                        Stay must be between 10–{{proposalDurationMonths === 24 ? 30 : 45}} days
+                                    </span>
+                                </td>
+                                <td class="orange-text" style="text-align: right;">
+                                    {{budgetResearchStay.totalDays}}
+                                    <div class="text-danger" ng-if="researchStayError.total">
+                                        Total stay:{{proposalDurationMonths === 24 ? 20 : 30}} – {{proposalDurationMonths === 24 ? 60 : 90}} days allowed.
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <!-- <td></td> -->
+                                <td class="orange-text">Research Stay Cost</td>
+                                <td class="orange-text" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(budgetResearchStay.costYear1, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(budgetResearchStay.costYear1, 2) : (budgetResearchStay.costYear1
+                                    | number:2)))}}</td>
+                                <td class="orange-text" ng-show="Showyear2" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(budgetResearchStay.costYear2, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(budgetResearchStay.costYear2, 2) : (budgetResearchStay.costYear2
+                                    | number:2)))}}</td>
+                                <td class="orange-text" ng-show="Showyear3" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(budgetResearchStay.costYear3, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(budgetResearchStay.costYear3, 2) : (budgetResearchStay.costYear3
+                                    | number:2)))}}</td>
+                                <td class="orange-text" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(budgetResearchStay.totalCost, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(budgetResearchStay.totalCost, 2) : (budgetResearchStay.totalCost
+                                    | number:2)))}}</td>
+                            </tr>
+
+                            <tr>
+                                <td class="">
+                                    <b>Travel to Host Country</b>
+                                    <span class="sub-text section-title">(India/Germany)</span>
+                                </td>
+                                <td>
+                                    <textarea class="form-control tbl-input" ng-model="budgetTravel.description" ng-disabled="proposalStage" rows="3" style="min-width: 100%;"></textarea>
+                                    <small ng-if="budgetTravel.description && budgetTravel.description.length > 250" class="text-danger">
+                                        Max limit: 250 characters (Current: {{budgetTravel.description.length}})
+                                    </small>
+                                </td>
+                                <td class="orange-text">Travel Cost per visit</td>
+                                <td class="orange-text" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(budgetTravel.costYear1, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(budgetTravel.costYear1, 2) : (budgetTravel.costYear1
+                                    | number:2)))}}
+                                </td>
+                                <td class="orange-text" ng-show="Showyear2" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(budgetTravel.costYear2, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(budgetTravel.costYear2, 2) : (budgetTravel.costYear2
+                                    | number:2)))}}
+                                </td>
+                                <td class="orange-text" ng-show="Showyear3" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(budgetTravel.costYear3, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(budgetTravel.costYear3, 2) : (budgetTravel.costYear3
+                                    | number:2)))}}
+                                </td>
+                                <td class="orange-text" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(budgetTravel.totalCost, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(budgetTravel.totalCost, 2) : (budgetTravel.totalCost
+                                    | number:2)))}}
+                                </td>
+                            </tr>
+
+
+                            <tr class="subtotal">
+                                <td class="bold">Total Research Stay and Travel to Host</td>
+                                <td></td>
+                                <td></td>
+                                <td class="orange-text" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(researchStayTravelTotal.year1, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(researchStayTravelTotal.year1, 2) : (researchStayTravelTotal.year1
+                                    | number:2)))}}
+                                </td>
+                                <td class="orange-text" ng-show="Showyear2" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(researchStayTravelTotal.year2, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(researchStayTravelTotal.year2, 2) : (researchStayTravelTotal.year2
+                                    | number:2)))}}
+                                </td>
+                                <td class="orange-text" ng-show="Showyear3" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(researchStayTravelTotal.year3, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(researchStayTravelTotal.year3, 2) : (researchStayTravelTotal.year3
+                                    | number:2)))}}
+                                </td>
+                                <td class="orange-text" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(researchStayTravelTotal.total, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(researchStayTravelTotal.total, 2) : (researchStayTravelTotal.total
+                                    | number:2)))}}
+                                </td>
+                            </tr>
+
+                            <tr class="gray-row">
+                                <td class="bold">Total Research Amount</td>
+                                <td></td>
+                                <td></td>
+                                <td style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(totalResearchAmount.year1, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(totalResearchAmount.year1, 2) : (totalResearchAmount.year1
+                                    | number:2)))}}
+                                </td>
+                                <td ng-show="Showyear2" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(totalResearchAmount.year2, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(totalResearchAmount.year2, 2) : (totalResearchAmount.year2
+                                    | number:2)))}}
+                                </td>
+                                <td ng-show="Showyear3" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(totalResearchAmount.year3, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(totalResearchAmount.year3, 2) : (totalResearchAmount.year3
+                                    | number:2)))}}
+                                </td>
+                                <td style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(totalResearchAmount.total, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(totalResearchAmount.total, 2) : (totalResearchAmount.total
+                                    | number:2)))}}
+                                </td>
+                            </tr>
+
+                            <!-- Overheads -->
+                            <tr>
+                                <td class="bold" rowspan="2">Overheads
+                                    <span class="sub-text">(max 10%)</span>
+                                </td>
+                                <td rowspan="2">
+                                    <textarea class="form-control tbl-input" ng-model="budgetOverhead.description" ng-disabled="proposalStage" rows="3" style="min-width: 100%;"></textarea>
+                                    <small ng-if="budgetOverhead.description && budgetOverhead.description.length > 250" class="text-danger">
+                                        Max limit: 250 characters (Current: {{budgetOverhead.description.length}})
+                                    </small>
+                                </td>
+                                <td>Percentage of Overheads</td>
+                                <td>
+                                    <input type="number" class="tbl-input" ng-model="budgetOverhead.percentageYear1" ng-change="onOverheadChange(1)" ng-disabled="proposalStage"
+                                        min="0" max="10" step="1" ng-model-options="{ allowInvalid: true }" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 0 || event.charCode === 8"
+                                        oninput="removeDecimals(event)" />
+
+                                    <small class="text-danger" ng-if="budgetOverhead.percentageYear1 > 10">
+                                        Maximum allowed overhead is 10%
+                                    </small>
+                                </td>
+                                <td ng-show="Showyear2">
+                                    <input type="number" class="tbl-input" ng-model="budgetOverhead.percentageYear2" ng-change="onOverheadChange(2)" ng-disabled="proposalStage"
+                                        min="0" max="10" step="1" ng-model-options="{ allowInvalid: true }" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 0 || event.charCode === 8"
+                                        oninput="removeDecimals(event)" />
+
+                                    <small class="text-danger" ng-if="budgetOverhead.percentageYear2 > 10">
+                                        Maximum allowed overhead is 10%
+                                    </small>
+
+                                </td>
+                                <td ng-show="Showyear3">
+                                    <input type="number" class="tbl-input" ng-model="budgetOverhead.percentageYear3" ng-change="onOverheadChange(3)" ng-disabled="proposalStage"
+                                        min="0" max="10" step="1" ng-model-options="{ allowInvalid: true }" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 0 || event.charCode === 8"
+                                        oninput="removeDecimals(event)" />
+
+                                    <small class="text-danger" ng-if="budgetOverhead.percentageYear3 > 10">
+                                        Maximum allowed overhead is 10%
+                                    </small>
+
+                                </td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="orange-text">Overheads Amount</td>
+                                <td class="orange-text" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(budgetOverhead.amountYear1, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(budgetOverhead.amountYear1, 2) : (budgetOverhead.amountYear1
+                                    | number:2)))}}
+                                </td>
+                                <td class="orange-text" ng-show="Showyear2" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(budgetOverhead.amountYear2, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(budgetOverhead.amountYear2, 2) : (budgetOverhead.amountYear2
+                                    | number:2)))}}
+                                </td>
+                                <td class="orange-text" ng-show="Showyear3" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(budgetOverhead.amountYear3, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(budgetOverhead.amountYear3, 2) : (budgetOverhead.amountYear3
+                                    | number:2)))}}
+                                </td>
+                                <td class="orange-text" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(budgetOverhead.totalAmount, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(budgetOverhead.totalAmount, 2) : (budgetOverhead.totalAmount
+                                    | number:2)))}}
+                                </td>
+                            </tr>
+
+                            <tr class="bold">
+                                <td>Remaining Amount for Research Heads</td>
+                                <td></td>
+                                <td></td>
+                                <td class="orange-text" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(remainingForResearch.year1, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(remainingForResearch.year1, 2) : (remainingForResearch.year1
+                                    | number:2)))}}
+                                </td>
+                                <td class="orange-text" ng-show="Showyear2" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(remainingForResearch.year2, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(remainingForResearch.year2, 2) : (remainingForResearch.year2
+                                    | number:2)))}}
+                                </td>
+                                <td class="orange-text" ng-show="Showyear3" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(remainingForResearch.year3, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(remainingForResearch.year3, 2) : (remainingForResearch.year3
+                                    | number:2)))}}
+                                </td>
+                                <td class="orange-text" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(remainingForResearch.total, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(remainingForResearch.total, 2) : (remainingForResearch.total
+                                    | number:2)))}}
+                                </td>
+                            </tr>
+
+                            <!-- Research Staff (Multiple records support) -->
+                            <!-- Add Staff Button Row -->
+                            <tr ng-if="!proposalStage && !isCurrentUserSubmitted">
+                                <td colspan="{{Showyear3 ? 7 : (Showyear2 ? 6 : 5)}}" style="padding: 10px;">
+                                    <button type="button" class="btn btn-success" ng-click="addResearchStaff()" title="Add New Research Staff Record">
+                                        <i class="fa fa-plus"></i> Add Research Staff
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <tr ng-repeat="row in researchStaffRows track by (row.index + '-' + row.rowType)">
+                                <td class="section-title" ng-if="row.index === 0 && row.rowType === 'positions'" rowspan="{{budgetResearchStaffList.length * 4}}">
+                                    Research staff
+                                </td>
+                                <!-- <td ng-if="row.index !== 0 || row.rowType !== 'positions'"></td> -->
+                                <td ng-if="row.rowType === 'positions'" rowspan="4">
+                                    <textarea class="form-control tbl-input" ng-model="row.staff.description" ng-disabled="proposalStage" rows="3" style="min-width: 100%;"></textarea>
+                                    <small ng-if="row.staff.description && row.staff.description.length > 250" class="text-danger">
+                                        Max limit: 250 characters (Current: {{row.staff.description.length}})
+                                    </small>
+                                </td>
+                                <td>
+                                    <span ng-if="row.rowType === 'positions'">No. of positions</span>
+                                    <span ng-if="row.rowType === 'cost'">Renumeration/Fellowship</span>
+                                    <span ng-if="row.rowType === 'hours'">
+                                        Number of hour/week/days/month
+                                        <select ng-model="row.staff.hoursUnit" ng-options="unit for unit in timeUnits" ng-change="recalculateAll()" ng-disabled="proposalStage"
+                                            class="form-control" style="margin-top: 5px; min-width: 100px;">
+                                        </select>
+                                    </span>
+                                    <span ng-if="row.rowType === 'total'" class="orange-text bold">Total Amount for Research Staff {{row.index + 1}}</span>
+                                </td>
+                                <td>
+                                    <input ng-if="row.rowType === 'positions'" type="number" class="tbl-input" ng-model="row.staff.positionsYear1" ng-change="recalculateAll()"
+                                        ng-disabled="proposalStage" step="1" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 0 || event.charCode === 8"
+                                        oninput="removeDecimals(event)" />
+                                    <input ng-if="row.rowType === 'cost'" type="number" class="tbl-input" ng-model="row.staff.costYear1" ng-change="recalculateAll()"
+                                        ng-disabled="proposalStage" step="1" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 0 || event.charCode === 8"
+                                        oninput="removeDecimals(event)" />
+                                    <input ng-if="row.rowType === 'hours'" type="number" class="tbl-input" ng-model="row.staff.hoursYear1" ng-change="recalculateAll()"
+                                        ng-disabled="proposalStage" step="1" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 0 || event.charCode === 8"
+                                        oninput="removeDecimals(event)" />
+                                    <span ng-if="row.rowType === 'total'" class="orange-text" style="text-align: right; display: block;">{{(mailingCountry === 'India' ? formatIndianNumber(row.staff.totalYear1, 2) : (mailingCountry
+                                        === 'Germany' ? formatGermanNumber(row.staff.totalYear1, 2) : (row.staff.totalYear1
+                                        | number:2)))}}
+                                    </span>
+                                </td>
+                                <td ng-show="Showyear2">
+                                    <input ng-if="row.rowType === 'positions'" type="number" class="tbl-input" ng-model="row.staff.positionsYear2" ng-change="recalculateAll()"
+                                        ng-disabled="proposalStage" step="1" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 0 || event.charCode === 8"
+                                        oninput="removeDecimals(event)" />
+                                    <input ng-if="row.rowType === 'cost'" type="number" class="tbl-input" ng-model="row.staff.costYear2" ng-change="recalculateAll()"
+                                        ng-disabled="proposalStage" step="1" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 0 || event.charCode === 8"
+                                        oninput="removeDecimals(event)" />
+                                    <input ng-if="row.rowType === 'hours'" type="number" class="tbl-input" ng-model="row.staff.hoursYear2" ng-change="recalculateAll()"
+                                        ng-disabled="proposalStage" step="1" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 0 || event.charCode === 8"
+                                        oninput="removeDecimals(event)" />
+                                    <span ng-if="row.rowType === 'total'" class="orange-text" style="text-align: right; display: block;">{{(mailingCountry === 'India' ? formatIndianNumber(row.staff.totalYear2, 2) : (mailingCountry
+                                        === 'Germany' ? formatGermanNumber(row.staff.totalYear2, 2) : (row.staff.totalYear2
+                                        | number:2)))}}
+                                    </span>
+                                </td>
+                                <td ng-show="Showyear3">
+                                    <input ng-if="row.rowType === 'positions'" type="number" class="tbl-input" ng-model="row.staff.positionsYear3" ng-change="recalculateAll()"
+                                        ng-disabled="proposalStage" step="1" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 0 || event.charCode === 8"
+                                        oninput="removeDecimals(event)" />
+                                    <input ng-if="row.rowType === 'cost'" type="number" class="tbl-input" ng-model="row.staff.costYear3" ng-change="recalculateAll()"
+                                        ng-disabled="proposalStage" step="1" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 0 || event.charCode === 8"
+                                        oninput="removeDecimals(event)" />
+                                    <input ng-if="row.rowType === 'hours'" type="number" class="tbl-input" ng-model="row.staff.hoursYear3" ng-change="recalculateAll()"
+                                        ng-disabled="proposalStage" step="1" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 0 || event.charCode === 8"
+                                        oninput="removeDecimals(event)" />
+                                    <span ng-if="row.rowType === 'total'" class="orange-text" style="text-align: right; display: block;">{{(mailingCountry === 'India' ? formatIndianNumber(row.staff.totalYear3, 2) : (mailingCountry
+                                        === 'Germany' ? formatGermanNumber(row.staff.totalYear3, 2) : (row.staff.totalYear3
+                                        | number:2)))}}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span ng-if="row.rowType === 'total'" class="orange-text" style="text-align: right; display: block;">{{(mailingCountry === 'India' ? formatIndianNumber(row.staff.totalAmount, 2) : (mailingCountry
+                                        === 'Germany' ? formatGermanNumber(row.staff.totalAmount, 2) : (row.staff.totalAmount
+                                        | number:2)))}}
+                                    </span>
+                                    <button ng-if="row.rowType === 'positions' && !proposalStage && !isCurrentUserSubmitted && budgetResearchStaffList.length > 1"
+                                        type="button" class="btn btn-sm btn-danger" ng-click="removeResearchStaff(row.index)"
+                                        title="Remove Research Staff" style="padding: 2px 6px;">
+                                        <i class="fa fa-times"></i> Remove
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Total for all Research Staff -->
+                            <tr ng-if="budgetResearchStaffList.length > 0">
+                                <td></td>
+                                <td></td>
+                                <td class="bold gray-row">Total Amount for All Research Staff</td>
+                                <td class="bold gray-row" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(budgetResearchStaff.totalYear1, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(budgetResearchStaff.totalYear1, 2) : (budgetResearchStaff.totalYear1
+                                    | number:2)))}}
+                                </td>
+                                <td class="bold gray-row" ng-show="Showyear2" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(budgetResearchStaff.totalYear2, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(budgetResearchStaff.totalYear2, 2) : (budgetResearchStaff.totalYear2
+                                    | number:2)))}}
+                                </td>
+                                <td class="bold gray-row" ng-show="Showyear3" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(budgetResearchStaff.totalYear3, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(budgetResearchStaff.totalYear3, 2) : (budgetResearchStaff.totalYear3
+                                    | number:2)))}}
+                                </td>
+                                <td class="bold gray-row" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(budgetResearchStaff.totalAmount, 2) :
+                                    (mailingCountry === 'Germany' ? formatGermanNumber(budgetResearchStaff.totalAmount, 2)
+                                    : (budgetResearchStaff.totalAmount | number:2)))}}
+                                </td>
+                            </tr>
+
+                            <!-- Other Heads -->
+                            <tr>
+                                <td class="bold">Consumables</td>
+                                <td>
+                                    <textarea class="form-control tbl-input" ng-model="budgetConsumables.description" ng-disabled="proposalStage" rows="3" style="min-width: 100%;"></textarea>
+                                    <small ng-if="budgetConsumables.description && budgetConsumables.description.length > 250" class="text-danger">
+                                        Max limit: 250 characters (Current: {{budgetConsumables.description.length}})
+                                    </small>
+                                </td>
+                                <td></td>
+                                <td>
+                                    <input type="number" class="tbl-input" ng-model="budgetConsumables.year1" ng-change="recalculateAll()" ng-disabled="proposalStage"
+                                        step="1" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 0 || event.charCode === 8"
+                                        oninput="removeDecimals(event)" />
+                                </td>
+                                <td ng-show="Showyear2">
+                                    <input type="number" class="tbl-input" ng-model="budgetConsumables.year2" ng-change="recalculateAll()" ng-disabled="proposalStage"
+                                        step="1" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 0 || event.charCode === 8"
+                                        oninput="removeDecimals(event)" />
+                                </td>
+                                <td ng-show="Showyear3">
+                                    <input type="number" class="tbl-input" ng-model="budgetConsumables.year3" ng-change="recalculateAll()" ng-disabled="proposalStage"
+                                        step="1" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 0 || event.charCode === 8"
+                                        oninput="removeDecimals(event)" />
+                                </td>
+                                <td class="orange-text bold" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(budgetConsumables.total, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(budgetConsumables.total, 2) : (budgetConsumables.total
+                                    | number:2)))}}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="bold">Minor equipment</td>
+                                <td>
+                                    <textarea class="form-control tbl-input" ng-model="minorEquipment.description" ng-disabled="proposalStage" rows="3" style="min-width: 100%;"></textarea>
+                                    <small ng-if="minorEquipment.description && minorEquipment.description.length > 250" class="text-danger">
+                                        Max limit: 250 characters (Current: {{minorEquipment.description.length}})
+                                    </small>
+                                </td>
+                                <td></td>
+                                <td>
+                                    <input type="number" class="tbl-input" ng-model="minorEquipment.year1" ng-change="recalculateAll()" ng-disabled="proposalStage"
+                                        step="1" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 0 || event.charCode === 8"
+                                        oninput="removeDecimals(event)" />
+                                </td>
+                                <td ng-show="Showyear2">
+                                    <input type="number" class="tbl-input" ng-model="minorEquipment.year2" ng-change="recalculateAll()" ng-disabled="proposalStage"
+                                        step="1" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 0 || event.charCode === 8"
+                                        oninput="removeDecimals(event)" />
+                                </td>
+                                <td ng-show="Showyear3">
+                                    <input type="number" class="tbl-input" ng-model="minorEquipment.year3" ng-change="recalculateAll()" ng-disabled="proposalStage"
+                                        step="1" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 0 || event.charCode === 8"
+                                        oninput="removeDecimals(event)" />
+                                </td>
+                                <td class="orange-text bold" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(minorEquipment.total, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(minorEquipment.total, 2) : (minorEquipment.total |
+                                    number:2)))}}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="bold">Contingency and Miscellaneous
+                                    <br/>
+                                    <span class="sub-text">
+                                        <i>(max. 15% of Remaining Amount for Research Heads)</i>
+                                    </span>
+                                </td>
+                                <td>
+                                    <textarea class="form-control tbl-input" ng-model="budgetContingency.description" ng-disabled="proposalStage" rows="3" style="min-width: 100%;"></textarea>
+                                    <small ng-if="budgetContingency.description && budgetContingency.description.length > 250" class="text-danger">
+                                        Max limit: 250 characters (Current: {{budgetContingency.description.length}})
+                                    </small>
+                                </td>
+                                <td></td>
+                                <td>
+                                    <input type="number" class="tbl-input" ng-model="budgetContingency.year1" ng-change="recalculateAll()" ng-disabled="proposalStage"
+                                        step="1" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 0 || event.charCode === 8"
+                                        oninput="removeDecimals(event)" />
+
+                                    <span class="text-danger" ng-if="contingencyError.year1">
+                                        Max allowed:
+                                        <b style="text-align: right; display: inline-block;">{{(mailingCountry === 'India' ? formatIndianNumber(maxContingency.year1, 2) : (mailingCountry
+                                            === 'Germany' ? formatGermanNumber(maxContingency.year1, 2) : (maxContingency.year1
+                                            | number:2)))}}
+                                        </b>
+                                    </span>
+                                </td>
+                                <td ng-show="Showyear2">
+                                    <input type="number" class="tbl-input" ng-model="budgetContingency.year2" ng-change="recalculateAll()" ng-disabled="proposalStage"
+                                        step="1" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 0 || event.charCode === 8"
+                                        oninput="removeDecimals(event)" />
+
+                                    <span class="text-danger" ng-if="contingencyError.year2">
+                                        Max allowed:
+                                        <b style="text-align: right; display: inline-block;">{{(mailingCountry === 'India' ? formatIndianNumber(maxContingency.year2, 2) : (mailingCountry
+                                            === 'Germany' ? formatGermanNumber(maxContingency.year2, 2) : (maxContingency.year2
+                                            | number:2)))}}
+                                        </b>
+                                    </span>
+                                </td>
+                                <td ng-show="Showyear3">
+                                    <input type="number" class="tbl-input" ng-model="budgetContingency.year3" ng-change="recalculateAll()" ng-disabled="proposalStage"
+                                        step="1" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 0 || event.charCode === 8"
+                                        oninput="removeDecimals(event)" />
+
+                                    <span class="text-danger" ng-if="contingencyError.year3">
+                                        Max allowed:
+                                        <b style="text-align: right; display: inline-block;">{{(mailingCountry === 'India' ? formatIndianNumber(maxContingency.year3, 2) : (mailingCountry
+                                            === 'Germany' ? formatGermanNumber(maxContingency.year3, 2) : (maxContingency.year3
+                                            | number:2)))}}
+                                        </b>
+                                    </span>
+                                </td>
+                                <td class="orange-text bold" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(budgetContingency.total, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(budgetContingency.total, 2) : (budgetContingency.total
+                                    | number:2)))}}
+                                </td>
+                            </tr>
+
+                            <tr class="final-total">
+                                <td class="bold">Total Research Heads</td>
+                                <td></td>
+                                <td></td>
+                                <td class="orange-text" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(totalResearchHeads.year1, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(totalResearchHeads.year1, 2) : (totalResearchHeads.year1
+                                    | number:2)))}}
+                                </td>
+                                <td class="orange-text" ng-show="Showyear2" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(totalResearchHeads.year2, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(totalResearchHeads.year2, 2) : (totalResearchHeads.year2
+                                    | number:2)))}}
+                                </td>
+                                <td class="orange-text" ng-show="Showyear3" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(totalResearchHeads.year3, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(totalResearchHeads.year3, 2) : (totalResearchHeads.year3
+                                    | number:2)))}}
+                                </td>
+                                <td class="orange-text" style="text-align: right;">{{(mailingCountry === 'India' ? formatIndianNumber(totalResearchHeads.total, 2) : (mailingCountry
+                                    === 'Germany' ? formatGermanNumber(totalResearchHeads.total, 2) : (totalResearchHeads.total
+                                    | number:2)))}}
+                                </td>
+                            </tr>
+
+                            <tr class="final-total">
+                                <td class="bold">Total</td>
+                                <td></td>
+                                <td></td>
+
+                                <td class="orange-text" ng-class="{'text-danger': grandTotalError.year1}" style="text-align: right;">
+                                    {{(mailingCountry === 'India' ? formatIndianNumber(grandTotal.year1, 2) : (mailingCountry === 'Germany' ? formatGermanNumber(grandTotal.year1,
+                                    2) : (grandTotal.year1 | number:2)))}}
+                                </td>
+
+                                <td class="orange-text" ng-show="Showyear2" ng-class="{'text-danger': grandTotalError.year2}" style="text-align: right;">
+                                    {{(mailingCountry === 'India' ? formatIndianNumber(grandTotal.year2, 2) : (mailingCountry === 'Germany' ? formatGermanNumber(grandTotal.year2,
+                                    2) : (grandTotal.year2 | number:2)))}}
+                                </td>
+
+                                <td class="orange-text" ng-show="Showyear3" ng-class="{'text-danger': grandTotalError.year3}" style="text-align: right;">
+                                    {{(mailingCountry === 'India' ? formatIndianNumber(grandTotal.year3, 2) : (mailingCountry === 'Germany' ? formatGermanNumber(grandTotal.year3,
+                                    2) : (grandTotal.year3 | number:2)))}}
+                                </td>
+
+                                <td class="orange-text" style="text-align: right;">
+                                    {{(mailingCountry === 'India' ? formatIndianNumber(grandTotal.total, 2) : (mailingCountry === 'Germany' ? formatGermanNumber(grandTotal.total,
+                                    2) : (grandTotal.total | number:2)))}}
+                                </td>
+                            </tr>
+
+                            <tr ng-if="grandTotalError.any">
+                                <td colspan="{{Showyear3 ? 7 : (Showyear2 ? 6 : 5)}}" class="text-danger text-center fw-bold">
+                                    ⚠️ Grand Total cannot exceed {{mailingCountry === 'India' ? '₹13,00,000' : '€16,000'}} per year
+                                </td>
+                            </tr>
+
+
+                            <tr class="note-row">
+                                <td colspan="{{Showyear3 ? 7 : (Showyear2 ? 6 : 5)}}">Max {{mailingCountry === 'India' ? '₹ 13,00,000' : '€ 16,000'}}/year</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mx-5 mt-2 mb-3" ng-if="!proposalStage && !isCurrentUserSubmitted">
+                    <button class="blue-btn float-end" id="btnPreview" ng-click="saveExpenceLineitems()" type="button">
+                        <i class="fa-solid fa-check me-2"></i>Save and Next</button>
+                    <button class="blue-bordered-btn float-end me-2" ng-click="redirectPageURL('CV_Wiser')" type="button">
+                        <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+                </div>
+            </div>
+
+
+            <!-- <div class="container px-4">
+                <div class="card h-100 ">
+                    <div class="card-header">   
+                        <h2 class="p-3">
+                            <b>Host Information</b> 
+                           
+                        </h2>
+                    </div>
+                <div class="row px-5">
+                    <div class="col-md-12">
+
+            <div >
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item" ng-repeat="expence in expenseList">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <h4>{{expence.Name}}</h4>
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <div class="row ms-3 me-3">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="p-2">Details</th>
+                                                <th class="p-2">Description</th>
+                                                <th class="p-2">Year1</th>
+                                                <th class="p-2">Year2</th>
+                                                <th class="p-2">Year3</th>
+                                                <th nowrap="true" width="15%" class="p-2">
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="lineItem in expence.expenseLineItem">
+                                                <td class="p-4">
+                                                    <label>{{$index + 1}}</label>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" id="Man Power" ng-model="lineItem.Description__c"  />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="lineItem.Year1_Expense__c"  />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="lineItem.Year2_Expense__c" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        <input class="form-control" ng-model="lineItem.Year3_Expense__c" />
+                                                    </label>
+                                                    <br/>
+                                                </td>
+                                             
+                                                <td class="text-center">
+                                                    
+                                                    <a type="button" ng-click="addRow($parent.$index,$index)">
+                                                        <i class="fa-solid fa-circle-plus fa-2x text-success"></i>
+                                                    </a>
+                                                    <a type="button" ng-click="deleteRow($parent.$index,$index)">
+                                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                                    </a>
+                                                </td>
+                                              
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer mt-3">
+                <div class="col-md-12">
+                    <button type="button" class="blue-btn float-end ms-3" ng-click="saveExpenceLineitems()">Save and Next</button>
+                    <button type="button" class="blue-bordered-btn float-end" ng-click="redirectPageURL('HostInfoApplicationPage')">Previous</button>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div> -->
+            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+            <script>
+                // Function to remove decimal points from number inputs
+                function removeDecimals(event) {
+                    var input = event.target;
+                    var value = input.value;
+                    if (value && (value.toString().indexOf('.') !== -1 || value.toString().indexOf(',') !== -1)) {
+                        // Remove decimal point and everything after it, also remove commas
+                        var newValue = value.toString().replace(/[.,].*$/, '');
+                        input.value = newValue;
+                        // Trigger input event to update Angular model
+                        var inputEvent = new Event('input', { bubbles: true });
+                        input.dispatchEvent(inputEvent);
+                    }
+                }
+            </script>
+        </body>
+    </div>
+
+    </html>
+</apex:page>

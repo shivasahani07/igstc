@@ -1,0 +1,498 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+    <html>
+    <div ng-controller="grant_ctrl">
+        <style>
+                body {
+                    overflow-x: hidden;
+                    background: unset;
+                    font-family: 'Montserrat', sans-serif;
+                }
+        
+                .table-striped>tbody>tr:nth-child(odd)>td {
+                    background: #fff !important;
+                }
+        /* table>thead>tr */
+                table tr,
+                tbody>tr {
+                    background: #fff !important;
+                }
+                .table>caption+thead>tr:first-child>th, .table>colgroup+thead>tr:first-child>th, .table>thead:first-child>tr:first-child>th, .table>caption+thead>tr:first-child>td, .table>colgroup+thead>tr:first-child>td, .table>thead:first-child>tr:first-child>td {
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+}
+/* .table>caption+tbody>tr:first-child>th, .table>colgroup+tbody>tr:first-child>th, .table>tbody:first-child>tr:first-child>th, .table>caption+tbody>tr:first-child>td, .table>colgroup+tbody>tr:first-child>td, .table>tbody:first-child>tr:first-child>td {
+    border-right: 1px;
+} */
+            </style>
+
+        <head>
+            <script>
+                var userId = '{!$CurrentPage.parameters.id}'
+            </script>
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+        </head>
+
+        <body>
+            <div class="container mt-5">
+                <div class="row mx-5">
+                    <div class="col-md-12">
+                        <div class="tab-link" ng-show="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ProjectDetailPage')">
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Basic Details</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Consortia')">
+                                        <div class="icon-circle">
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                        <span>Consortia Details</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ConsortiaContacts')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Consortia Partner Details</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Financial_Overview')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <span>Financial Contribution</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ProjectDetail')">
+                                        <div class="icon-circle">
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Project Details</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor" ng-hide="secondStage">
+                                    <a ng-click="redirectPageURL('WorkPackages')">
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-box"></i>
+                                        </div>
+                                        <span>Work Package</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div ng-show="proposalStage">
+                            <div class="tab-link" ng-show="secondStage">
+                                <div class="progress">
+                                    <div class="progress-success w-100"></div>
+                                </div>
+                                <ul>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('WorkPackages')">
+                                            <div class="icon-circle">
+                                                <i class="fa-solid fa-box"></i>
+                                            </div>
+                                            <span>Work Package</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('PIDeliverables')">
+                                            <div class="icon-circle">
+                                                <i class="fa-solid fa-business-time"></i>
+                                            </div>
+                                            <span>PI Deliverables</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Network_Meeting')">
+                                            <div class="icon-circle">
+                                                <i class="fa fa-group"></i>
+                                            </div>
+                                            <span>Network Meeting</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('ExpenseDeclaration')">
+                                            <div class="icon-circle">
+                                                <i class="fa fa-money"></i>
+                                            </div>
+                                            <span>Expense Details</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('GrantApplication')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-donate"></i>
+                                            </div>
+                                            <span>Grant Application</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+                        <div class="tab-link" ng-hide="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Basic Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Consortia Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Consortia Partner Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <span>Financial Contribution</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Project Details</span>
+                                    </a>
+                                </li>
+                                <li ng-hide="secondStage" class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-box"></i>
+                                        </div>
+                                        <span>Work Package</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div ng-hide="proposalStage">
+                            <div class="tab-link" ng-show="secondStage">
+                                <div class="progress">
+                                    <div class="progress-success w-100"></div>
+                                </div>
+                                <ul>
+                                    <li class="active pb-cursor">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa-solid fa-box"></i>
+                                            </div>
+                                            <span>Work Packages</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa-solid fa-business-time"></i>
+                                            </div>
+                                            <span>PI Deliverables</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa fa-group"></i>
+                                            </div>
+                                            <span>Network Meeting</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa fa-money"></i>
+                                            </div>
+                                            <span>Expense Details</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-donate"></i>
+                                            </div>
+                                            <span>Grant Details</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container px-4 mt-5">
+                    <!-- <div class="card h-100 m-5"> -->
+                        <!-- <div class="card-header"> -->
+                            <h3><b>Existing Grants</b></h3>
+                        <!-- </div> -->
+                        <div class="row mt-3" ng-repeat="appli in input">
+                            <div class="col-md-12">
+                                <h4 class="font-if">{{appli.Name}}</h4>
+                            </div>
+                            <div class="col-md-12">
+                                <!-- <table class="table table-bordered"> -->
+                                    <!-- <thead>
+                                        <th>{{appli.Name}}</th>
+                                        <th ng-show="!proposalStage">
+                                            <a type="button" ng-click="addRow($index)">
+                                                <i class="fa-solid fa-circle-plus fa-2x ms-5 text-success"></i>
+                                            </a>
+                                        </th>
+                                    </thead> -->
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th nowrap="true">Sr. No.</th>
+                                                <th>Title</th>
+                                                <th>Funding Agency
+                                                    <span class="required-asterisk" style="color:red;">*</span>
+                                                </th>
+                                                <th>Budget
+                                                    <span class="required-asterisk" style="color:red;">*</span>
+                                                </th>
+                                                <th>Starting Date
+                                                    <span class="required-asterisk" style="color:red;">*</span>
+                                                </th>
+                                                <th>Duration<br/>
+                                                    <small class="text-muted">(Number-In Months)</small>
+                                                    <span class="required-asterisk" style="color:red;">*</span>
+                                                </th>
+                                                <th ng-show="!proposalStage">
+                                                    <a type="button" ng-click="addRow($index)">
+                                                        <i class="fa-solid fa-circle-plus fa-2x text-success"></i>
+                                                    </a>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="font-tbl" ng-repeat="applicnt in appli.Existing_Grants__r">
+                                                <td>{{$index+1}}</td>
+                                                <td>
+                                                    <input type="text" class="form-control" ng-model="applicnt.Title__c" ng-disabled="proposalStage"
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control" ng-model="applicnt.Funding_Agency__c"
+                                                        required="true" ng-required="applicnt.Funding_Agency__c" ng-disabled="proposalStage"
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <input type="Number" class="form-control" ng-model="applicnt.Budget__c" required="true"
+                                                        ng-required="applicnt.Budget__c" ng-disabled="proposalStage" />
+                                                </td>
+                                                <td>
+                                                    <input type="date" class="form-control" ng-model="applicnt.Starting_Date__c"
+                                                        required="true" ng-required="applicnt.Starting_Date__c" ng-disabled="proposalStage"
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <input type="Number" class="form-control" ng-model="applicnt.Duration__c"
+                                                        required="true" ng-required="applicnt.Duration__c" ng-disabled="proposalStage"
+                                                    />
+                                                </td>
+                                                <td ng-show="!proposalStage">
+                                                    <a type="button" ng-click="deleteRow($parent.$index,$index)">
+                                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                <!-- </table> -->
+                            </div>
+                        </div>
+                        <!-- <div class="row">
+                        <div class="col-md-12">
+                            <table class="table">
+                                <thead>
+                                    <tr class="font-tbl">
+                                        <th>Sr. No.</th>
+                                        <th>Title</th>
+                                        <th>Funding Agency</th>
+                                        <th>Budget</th>
+                                        <th>Starting Date</th>
+                                        <th>Duration(Number-
+                                            <br/>In Months)</th>
+                                    </tr>
+                                    <tr class="font-tbl" ng-repeat="grants in input[0].Existing_Grants__r">
+                                        <td>{{$index+1}}</td>
+                                        <td><input type="text" class="form-control" ng-model="grants.Title__c" /></td>
+                                        <td><input type="text" class="form-control" ng-model="grants.Funding_Agency__c" /></td>
+                                        <td><input type="Number" class="form-control" ng-model="grants.Budget__c" /></td>
+                                        <td><input type="date" class="form-control" ng-model="grants.Starting_Date__c" /></td>
+                                        <td><input type="Number" class="form-control" ng-model="grants.Duration__c" /></td>
+                                        <td><a type="button" ng-click="addRow($index)">
+                                            <i class="fa-solid fa-circle-plus fa-2x ms-5 text-success"></i>
+                                        </a></td>
+                                            <td><a type="button" ng-click="deleteRow($parent.$index,$index)">
+                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                        </a></td>
+                                    </tr>
+
+                                </thead>
+                            </table>
+                        </div>
+                    </div> -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3><b>Existing Grants of Other Partners</b></h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h2>{{appli.Name}}</h2>
+                            </div>
+                        </div>
+                            <div class="row mt-3" ng-repeat="appli in disableGrants">
+                                <div class="col-md-12">
+                                    <!-- <table class="table">
+                                        <thead>
+                                            <th>{{appli.Name}}</th>
+                                        </thead>
+                                        <div> -->
+                                            <table class="table">
+                                                <thead>
+                                                    <tr class="font-tbl">
+                                                        <th>Sr. No.</th>
+                                                        <th>Title</th>
+                                                        <th>Funding Agency</th>
+                                                        <th>Budget</th>
+                                                        <th>Starting Date</th>
+                                                        <th>Duration<br/>
+                                                            <small class="text-muted">(Number-In Months)</small>
+                                                            <span class="required-asterisk" style="color:red;">*</span>
+                                                        </th>
+                                                    </tr>
+</thead>
+<tbody>
+                                                    <tr class="font-tbl" ng-repeat="applicnt in appli.Existing_Grants__r">
+                                                        <td>{{$index+1}}</td>
+                                                        <td>{{applicnt.Title__c}}</td>
+                                                        <td>{{applicnt.Funding_Agency__c}}</td>
+                                                        <td>{{applicnt.Budget__c}}</td>
+                                                        <td>{{applicnt.Starting_Date__c}}</td>
+                                                        <td>{{applicnt.Duration__c}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        <!-- </div>
+                                    </table> -->
+                                </div>
+                            </div>
+                            <div class="card-footer pb-5">
+                                <button type="button" class="blue-btn float-end me-4" ng-click="submitExistingGrants()">Submit
+                                    <i class="fa-solid fa-arrow-right ms-3"></i>
+                                </button>
+                                <button type="button" class="blue-btn float-end me-4" ng-click="insertExistingGrantsAsDraft()">Save As Draft</button>
+                                <button type="button" class="blue-bordered-btn float-end me-4" ng-click="redirectPageURL('ExpenseDeclaration')">
+                                    <i class="fa-solid fa-arrow-left i-padding"></i>Previous</button> &nbsp;
+                            </div>
+                        </div>
+                <!-- </div> -->
+                <!-- <div class="row mt-3">
+                        <div class="col-md-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Sr. No.</th>
+                                        <th>Title</th>
+                                        <th>Funding Agency</th>
+                                        <th>Budget</th>
+                                        <th>Starting Date</th>
+                                        <th>Duration(Number-
+                                            <br/>In Months)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="font-tbl" ng-repeat="applicnt in disableGrants">
+                                        <td>{{$index+1}}</td>
+                                        <td>{{applicnt.Existing_Grants__r[0]}}</td>
+                                        <td>{{applicnt.Existing_Grants__r[0].Own_Contribution__c}}</td>
+                                        <td>{{applicnt.Financial_Contribution__r[0].IGSTC_Contribution__c}}</td>
+                                        <td>{{(applicnt.Financial_Contribution__r[0].IGSTC_Contribution__c+applicnt.Financial_Contribution__r[0].Own_Contribution__c)}}</td>
+                                        <td>{{(applicnt.Financial_Contribution__r[0].IGSTC_Contribution__c/(applicnt.Financial_Contribution__r[0].IGSTC_Contribution__c+applicnt.Financial_Contribution__r.Own_Contribution__c))*100  | number : 2}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div> -->
+
+                <!-- <div class="container mt-3">
+                <h3 class="heading-border-2">Existing Grants</h3>
+                <div ng-repeat="appli in applicantDetails">
+                    <label><h4><b>Name</b></h4></label>
+                    <input name="name" type="text" class="form-control" placeholder="Name" ng-model="appli.Name" ng-disabled="true"/>
+                    <label class="heading-border-2 mt-4"><h5><b>Add Grants</b></h5></label>
+                    <a type="button" ng-click="addRow($index)">
+                        <i class="fa-solid fa-circle-plus fa-2x ms-5 text-success"></i>
+                    </a>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="width:10%;">Sr No.</th>
+                                <th style="width:20%;">Title</th>
+                                <th style="width:20%;">Funding Agency</th>
+                                <th style="width:20%;">Budget</th>
+                                <th style="width:20%;">Starting Date</th>
+                                <th style="width:10%;">Duration(Number-In Months)</th>
+                            </tr>
+                            <tr ng-repeat="applicnt in appli.Existing_Grants__r">
+                                
+                                <td>{{$index+1}}</td>
+                                <td><input type="text" class="form-control" ng-model="applicnt.Title__c" /></td>
+                                <td><input type="text" class="form-control" ng-model="applicnt.Funding_Agency__c" /></td>
+                                <td><input type="Number" class="form-control" ng-model="applicnt.Budget__c" /></td>
+                                <td><input type="date" class="form-control" ng-model="applicnt.Starting_Date__c" /></td>
+                                <td><input type="Number" class="form-control" ng-model="applicnt.Duration__c" /></td>
+                                <td><a type="button" ng-click="deleteRow($parent.$index,$index)">
+                                    <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                </a></td>
+                            </tr>
+                        </thead>
+                    </table>
+                    </div>
+                    <div class="card-footer" style="background:unset;border-top:unset;margin-top:5%;margin-bottom:3%;">
+                        <div class="d-flex justify-content-center justify-content-between">
+                        <button type="button" class="btn btn-primary col-sm-3" style="background: #fff;color: black;border: 1px solid;" ng-click="redirectPageURL('Network_Meeting')">Previous</button> &nbsp;
+                        <button type="button" class="btn btn-primary col-sm-3" style="background: black;border: 1px solid;" ng-click="submitExistingGrants()">Submit and Next</button>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </body>
+    </div>
+
+    </html>
+</apex:page>

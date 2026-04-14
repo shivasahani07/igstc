@@ -1,0 +1,418 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+    <html>       
+        <div ng-controller="networkmeet_ctrl">
+        <head>
+            <script>
+                var userId = '{!$CurrentPage.parameters.id}'
+            </script>
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+        </head>
+        
+        <body>
+
+            <div class="container mt-5">
+                <div class="row mx-5">
+                    <div class="col-md-12">
+                        <div class="tab-link" ng-show="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ProjectDetailPage')">
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Basic Details</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Consortia')">
+                                        <div class="icon-circle">
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                        <span>Consortia Details</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ConsortiaContacts')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Consortia Partner Details</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Financial_Overview')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <span>Financial Contribution</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ProjectDetail')">
+                                        <div class="icon-circle">
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Project Details</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor" ng-hide="secondStage">
+                                    <a ng-click="redirectPageURL('WorkPackages')">
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-box"></i>
+                                        </div>
+                                        <span>Work Package</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div ng-show="proposalStage">
+                            <div class="tab-link" ng-show="secondStage">
+                                <div class="progress">
+                                    <div class="progress-success w-100"></div>
+                                </div>
+                                <ul>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('WorkPackages')">
+                                            <div class="icon-circle">
+                                                <i class="fa-solid fa-box"></i>
+                                            </div>
+                                            <span>Work Package</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('PIDeliverables')">
+                                            <div class="icon-circle">
+                                                <i class="fa-solid fa-business-time"></i>
+                                            </div>
+                                            <span>PI Deliverables</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Network_Meeting')">
+                                            <div class="icon-circle">
+                                                <i class="fa fa-group"></i>
+                                            </div>
+                                            <span>Network Meeting</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('ExpenseDeclaration')">
+                                            <div class="icon-circle">
+                                                <i class="fa fa-money"></i>
+                                            </div>
+                                            <span>Expense Details</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('GrantApplication')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-donate"></i>
+                                            </div>
+                                            <span>Grant Application</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+                        <div class="tab-link" ng-hide="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Basic Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Consortia Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Consortia Partner Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <span>Financial Contribution</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Project Details</span>
+                                    </a>
+                                </li>
+                                <li ng-hide="secondStage" class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-box"></i>
+                                        </div>
+                                        <span>Work Package</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div ng-hide="proposalStage">
+                            <div class="tab-link" ng-show="secondStage">
+                                <div class="progress">
+                                    <div class="progress-success wp-5"></div>
+                                </div>
+                                <ul>
+                                    <li class="active pb-cursor">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa-solid fa-box"></i>
+                                            </div>
+                                            <span>Work Packages</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa-solid fa-business-time"></i>
+                                            </div>
+                                            <span>PI Deliverables</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa fa-group"></i>
+                                            </div>
+                                            <span>Network Meeting</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa fa-money"></i>
+                                            </div>
+                                            <span>Expense Details</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-donate"></i>
+                                            </div>
+                                            <span>Grant Details</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-5 mx-5">
+                    <div class="col-md-12">
+                        <h4 class="pb-3 color-theme"><b>Network Meeting</b></h4>
+                    </div>
+                </div>
+
+                <div class="row mt-3 mx-5">
+                    <div class="col-md-12">
+                        <table class="table" cellpadding="4">
+                            <thead>
+                                <tr>
+                                    <th style="width:4%" nowrap="true">Sr.No. </th>
+                                    <th style="width:20%">Partner
+                                        <span class="required-asterisk" style="color:red;">*</span>
+                                    </th>
+                                    <th style="width:33%">Meeting Agenda
+                                        <span class="required-asterisk" style="color:red;">*</span>
+                                    </th>
+                                    <th style="width:27%">Meeting Venue
+                                        <span class="required-asterisk" style="color:red;">*</span>
+                                    </th>
+                                    <th style="width:8%">Tentative Date
+                                        <span class="required-asterisk" style="color:red;">*</span>
+                                    </th>
+                                    <th style="width:8%">Actual Date
+                                        <span class="required-asterisk" style="color:red;">*</span>
+                                    </th>
+                                    <th ng-hide="proposalStage"><i class="fas fa-plus-circle icon ps-3" ng-click="addRows()"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="applicnt in MeetingList">
+                                    <td>{{$index+1}}</td>
+                                <td>
+                                    
+                                <div class="dropdown mt-1" style="min-width: 170px;">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                      Select Partners
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                      <li class="dropdown-item" ng-repeat="x in applicnt.AccountList">
+                                        <label for="{{$parent.$index}}{{$index}}"  class="form-control scrollV ng-valid ng-dirty ng-touched" style="height: 10%;"> 
+                                            <input ng-focus="removeClass('partner',$index)" id="partner{{$index}}" type="checkbox" name="chkFields" ng-model="x.selected" class="ng-pristine ng-untouched ng-valid" ng-disabled="proposalStage" /> 
+                                            <span class="ng-binding ng-scope" style="width:15px;"> {{x.Name}} </span>
+                                        </label>
+                                      </li>
+                                    </ul>
+                                  </div>
+                               
+                                </td>
+                                <td><input ng-focus="removeClass('agenda',$index)" id="agenda{{$index}}" type="text" class="form-control" ng-model="applicnt.meetingAgenda" ng-disabled="proposalStage" required="true" ng-required="applicnt.meetingAgenda" /></td>
+                                <td><input ng-focus="removeClass('venue',$index)" id="venue{{$index}}" type="text" class="form-control" ng-model="applicnt.meetingVenue" ng-disabled="proposalStage" required="true" ng-required="applicnt.meetingVenue" /></td>
+                                <!-- <td><input ng-focus="removeClass('tentative',$index)" id="tentative{{$index}}" type="date" class="form-control" ng-model="applicnt.Tentative_Date__c" ng-change="validateDate($index,'t')" ng-disabled="proposalStage" /></td> -->
+                                <td><input ng-focus="removeClass('tentative',$index)" id="tentative{{$index}}" type="date" class="form-control" ng-model="applicnt.Tentative_Date__c" ng-disabled="proposalStage" /></td>
+                                <!-- <td><input ng-focus="removeClass('actual',$index)" id="actual{{$index}}" type="date" class="form-control" ng-model="applicnt.Actual_Date__c" ng-change="validateDate($index,'a')" ng-disabled="proposalStage" /></td> -->
+                                <td><input ng-focus="removeClass('actual',$index)" id="actual{{$index}}" type="date" class="form-control" ng-model="applicnt.Actual_Date__c" ng-disabled="proposalStage" /></td>
+                                    <td ng-hide="proposalStage"><i class="fas fa-times-circle icon ps-3" ng-click="removeRow($index)"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row m-5" ng-if="!proposalStage">
+                    <div class="col-md-12">
+                        <button class="blue-btn float-end" ng-click="saveMeetingDetails()" type="button">
+                            <i class="fa-solid fa-check me-2"></i>Save and Next</button>
+                        <button class="blue-bordered-btn float-end me-2" ng-click="redirectPageURL('PIDeliverables')" type="button">
+                            <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+                    </div>
+                </div>
+                
+            </div>
+            
+
+            <!-- <div class="container mt-5" style="background: white;">
+                <h3>Meeting Details :</h3>
+                <div class="row">
+                    <div class="col-md-12">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="width:5%;">Sr.No.</th>
+                                <th style="width:25%;">Partner
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                </th>
+                                <th style="width:20%;">Meeting Agenda
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                </th>
+                                <th style="width:20%;">Meeting Venue
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                </th>
+                                <th style="width:15%;">Tentative Date
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                </th>
+                                <th style="width:15%;">Actual Date
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                </th>
+                                <th ng-if="!proposalStage"><i class="fa-solid fa-circle-plus fa-2x text-success" ng-click="addRows()"></i></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr class="font-tbl" ng-repeat="applicnt in MeetingList">
+                                <td>{{$index+1}}</td>
+                                <td>
+                                    
+                                <div class="dropdown mt-1" style="min-width: 350px;">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                      Select Partners
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                      <li class="dropdown-item" ng-repeat="x in applicnt.AccountList">
+                                        <label for="{{$parent.$index}}{{$index}}"  class="form-control scrollV ng-valid ng-dirty ng-touched" style="height: 10%;"> 
+                                            <input type="checkbox" name="chkFields" ng-model="x.selected" class="ng-pristine ng-untouched ng-valid" ng-disabled="proposalStage" required="true" ng-required="x.selected" /> 
+                                            <span class="ng-binding ng-scope" style="width:15px;"> {{x.Name}} </span>
+                                        </label>
+                                      </li>
+                                    </ul>
+                                  </div>
+                               
+                                </td>
+                                <td><input type="text" class="form-control" ng-model="applicnt.meetingAgenda" ng-disabled="proposalStage" required="true" ng-required="applicnt.meetingAgenda" /></td>
+                                <td><input type="text" class="form-control" ng-model="applicnt.meetingVenue" ng-disabled="proposalStage" required="true" ng-required="applicnt.meetingVenue" /></td>
+                                <td><input type="date" class="form-control" ng-model="applicnt.Tentative_Date__c" ng-change="validateDate($index,'t')" ng-disabled="proposalStage" /></td>
+                                <td><input type="date" class="form-control" ng-model="applicnt.Actual_Date__c" ng-change="validateDate($index,'a')" ng-disabled="proposalStage" /></td>
+                                <td ng-if="!proposalStage"><i class="fa-sharp fa-solid fa-circle-xmark fa-2x text-danger mt-1" ng-click="removeRow($index)" ng-if="!proposalStage"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </div>
+            </div>
+        <div class="row mb-4" ng-if="!proposalStage">
+            <div class="col-md-12">
+                <button type="button" class="blue-btn float-end ms-3" ng-click="saveMeetingDetails()">Save and Next</button>
+                <button type="button" class="blue-bordered-btn float-end" ng-click="redirectPageURL('PIDeliverables')">Previous</button>
+            </div>
+        </div>
+        </div> -->
+            <!-- <div class="container mt-3">
+                <h3 class="heading-border-2">Meeting Details</h3>
+                <div ng-repeat="appli in applicantDetails">
+                    <label><h4><b>Name</b></h4></label>
+                    <input name="name" type="text" class="form-control" placeholder="Name" ng-model="appli.Name" ng-disabled="true"/>
+                    <label class="heading-border-2 mt-4"><h5><b>Add Meeting</b></h5></label>
+                    <a type="button" ng-click="addRow($index)">
+                        <i class="fa-solid fa-circle-plus fa-2x ms-5 text-success"></i>
+                    </a>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="width:30%;">Meeting Agenda
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                </th>
+                                <th style="width:30%;">Meeting Venue
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                </th>
+                                <th>Tentative Date
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                </th>
+                                <th>Actual Date
+                                    <span class="required-asterisk" style="color:red;">*</span>
+                                </th>
+                            </tr>
+                            <tr ng-repeat="applicnt in appli.Network_Meetings__r">
+                                
+                                <td><input type="text" class="form-control" ng-model="applicnt.Meeting_Agenda__c" size="100" required="true" ng-required="applicnt.Meeting_Agenda__c" /></td>
+                                <td><input type="text" class="form-control" ng-model="applicnt.Meeting_Venue__c" size="100" required="true" ng-required="applicnt.Meeting_Venue__c" /></td>
+                                <td><input type="date" class="form-control" ng-model="applicnt.Tentative_Date__c" size="100" required="true" ng-required="applicnt.Tentative_Date__c" /></td>
+                                <td><input type="date" class="form-control" ng-model="applicnt.Actual_Date__c" size="100" required="true" ng-required="applicnt.Actual_Date__c" /></td>
+                                <td><a type="button" ng-click="deleteRow($parent.$index,$index)">
+                                    <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                </a></td>
+                            </tr>
+                        </thead>
+                    </table>
+                    </div>
+                    <div class="card-footer" style="background:unset;border-top:unset;margin-top:5%;margin-bottom:3%;">
+                        <div class="d-flex justify-content-center justify-content-between">
+                        <button type="button" class="btn btn-primary col-sm-3" style="background: #fff;color: black;border: 1px solid;" ng-click="redirectPageURL('PIDeliverables')">Previous</button> &nbsp;
+                        <button type="button" class="btn btn-primary col-sm-3" style="background: black;border: 1px solid;" ng-click="submitMeetingDetails()">Submit and Next</button>
+                        </div>
+                    </div>
+                </div> -->
+        </body>
+        </div>
+    </html>
+</apex:page>

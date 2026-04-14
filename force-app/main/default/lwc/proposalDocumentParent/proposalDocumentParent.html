@@ -1,0 +1,173 @@
+<template>
+    <template if:true={isLoaded}>
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_7-of-8">
+                <ul style="display: inline-block;">
+                    <template for:each={folders} for:item="folder">
+                        <div data-id={folder.UniqueId} key={folder.UniqueId}>
+                            <template if:true={folder.expanded}>
+                                <li style="cursor:pointer;margin-bottom: 0.8rem;color: rgb(4, 88, 255)" data-id={folder.UniqueId} onclick={parentClicked}>
+                                    <lightning-icon size="x-small" icon-name="utility:down"></lightning-icon>
+                                    <lightning-icon size="small" icon-name="doctype:folder" alternative-text={folder.Name} title={folder.Name}></lightning-icon>
+                                    {folder.Name}
+                                </li>
+                                <ul style="display: inline-block; margin-left: 2rem;">
+                                    <template if:true={folder.subFolders}>
+                                    
+                                        <template for:each={folder.subFolders} for:item="subFolder">
+                                            <div data-id={subFolder.UniqueId} key={subFolder.UniqueId}>
+                                                <template if:true={subFolder.expanded}>
+                                                    <li style="cursor:pointer;margin-bottom: 0.8rem;color: rgb(4, 88, 255)" data-id={subFolder.UniqueId}  onclick={subFolderClicked1}>
+                                                        <lightning-icon size="x-small" icon-name="utility:down"></lightning-icon>
+                                                        <lightning-icon size="small" icon-name="doctype:folder" alternative-text={subFolder.Name} title={subFolder.Name}></lightning-icon>
+                                                        {subFolder.Name}
+                                                    </li>
+                                                    <ul style="display: inline-block; margin-left: 2rem;">
+                                                        <template if:true={subFolder.subFolders}>
+                                                            <template for:each={subFolder.subFolders} for:item="subFolder2">
+                                                                <div data-id={subFolder2.UniqueId} key={subFolder2.UniqueId} onclick={subFolderClicked2}>
+                                                                    <template if:true={subFolder2.expanded}>
+                                                                        <li style="cursor:pointer;margin-bottom: 0.8rem;color: rgb(4, 88, 255)">
+                                                                            <lightning-icon size="x-small" icon-name="utility:down"></lightning-icon>
+                                                                            <lightning-icon size="small" icon-name="doctype:folder" alternative-text={subFolder2.Name} title={subFolder2.Name}></lightning-icon>
+                                                                            {subFolder2.Name}
+                                                                        </li>
+                                                                        <!-- <template if:true={subFolder.subFolders}>
+                                                                            <ul style="display: inline-block; margin-left: 2rem;">
+                                                                                <template for:each={subFolder.subFolders} for:item="subFolder2">
+                                                                                    
+                                                                                </template>
+                                                                            </ul>
+                                                                        </template> -->
+                                                                    </template>
+                                                                    <template if:false={subFolder2.expanded}>
+                                                                        <li style="cursor:pointer;margin-bottom: 0.8rem;">
+                                                                            <lightning-icon size="x-small" icon-name="utility:right"></lightning-icon>
+                                                                            <lightning-icon size="small" icon-name="doctype:folder" alternative-text={subFolder2.Name} title={subFolder2.Name}></lightning-icon> 
+                                                                            {subFolder2.Name}
+                                                                        </li>
+                                                                    </template>
+                                                                </div>
+                                                            </template>
+                                                        </template>
+                                                        <template if:true={subFolder.subFiles}>
+                                                            <template for:each={subFolder.subFiles} for:item="subFile">
+                                                                <div data-id={subFile.UniqueId} key={subFile.UniqueId} onclick={subFileClickedHandler}>
+                                                                    <template if:true={subFile.clicked}>
+                                                                        <li style="cursor:pointer;margin-bottom: 0.8rem;color: rgb(4, 88, 255)">
+                                                                            <lightning-icon size="small" icon-name="doctype:attachment" alternative-text={subFile.Name} title={subFile.Name}></lightning-icon>
+                                                                            {subFile.Name}
+                                                                        </li>
+                                                                    </template>
+                                                                    <template if:false={subFile.clicked}>
+                                                                        <li style="cursor:pointer;margin-bottom: 0.8rem;">
+                                                                            <lightning-icon size="small" icon-name="doctype:attachment" alternative-text={subFile.Name} title={subFile.Name}></lightning-icon> 
+                                                                            {subFile.Name}
+                                                                        </li>
+                                                                    </template>
+                                                                </div>
+                                                            </template>
+                                                        </template>
+                                                    </ul>
+                                                </template>
+                                                <template if:false={subFolder.expanded}>
+                                                    <li style="cursor:pointer;margin-bottom: 0.8rem;" data-id={subFolder.UniqueId}  onclick={subFolderClicked1}>
+                                                        <lightning-icon size="x-small" icon-name="utility:right"></lightning-icon>
+                                                        <lightning-icon size="small" icon-name="doctype:folder" alternative-text={subFolder.Name} title={subFolder.Name}></lightning-icon> 
+                                                        {subFolder.Name}
+                                                    </li>
+                                                </template>
+                                            </div>
+                                        </template>
+                                    </template>
+                                    <template if:true={folder.subFiles}>
+                                        <template for:each={folder.subFiles} for:item="subFile">
+                                            <div data-id={subFile.UniqueId} key={subFile.UniqueId} onclick={fileClickedHandler}>
+                                                <template if:true={subFile.clicked}>
+                                                    <li style="cursor:pointer;margin-bottom: 0.8rem;color: rgb(4, 88, 255)">
+                                                        <lightning-icon size="small" icon-name="doctype:attachment" alternative-text={subFile.Name} title={subFile.Name}></lightning-icon>
+                                                        {subFile.Name}
+                                                    </li>
+                                                </template>
+                                                <template if:false={subFile.clicked}>
+                                                    <li style="cursor:pointer;margin-bottom: 0.8rem;">
+                                                        <lightning-icon size="small" icon-name="doctype:attachment" alternative-text={subFile.Name} title={subFile.Name}></lightning-icon> 
+                                                        {subFile.Name}
+                                                    </li>
+                                                </template>
+                                            </div>
+                                        </template>
+                                    </template>
+                                </ul>
+                            </template>
+                            <template if:false={folder.expanded}>
+                                <li style="cursor:pointer;margin-bottom: 0.8rem;" data-id={folder.UniqueId} onclick={parentClicked}>
+                                    <lightning-icon size="x-small" icon-name="utility:right"></lightning-icon>
+                                    <lightning-icon size="small" icon-name="doctype:folder" alternative-text={folder.Name} title={folder.Name}></lightning-icon> 
+                                    {folder.Name}
+                                </li>
+                            </template>
+                        </div>
+                    </template>
+                </ul>        
+            </div>
+            <div class="slds-col slds-size_1-of-8">
+                <template if:true={selectedParent}>
+                    <lightning-button-menu alternative-text="Show menu" style="position: absolute;right: 0px;">
+                        <lightning-menu-item prefix-icon-name="utility:add" value="addFile" label="Add File" onclick={showFileCreationPopup}></lightning-menu-item>
+                        <lightning-menu-item prefix-icon-name="utility:add" value="addFolder" label="Add Folder" onclick={showFolderCreationPopup}></lightning-menu-item>
+                        <lightning-menu-item prefix-icon-name="utility:delete" value="deleteFile" label="Delete File" disabled={disableFileClicked} onclick={deleteFileSPHandler}></lightning-menu-item>
+                        <lightning-menu-item prefix-icon-name="utility:delete" value="deleteFolder" label="Delete Folder" disabled={disableFolderDeletion} onclick={deleteFolder}></lightning-menu-item>
+                    </lightning-button-menu>
+                </template>
+            </div>
+          </div>
+      
+          <!-- <iframe src={url} height="500" width="500" title="Iframe Example"></iframe> -->
+
+          <template if:true={showFolderCreation}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <div class="slds-modal__header">
+                        <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Create Folder</h1>
+                    </div>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <lightning-input type="text" label="Folder Name" onchange={inputHandler}></lightning-input>
+                    </div>
+                  <div class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" aria-label="Cancel and close" onclick={closeFolderCreation}>Cancel</button>
+                    <button class="slds-button slds-button_brand" onclick={createFolder} disabled={disableCreate}>Create</button>
+                  </div>
+                </div>
+              </section>
+              <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+          </template>
+
+          <template if:true={showFileCreation}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <div class="slds-modal__header">
+                        <h1 id="modal-heading-02" class="slds-modal__title slds-hyphenate">Upload File</h1>
+                    </div>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+                        <lightning-input type="file" accept="image/*, .xlsx, .xls, .csv, .png, .doc, .docx, .pdf, .txt" 
+                            onchange={fileSelectedHandler}></lightning-input>
+                            <template if:true={newFile}>
+                                {newFile.name}
+                            </template>
+                    </div>
+                  <div class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" aria-label="Cancel and close" onclick={closeFileCreation}>Cancel</button>
+                    <button class="slds-button slds-button_brand" onclick={createFileSP} disabled={disableFileCreation}>Upload</button>
+                  </div>
+                </div>
+              </section>
+              <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+          </template>
+    </template>
+    <template if:false={isLoaded}>
+        <div class="slds-modal__content slds-p-around_medium modalBody">
+            <lightning-spinner alternative-text="Loading" size="medium" class="spinnerClass"></lightning-spinner>
+        </div>
+    </template>
+</template>

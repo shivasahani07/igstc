@@ -1,0 +1,118 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="IndustrialFellowshipController">    
+    <html>
+    <div ng-controller="WORKSHOPDocUpload_Ctrl">
+
+        <head>
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+        </head>
+
+        <body>
+            <div class="container px-4 mt-5">
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <ul class="nav nav-pills nav-fill gap-2 p-1 small bg-white border rounded-5 shadow-sm" id="pillNav2" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a href="#" class="nav-link rounded-5" id="basic_tab" data-bs-toggle="tab"
+                                    type="button" role="tab" aria-selected="true">
+                                    <i class="fa-solid fa-circle-check fa-lg text-success me-2" ng-show="showDecisionCheck"></i>
+                                    <i class="fa fa-home i-padding"></i>Invoice Upload</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a href="#" class="nav-link rounded-5" id="finance_tab" data-bs-toggle="tab"
+                                    type="button" role="tab" aria-selected="false">
+                                    <i class="fa-solid fa-money-bill-trend-up i-padding"></i>Attendance</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="modal" id="filePreview">
+                    <div class="modal-dialog" style="min-width:120rem">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">
+                                    <div class="d-flex" style="background:unset;">
+                                        <h3 style="text-align: center"><b>{{selectedFile.userDocument.Name}}</b></h3>
+                                    </div>
+                                </h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <iframe style="width:100%;height:75vh;border: 0px;border-radius: 10px;" id="file_frame" title="File"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="row mt-3">
+                    <div class="col-md-12">
+                        <ul class="steps">
+                            <li class="past">
+                              <span>
+                                <strong>Invitation Letter</strong>
+                              </span><i></i>
+                            </li>
+                            <li class="present">
+                              <span>
+                                <strong>Traveller Form</strong>
+                              </span><i></i>
+                            </li>
+                            <li class="future">
+                              <span>
+                                <strong>Visa Documents</strong>
+                              </span><i></i>
+                            </li>
+                            <li class="future">
+                              <span>
+                                <strong>Undertaking</strong>
+                              </span><i></i>
+                            </li>
+                            <li class="future">
+                              <span>
+                                <strong>Monthly Reports</strong>
+                              </span><i></i>
+                            </li>
+                          </ul>
+                    </div>
+                </div> -->
+                <div class="row mt-3" ng-hide="invoice_form">
+                    <div class="row box-shadow-2 mt-5 mx-5 p-3">
+                        <div class="row mt-5 mx-1">
+                            <div class="col-md-6">
+                                <!--<label class="font-if" style="margin-left: -383px;">Invoice Form</label>-->
+                                <div class="col-md-9 mt-4" style="padding-left: 0px !important; padding-right: 0px !important">
+                                <label class="font-if">Invoice form (Only for German location)<span class="text-danger"></span></label>
+                                <div class="input-group input-group-lg">
+                                    <input type="file" accept=".pdf" ng-disabled="invoice_form_disabled" id="{{Descison.userDocument.Name}}" class="form-control " />
+                                    <span class="input-group-btn" ng-hide="invoice_form_disabled">
+                                        <button class="btn btn-success" ng-click="uploadFile(Descison.userDocument.Name,Descison.userDocument.Id,'','Create','Check Invoice Document')" type="button">Upload</button>
+                                    </span>
+                                </div>
+                               </div> 
+                            <div class="col-md-3 mt-1" ng-show="Descison.ContentDistribution.PreferencesAllowPDFDownload">
+                                <a class="blue-btn float-end mt-4 py-3"  ng-click="filePreviewHandler(Descison)">View</a>
+                            </div>
+                            </div>
+                        </div>
+                      </div>
+                </div>
+                <!-- <div class="row mt-3" ng-hide="invoice_form">
+                    <div class="col-md-5 offset-1 mt-3">
+                        <label>Upload SC / UC</label>
+                        <div class="input-group input-group-lg">
+                            <input type="file" accept=".pdf" ng-disabled="invoice_form_disabled" id="fileSCUC" class="form-control " />
+                            <span class="input-group-btn" ng-hide="invoice_form_disabled">
+                                <button class="btn btn-success" ng-click="uploadFile('Upload SC / UC',SEUCUpload.userDocument.Id,'','fileSCUC')" type="button">Upload</button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-1" ng-show="SEUCUpload.ContentDistribution.PreferencesAllowPDFDownload">
+                        <a class="btn btn-primary btn-lg background-theme border-theme mt-5" href="{{SEUCUpload.ContentDistribution.DistributionPublicUrl}}"
+                            target="_blank">
+                            <i class="fa-solid fa-eye pe-2"></i>View</a>
+                    </div>
+                </div> -->
+            </div>
+            </body>
+            </div>
+            </html>
+</apex:page>

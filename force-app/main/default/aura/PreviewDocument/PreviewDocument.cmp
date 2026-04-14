@@ -1,0 +1,56 @@
+<aura:component implements="lightning:availableForFlowScreens,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" 
+                access="global" controller="UtilityMethodsForDocGeneration">
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="showSpinner" type="boolean" default = "true"/>   
+    <aura:attribute name="recordId" type="string" default=""/>   
+    <aura:attribute name="fileId" type="String"/>
+    <aura:attribute name="pdfLink" type="string" default="{!$Label.c.AwardLetterLink}" />
+    <aura:attribute name="currentDate" type="Date" />
+    
+    <aura:if isTrue="{!v.showSpinner}"> 
+        <div class="slds-spinner slds-spinner_medium slds-spinner_brand">
+            <lightning:spinner alternativeText="Loading" size="medium" />
+            Loading...
+        </div>
+        <aura:set attribute="else">
+            <aura:html tag="style">
+                .slds-modal__container{
+                max-width: 80% !important;
+                width:100% !important;
+                height:100% !important;
+                }
+                .slds-modal__footer{
+                display:none !important;
+                }   
+                .slds-modal__container>.modal-body>.baseDefault.forceChatterBasePublisher.forceChatterLightningComponent,
+                .slds-modal__container>.modal-body>.baseDefault.forceChatterBasePublisher.forceChatterLightningComponent>.forceChatterPublisherPresentationPanel,
+                .slds-modal__container>.modal-body>.baseDefault.forceChatterBasePublisher.forceChatterLightningComponent>.forceChatterPublisherPresentationPanel>.container.activeState,
+                .slds-modal__container>.modal-body>.baseDefault.forceChatterBasePublisher.forceChatterLightningComponent>.forceChatterPublisherPresentationPanel>.container.activeState>.cuf-content
+                {
+                height:100%;
+                }
+                
+                .content{
+                min-height: 100vh;
+                color:#1b1b1b;
+                font-size: 1.1em;
+                background-color:#f2f0ea;
+                padding:1%;
+                border-radius:5px;
+                }
+                
+            </aura:html>
+            <div class="content">
+                <iframe src="{!v.pdfLink+ v.fileId }" scrolling="no" height="auto" width="auto" style="height:100%;width:100%; display:block;  min-height: 100vh;  background-color: #f2f0ea; border: none;"/>
+            </div>
+            
+            <div class="slds-align_absolute-center">
+                <!--<lightning:button variant="brand" label="Send" title="Send" onclick="{! c.handleSend }" />-->
+                <lightning:button variant="brand" label="Cancel" title="Cancel" onclick="{! c.handleCancel }" />
+            </div>
+            
+        </aura:set>
+    </aura:if> 
+    
+</aura:component>

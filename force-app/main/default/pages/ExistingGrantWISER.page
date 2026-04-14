@@ -1,0 +1,487 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+    <html>
+    <div ng-controller="WISERgrant_ctrl">
+
+        <head>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+            <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+            <script>
+                var userId = '{!$CurrentPage.parameters.id}'
+            </script>
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.5.16/textAngular.css" crossorigin="anonymous"
+            />
+        </head>
+
+        <body>
+            <div class="container mt-5">
+                <div class="row mx-5">
+                    <div class="col-md-12">
+                        <div class="tab-link" ng-show="proposalStage">
+                            <!-- || isCurrentUserSubmitted -->
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <!-- <ul>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('WiserApplicationPage')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-user-alt"></i>
+                                            </div>
+                                            <span>Applicant Details</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('HostInfoApplicationPage')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-file-invoice"></i>
+                                            </div>
+                                            <span>Pair Details</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
+                                            <div class="icon-circle">
+                                                <i class="fa fa-home"></i>
+                                            </div>
+                                            <span>Applicant Project Details</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('FinancialOverview_wiser')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-chart-line"></i>
+                                            </div>
+                                            <span>Financial Overview</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('HostProjectDetails')">
+                                            <div class="icon-circle">
+                                                <i class="far fa-address-card"></i>
+                                            </div>
+                                            <span>Pair Project Details</span>
+                                        </a>
+                                    </li>   
+                                </ul> -->
+
+                            <ul>
+
+                                <!-- Not Confirmed Yet -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ProjectDetailsInWiserPage')">
+                                        <div class="icon-circle">
+                                            <!-- <i class="fa fa-home"></i> -->
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Pairing Details</span>
+                                    </a>
+                                </li>
+
+                                <!-- Pair Project Details -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('HostProjectDetails')">
+                                        <div class="icon-circle">
+                                            <!-- <i class="far fa-address-card"></i> -->
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Paired Project Details</span>
+                                    </a>
+                                </li>
+
+                                <!-- Applicant Details -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('WiserApplicationPage')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Applicant Details</span>
+                                    </a>
+                                </li>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('CV_Wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li>
+
+                                <!-- Financial Details -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('FinancialOverview_wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <span>Financial Overview</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+
+                        <div class="tab-link" ng-hide="proposalStage">
+                            <!-- || isCurrentUserSubmitted -->
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Pairing Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Paired Project Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Applicant Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Financial Overview</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mx-5">
+                    <div class="col-md-12">
+                        <div class="tab-link" ng-show="proposalStage">
+                            <!-- || isCurrentUserSubmitted -->
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ExistingGrantWISER')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-money-bill"></i>
+                                        </div>
+                                        <span>Other Grants</span>
+                                    </a>
+                                </li>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('TwoReferenceWiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-friends"></i>
+                                        </div>
+                                        <span>References</span>
+                                    </a>
+                                </li>
+
+
+                                <!-- <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('CV_Wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li> -->
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('AttachmentsInWiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-upload"></i>
+                                        </div>
+                                        <span>Attachments</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Declaration_Wiser')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                        <span>Declaration</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-link" ng-hide="proposalStage">
+                            <!-- || isCurrentUserSubmitted -->
+                            <div class="progress">
+                                <div class="progress-success wp-2"></div>
+                            </div>
+                            <ul>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-money-bill"></i>
+                                        </div>
+                                        <span>Other Grants</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-friends"></i>
+                                        </div>
+                                        <span>References</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-upload"></i>
+                                        </div>
+                                        <span>Attachments</span>
+                                    </a>
+                                </li>
+
+                                <!-- <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </div>
+                                        <span>Curriculum Vitae</span>
+                                    </a>
+                                </li> -->
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                        <span>Declaration</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-5 mx-5">
+                    <div class="col-md-12 alert bg-color-list" role="alert">
+                        <ul class="font-if">
+                            <li>
+                                <i class="fa-solid fa-circle text-success me-3"></i>
+                                Kindly add the details of the projects/grants handled or being handled by you.
+                            </li>
+                        </ul>
+                        <br />
+                    </div>
+                </div>
+
+                <!-- Grants Handled Picklist Section -->
+                <div class="row mt-4 mx-5">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label fw-bold">Grants Handled?
+                                <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-control" ng-model="grantsHandledValue" ng-change="onGrantsHandledChange()" ng-disabled="proposalStage">
+                                <!-- || isCurrentUserSubmitted -->
+                                <option value="">-- Select --</option>
+                                <option ng-repeat="item in grantsHandledPickList" value="{{item}}">{{item}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grants Table Section - Only shown when Grants_Handled__c is 'Yes' -->
+                <div class="row mt-5 mx-5" ng-show="showGrantsTable">
+                    <div class="col-md-12">
+                        <table class="table" cellpadding="4">
+                            <thead>
+                                <tr>
+                                    <th style="width:2%; text-align: center" nowrap="true">No.</th>
+
+                                    <th style="width:20%; text-align: center" nowrap="true">Title of the
+                                        <br/>project</th>
+
+                                    <th style="width:15%; text-align: center" nowrap="true">Funding Agency</th>
+                                    <th style="width:14%; text-align: center" nowrap="true">Currency</th>
+
+                                    <th style="width:14%; text-align: center" nowrap="true">Budget</th>
+
+                                    <th style="width:10%; text-align: center" nowrap="true">Start Date
+                                        <br/>(DD/MM/YYYY)</th>
+
+                                    <th style="width:10%; text-align: center" nowrap="true">End Date
+                                        <br/>(DD/MM/YYYY)</th>
+
+                                    <th style="width:26%; text-align: center">Role in the project</th>
+                                    <!-- <th ng-hide="proposalStage" class="text-center">
+                                        <i class="fas fa-plus-circle icon" ng-click="addRow()" style="width:3%;"></i>
+                                    </th> -->
+                                    <th ng-if="!proposalStage" class="text-center">
+                                        <!-- || isCurrentUserSubmitted -->
+                                        <i class="fas fa-plus-circle icon" ng-click="addRow()" style="width:3%;"></i>
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <!--
+                            <tbody>
+                                <tr class="font-tbl" ng-repeat="applicnt in appli.Existing_Grants__r">
+                                    <td>{{$index+1}}</td>
+                                    <td>
+                                        <input ng-focus="removeClass('title',$index)" id="title{{$index}}" type="text" class="form-control" ng-model="applicnt.Title__c"
+                                            ng-disabled="proposalStage" />
+                                    </td>
+                                    <td>
+                                        <input ng-focus="removeClass('funding',$index)" id="funding{{$index}}" type="text" class="form-control" ng-model="applicnt.Funding_Agency__c"
+                                            ng-disabled="proposalStage" />
+                                    </td>
+                                    <td>
+                                        <select ng-model="applicnt.Currency__c" class="form-control">
+                                            <option ng-selected="{{item==applicnt.Currency__c}}" ng-repeat="item in pickListCurrency" value="{{item}}">{{item}}</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input ng-focus="removeClass('budget',$index)" id="budget{{$index}}" type="text" class="form-control" ng-model="applicnt.Budget__c"
+                                            ng-disabled="proposalStage" />
+                                    </td>
+                                    <td>
+                                        <input ng-focus="removeClass('startDate',$index)" id="startDate{{$index}}" type="text" class="form-control" ng-model="applicnt.Starting_Date__c"
+                                            ng-disabled="proposalStage" />
+                                    </td>
+                                    <td>
+                                        <input ng-focus="removeClass('endDate',$index)" id="endDate{{$index}}" type="text" class="form-control" ng-model="applicnt.End_Date__c"
+                                            ng-disabled="proposalStage" />
+                                    </td>
+                                    <td>
+                                        <input ng-focus="removeClass('duration',$index)" id="duration{{$index}}" type="text" class="form-control" ng-model="applicnt.Role_in_the_Project__c"
+                                            ng-disabled="proposalStage" />
+                                    </td>
+                                    <td ng-if="!proposalStage">
+                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger" ng-click="deleteRow($parent.$parent.$index,$parent.$index)"></i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            -->
+                            <tbody>
+                                <tr class="font-tbl" ng-repeat="applicnt in existingGrants track by $index">
+                                    <td>{{$index + 1}}</td>
+
+                                    <td>
+                                        <input type="text" class="form-control" ng-model="applicnt.Title__c" ng-disabled="proposalStage" />
+                                        <!-- || isCurrentUserSubmitted -->
+                                    </td>
+
+                                    <td>
+                                        <input type="text" class="form-control" ng-model="applicnt.Funding_Agency__c" ng-disabled="proposalStage" />
+                                        <!-- || isCurrentUserSubmitted -->
+                                    </td>
+
+                                    <td>
+                                        <select ng-model="applicnt.Currency__c" class="form-control" ng-disabled="proposalStage">
+                                            <!-- || isCurrentUserSubmitted -->
+                                            <option ng-repeat="item in pickListCurrency" value="{{item}}">
+                                                {{item}}
+                                            </option>
+                                        </select>
+                                    </td>
+
+                                    <td>
+                                        <input type="text" class="form-control" ng-model="applicnt.Budget__c" ng-disabled="proposalStage" />
+                                        <!-- || isCurrentUserSubmitted -->
+                                    </td>
+
+                                    <td>
+                                        <input type="text" class="form-control" ng-model="applicnt.Starting_Date__c" ng-disabled="proposalStage" />
+                                        <!-- || isCurrentUserSubmitted -->
+                                    </td>
+
+                                    <td>
+                                        <input type="text" class="form-control" ng-model="applicnt.End_Date__c" ng-disabled="proposalStage" />
+                                        <!-- || isCurrentUserSubmitted -->
+                                    </td>
+
+                                    <td>
+                                        <input type="text" class="form-control" ng-model="applicnt.Role_in_the_Project__c" ng-disabled="proposalStage" />
+                                        <!-- || isCurrentUserSubmitted -->
+                                    </td>
+
+                                    <!-- <td ng-if="!proposalStage || !isCurrentUserSubmitted" class="text-center">
+                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger" style="cursor:pointer;" ng-click="deleteRow($index)">
+                                        </i>
+                                    </td> -->
+
+                                    <td ng-if="!proposalStage" class="text-center">
+                                        <!-- || isCurrentUserSubmitted -->
+                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger" style="cursor:pointer;" ng-click="deleteRow($index)"></i>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Active Applications Funded by DST-BMFTR RTF Field -->
+                <div class="row mt-5 mx-5" ng-show="showGrantsTable">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="font-if color-theme">
+                                Active applications funded by DST-BMFTR (max 1000 characters without space)
+                                <br/>
+                                <small class="label-rtf">Please provide details of any active applications funded by DST and/or BMFTR that overlap
+                                    scientifically or technically with the proposed project. If yes, provide project title,
+                                    funding agency, reference number, duration, and your role. (Max. characters 1000 without
+                                    space)
+                                </small>
+                            </label>
+                            <br />
+                            <small class="label-rtf">
+                                <b>To use RTF more efficiently, make sure you write your content in word document first and
+                                    then copy paste here</b>
+                            </small>
+                            <ng-ckeditor name="ckEditorActiveApplications" maxlength="1000" ng-change="readCharacter(activeApplicationsField, 0)" ng-model="activeApplicationsField"
+                                ng-config="config" ng-disabled="proposalStage"></ng-ckeditor>
+                            <!-- || isCurrentUserSubmitted -->
+                            <span>Total characters : {{objRtf[0].charCount}}</span>
+                            <span class="text-danger" ng-if="objRtf[0].errorStatus">maximum character limit is 1000
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buttons Section - Always visible -->
+                <div class="row mt-4 mx-5">
+                    <div class="col-md-12 my-4" ng-if="!proposalStage">
+                        <!-- && !isCurrentUserSubmitted -->
+                        <button class="blue-btn float-end" id="btnPreview" ng-click="submitExistingGrants()" type="button">
+                            <i class="fa-solid fa-check me-2"></i>Save and Next</button>
+                        <button class="blue-bordered-btn float-end me-2" ng-click="previousPage()" type="button">
+                            <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+                    </div>
+                </div>
+            </div>
+        </body>
+    </div>
+
+    </html>
+</apex:page>

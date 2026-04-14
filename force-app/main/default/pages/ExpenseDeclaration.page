@@ -1,0 +1,1887 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+    <html>
+    <div ng-controller="ExpenseDeclaration">
+
+        <head>
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+        </head>
+
+        <body>
+
+            <div class="container mt-5">
+                <div class="row mx-5">
+                    <div class="col-md-12">
+                        <div class="tab-link" ng-show="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ProjectDetailPage')">
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Basic Details</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Consortia')">
+                                        <div class="icon-circle">
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                        <span>Consortium Details</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ConsortiaContacts')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>CV Details</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Financial_Overview')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <span>Financial Contribution</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ProjectDetail')">
+                                        <div class="icon-circle">
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Project Details</span>
+                                    </a>
+                                </li>
+                                <!-- <li class="active pb-cursor" ng-hide="secondStage">
+                                    <a ng-click="redirectPageURL('WorkPackages')">
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-box"></i>
+                                        </div>
+                                        <span>Work Package</span>
+                                    </a>
+                                </li> -->
+                            </ul>
+                        </div>
+
+                        <div ng-show="proposalStage">
+                            <div class="tab-link" ng-show="secondStage">
+                                <div class="progress">
+                                    <div class="progress-success w-100"></div>
+                                </div>
+                                <ul>
+                                    <!-- <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('WorkPackages')">
+                                            <div class="icon-circle">
+                                                <i class="fa-solid fa-box"></i>
+                                            </div>
+                                            <span>Work Package</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('PIDeliverables')">
+                                            <div class="icon-circle">
+                                                <i class="fa-solid fa-business-time"></i>
+                                            </div>
+                                            <span>PI Deliverables</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Network_Meeting')">
+                                            <div class="icon-circle">
+                                                <i class="fa fa-group"></i>
+                                            </div>
+                                            <span>Network Meeting</span>
+                                        </a>
+                                    </li> -->
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('ExpenseDeclaration')">
+                                            <div class="icon-circle">
+                                                <i class="fa fa-money"></i>
+                                            </div>
+                                            <span>Expense Details</span>
+                                        </a>
+                                    </li>
+                                    <!-- <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('GrantApplication')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-donate"></i>
+                                            </div>
+                                            <span>Grant Application</span>
+                                        </a>
+                                    </li> -->
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Declartion_2plus2')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-donate"></i>
+                                            </div>
+                                            <span>Declaration</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+                        <div class="tab-link" ng-hide="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Basic Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Consortia Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>Consortia Partner Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <span>Financial Contribution</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Project Details</span>
+                                    </a>
+                                </li>
+                                <!-- <li ng-hide="secondStage" class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-box"></i>
+                                        </div>
+                                        <span>Work Package</span>
+                                    </a>
+                                </li> -->
+                            </ul>
+                        </div>
+
+                        <div ng-hide="proposalStage">
+                            <div class="tab-link" ng-show="secondStage">
+                                <div class="progress">
+                                    <div class="progress-success wp-7"></div>
+                                </div>
+                                <ul>
+                                    <!-- <li class="active pb-cursor">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa-solid fa-box"></i>
+                                            </div>
+                                            <span>Work Packages</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa-solid fa-business-time"></i>
+                                            </div>
+                                            <span>PI Deliverables</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa fa-group"></i>
+                                            </div>
+                                            <span>Network Meeting</span>
+                                        </a>
+                                    </li> -->
+                                    <li class="active pb-cursor">
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa fa-money"></i>
+                                            </div>
+                                            <span>Expense Details</span>
+                                        </a>
+                                    </li>
+                                    <!-- <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-donate"></i>
+                                            </div>
+                                            <span>Grant Details</span>
+                                        </a>
+                                    </li> -->
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-donate"></i>
+                                            </div>
+                                            <span>Declaration</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mx-5 mt-5">
+                    <div class="alert bg-color-list font-if" role="alert">
+                        <li class="ps-4">
+                            <i class="fa-solid fa-circle text-success me-3"></i>Indian Partner(s) should enter amount in INR</li>
+                        <li class="ps-4">
+                            <i class="fa-solid fa-circle text-success me-3"></i>German Partner(s) should enter amount in euro</li>
+                        <li class="ps-4">
+                            <i class="fa-solid fa-circle text-success me-3"></i>For German Industry and Academia, IGSTC Contribution can not be greater than
+                            <i class="fa-solid fa-euro-sign"></i> 5,00,000</li>
+                        <li class="ps-4">
+                            <i class="fa-solid fa-circle text-success me-3"></i>For Indian Industry, IGSTC Contribution can not be greater than
+                            <i class="fa-solid fa-indian-rupee-sign"></i> 1.5cr.</li>
+                        <li class="ps-4">
+                            <i class="fa-solid fa-circle text-success me-3"></i>For Indian Academia, IGSTC Contribution can not be greater than
+                            <i class="fa-solid fa-indian-rupee-sign"></i> 3.5cr - Indian Industry IGSTC contribution.</li>
+                    </div>
+                </div>
+                <div class="container-fluid mt-5">
+                    <div class="row px-4">
+                        <div class="col-md-12">
+                            <div class="accordion" id="accordionExample" ng-show="!expenseDetails">
+                                <!-- <div ng-repeat="acc in accList"> -->
+                                <div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="accList.Id">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accList.Name" aria-expanded="true"
+                                                aria-controls="accList.Name">
+                                                <h4>{{accList.Name|specialChar}}</h4>
+                                            </button>
+                                        </h2>
+                                        <div id="accList.Name" class="accordion-collapse collapse show" aria-labelledby="accList.Id" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <button type="button" class="btn btn-primary background-theme" ng-click="enableExpenseModule(accList.Id);">Expense Details</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-show="expenseDetails">
+                                <div class="row box-shadow-2 mt-3 mx-5">
+
+                                    <div class="row mt-5 ms-5">
+                                        <h4 class="label-rtf">
+                                            <b>Financial Contribution</b>
+                                        </h4>
+                                    </div>
+
+                                    <div class="row mt-5 mb-5">
+                                        <div class="col-md-6">
+                                            <h4 class="label-rtf ms-5">Indian IGSTC Funding:</h4>
+                                            <!-- <div class="row box-shadow-2 mt-3 ms-5">
+                                                <p style="font-size: 15px;">
+                                                    <i class="fa fa-money me-3 ms-3 mt-3"></i>Total Funding Requested By Indian Partners :
+                                                    <i class="fa-solid fa-indian-rupee-sign"></i> {{TotalIndianContribution | inrCurrency}}</p>
+                                                <p style="font-size: 15px;">
+                                                    <i class="fa fa-money me-3 ms-3 mt-3"></i>Indian Industy Partner(s) :
+                                                    <i class="fa-solid fa-indian-rupee-sign"></i> {{TotalContriIndianIndustry | inrCurrency}}</p>
+                                                <p style="font-size: 15px;">
+                                                    <i class="fa fa-money me-3 ms-3 mt-3 mb-3"></i>Indian Academia Partner(s) :
+                                                    <i class="fa-solid fa-indian-rupee-sign"></i> {{TotalContriIndianAcademia | inrCurrency}}</p>
+                                            </div> -->
+                                            <div class="row box-shadow-2 mt-3 ms-5">
+                                                <p style="font-size: 15px;">
+                                                    <i class="fa fa-money me-3 ms-3 mt-3"></i>Total Funding Requested By Indian Partners :
+                                                    <i class="fa-solid"></i> {{TotalIndianContribution | inrCurrency}}</p>
+                                                <p style="font-size: 15px;">
+                                                    <i class="fa fa-money me-3 ms-3 mt-3"></i>Indian Industy Partner(s) :
+                                                    <i class="fa-solid"></i> {{TotalContriIndianIndustry | inrCurrency}}</p>
+                                                <p style="font-size: 15px;">
+                                                    <i class="fa fa-money me-3 ms-3 mt-3 mb-3"></i>Indian Academia Partner(s) :
+                                                    <i class="fa-solid"></i> {{TotalContriIndianAcademia | inrCurrency}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h4 class="label-rtf">German IGSTC Funding:</h4>
+                                            <!-- <div class="row box-shadow-2 mt-3 ms-1 mx-2">
+                                                <p style="font-size: 15px;">
+                                                    <i class="fa fa-money me-3 ms-3 mt-3"></i>Total Funding Requested By German Partners :
+                                                    <i class="fa-solid fa-euro-sign"></i> {{TotalGermanContribution | euroCurrency}}</p>
+                                                <p style="font-size: 15px;">
+                                                    <i class="fa fa-money me-3 ms-3 mt-3"></i>German Industy Partner(s) :
+                                                    <i class="fa-solid fa-euro-sign"></i> {{TotalContriGermanIndustry | euroCurrency}}</p>
+                                                <p style="font-size: 15px;">
+                                                    <i class="fa fa-money me-3 ms-3 mt-3 mb-3"></i>German Academia Partner(s) :
+                                                    <i class="fa-solid fa-euro-sign"></i> {{TotalContriGermanAcademia | euroCurrency}}</p>
+                                            </div> -->
+                                            <div class="row box-shadow-2 mt-3 ms-1 mx-2">
+                                                <p style="font-size: 15px;">
+                                                    <i class="fa fa-money me-3 ms-3 mt-3"></i>Total Funding Requested By German Partners :
+                                                    <i class="fa-solid"></i> {{TotalGermanContribution | euroCurrency}}</p>
+                                                <p style="font-size: 15px;">
+                                                    <i class="fa fa-money me-3 ms-3 mt-3"></i>German Industy Partner(s) :
+                                                    <i class="fa-solid"></i> {{TotalContriGermanIndustry | euroCurrency}}</p>
+                                                <p style="font-size: 15px;">
+                                                    <i class="fa fa-money me-3 ms-3 mt-3 mb-3"></i>German Academia Partner(s) :
+                                                    <i class="fa-solid"></i> {{TotalContriGermanAcademia | euroCurrency}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <table class="expense-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Heads</th>
+                                            <th colspan="2"></th>
+                                            <th ng-if="numberOfYears >= 1">Year-1</th>
+                                            <th ng-if="numberOfYears >= 2">Year-2</th>
+                                            <th ng-if="numberOfYears >= 3">Year-3</th>
+                                            <th>Total</th>
+                                            <th ng-show="!proposalStage"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Manpower Section -->
+                                        <tr class="section-header">
+
+                                            <td ng-show="!proposalStage" colspan="{{numberOfYears + 5}}">Manpower</td>
+                                            <td ng-show="proposalStage" colspan="{{numberOfYears + 4}}">Manpower</td>
+                                        </tr>
+                                        <tr class="sub-header">
+                                            <td>Position</td>
+                                            <td>Person Month</td>
+                                            <td>Salary/Month</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">{{manPower.Total_Year1_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">{{manPower.Total_Year1_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">{{manPower.Total_Year2_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">{{manPower.Total_Year2_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">{{manPower.Total_Year3_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">{{manPower.Total_Year3_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="accList.BillingCountry == 'India'">{{manPower.Overall_Expense || 0 | inrCurrency}}</td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'">{{manPower.Overall_Expense || 0 | euroCurrency}}</td>
+                                            <!-- <td ng-show="manPowerRecords.length > 1">Actions</td> -->
+                                            <td ng-show="manPowerRecords.length > 1 && !proposalStage">Actions</td>
+                                            <td ng-hide="manPowerRecords.length > 1 || proposalStage"></td>
+                                        </tr>
+                                        <!-- Manpower rows (single tbody for valid HTML) -->
+                                        <tr class="input-row" ng-repeat="con in manPowerRecords">
+                                            <td>
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Position__c" />
+                                            </td>
+                                            <td ng-if="accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Person_Month__c" placeholder="Person Month" />
+                                            </td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Person_Month__c" placeholder="Person Month" euro-input="true"
+                                                />
+                                            </td>
+                                            <td ng-if="accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Salary_Month__c" placeholder="Salary" />
+                                            </td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Salary_Month__c" placeholder="Salary" euro-input="true" />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('man')" />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('man')" euro-input="true"
+                                                />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('man')" />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('man')" euro-input="true"
+                                                />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('man')" />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('man')" euro-input="true"
+                                                />
+                                            </td>
+                                            <td ng-if="accList.BillingCountry == 'India'">{{con.Total_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'">{{con.Total_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-show="manPowerRecords.length > 1 && !proposalStage">
+                                                <button class="delete-row-btn" ng-disabled="proposalStage" ng-click="deleteRow($parent.$index,$index,con.Id)">
+                                                    <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                                </button>
+                                            </td>
+                                            <td ng-hide="manPowerRecords.length > 1 || proposalStage"></td>
+                                        </tr>
+                                        <tr>
+                                            <!-- <td colspan="6" style="text-align:left;" ng-show="proposalStage"> -->
+                                            <td colspan="{{numberOfYears + 4}}" style="text-align:left;" ng-show="proposalStage">
+                                                <!-- <button class="add-row-btn" ng-disabled="proposalStage" ng-click="addRow($parent.$index,$index)">
+                                                </button> -->
+                                            </td>
+                                            <!-- <td colspan="8" style="text-align:left;" ng-show="!proposalStage"> -->
+                                            <td colspan="{{numberOfYears + 5}}" style="text-align:left;" ng-show="!proposalStage">
+
+                                                <button class="add-row-btn " ng-disabled="proposalStage " ng-click="addRow($parent.$index,$index) ">
+                                                    <i class="fa-solid fa-plus "></i>Add Manpower Row
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <!-- Equipment & Accessories Section -->
+                                        <tr class="section-header ">
+                                            <!-- <td colspan="{{numberOfYears + 5}} ">Equipment &amp; Accessories</td> -->
+                                            <td ng-show="!proposalStage" colspan="{{numberOfYears + 5}}">Equipment &amp; Accessories</td>
+                                            <td ng-show="proposalStage" colspan="{{numberOfYears + 4}}">Equipment &amp; Accessories</td>
+                                        </tr>
+                                        <tr class="sub-header ">
+                                            <td>Description</td>
+                                            <td>Number</td>
+                                            <td>Unit Price</td>
+                                            <td ng-if="numberOfYears>= 1 && accList.BillingCountry == 'India'">{{equipmentTotals.Total_Year1_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">{{equipmentTotals.Total_Year1_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">{{equipmentTotals.Total_Year2_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">{{equipmentTotals.Total_Year2_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">{{equipmentTotals.Total_Year3_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">{{equipmentTotals.Total_Year3_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="accList.BillingCountry == 'India'">{{equipmentTotals.Overall_Expense || 0 | inrCurrency}}</td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'">{{equipmentTotals.Overall_Expense || 0 | euroCurrency}}</td>
+                                            <td ng-show="Equipment.length > 1 && !proposalStage">Actions</td>
+                                            <td ng-hide="Equipment.length > 1 || proposalStage"></td>
+                                        </tr>
+
+                                        <!-- Equipment rows -->
+                                        <tr class="input-row" ng-repeat="con in Equipment">
+                                            <td>
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Description__c" />
+                                            </td>
+                                            <td>
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Number__c" placeholder="Quantity" />
+                                            </td>
+                                            <td ng-if="accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Unit_Price__c" placeholder="Unit Price" />
+                                            </td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Unit_Price__c" placeholder="Unit Price" euro-input="true" />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('equi')" />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('equi')" euro-input="true"
+                                                />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('equi')" />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('equi')" euro-input="true"
+                                                />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('equi')" />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('equi')" euro-input="true"
+                                                />
+                                            </td>
+                                            <td ng-if="accList.BillingCountry == 'India'">{{con.Total_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'">{{con.Total_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-show="Equipment.length > 1 && !proposalStage">
+                                                <button class="delete-row-btn" ng-disabled="proposalStage" ng-click="deleteRowEquipment($parent.$index,$index,con.Id)">
+                                                    <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                                </button>
+                                            </td>
+                                            <td ng-hide="Equipment.length > 1 || proposalStage"></td>
+                                        </tr>
+                                        <tr>
+                                            <!-- <td colspan="6" style="text-align:left;" ng-show="proposalStage"> -->
+                                            <td colspan="{{numberOfYears + 4}}" ng-show="proposalStage"> </td>
+                                            <td colspan="{{numberOfYears + 5}}" style="text-align:left;" ng-show="!proposalStage">
+                                                <button class="add-row-btn" ng-click="addRowEquip($parent.$index,$index)">
+                                                    <i class="fa-solid fa-plus"></i>
+                                                    Add Equipment &amp; Accessories Row
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <!-- Consumables/Materials Section -->
+                                        <tr class="section-header">
+                                            <!-- <td colspan="{{numberOfYears + 5}}">Consumables/Materials</td> -->
+                                            <td ng-show="!proposalStage" colspan="{{numberOfYears + 5}}">Consumables/Materials</td>
+                                            <td ng-show="proposalStage" colspan="{{numberOfYears + 4}}">Consumables/Materials</td>
+                                        </tr>
+                                        <tr class="sub-header">
+                                            <td>Description</td>
+                                            <td>Number/Amount</td>
+                                            <td>Unit Price</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">{{consumableTotal.Total_Year1_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">{{consumableTotal.Total_Year1_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">{{consumableTotal.Total_Year2_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">{{consumableTotal.Total_Year2_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">{{consumableTotal.Total_Year3_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">{{consumableTotal.Total_Year3_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="accList.BillingCountry == 'India'">{{consumableTotal.Overall_Expense || 0 | inrCurrency}}</td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'">{{consumableTotal.Overall_Expense || 0 | euroCurrency}}</td>
+                                            <td ng-show="consumables.length > 1 && !proposalStage">Actions</td>
+                                            <td ng-hide="consumables.length > 1 || proposalStage"></td>
+                                        </tr>
+                                        <!-- Consumables rows -->
+                                        <tr class="input-row" ng-repeat="con in consumables">
+                                            <td>
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Description__c" />
+                                            </td>
+                                            <td>
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Number__c" placeholder="Quantity" />
+                                            </td>
+                                            <td ng-if="accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Unit_Price__c" placeholder="Unit Price" />
+                                            </td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Unit_Price__c" placeholder="Unit Price" euro-input="true" />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('cons')" />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('cons')" euro-input="true"
+                                                />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('cons')" />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('cons')" euro-input="true"
+                                                />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('cons')" />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('cons')" euro-input="true"
+                                                />
+                                            </td>
+                                            <td ng-if="accList.BillingCountry == 'India'">{{con.Total_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'">{{con.Total_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-show="consumables.length > 1 && !proposalStage">
+                                                <button class="delete-row-btn" ng-disabled="proposalStage" ng-click="deleteRowConsumables($parent.$index,$index,con.Id)">
+                                                    <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                                </button>
+                                            </td>
+                                            <td ng-hide="consumables.length > 1 || proposalStage"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="{{numberOfYears + 4}}" style="text-align:left;" ng-show="proposalStage"> </td>
+                                            <td colspan="{{numberOfYears + 5}}" style="text-align:left;" ng-show="!proposalStage">
+                                                <button class="add-row-btn" ng-disabled="proposalStage" ng-click="addRowCon($parent.$index,$index)">
+                                                    <i class="fa-solid fa-plus"></i>
+                                                    Add Consumables/Materials Row
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <!-- Travel &amp; Networking Section -->
+                                        <tr class="section-header">
+                                            <!-- <td colspan="{{numberOfYears + 5}}">Travel &amp; Networking</td> -->
+                                            <td ng-show="!proposalStage" colspan="{{numberOfYears + 5}}">Travel &amp; Networking</td>
+                                            <td ng-show="proposalStage" colspan="{{numberOfYears + 4}}">Travel &amp; Networking</td>
+                                        </tr>
+                                        <tr class="sub-header">
+                                            <td>Description</td>
+                                            <td>Number</td>
+                                            <td>Unit Price</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">{{travelTotal.Total_Year1_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">{{travelTotal.Total_Year1_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">{{travelTotal.Total_Year2_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">{{travelTotal.Total_Year2_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">{{travelTotal.Total_Year3_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">{{travelTotal.Total_Year3_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="accList.BillingCountry == 'India'">{{travelTotal.Overall_Expense || 0 | inrCurrency}}</td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'">{{travelTotal.Overall_Expense || 0 | euroCurrency}}</td>
+                                            <td ng-show="!proposalStage"></td>
+                                        </tr>
+
+                                        <!-- Travel &amp; Networking rows -->
+                                        <tr class="input-row" ng-repeat="con in travel">
+                                            <td>{{con.Description__c || ''}}</td>
+                                            <td ng-if="con.Description__c != 'Hosting German Partner'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Number__c" placeholder="Quantity" required="true" />
+                                            </td>
+                                            <td ng-if="con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Unit_Price__c" placeholder="Unit Price" required="true" />
+                                            </td>
+                                            <td ng-if="con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Unit_Price__c" placeholder="Unit Price" required="true" euro-input="true"
+                                                />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 1 && con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('travel')"
+                                                    required="true" />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 1 && con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('travel')" required="true"
+                                                    euro-input="true" />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 2 && con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('travel')"
+                                                    required="true" />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 2 && con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('travel')" required="true"
+                                                    euro-input="true" />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 3 && con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('travel')"
+                                                    required="true" />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 3 && con.Description__c != 'Hosting German Partner' && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('travel')" required="true"
+                                                    euro-input="true" />
+                                            </td>
+                                            <td ng-if="accList.BillingCountry == 'India' && con.Description__c != 'Hosting German Partner'">{{con.Total_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="accList.BillingCountry == 'Germany' && con.Description__c != 'Hosting German Partner'">{{con.Total_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="con.Description__c == 'Hosting German Partner'"></td>
+                                            <td ng-if="con.Description__c == 'Hosting German Partner'"></td>
+                                            <td ng-if="con.Description__c == 'Hosting German Partner' && numberOfYears >= 1"></td>
+                                            <td ng-if="con.Description__c == 'Hosting German Partner' && numberOfYears >= 2"></td>
+                                            <td ng-if="con.Description__c == 'Hosting German Partner' && numberOfYears >= 3"></td>
+                                            <td ng-if="con.Description__c == 'Hosting German Partner'"></td>
+                                            <td ng-show="!proposalStage">
+                                                <!-- <button class="delete-row-btn" ng-disabled="proposalStage" ng-click="deleteRowEquipment($parent.$index,$index,con.Id)">
+                                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                                    </button> -->
+                                            </td>
+                                        </tr>
+                                        <!-- <tr>
+                                            <td colspan="8" style="text-align:left;">
+                                                <button class="add-row-btn" ng-disabled="proposalStage" ng-click="addRowEquip($parent.$index,$index)">
+                                                    <i class="fa-solid fa-plus"></i>
+                                                    Add Travel &amp; Networking Row
+                                                </button>
+                                            </td>
+                                        </tr> -->
+
+                                        <tr>
+                                            <td colspan="{{numberOfYears + 4}}" style="text-align:left;" ng-show="proposalStage"> </td>
+                                            <td colspan="{{numberOfYears + 5}}" style="text-align:left;" ng-show="!proposalStage"> </td>
+                                        </tr>
+
+                                        <!-- Subcontract/Outsourcing Section -->
+                                        <tr class="section-header">
+                                            <!-- <td colspan="{{numberOfYears + 5}}">Outsourcing/Subcontract</td> -->
+                                            <td ng-show="!proposalStage" colspan="{{numberOfYears + 5}}">Outsourcing/Subcontract</td>
+                                            <td ng-show="proposalStage" colspan="{{numberOfYears + 4}}">Outsourcing/Subcontract</td>
+                                        </tr>
+                                        <tr class="sub-header">
+                                            <td>Description</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">{{outsourcingTotal.Total_Year1_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">{{outsourcingTotal.Total_Year1_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">{{outsourcingTotal.Total_Year2_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">{{outsourcingTotal.Total_Year2_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">{{outsourcingTotal.Total_Year3_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">{{outsourcingTotal.Total_Year3_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="accList.BillingCountry == 'India'">{{outsourcingTotal.Overall_Expense || 0 | inrCurrency}}</td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'">{{outsourcingTotal.Overall_Expense || 0 | euroCurrency}}</td>
+                                            <td ng-show="outsourcing.length > 1 && !proposalStage">Actions</td>
+                                            <td ng-hide="outsourcing.length > 1 || proposalStage"></td>
+                                        </tr>
+
+                                        <!-- Outsourcing rows -->
+                                        <tr class="input-row" ng-repeat="con in outsourcing">
+                                            <td>
+                                                <input ng-disabled="proposalStage" ng-model="con.Description__c" type="text" />
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('outsourcing')"
+                                                />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('outsourcing')"
+                                                    euro-input="true" />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('outsourcing')"
+                                                />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('outsourcing')"
+                                                    euro-input="true" />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('outsourcing')"
+                                                />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('outsourcing')"
+                                                    euro-input="true" />
+                                            </td>
+                                            <td ng-if="accList.BillingCountry == 'India'">{{con.Total_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'">{{con.Total_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-show="outsourcing.length > 1 && !proposalStage">
+                                                <button class="delete-row-btn" ng-disabled="proposalStage" ng-click="deleteRowOutsourcing($parent.$index,$index,con.Id)">
+                                                    <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                                </button>
+                                            </td>
+                                            <td ng-hide="outsourcing.length > 1 || proposalStage"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="{{numberOfYears + 4}}" style="text-align:left;" ng-show="proposalStage"> </td>
+                                            <td colspan="{{numberOfYears + 5}}" style="text-align:left;" ng-show="!proposalStage">
+                                                <button class="add-row-btn" ng-disabled="proposalStage" ng-click="addRowOutsourcing($parent.$index,$index)">
+                                                    <i class="fa-solid fa-plus"></i>
+                                                    Add Subcontract/Outsoucing Row
+                                                </button>
+                                            </td>
+                                        </tr>
+
+
+                                        <!-- Contingency Section -->
+                                        <tr ng-if="accList.BillingCountry == 'India'" class="section-header">
+                                            <!-- <td colspan="{{numberOfYears + 5}}">Contingency</td> -->
+                                            <td ng-show="!proposalStage" colspan="{{numberOfYears + 5}}">Contingency</td>
+                                            <td ng-show="proposalStage" colspan="{{numberOfYears + 4}}">Contingency</td>
+                                        </tr>
+
+                                        <tr ng-if="accList.BillingCountry == 'India'" class="sub-header">
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">{{contingencyTotal.Total_Year1_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">{{contingencyTotal.Total_Year1_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">{{contingencyTotal.Total_Year2_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">{{contingencyTotal.Total_Year2_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">{{contingencyTotal.Total_Year3_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">{{contingencyTotal.Total_Year3_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="accList.BillingCountry == 'India'">{{contingencyTotal.Overall_Expense || 0 | inrCurrency}}</td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'">{{contingencyTotal.Overall_Expense || 0 | euroCurrency}}</td>
+                                            <td ng-hide="proposalStage"></td>
+                                            <!-- <td ng-show="!proposalStage">Actions</td> -->
+                                            <!-- contingency.length > 1 || -->
+                                            <!-- <td></td> -->
+                                            <!-- <td ng-hide="proposalStage"></td> -->
+                                            <!-- contingency.length > 1 -->
+                                        </tr>
+
+                                        <!-- Contingency rows (India only) -->
+                                        <tr class="input-row" ng-if="accList.BillingCountry == 'India'" ng-repeat="con in contingency">
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('contingency')"
+                                                />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('contingency')"
+                                                    euro-input="true" />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('contingency')"
+                                                />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('contingency')"
+                                                    euro-input="true" />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('contingency')"
+                                                />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('contingency')"
+                                                    euro-input="true" />
+                                            </td>
+                                            <td ng-if="accList.BillingCountry == 'India'">{{con.Total_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'">{{con.Total_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-hide="proposalStage"></td>
+                                            <!-- <td ng-show="!proposalStage">
+                                                <!-- contingency.length > 1 &&
+                                                <button class="delete-row-btn" ng-disabled="proposalStage" ng-click="deleteRowContingency($parent.$index,$index,con.Id)">
+                                                    <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                                </button>
+                                            </td> -->
+                                            <!-- <td ng-hide="proposalStage"></td> -->
+                                            <!-- <td></td> -->
+                                            <!-- contingency.length > 1 || -->
+                                        </tr>
+                                        <tr>
+                                            <td colspan="{{numberOfYears + 4}}" style="text-align:left;" ng-show="proposalStage"> </td>
+                                            <td colspan="{{numberOfYears + 5}}" style="text-align:left;" ng-show="!proposalStage"> </td>
+                                        </tr>
+                                        <!-- <tr>
+                                            <td colspan="8" style="text-align:left;">
+                                                <button class="add-row-btn" ng-disabled="proposalStage" ng-click="addRowContingency($parent.$index,$index)">
+                                                    <i class="fa-solid fa-plus"></i>
+                                                    Add Contingency Row
+                                                </button>
+                                            </td>
+                                        </tr> -->
+
+                                        <!-- Subtotal Section -->
+                                        <tr ng-if="accList.BillingCountry == 'India' && accList.Academia__c == true" class="section-header">
+                                            <!-- <td colspan="{{numberOfYears + 5}}">Subtotal</td> -->
+                                            <td ng-show="proposalStage" colspan="{{numberOfYears + 4}}">Subtotal</td>
+                                            <td ng-show="!proposalStage" colspan="{{numberOfYears + 5}}">Subtotal</td>
+                                        </tr>
+
+                                        <tr ng-if="accList.BillingCountry == 'Germany'" class="section-header">
+                                            <!-- <td colspan="{{numberOfYears + 5}}">Subtotal</td> -->
+                                            <td ng-show="proposalStage" colspan="{{numberOfYears + 4}}">Subtotal</td>
+                                            <td ng-show="!proposalStage" colspan="{{numberOfYears + 5}}">Subtotal</td>
+                                        </tr>
+
+                                        <tr ng-if="accList.BillingCountry == 'India' && accList.Academia__c == true" class="sub-header">
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">{{subTotal.Total_Year1_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">{{subTotal.Total_Year1_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">{{subTotal.Total_Year2_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">{{subTotal.Total_Year2_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">{{subTotal.Total_Year3_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">{{subTotal.Total_Year3_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="accList.BillingCountry == 'India'">{{subTotal.Overall_Expense || 0 | inrCurrency }}</td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'">{{subTotal.Overall_Expense || 0 | euroCurrency }}</td>
+                                            <td ng-show="!proposalStage"></td>
+                                        </tr>
+
+                                        <tr ng-if="accList.BillingCountry == 'Germany'" class="sub-header">
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">{{subTotal.Total_Year1_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">{{subTotal.Total_Year1_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">{{subTotal.Total_Year2_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">{{subTotal.Total_Year2_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">{{subTotal.Total_Year3_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">{{subTotal.Total_Year3_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="accList.BillingCountry == 'India'">{{subTotal.Overall_Expense || 0 | inrCurrency }}</td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'">{{subTotal.Overall_Expense || 0 | euroCurrency }}</td>
+                                            <td ng-show="!proposalStage"></td>
+                                        </tr>
+
+                                        <tr ng-if="accList.BillingCountry == 'India' && accList.Academia__c == true">
+                                            <td colspan="{{numberOfYears + 4}}" style="text-align:left;" ng-show="proposalStage"> </td>
+                                            <td colspan="{{numberOfYears + 5}}" style="text-align:left;" ng-show="!proposalStage"> </td>
+                                        </tr>
+
+                                        <tr ng-if="accList.BillingCountry == 'Germany'">
+                                            <td colspan="{{numberOfYears + 4}}" style="text-align:left;" ng-show="proposalStage"> </td>
+                                            <td colspan="{{numberOfYears + 5}}" style="text-align:left;" ng-show="!proposalStage"> </td>
+                                        </tr>
+
+                                        <!-- Patent Filing Section -->
+                                        <tr ng-if="accList.BillingCountry != 'Germany'" class="section-header">
+                                            <!-- <td colspan="{{numberOfYears + 5}}">Patent Filing</td> -->
+                                            <td ng-show="!proposalStage" colspan="{{numberOfYears + 5}}">Patent Filing</td>
+                                            <td ng-show="proposalStage" colspan="{{numberOfYears + 4}}">Patent Filing</td>
+                                        </tr>
+
+                                        <tr ng-if="accList.BillingCountry != 'Germany'" class="sub-header">
+                                            <td>Description</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">{{patentFiling.Total_Year1_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">{{patentFiling.Total_Year1_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">{{patentFiling.Total_Year2_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">{{patentFiling.Total_Year2_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">{{patentFiling.Total_Year3_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">{{patentFiling.Total_Year3_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-if="accList.BillingCountry == 'India'">{{patentFiling.Overall_Expense || 0 | inrCurrency}}</td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'">{{patentFiling.Overall_Expense || 0 | euroCurrency}}</td>
+                                            <td ng-show="patentFilingRecords.length > 1 && !proposalStage">Actions</td>
+                                            <td ng-hide="patentFilingRecords.length > 1 || proposalStage"></td>
+                                        </tr>
+
+                                        <!-- Patent Filing rows -->
+                                        <tr ng-if="accList.BillingCountry != 'Germany'" class="input-row" ng-repeat="con in patentFilingRecords">
+                                            <td>
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Description__c" />
+                                            </td>
+                                            <td>
+                                                <!-- <input ng-disabled="proposalStage" type="text" ng-model="con.Number__c" placeholder="Quantity" /> -->
+                                            </td>
+                                            <td ng-if="accList.BillingCountry == 'India'">
+                                                <!-- <input ng-disabled="proposalStage" type="number" ng-model="con.Unit_Price__c" placeholder="Unit Price" /> -->
+                                            </td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'">
+                                                <!-- <input ng-disabled="proposalStage" type="text" ng-model="con.Unit_Price__c" placeholder="Unit Price" euro-input="true" /> -->
+                                            </td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('patent')"
+                                                />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('patent')" euro-input="true"
+                                                />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('patent')"
+                                                />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('patent')" euro-input="true"
+                                                />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('patent')"
+                                                />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('patent')" euro-input="true"
+                                                />
+                                            </td>
+                                            <td ng-if="accList.BillingCountry == 'India'">{{con.Total_Expense__c || 0 | inrCurrency}}</td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'">{{con.Total_Expense__c || 0 | euroCurrency}}</td>
+                                            <td ng-show="patentFilingRecords.length > 1 && !proposalStage">
+                                                <button class="delete-row-btn" ng-disabled="proposalStage" ng-click="deleteRowPatentFiling($parent.$index,$index,con.Id)">
+                                                    <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                                </button>
+                                            </td>
+                                            <td ng-hide="patentFilingRecords.length > 1 || proposalStage"></td>
+                                        </tr>
+                                        <tr ng-if="accList.BillingCountry != 'Germany'">
+                                            <td colspan="{{numberOfYears + 5}}" style="text-align:left;" ng-show="!proposalStage">
+                                                <button class="add-row-btn" ng-disabled="proposalStage" ng-click="addRowPatentFiling($parent.$index,$index)">
+                                                    <i class="fa-solid fa-plus"></i>Add Patent Filing Row</button>
+                                            </td>
+                                            <td colspan="{{numberOfYears + 4}}" style="text-align:left;" ng-show="proposalStage">
+                                            </td>
+                                        </tr>
+
+                                        <!-- Overhead Charges Section -->
+                                        <tr ng-if="accList.BillingCountry == 'India' && accList.Academia__c == true" class="section-header">
+                                            <!-- <td colspan="{{numberOfYears + 5}}">Overhead charges</td> -->
+                                            <td ng-show="!proposalStage" colspan="{{numberOfYears + 5}}">Overhead charges</td>
+                                            <td ng-show="proposalStage" colspan="{{numberOfYears + 4}}">Overhead charges</td>
+                                        </tr>
+                                        <tr ng-if="accList.BillingCountry == 'Germany'" class="section-header">
+                                            <!-- <td colspan="{{numberOfYears + 5}}">Projektpauschale</td> -->
+                                            <td ng-show="!proposalStage" colspan="{{numberOfYears + 5}}">Projektpauschale</td>
+                                            <td ng-show="proposalStage" colspan="{{numberOfYears + 4}}">Projektpauschale</td>
+                                        </tr>
+
+                                        <tr ng-if="accList.BillingCountry == 'India' && accList.Academia__c == true" class="sub-header">
+                                            <td>Overhead charges (10%) excluding "Equipment &amp; Accessories"</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">{{overheadCharges.Total_Year1_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">{{overheadCharges.Total_Year1_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">{{overheadCharges.Total_Year2_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">{{overheadCharges.Total_Year2_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">{{overheadCharges.Total_Year3_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">{{overheadCharges.Total_Year3_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="accList.BillingCountry == 'India'">{{overheadCharges.Overall_Expense || 0 | inrCurrency }}</td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'">{{overheadCharges.Overall_Expense || 0 | euroCurrency }}</td>
+                                            <td ng-show="overhead.length > 1 && !proposalStage">Actions</td>
+                                            <td ng-hide="overhead.length > 1 || proposalStage"></td>
+                                        </tr>
+
+                                        <tr ng-if="accList.BillingCountry == 'Germany'" class="sub-header">
+                                            <td ng-if="accList.Academia__c == true">Projektpauschale (20% of all costs)</td>
+                                            <td ng-if="accList.Industry__c == true">Projektpauschale (20% on personnel costs)</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">{{overheadCharges.Total_Year1_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">{{overheadCharges.Total_Year1_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">{{overheadCharges.Total_Year2_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">{{overheadCharges.Total_Year2_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">{{overheadCharges.Total_Year3_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">{{overheadCharges.Total_Year3_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="accList.BillingCountry == 'India'">{{overheadCharges.Overall_Expense || 0 | inrCurrency }}</td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'">{{overheadCharges.Overall_Expense || 0 | euroCurrency }}</td>
+                                            <td ng-show="overhead.length > 1 && !proposalStage">Actions</td>
+                                            <td ng-hide="overhead.length > 1 || proposalStage"></td>
+                                        </tr>
+
+                                        <!-- Overhead rows -->
+                                        <tr class="input-row" ng-if="(accList.BillingCountry=='India' && accList.Academia__c==true) || (accList.BillingCountry=='Germany')"
+                                            ng-repeat="con in overhead">
+                                            <td>
+                                                <input ng-disabled="proposalStage" ng-model="con.Description__c
+                                                " placeholder="Description" type="text " />
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td ng-if="numberOfYears>= 1 && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('overhead')"
+                                                />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('overhead')"
+                                                    euro-input="true" />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('overhead')"
+                                                />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('overhead')"
+                                                    euro-input="true" />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('overhead')"
+                                                />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('overhead')"
+                                                    euro-input="true" />
+                                            </td>
+                                            <td ng-if="accList.BillingCountry == 'India'">{{con.Total_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'">{{con.Total_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-show="overhead.length > 1">
+                                                <button class="delete-row-btn" ng-disabled="proposalStage" ng-click="deleteRowOverhead($parent.$index,$index,con.Id)">
+                                                    <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                                </button>
+                                            </td>
+                                            <td ng-hide="overhead.length > 1 || proposalStage"></td>
+                                        </tr>
+                                        <!-- <tbody ng-if="accList.BillingCountry == 'Germany'" id="overhead-body">
+                                            <tr class="input-row" ng-repeat="con in overhead">
+                                                <td><input ng-disabled="proposalStage" ng-model="con.Description__c" placeholder="Description" type="text"/></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td><input ng-disabled="proposalStage" type="number" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('overhead')"/></td>
+                                                <td><input ng-disabled="proposalStage" type="number" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('overhead')"/></td>
+                                                <td><input ng-disabled="proposalStage" type="number" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('overhead')"/></td>
+                                                <td ng-if="accList.BillingCountry == 'India'">{{con.Total_Expense__c || 0 | inrCurrency }}</td>
+                                                <td ng-if="accList.BillingCountry == 'Germany'">{{con.Total_Expense__c || 0 | euroCurrency }}</td>
+                                                <td ng-show="overhead.length > 1">
+                                                    <button class="delete-row-btn" ng-disabled="proposalStage" ng-click="deleteRowOverhead($parent.$index,$index,con.Id)">
+                                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                                    </button>
+                                                </td>
+                                                <td ng-hide="overhead.length > 1"></td>
+                                            </tr>
+                                        </tbody> -->
+                                        <!-- <tr>
+                                            <td colspan="8" style="text-align:left;">
+                                                <button class="add-row-btn" ng-disabled="proposalStage" ng-click="addRowOverhead($parent.$index,$index)">
+                                                    <i class="fa-solid fa-plus"></i>
+                                                    Add Overhead Row
+                                                </button>
+                                            </td>
+                                        </tr> -->
+
+                                        <!-- Total Section -->
+                                        <tr class="section-header">
+                                            <!-- <td colspan="{{numberOfYears + 5}}">Total</td> -->
+                                            <td ng-show="!proposalStage" colspan="{{numberOfYears + 5}}">Total</td>
+                                            <td ng-show="proposalStage" colspan="{{numberOfYears + 4}}">Total</td>
+                                        </tr>
+                                        <tr class="sub-header">
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">{{totals.Total_Year1_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">{{totals.Total_Year1_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">{{totals.Total_Year2_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">{{totals.Total_Year2_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">{{totals.Total_Year3_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">{{totals.Total_Year3_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-if="accList.BillingCountry == 'India'">{{totals.Overall_Expense || 0 | inrCurrency }}</td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'">{{totals.Overall_Expense || 0 | euroCurrency }}</td>
+                                            <td ng-show="!proposalStage"></td>
+                                        </tr>
+                                        <tr ng-if="accList.Industry__c == true" class="input-row">
+                                            <td>IGSTC Funding</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="igstcFunding.Year1_Expense__c" ng-blur="calculateOtherField('igstc')"
+                                                />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="igstcFunding.Year1_Expense__c" ng-blur="calculateOtherField('igstc')"
+                                                    euro-input="true" />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="igstcFunding.Year2_Expense__c" ng-blur="calculateOtherField('igstc')"
+                                                />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="igstcFunding.Year2_Expense__c" ng-blur="calculateOtherField('igstc')"
+                                                    euro-input="true" />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="igstcFunding.Year3_Expense__c" ng-blur="calculateOtherField('igstc')"
+                                                />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="igstcFunding.Year3_Expense__c" ng-blur="calculateOtherField('igstc')"
+                                                    euro-input="true" />
+                                            </td>
+                                            <td ng-if="accList.BillingCountry == 'India'">{{igstcFunding.Total_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'">{{igstcFunding.Total_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-hide="proposalStage"></td>
+                                        </tr>
+
+                                        <tr ng-if="accList.Industry__c == true" class="input-row">
+                                            <td>Industry Contribution</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="industryContr.Year1_Expense__c" ng-blur="calculateOtherField('ic')"
+                                                />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 1 && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="industryContr.Year1_Expense__c" ng-blur="calculateOtherField('ic')"
+                                                    euro-input="true" />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="industryContr.Year2_Expense__c" ng-blur="calculateOtherField('ic')"
+                                                />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 2 && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="industryContr.Year2_Expense__c" ng-blur="calculateOtherField('ic')"
+                                                    euro-input="true" />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'India'">
+                                                <input ng-disabled="proposalStage" type="number" ng-model="industryContr.Year3_Expense__c" ng-blur="calculateOtherField('ic')"
+                                                />
+                                            </td>
+                                            <td ng-if="numberOfYears >= 3 && accList.BillingCountry == 'Germany'">
+                                                <input ng-disabled="proposalStage" type="text" ng-model="industryContr.Year3_Expense__c" ng-blur="calculateOtherField('ic')"
+                                                    euro-input="true" />
+                                            </td>
+                                            <td ng-if="accList.BillingCountry == 'India'">{{industryContr.Total_Expense__c || 0 | inrCurrency }}</td>
+                                            <td ng-if="accList.BillingCountry == 'Germany'">{{industryContr.Total_Expense__c || 0 | euroCurrency }}</td>
+                                            <td ng-hide="proposalStage"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <!-- <div class="accordion" id="accordionExample">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingOne">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
+                                                aria-controls="collapseOne">
+                                                <h4>Manpower</h4>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div class="row ms-3 me-3">
+                                                    <table class="table table-bordered table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="p-2">Details</th>
+                                                                <th class="p-2" width="23%">Expense Description</th> -->
+                                <!-- <th class="p-2">Person Per Month</th>
+                                                                <th class="p-2">Salary/Month</th> -->
+                                <!-- <th class="p-2">Year 1</th>
+                                                                <th class="p-2">Year 2</th>
+                                                                <th class="p-2">Year 3</th>
+                                                                <th class="p-2">Total</th>
+                                                                <th nowrap="true" ng-hide="proposalStage" width="9%" class="p-2">
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="con in manPowerRecords">
+                                                                <td class="p-4">
+                                                                    <label>{{$index + 1}}</label>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-disabled="proposalStage" id="Man Power" ng-model="con.Description__c" />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td> -->
+                                <!-- <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Unit_Price__c" ng-disabled="proposalStage" ng-keyup="calculateYearField('man')"
+                                                                            ng-change="calculateYearField('man')" ng-keypress="calculateYearField('man')"
+                                                                        />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td> -->
+                                <!-- <td> -->
+                                <!--<span class="required-asterisk" style="color:red;">*</span>-->
+                                <!-- <label>
+                                                                        <input class="form-control" ng-model="con.Multiplier__c" ng-disabled="proposalStage" ng-keyup="calculateYearField('man')"
+                                                                            ng-change="calculateYearField('man')" ng-keypress="calculateYearField('man')"
+                                                                        />
+                                                                    </label>
+                                                                </td> -->
+                                <!-- <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Year1_Expense__c" ng-disabled="proposalStage"
+                                                                            ng-blur="calculateOtherField('man')"
+                                                                        />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Year2_Expense__c" ng-disabled="proposalStage"
+                                                                            ng-blur="calculateOtherField('man')"
+                                                                        />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Year3_Expense__c" ng-disabled="proposalStage"
+                                                                            ng-blur="calculateOtherField('man')"
+                                                                        />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Total_Expense__c" ng-disabled="true" />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td class="text-center" ng-hide="proposalStage">
+
+                                                                    <a type="button" ng-click="addRow($parent.$index,$index)">
+                                                                        <i class="fa-solid fa-circle-plus fa-2x text-success"></i>
+                                                                    </a>
+                                                                    <a type="button" ng-click="deleteRow($parent.$index,$index,con.Id)">
+                                                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <div class="mb-3">
+                                                        <button type="button" ng-hide="proposalStage" class="btn btn-primary background-theme" ng-click="submitExpense('Man_Power');">Submit</button> -->
+                                <!-- <button type="button" class="btn btn-primary background-theme" ng-click="disableExpenseModule($index)">Back</button> -->
+                                <!-- </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingTwo">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
+                                                aria-controls="collapseTwo">
+                                                <h4>Consumables</h4>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div class="row ms-3 me-3">
+                                                    <table class="table table-bordered table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="p-2">Details</th>
+                                                                <th class="p-2" width="23%">Expense Description</th> -->
+                                <!-- <th class="p-2">Person Per Month</th>
+                                                                <th class="p-2">Salary/Month</th> -->
+                                <!-- <th class="p-2">Year 1</th>
+                                                                <th class="p-2">Year 2</th>
+                                                                <th class="p-2">Year 3</th>
+                                                                <th class="p-2">Total</th>
+                                                                <th nowrap="true" ng-hide="proposalStage" width="9%" class="p-2">
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="con in consumables">
+                                                                <td class="p-4">
+                                                                    <label>{{$index + 1}}</label>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-disabled="proposalStage" id="Man Power" ng-model="con.Description__c" />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td> -->
+                                <!-- <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Unit_Price__c" ng-disabled="proposalStage" ng-keyup="calculateYearField('cons')"
+                                                                            ng-change="calculateYearField('cons')" ng-keypress="calculateYearField('cons')"
+                                                                            required="true" ng-required="consortia.Website" />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td> -->
+                                <!-- <td> -->
+                                <!--<span class="required-asterisk" style="color:red;">*</span>-->
+                                <!-- <label>
+                                                                        <input class="form-control" ng-disabled="proposalStage" ng-model="con.Multiplier__c" required="true" ng-required="con.Email"
+                                                                            ng-keyup="calculateYearField('cons')" ng-change="calculateYearField('cons')"
+                                                                            ng-keypress="calculateYearField('cons')" />
+                                                                    </label>
+                                                                </td> -->
+                                <!-- <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('cons')" ng-disabled="proposalStage"
+                                                                        />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('cons')" ng-disabled="proposalStage"
+                                                                        />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('cons')" ng-disabled="proposalStage"
+                                                                        />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Total_Expense__c" ng-disabled="true" />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td class="text-center" ng-hide="proposalStage">
+
+                                                                    <a type="button" ng-click="addRowCon($parent.$index,$index)">
+                                                                        <i class="fa-solid fa-circle-plus fa-2x text-success"></i>
+                                                                    </a>
+                                                                    <a type="button" ng-click="deleteRowConsumables($parent.$index,$index,con.Id)">
+                                                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <div>
+                                                        <button type="button" class="btn btn-primary background-theme" ng-hide="proposalStage" ng-click="submitExpense('consumables');">Submit</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingThree">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false"
+                                                aria-controls="collapseThree">
+                                                <h4>Equipment</h4>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div class="row ms-3 me-3">
+                                                    <table class="table table-bordered table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="p-2">Details</th>
+                                                                <th class="p-2" width="23%">Expense Description</th> -->
+                                <!-- <th class="p-2">Person Per Month</th>
+                                                                <th class="p-2">Salary/Month</th> -->
+                                <!-- <th class="p-2">Year 1</th>
+                                                                <th class="p-2">Year 2</th>
+                                                                <th class="p-2">Year 3</th>
+                                                                <th class="p-2">Total</th>
+                                                                <th nowrap="true" width="9%" ng-hide="proposalStage" class="p-2">
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="con in Equipment">
+                                                                <td class="p-4">
+                                                                    <label>{{$index + 1}}</label>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-disabled="proposalStage || con.Description='Own Contribution'" id="Man Power" ng-model="con.Description__c" />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td> -->
+                                <!-- <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Unit_Price__c" ng-disabled="proposalStage" required="true" ng-keyup="calculateYearField('equi')"
+                                                                            ng-change="calculateYearField('equi')" ng-keypress="calculateYearField('equi')"
+                                                                            ng-required="consortia.Website" />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td> -->
+                                <!--<span class="required-asterisk" style="color:red;">*</span>-->
+                                <!-- <label>
+                                                                        <input class="form-control" ng-disabled="proposalStage" ng-model="con.Multiplier__c" required="true" ng-keyup="calculateYearField('equi')"
+                                                                            ng-change="calculateYearField('equi')" ng-keypress="calculateYearField('equi')"
+                                                                            ng-required="con.Email" />
+                                                                    </label>
+                                                                </td> -->
+                                <!-- <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('equi')" ng-disabled="proposalStage"
+                                                                        />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('equi')" ng-disabled="proposalStage"
+                                                                        />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('equi')" ng-disabled="proposalStage"
+                                                                        />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Total_Expense__c" ng-disabled="true" />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td class="text-center" ng-hide="proposalStage">
+
+                                                                    <a type="button" ng-click="addRowEquip($parent.$index,$index)">
+                                                                        <i class="fa-solid fa-circle-plus fa-2x text-success"></i>
+                                                                    </a>
+                                                                    <a type="button" ng-click="deleteRowEquipment($parent.$index,$index,con.Id)">
+                                                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <div>
+                                                        <button type="button" class="btn btn-primary background-theme" ng-hide="proposalStage" ng-click="submitExpense('quipment');">Submit</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingFour">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false"
+                                                aria-controls="collapseFour">
+                                                <h4>Travel/Networking</h4>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div class="row ms-3 me-3">
+                                                    <table class="table table-bordered table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="p-2">Details</th>
+                                                                <th class="p-2" width="23%">Expense Description</th> -->
+                                <!-- <th class="p-2">Person Per Month</th>
+                                                                <th class="p-2">Salary/Month</th> -->
+                                <!-- <th class="p-2">Year 1</th>
+                                                                <th class="p-2">Year 2</th>
+                                                                <th class="p-2">Year 3</th>
+                                                                <th class="p-2">Total</th>
+                                                                <th nowrap="true" ng-hide="proposalStage" width="9%" class="p-2">
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="con in travel">
+                                                                <td class="p-4">
+                                                                    <label>{{$index + 1}}</label>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-disabled="proposalStage" id="Man Power" ng-model="con.Description__c" />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td> -->
+                                <!-- <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Unit_Price__c" ng-keyup="calculateYearField('travel')" ng-change="calculateYearField('travel')"
+                                                                            ng-keypress="calculateYearField('travel')" ng-disabled="proposalStage"
+                                                                            required="true" ng-required="consortia.Website" />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td> -->
+                                <!--<span class="required-asterisk" style="color:red;">*</span>-->
+                                <!-- <label>
+                                                                        <input class="form-control" ng-disabled="proposalStage" ng-model="con.Multiplier__c" ng-keyup="calculateYearField('travel')"
+                                                                            ng-change="calculateYearField('travel')" ng-keypress="calculateYearField('travel')"
+                                                                            required="true" ng-required="con.Email" />
+                                                                    </label>
+                                                                </td> -->
+                                <!-- <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('travel')" ng-disabled="proposalStage"
+                                                                        />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('travel')" ng-disabled="proposalStage"
+                                                                        />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('travel')" ng-disabled="proposalStage"
+                                                                        />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Total_Expense__c" ng-disabled="true" />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td class="text-center" ng-hide="proposalStage">
+
+                                                                    <a type="button" ng-click="addRowTravel($parent.$index,$index)">
+                                                                        <i class="fa-solid fa-circle-plus fa-2x text-success"></i>
+                                                                    </a>
+                                                                    <a type="button" ng-click="deleteRowTravel($parent.$index,$index,con.Id)">
+                                                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <div>
+                                                        <button type="button" class="btn btn-primary background-theme" ng-hide="proposalStage" ng-click="submitExpense('travel');">Submit</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingFive">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false"
+                                                aria-controls="collapseFive">
+                                                <h4>Outsourcing/Sub Contract</h4>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div class="row ms-3 me-3">
+                                                    <table class="table table-bordered table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="p-2">Details</th>
+                                                                <th class="p-2" width="23%">Expense Description</th> -->
+                                <!-- <th class="p-2">Person Per Month</th>
+                                                                <th class="p-2">Salary/Month</th> -->
+                                <!-- <th class="p-2">Year 1</th>
+                                                                <th class="p-2">Year 2</th>
+                                                                <th class="p-2">Year 3</th>
+                                                                <th class="p-2">Total</th>
+                                                                <th nowrap="true" ng-hide="proposalStage" width="9%" class="p-2">
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="con in outsourcing">
+                                                                <td class="p-4">
+                                                                    <label>{{$index + 1}}</label>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-disabled="proposalStage" id="Man Power" ng-model="con.Description__c" />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td> -->
+                                <!-- <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Unit_Price__c" ng-keyup="calculateYearField('other')" ng-change="calculateYearField('other')"
+                                                                            ng-keypress="calculateYearField('other')" ng-disabled="proposalStage"
+                                                                            required="true" ng-required="consortia.Website" />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td> -->
+                                <!--<span class="required-asterisk" style="color:red;">*</span>-->
+                                <!-- <label>
+                                                                        <input class="form-control" ng-disabled="proposalStage" ng-model="con.Multiplier__c" ng-keyup="calculateYearField('other')"
+                                                                            ng-change="calculateYearField('other')" ng-keypress="calculateYearField('other')"
+                                                                            required="true" ng-required="con.Email" />
+                                                                    </label>
+                                                                </td> -->
+                                <!-- <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('outsourcing')" ng-disabled="proposalStage"
+                                                                        />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('outsourcing')" ng-disabled="proposalStage"
+                                                                        />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('outsourcing')" ng-disabled="proposalStage"
+                                                                        />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Total_Expense__c" ng-disabled="true" />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td class="text-center" ng-hide="proposalStage">
+
+                                                                    <a type="button" ng-click="addRowOutsourcing($parent.$index,$index)">
+                                                                        <i class="fa-solid fa-circle-plus fa-2x text-success"></i>
+                                                                    </a>
+                                                                    <a type="button" ng-click="deleteRowOutsourcing($parent.$index,$index,con.Id)">
+                                                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <div>
+                                                        <button type="button" ng-hide="proposalStage" class="btn btn-primary background-theme" ng-click="submitExpense('outsourcing');">Submit</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingSix">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false"
+                                                aria-controls="collapseSix">
+                                                <h4>Contingency</h4>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div class="row ms-3 me-3">
+                                                    <table class="table table-bordered table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="p-2">Details</th>
+                                                                <th class="p-2" width="23%">Expense Description</th> -->
+                                <!-- <th class="p-2">Person Per Month</th>
+                                                                <th class="p-2">Salary/Month</th> -->
+                                <!-- <th class="p-2">Year 1</th>
+                                                                <th class="p-2">Year 2</th>
+                                                                <th class="p-2">Year 3</th>
+                                                                <th class="p-2">Total</th>
+                                                                <th nowrap="true" ng-hide="proposalStage" width="9%" class="p-2">
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="con in contingency">
+                                                                <td class="p-4">
+                                                                    <label>{{$index + 1}}</label>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-disabled="proposalStage" id="Man Power" ng-model="con.Description__c" />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td> -->
+                                <!-- <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Unit_Price__c" ng-keyup="calculateYearField('other')" ng-change="calculateYearField('other')"
+                                                                            ng-keypress="calculateYearField('other')" ng-disabled="proposalStage"
+                                                                            required="true" ng-required="consortia.Website" />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td> -->
+                                <!--<span class="required-asterisk" style="color:red;">*</span>-->
+                                <!-- <label>
+                                                                        <input class="form-control" ng-disabled="proposalStage" ng-model="con.Multiplier__c" ng-keyup="calculateYearField('other')"
+                                                                            ng-change="calculateYearField('other')" ng-keypress="calculateYearField('other')"
+                                                                            required="true" ng-required="con.Email" />
+                                                                    </label>
+                                                                </td> -->
+                                <!-- <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('contingency')" ng-disabled="proposalStage"
+                                                                        />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('contingency')" ng-disabled="proposalStage"
+                                                                        />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('contingency')" ng-disabled="proposalStage"
+                                                                        />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Total_Expense__c" ng-disabled="true" />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td class="text-center" ng-hide="proposalStage">
+
+                                                                    <a type="button" ng-click="addRowContingency($parent.$index,$index)">
+                                                                        <i class="fa-solid fa-circle-plus fa-2x text-success"></i>
+                                                                    </a>
+                                                                    <a type="button" ng-click="deleteRowContingency($parent.$index,$index,con.Id)">
+                                                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <div>
+                                                        <button type="button" ng-hide="proposalStage" class="btn btn-primary background-theme" ng-click="submitExpense('contingency');">Submit</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingSeven">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false"
+                                                aria-controls="collapseSeven">
+                                                <h4>Overhead</h4>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div class="row ms-3 me-3">
+                                                    <table class="table table-bordered table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="p-2">Details</th>
+                                                                <th class="p-2" width="23%">Expense Description</th> -->
+                                <!-- <th class="p-2">Person Per Month</th>
+                                                                <th class="p-2">Salary/Month</th> -->
+                                <!-- <th class="p-2">Year 1</th>
+                                                                <th class="p-2">Year 2</th>
+                                                                <th class="p-2">Year 3</th>
+                                                                <th class="p-2">Total</th>
+                                                                <th nowrap="true" ng-hide="proposalStage" width="9%" class="p-2">
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="con in overhead">
+                                                                <td class="p-4">
+                                                                    <label>{{$index + 1}}</label>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-disabled="proposalStage" id="Man Power" ng-model="con.Description__c" />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td> -->
+                                <!-- <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Unit_Price__c" ng-keyup="calculateYearField('other')" ng-change="calculateYearField('other')"
+                                                                            ng-keypress="calculateYearField('other')" ng-disabled="proposalStage"
+                                                                            required="true" ng-required="consortia.Website" />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td> -->
+                                <!--<span class="required-asterisk" style="color:red;">*</span>-->
+                                <!-- <label>
+                                                                        <input class="form-control" ng-disabled="proposalStage" ng-model="con.Multiplier__c" ng-keyup="calculateYearField('other')"
+                                                                            ng-change="calculateYearField('other')" ng-keypress="calculateYearField('other')"
+                                                                            required="true" ng-required="con.Email" />
+                                                                    </label>
+                                                                </td> -->
+                                <!-- <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Year1_Expense__c" ng-blur="calculateOtherField('overhead')" ng-disabled="proposalStage"
+                                                                        />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Year2_Expense__c" ng-blur="calculateOtherField('overhead')" ng-disabled="proposalStage"
+                                                                        />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Year3_Expense__c" ng-blur="calculateOtherField('overhead')" ng-disabled="proposalStage"
+                                                                        />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input class="form-control" ng-model="con.Total_Expense__c" ng-disabled="true" />
+                                                                    </label>
+                                                                    <br/>
+                                                                </td>
+                                                                <td class="text-center" ng-hide="proposalStage">
+
+                                                                    <a type="button" ng-click="addRowOverhead($parent.$index,$index)">
+                                                                        <i class="fa-solid fa-circle-plus fa-2x text-success"></i>
+                                                                    </a>
+                                                                    <a type="button" ng-click="deleteRowOverhead($parent.$index,$index,con.Id)">
+                                                                        <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <div>
+                                                        <button type="button" ng-hide="proposalStage" class="btn btn-primary background-theme" ng-click="submitExpense('overhead');">Submit</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+                            </div>
+
+                            <div class="row mt-4 mb-4">
+                                <!-- Condition removed for Submit and Next Button, because we were not able to save the data. -->
+                                <div class="col-md-12">
+                                    <!-- <button type="button" class="blue-btn float-end ms-3" ng-click="redirectPageURL('Declartion_2plus2')">Save and Next</button> -->
+                                    <button type="button" class="blue-btn float-end ms-3" ng-click="submitExpense()">Save and Next</button>
+                                    <button type="button" class="blue-bordered-btn float-end" ng-click="redirectPageURL('ProjectDetail')">Previous</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/i18n/angular-locale_hi-in.min.js"></script>
+            </div>
+        </body>
+    </div>
+
+    </html>
+
+</apex:page>

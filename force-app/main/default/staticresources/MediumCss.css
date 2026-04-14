@@ -1,0 +1,78 @@
+.navbar-nav li a {
+    font-size: 14px;
+}
+
+.banner h1, .become-mentor h1, .about-us h1, .recruiter h1 {
+    font-size: 45px;
+}
+.heading-border, .heading-border-center {
+    font-size: 40px;
+}
+
+.banner p, .about-us p {
+    font-size: 17px;
+    padding: 16px 50px 16px 0;
+}
+
+.options {
+    font-size: 15px;
+}
+
+.our-mentor, .our-academic {
+    grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+}
+
+
+/* ------------------------- Become a Mentor ------------------------- */
+.become-mentor p {
+    font-size: 22px;
+}
+
+.about-mentor p {
+    font-size: 18px;
+}
+
+/* ------------------------- Meet Mentor ------------------------- */
+.about-us {
+    padding: 70px 0 100px 0;
+}
+
+    .about-us p {
+        padding-right: 0;
+    }
+
+    .about-us .caption {
+        bottom: -40px;
+    }
+
+/* ------------------------- Why Hire ------------------------- */
+.login .login-form {
+    width: 60%;
+}
+.carousel-banner {
+    min-height: calc(100vh - 124px);
+    align-items: center;
+    display: flex;
+}
+.carousel-banner p {
+    padding: 30px 90px 15px 0;
+}
+.about {
+    width: 55%;
+}
+* -------------------------- Dashboard -------------------------- */
+.sidebar {
+    margin-left: 0;
+}
+.sidebar.active {
+    margin-left: -100%;
+}
+.right-side {
+    width: calc(100% - 240px);
+    height: calc(100vh - 75px);
+    margin: 0 0 0 240px;
+}
+.right-side.toggle {
+    width: 100%;
+    margin: 0;
+}

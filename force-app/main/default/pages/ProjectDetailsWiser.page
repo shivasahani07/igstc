@@ -1,0 +1,166 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="IndustrialFellowshipController">
+<html>
+ <div ng-controller="ProjectDetailsWiser_Ctrl">
+<head>
+     <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.5.16/textAngular.css" crossorigin="anonymous" />            
+            <script>
+                var userId = '{!$CurrentPage.parameters.id}';
+            </script>
+            <style>
+               .ta-editor {
+                    min-height: 150px;
+                    height: auto;
+                    overflow: auto;
+                }
+            </style>
+</head> 
+
+<body>
+
+     <div class="container px-4">
+          <div class="card h-100 m-5">
+              <div class="card-header">
+                  <h2 class="p-3">
+                      <b>Project Details</b>
+                  </h2>
+              </div>
+              <div class="card-text m-3">
+                  <div class="row mt-3">
+                      <div class="col-md-12">
+                          <h4 class="heading-border-1">Purpose for applying to SING</h4>
+                      </div>
+                  </div>
+                  <div class="row mt-3">
+                      <div class="col-md-12">
+                      <div class="form-check">
+                          <input class="form-check-input" type="radio" name="flexRadioDefault" ng-model="objProposal.Purpose_for_applying__c" checked="checked"/>
+                          <label class="form-check-label">
+                              Joint patent applications.
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="flexRadioDefault" ng-model="objProposal.Purpose_for_applying__c"/>
+                          <label class="form-check-label">
+                              To develop a working prototype based on a joint patent.
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="flexRadioDefault2" ng-model="objProposal.Purpose_for_applying__c"/>
+                          <label class="form-check-label">
+                              Seed funding for an innovative idea resulting from the networking and connect facilitated through IGSTC.
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="flexRadioDefault" ng-model="objProposal.Purpose_for_applying__c"/>
+                          <label class="form-check-label">
+                              To develop a working prototype based on a joint patent.
+                          </label>
+                        </div>
+
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="flexRadioDefault" ng-model="objProposal.Purpose_for_applying__c"/>
+                          <label class="form-check-label">
+                              Support towards utilization of mega/lab facilities for experiments.
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="flexRadioDefault" ng-model="objProposal.Purpose_for_applying__c"/>
+                          <label class="form-check-label">
+                              German and Indian visiting fellows (researchers and academicians) who need additional support to expand on<br/> networking visits and discussions in their visiting countries.
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="flexRadioDefault" ng-model="objProposal.Purpose_for_applying__c"/>
+                          <label class="form-check-label">
+                              Registration cost for participation in internationally reputed
+scientific conferences in India/Germany <br/>(Only on acceptance of
+paper. Poster presentation and invitation as a speaker may not
+be considered).
+                          </label>
+                        </div>
+                        
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="flexRadioDefault" ng-model="objProposal.Purpose_for_applying__c"/>
+                          <label class="form-check-label">
+                              Activity related to technology demonstration of a product.
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="flexRadioDefault" ng-model="objProposal.Purpose_for_applying__c"/>
+                          <label class="form-check-label">
+                              A new concept that can enhance networking or collaboration.
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="flexRadioDefault" ng-model="objProposal.Purpose_for_applying__c"/>
+                          <label class="form-check-label">
+                              Conducting intergroup/institutional joint experiments.
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="flexRadioDefault" ng-model="objProposal.Purpose_for_applying__c"/>
+                          <label class="form-check-label">
+                              Partial support towards organization of/participation in an
+event.
+
+                          </label>
+                        </div>
+
+                      </div>
+                  </div>
+                  <div class="row mt-4 mb-5">
+                      <div class="col-md-12"><div style="line-height:3px; border-bottom:solid #ddd 1px;"></div></div>
+                    </div>
+                  <div class="row mt-3">
+                      <div class="col-md-4">
+                          <label>Brief description of the organisation (Max 100 words without space)</label>
+                          <input type="text" ng-model="objProposal.Brief_Statement_of_Purpose__c" class="form-control" />
+                      </div>
+                      <div class="col-md-4">
+                          <label>Broad area of research</label>
+                          <input type="text" ng-model="objProposal.Proposed_area__c" class="form-control" />
+                      </div>
+                      <div class="col-md-4">
+                          <label>Keywords</label>
+                          <input type="text" ng-model="objProposal.KeyWords__c" class="form-control" />
+                      </div>
+                  </div>
+                  <div class="row mt-3">
+                      <div class="col-md-4">
+                          <label>Abstract of proposed work (Max 200 words)</label>
+                          <input type="text" ng-model="objProposal.Abstract_of_proposed__c" class="form-control" />
+                      </div>
+                      <div class="col-md-4">
+                          <label>How your proposal will enhance Indo-German Colloboration</label>
+                          <input type="text" ng-model="objProposal.Indo_German_Colloboration__c" class="form-control" />
+                      </div>
+                  </div>
+                  <div class="row mt-3">
+                      <div class="col-md-12">
+                          <label>Project Description (including time schedule, budget, expected outcome, etc.) max 2500 words</label>
+                          <div text-angular="text-angular" ng-model="objProposal.Project_Description__c" name="htmlcontent"  ta-disabled='true'
+                          ng-readonly="true"></div>
+                      </div>
+                  </div>
+                  <div class="row mt-3">
+                      <div class="col-md-12">
+                          <button class="blue-btn float-end" ng-click="saveProjectDetailsWiser()" type="button">
+                              <i class="fa-solid fa-check me-2"></i>Submit</button>
+                          <button class="blue-bordered-btn float-end me-2" ng-click="clickPreviousWiser()" type="button">
+                              <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+     
+          
+     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+     <script src='http://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.2/textAngular-sanitize.min.js'></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.5.16/textAngular.min.js"  crossorigin="anonymous"></script>
+</body>
+
+</div>    
+</html>
+</apex:page>

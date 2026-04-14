@@ -1,0 +1,577 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+    <html>
+    <div ng-controller="personalInfo_ctrl">
+
+        <head>
+            <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css" rel="stylesheet"/>
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+            <script>
+            // var countryCode;
+            
+			// 	$("#country-field").text('--Country Code--');    
+            
+            // 	$( document.body ).on( 'click', '.dropdown-menu li', function( event ) {
+            //       var $target = $( event.currentTarget );
+                    
+            //        console.log('XXX---',$target.text());
+            //        countryCode = $target.text();
+                    
+            //         let code = countryCode.split(' ');
+                    
+            //        console.log('XXX---',countryCode);
+            //         console.log('XXX2---',code[1]);
+                    
+                    
+            
+            //       $target.closest( '.btn-group' )
+            //          .find( '[data-bind="label"]' ).text( $target.text() )
+            //             .end()
+            //          .children( '.dropdown-toggle' ).dropdown( 'toggle' );
+            
+            //       return false;            
+            //    });
+            </script>
+        </head>
+
+        <body ng-init="getDependentPicklistValues()">
+
+            <div class="container mt-5">
+                <div class="row mx-5">
+                    <div class="col-md-12">
+                        <div class="tab-link" ng-show="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Pairing_Page')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-friends"></i>
+                                        </div>
+                                        <span>Pairing Details</span>
+                                    </a>
+                                </li>
+                                
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Personal_Information')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Personal Information</span>
+                                    </a>
+                                </li>
+                                 <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ParentOrganization')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-building"></i>
+                                        </div>
+                                        <span>Parent Organization Details</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Education_Qualification')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-graduate"></i>
+                                        </div>
+                                        <span>Educational Qualifications</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Employment_Details')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-edit"></i>
+                                        </div>
+                                        <span>Employment Details</span>
+                                    </a>
+                                </li>
+                               
+                            </ul>
+                        </div>
+                        <div class="tab-link" ng-hide="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success wp-3"></div>
+                            </div>
+                            <ul>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-friends"></i>
+                                        </div>
+                                        <span>Pairing Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Personal Information</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-building"></i>
+                                        </div>
+                                        <span>Parent Organization Details</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-graduate"></i>
+                                        </div>
+                                        <span>Educational Qualifications</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-edit"></i>
+                                        </div>
+                                        <span>Employment Details</span>
+                                    </a>
+                                </li>
+                                
+                            </ul>
+                        </div>
+                        </div>
+                    </div>
+
+                    <div class="row mx-5">
+                        <div class="col-md-12">
+                            <div class="tab-link" ng-show="proposalStage">
+                                <div class="progress">
+                                    <div class="progress-success w-100"></div>
+                                </div>
+                                <ul>
+                                   
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Achievements_Pecfar')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-trophy"></i>
+                                            </div>
+                                            <span>Achievements</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Fellowship_Details')">
+                                            <div class="icon-circle">
+                                                <i class="fa fa-home"></i>
+                                            </div>
+                                            <span>Fellowship Details</span>
+                                        </a>
+                                    </li>
+                                    
+                                    
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Attachments_Pecfar')">
+                                            <div class="icon-circle">
+                                                <i class="fa fa-paperclip"></i>
+                                            </div>
+                                            <span>Attachments</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Declaration_Pecfar')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-check"></i>
+                                            </div>
+                                            <span>Declaration</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('ReviewSubmit_Pecfar')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-file-signature"></i>
+                                            </div>
+                                            <span>Review and Submit</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="tab-link" ng-hide="proposalStage">
+                                <div class="progress">
+                                    <div class="progress-success wp-0"></div>
+                                </div>
+                                <ul>
+                                    
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-trophy"></i>
+                                            </div>
+                                            <span>Achievements</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa fa-home"></i>
+                                            </div>
+                                            <span>Fellowship Details</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa fa-paperclip"></i>
+                                            </div>
+                                            <span>Attachments</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-check"></i>
+                                            </div>
+                                            <span>Declaration</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-file-signature"></i>
+                                            </div>
+                                            <span>Review and Submit</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            </div>
+                        </div>
+
+
+                        <!-- <div class="row mt-5 mx-5 px-2 py-5">
+                            
+                        </div> -->
+
+                        <form name="formPrjDet">
+                            <div class="row mx-5 mt-5 px-2 py-5">
+
+                                <div class="row mb-5">
+                                    <div class="col-md-12 alert bg-color-list" role="alert">
+                                        <ul class="font-if">  
+                                          <li><i class="fa-solid fa-circle text-success me-3"></i>Click on upload button to upload the Profile picture</li>
+                                          <li><i class="fa-solid fa-circle text-success me-3"></i>If there is a problem in submitting, kindly press "CTRL+Shift+R" in one go and then try to submit. If the problem still<br/>&nbsp;&nbsp;&nbsp;&nbsp; persists, then contact us.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div  ng-if="doc != undefined" class="image-preview d-flex align-items-center justify-content-center">
+                                        <img class="mr-2 mb-2" style="max-height: 257px; max-width: 257px" src="{{imageSrc}}" alt="avatar" />
+        
+                                    </div>
+                                    <div ng-show="doc == undefined" class="image-preview d-flex align-items-center justify-content-center" style="background-color:#ddd;height:85%;">
+                                        <span ng-show="imageSrc == undefined">
+                                            <i class="fa-solid fa-circle-user fa-5x"></i>
+                                        </span>
+                                        <span ng-hide="imageSrc == undefined">
+                                            <img class="mr-2 mb-2" style="max-height: 257px; max-width: 257px" src="{{imageSrc}}" alt="avatar" />
+                                        </span>
+                                    </div>
+                                    <small><b>Upload in jpg/jpeg format min 30 kb max 500kb</b><span class="text-danger me-2">*</span></small>
+                                    <div class="custom-file-upload">
+                                        <div class="input-group input-group-lg">
+                                            <input class="form-control" type="file" accept=".jpg,.jpeg" id="profilePic" ng-disabled="proposalStage" ng-file-select="onFileSelect($files)" ng-model="imageSrc"/>
+                                            <span class="input-group-btn" ng-hide="proposalStage">
+                                                <button type="button" class="btn btn-success" ng-click="uploadFile(docU.userDocument.Name,docU.userDocument.Id,'','512000','30720')">Upload</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="font-if" for="txtName">Full Name(As on passport)<span class="text-danger me-2">*</span></label>
+                                            <input type="text" class="form-control" name="txtRemoveBorder" ng-disabled="proposalStage" ng-focus="removeClass('txtFirstName')" ng-model="applicantDetails.Name" id="txtFirstName" />
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <label class="font-if" for="txtDOB">Date of Birth<span class="text-danger me-2">*</span></label>
+                                            <input type="date" class="form-control" ng-disabled="true" name="txtRemoveBorder" ng-focus="removeClass('txtDOB')" ng-model="birthdate" id="txtDOB" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-4">
+                                        <div class="col-md-6 mt-3">
+                                            <label class="font-if" for="txtGender">Gender<span class="text-danger me-2">*</span></label>
+                                            <select class="form-control" ng-model="applicantDetails.Gender__c" id="txtGender" ng-focus="removeClass('txtGender')" ng-disabled="proposalStage">
+                                                <option ng-selected="{{item==applicantDetails.Gender}}" ng-repeat="item in gender" value="{{item}}">{{item}}</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-6 mt-3">
+                                            <label class="font-if">Nationality<span class="text-danger me-2">*</span></label>
+                                            <select type="select" id="selectNatinality" ng-disabled="proposalStage" ng-focus="removeClass('selectNatinality')" class="form-control" ng-model="applicantDetails.Nationality__c">
+                                                <option ng-selected="{{item==applicantDetails.Nationality__c}}" ng-repeat="item in nationality" value="{{item}}">{{item}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-4">                   
+
+                                        <div class="col-md-6 mt-3">
+                                            <label class="font-if">Email<span class="text-danger me-2">*</span></label>
+                                            <input class="form-control" ng-disabled="proposalStage || applicantDetails.Email" ng-model="applicantDetails.Email" type="email" id="txtEmail" ng-focus="removeClass('txtEmail')" ng-change="checkEmail(applicantDetails.Email,applicantDetails.Id)"/>
+                                        </div> 
+                                        
+                                        <div class="col md-6 mt-3 mx-3" ng-show="applicantDetails.MailingCountry == 'India'">
+                                            <label class="font-if">Mobile No.<span class="text-danger me-2">*</span></label>
+                                            <!-- <div style="display:flex;">
+                                                <div class="panel-body country-code">
+                                                  <div class="btn-group">
+                                                    <button type="button" id="btnCountryCode" ng-focus="removeClass('btnCountryCode')" class="form-control dropdown-toggle" data-toggle="dropdown">
+                                                      <span id="country-field" data-bind="label">Select Country</span>&nbsp;<span class="caret"></span>
+                                                    </button>
+                                                        <ul class="dropdown-menu" role="menu" >
+                                                           <li class="pb-3 ps-3" id="india" ng-click="countryChange('91')"><span class="flag-icon flag-icon-in" style="cursor:pointer"></span> +91 India</li>
+                                                           <li class="pb-3 ps-3" id="germany"  ng-click="countryChange('49')"><span class="flag-icon flag-icon-de" style="cursor:pointer"></span> +49 Germany</li>  
+                                                        </ul>
+                                                  </div>
+                                                 </div> -->
+                                                 <input type="text" ng-disabled="proposalStage" number="applicantDetails.MobilePhone" id="txtPhone" ng-focus="removeClass('txtPhone')" ng-model="applicantDetails.MobilePhone" class="form-control" maxlength="10" />
+                                           <!-- </div>                                             -->
+                                        </div>
+
+                                        <div class="col md-6 mt-3 mx-3" ng-show="applicantDetails.MailingCountry == 'Germany'">
+                                            <label class="font-if">Mobile No.<span class="text-danger me-2">*</span></label>
+                                            <!-- <div style="display:flex;">
+                                                <div class="panel-body country-code">
+                                                  <div class="btn-group">
+                                                    <button type="button" id="btnCountryCode" ng-focus="removeClass('btnCountryCode')" class="form-control dropdown-toggle form-control" data-toggle="dropdown">
+                                                      <span id="country-field" data-bind="label">Select Country</span>&nbsp;<span class="caret"></span>
+                                                    </button>
+                                                        <ul class="dropdown-menu" role="menu" >
+                                                           <li class="pb-3 ps-3" id="india" ng-click="countryChange('91',$index)"><span class="flag-icon flag-icon-in" style="cursor:pointer"></span> +91 India</li>
+                                                           <li class="pb-3 ps-3" id="germany"  ng-click="countryChange('49',$index)"><span class="flag-icon flag-icon-de" style="cursor:pointer"></span> +49 Germany</li>  
+                                                        </ul>
+                                                  </div>
+                                                 </div> -->
+                                                 <input type="text" ng-disabled="proposalStage" id="txtPhone" ng-focus="removeClass('txtPhone')" ng-model="applicantDetails.MobilePhone" class="form-control" />
+                                           <!-- </div>                                                -->
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-4"> 
+                                        <div class="col-md-6 mt-3">
+                                            <label class="font-if">Institute / Organization<span class="text-danger me-2">*</span></label>
+                                            <input name="Institute Name" class="form-control" type="text" id="txtOrg" ng-focus="removeClass('txtOrg')" ng-model="applicantDetails.Account.Name" ng-disabled="proposalStage" />
+                                        </div>
+        
+                                        <div class="col-md-6 mt-3">
+                                            <label class="font-if">Designation<span class="text-danger me-2">*</span></label>
+                                            <input name="Designation" class="form-control" type="text" id="txtDesignation" ng-focus="removeClass('txtDesignation')" ng-model="applicantDetails.Designation__c" ng-disabled="proposalStage" /> 
+                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-5 mx-5">
+                                <div class="col-md-4">
+                                    <label class="color-theme">Contact Address</label>
+                                </div>
+                            </div>
+
+                            <div class="row mt-5 mx-5">
+                                <div class="col-md-12">
+                                    <label class="font-if">Line 1<span class="text-danger me-2">*</span></label>
+                                    <input type="text" ng-disabled="proposalStage" id="txtMailingL1" ng-focus="removeClass('txtMailingL1')" ng-model="MailingStreet1" class="form-control" />
+                                </div>
+                                <div class="col-md-12 mt-4">
+                                    <label class="font-if">Line 2</label>
+                                    <input type="text" ng-disabled="proposalStage" id="txtMailingL2" ng-focus="removeClass('txtMailingL2')" ng-model="MailingStreet2" class="form-control" />
+                                </div>
+                                
+                            </div>
+
+                            <div class="row mt-4 mx-5">
+                                <div class="col-md-6 mt-3">
+                                    <label class="font-if">City<span class="text-danger me-2">*</span></label>
+                                    <input type="text" ng-disabled="proposalStage" id="txtMailingCity" ng-focus="removeClass('txtMailingCity')" ng-model="applicantDetails.MailingCity" class="form-control" />
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label class="font-if">Country</label>
+                                    <select class="form-control" aria-label="Default select example" id="txtMailingCountry" ng-focus="removeClass('txtMailingCountry')" ng-model="applicantDetails.MailingCountry" ng-disabled="true" ng-change="onCountryChange()">
+                                        <option ng-repeat="staff in countrytype">{{staff}}</option>
+                                    </select>
+                                </div>                                
+                            </div>
+
+                            <div class="row mt-4 mx-5">
+                                <div class="col-md-6 mt-3">
+                                    <label class="font-if">State<span class="text-danger me-2">*</span></label>
+                                    <select class="form-control" aria-label="Default select example" ng-model="applicantDetails.MailingState" id="txtMailingState" ng-focus="removeClass('txtMailingState')" ng-disabled="proposalStage">
+                                        <option ng-repeat="staff in applicantDetails.stateList">{{staff}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mt-3" ng-show="applicantDetails.MailingCountry == 'India'">
+                                    <label class="font-if">PinCode<span class="text-danger me-2">*</span></label>
+                                    <input type="text" ng-disabled="proposalStage" number="applicantDetails.MailingPostalCode" id="txtMailingPincode" ng-focus="removeClass('txtMailingPincode')" ng-model="applicantDetails.MailingPostalCode" class="form-control" ng-change="checkPinCode()" />
+                                </div>
+                                <div class="col-md-6 mt-3" ng-show="applicantDetails.MailingCountry == 'Germany'">
+                                    <label class="font-if">PinCode<span class="text-danger me-2">*</span></label>
+                                    <input type="text" ng-disabled="proposalStage" id="txtMailingPincode" ng-focus="removeClass('txtMailingPincode')" ng-model="applicantDetails.MailingPostalCode" class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="row m-5" ng-if="!proposalStage">
+                                <div class="col-md-12">
+                                    <button class="blue-btn float-end" ng-click="submitDet()" type="button">
+                                        <i class="fa-solid fa-check me-2"></i>Save and Next</button>
+                                        <button class="blue-bordered-btn float-end me-2" ng-click="redirectPageURL('Pairing_Page')" type="button">
+                                            <i class="fa-solid fa-arrow-left me-2"></i>Previous</button>
+                                        <!-- <button class="btn btn-secondary float-end me-2" style="padding: 8px 20px !important;font-size: 16px !important;" ng-click="redirectPageURL('Pairing_Page')" type="button">
+                                        <i class="fa-solid fa-arrow-left me-2"></i>Back</button> -->
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+
+            
+            <!-- <div class="container px-4">
+                <div class="card h-100 m-5">
+                    <div class="card-header">
+                        <h2 class="p-3">
+                            <b>Personal Information</b>
+                        </h2>
+                    </div>
+                    <div class="row p-3">
+                        <div class="col-md-6 mb-4">
+                            <label class="control-label">
+                                <b>upload Profile Pic</b>
+                            </label>
+                            <input class="form-control" type="file" accept=".png,.jpg,.jpeg" id="profilePic" ng-disabled="proposalStage" />
+                        <button style="margin-top:3%; width: 100%;" type="button" class="btn btn-success col-sm-6" ng-click="uploadFile(doc.userDocument.Name,doc.userDocument.Id,'')" ng-if="!proposalStage">Upload</button>
+                        </div>
+
+                        <div class="col-md-1"></div>
+                        <div class="col-md-4 mt-4">
+
+                            <div  ng-if="doc.Id != undefined != undefined">
+                                <img class="mr-2 mb-2 profile-pic" src="{{baseURL}}/ApplicantDashboard/servlet/servlet.FileDownload?file={{doc.Id}}" width="100" height="100" alt="avatar" />
+                            </div>
+                            <div ng-show="doc.Id == undefined">
+                                <img class="mr-2 mb-2 profile-pic" src="https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png" width="100" height="100" alt="avatar"/ >
+                            </div>
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+                        <div class="row p-3">
+                        <div class="col-md-6 mb-4">
+                            <label class="control-label">
+                                <b>Full Name (As on Passport)</b>
+                            </label>
+                            <span class="required-asterisk" style="color:red;">*</span>
+                            <input name="Name" placeholder="Name" class="form-control" type="text" ng-model="applicantDetails.Name" required="true" ng-required="applicantDetails.Name" ng-disabled="proposalStage"  />
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="control-label">
+                                <b>Date Of Birth</b>
+                            </label>
+                            <span class="required-asterisk" style="color:red;">*</span>
+                            <input name="Title Of Proposal" placeholder="Title Of Proposal" class="form-control" type="date" ng-model="birthdate" required="true" ng-required="applicantDetails.Birthdate" ng-disabled="proposalStage" />
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label class="control-label">
+                                <b>Gender</b>
+                            </label>
+                            <span class="required-asterisk" style="color:red;">*</span>
+                            <select class="form-control" aria-label="Default select example" ng-model="applicantDetails.Gender__c" ng-disabled="proposalStage" >
+                                <option ng-repeat="staff in gender">{{staff}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="control-label">
+                                <b>Designation</b>
+                            </label>
+                            <span class="required-asterisk" style="color:red;">*</span>
+                            <input name="Designation" placeholder="Designation" class="form-control" type="text" ng-model="applicantDetails.Designation__c" required="true" ng-required="applicantDetails.Designation__c" ng-disabled="proposalStage" />
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label class="control-label">
+                                <b>Institute</b>
+                            </label>
+                            <span class="required-asterisk" style="color:red;">*</span>
+                            <input name="Institute Name" placeholder="Institute Name" class="form-control" type="text" ng-model="applicantDetails.Institution_Name__c" required="true" ng-required="applicantDetails.Institute_Name__c" ng-disabled="proposalStage" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="control-label">
+                                <b>Nationality</b>
+                            </label>
+                            <span class="required-asterisk" style="color:red;">*</span>
+                            <select class="form-control" aria-label="Default select example" ng-model="applicantDetails.Nationality__c" ng-disabled="proposalStage" >
+                                <option ng-repeat="staff in nationality">{{staff}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label class="control-label">
+                                <b>Street</b>
+                            </label>
+                            <input name="Street" placeholder="Street" class="form-control" type="text" ng-model="applicantDetails.MailingStreet" required="true" ng-required="applicantDetails.MailingStreet" ng-disabled="proposalStage" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="control-label">
+                                <b>City</b>
+                            </label>
+                            <input name="City" placeholder="City" class="form-control" type="text" ng-model="applicantDetails.MailingCity" required="true" ng-required="applicantDetails.MailingCity" ng-disabled="proposalStage" />
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label class="control-label">
+                                <b>Country</b>
+                            </label>
+                            <span class="required-asterisk" style="color:red;">*</span>
+                            <select class="form-control" aria-label="Default select example" ng-model="applicantDetails.MailingCountry" ng-disabled="proposalStage" >
+                                <option ng-repeat="staff in countrytype">{{staff}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="control-label">
+                                <b>State</b>
+                            </label>
+                            <input name="State" placeholder="State" class="form-control" type="text" ng-model="applicantDetails.MailingState" required="true" ng-required="applicantDetails.MailingState" ng-disabled="proposalStage" />
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label class="control-label">
+                                <b>PostCode</b>
+                            </label>
+                            <span class="required-asterisk" style="color:red;">*</span>
+                            <input name="PostCode" placeholder="PostCode" class="form-control" type="text" number="applicantDetails.MailingPostalCode" ng-model="applicantDetails.MailingPostalCode" required="true" ng-required="applicantDetails.MailingPostalCode" ng-disabled="proposalStage" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="control-label">
+                                <b>Email</b>
+                            </label>
+                            <span class="required-asterisk" style="color:red;">*</span>
+                            <input name="Email" placeholder="Email" class="form-control" type="text" ng-model="applicantDetails.Email" required="true" ng-required="applicantDetails.Email" ng-disabled="proposalStage" />
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label class="control-label">
+                                <b>Phone</b>
+                            </label>
+                            <span class="required-asterisk" style="color:red;">*</span>
+                            <input name="phone" placeholder="phone" class="form-control" number="applicantDetails.MobilePhone" type="phone" ng-model="applicantDetails.MobilePhone" required="true" ng-required="applicantDetails.MobilePhone" ng-disabled="proposalStage" />
+                        </div>
+                    </div>
+                    <div class="card-footer" ng-if="!proposalStage">
+                        <button type="button" class="blue-btn float-end me-4" ng-click="submitDet()">
+                            <i class="fa-solid fa-check i-padding"></i>Save and Next</button>
+                            <button type="button" class="blue-bordered-btn float-end me-4" ng-click="redirectPageURL('Pairing_Page')">
+                                <i class="fa-solid fa-arrow-left i-padding"></i>Previous</button>
+                    </div>
+                </div>
+            </div> -->
+            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        </body>
+    </div>
+
+    </html>
+</apex:page>

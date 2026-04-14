@@ -1,0 +1,26 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" >
+    <div ng-controller='test2_ctrl'>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 mt-2 mb-2">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="container" width="100%">
+                            <div class="row">
+                                <div class="col-sm-4" style="margin-bottom: 2%;" ng-repeat="campaign in campaignList">
+                                    <img class="card-img-top" src="https://prod5.assets-cdn.io/event/7808/assets/8356306937-312a02077f.jpg" alt="Card image cap"/>
+                                    <div class="card mx-auto" style="">  
+                                        <div class="card-body">
+                                           
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>    
+</apex:page>

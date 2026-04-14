@@ -1,0 +1,162 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 02-28-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+   
+                <templete >
+                    <div class="slds-box menu">
+                                <div class = "totalApplications"> All Applications</div>
+                                <div class="pickList"> <lightning-combobox
+                                    name="allApplications"
+                                    label=""
+                                    value={value}
+                                    options={options}
+                                    onchange={handleChange} ></lightning-combobox>
+                                </div>
+                            
+
+                <lightning-layout>
+                    <lightning-layout-item padding="around-medium">
+                        <div data-id ={value} onclick={handleallApplications} data-name="" class="applicationsRectangle " style="cursor: pointer;">
+                        <div slds-grid slds-grid_vertical>
+                            <div class = "totalApp"> Total Applications</div>
+                        <br>
+                            <div class="slds-grid slds-grid_pull-padded-medium">
+                                <div class="slds-col num ">
+                                <div class="totalApplicationsNum">{totalApplications}</div>
+                                </div>
+                                <div class="slds-col prog ">
+                                    <div class="appCircle">
+                                        <div class="circlein">
+                                            <lightning-icon icon-name="utility:display_text" class="iconPage"></lightning-icon>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        </div>
+                        </div> 
+                    </lightning-layout-item>
+
+                    <lightning-layout-item padding="around-medium">
+                        <div data-id ={value} onclick={handleDraftApplications} data-name="Draft" class="applicationsRectangle" style="cursor: pointer;">
+                                <div class="slds-grid slds-grid_vertical">
+                                    <div class = "draftApp"> Draft Applications</div>
+                                    <br>
+                                    <div class="slds-grid slds-grid_pull-padded-medium">
+                                        <div class="slds-col num">
+                                        <div class="draftApplicationsNum">{draftApplications}</div>
+                                        </div>
+                                        <div class="slds-col prog">
+                                            <div class="draftappCircle">
+                                                <div class="draftcirclein">
+                                                    <lightning-icon icon-name="utility:opened_folder" class="drafticonPage"></lightning-icon>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                        
+                    
+                                </div>
+                        </div> 
+                    </lightning-layout-item>
+
+                
+                    <lightning-layout-item padding="around-medium">
+                        <div data-id ={value} onclick={handlesubmittedApplications} data-name="Submitted" class="applicationsRectangle" style="cursor: pointer;">
+                            <div class="slds-grid slds-grid_vertical">
+                                <div class = "submittedApp"> Submitted Applications</div>
+                            <br>
+                                <div class="slds-grid num1 ">
+                                    <div class="slds-col num">
+                                    <div class="submittedtApplicationsNum">{submittedApplications}</div>
+                                    </div>
+                                    <div class="slds-col prog">
+                                        <div class="submittedappCircle">
+                                            <div class="submittedcirclein">
+                                                <lightning-icon icon-name="utility:form" class="submittediconPage"></lightning-icon>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                        
+                            </div>
+                        </div> 
+                    </lightning-layout-item>
+                
+                    <lightning-layout-item padding="around-medium">
+                        <div data-id ={value} onclick={handleAllocateApplications} data-name="Submitted" class="applicationsRectangle" style="cursor: pointer;">
+                            <div class="slds-grid slds-grid_vertical">
+                                <div class = "allocated"> Allocated</div>
+                            <br>
+                                <div class="slds-grid slds-grid_pull-padded-medium">
+                                    <div class="slds-col num">
+                                    <div class="allocatedtApplicationsNum">{allocatedApplications}</div>
+                                    </div>
+                                    <div class="slds-col prog">
+                                        <div class="allocatedappCircle">
+                                            <div class="allocatedcirclein">
+                                                <lightning-icon icon-name="utility:collection_alt" class="allocatediconPage"></lightning-icon>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                        
+                            </div>
+                        </div> 
+                    </lightning-layout-item>
+
+                    <lightning-layout-item padding="around-medium">
+                        <div data-id ={value} onclick={handleDraftApplications} data-name="Submitted" class="applicationsRectangle" style="cursor: pointer;">
+                            <div class="slds-grid slds-grid_vertical">
+                                <div class = "unallocated"> Unallocated</div>
+                            <br>
+                                <div class="slds-grid slds-grid_pull-padded-medium">
+                                    <div class="slds-col num">
+                                    <div class="unallocatedtApplicationsNum">{unallocatedApps}</div>
+                                    </div>
+                                    <div class="slds-col prog">
+                                        <div class="unallocatedappCircle">
+                                            <div class="unallocatedcirclein">
+                                                <lightning-icon icon-name="utility:form" class="unallocatediconPage"></lightning-icon>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                        
+                            </div>
+                        </div> 
+                    </lightning-layout-item>
+                </lightning-layout>
+                <br>
+                <div class="allApp">{AppType}</div>
+                
+                <template if:true={availableAccounts}>
+                <div class="slds-scrollable_y" style="height:580px;width:Auto; padding-left: 25px">
+                    
+                    <div class="slds-text-longform">
+                        <lightning-datatable
+                        key-field="Id"
+                        data={availableAccounts}
+                        columns={columns}
+                        hide-checkbox-column="false"
+                        show-row-number-column="false">
+                </lightning-datatable>  
+                </div>
+                    </div>
+
+                </template>
+            </div>
+              
+                </templete> 
+         
+             
+            
+</template>

@@ -1,0 +1,530 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+    <html>
+    <div ng-controller="pairing_ctrl">
+
+        <head>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+            <!-- <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet"/> -->
+            <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+            <!-- <link href="https://fontawesome.io/assets/font-awesome/css/font-awesome.css" rel="stylesheet"/> -->
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css"
+                rel="stylesheet" />
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+            <script>
+                var userId = '{!$CurrentPage.parameters.id}';
+                var siteURL = '{!$Site.OriginalUrl}';
+            </script>
+            <style>
+                #more {
+                    display: none;
+                }
+            </style>
+            <script>
+                function myFunction() {
+                    debugger;
+                    var dots = document.getElementById("dots");
+                    var moreText = document.getElementById("more");
+                    var btnText = document.getElementById("myBtn");
+
+                    if (dots.style.display === "none") {
+                        dots.style.display = "inline";
+                        btnText.innerHTML = "Read more....";
+                        moreText.style.display = "none";
+                    } else {
+                        dots.style.display = "none";
+                        btnText.innerHTML = "Read less....";
+                        moreText.style.display = "inline";
+                    }
+                }
+            </script>
+        </head>
+
+        <body>
+            <!-- <div class="loader-transparent">
+<div class="loader">
+<apex:image url="{!$Resource.loader}"/>
+</div>
+</div> -->
+            <div class="container mt-5">
+                <div class="row mx-5">
+                    <div class="col-md-12">
+                        <div class="tab-link" ng-show="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Pairing_Page')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-friends"></i>
+                                        </div>
+                                        <span>Pairing Details</span>
+                                    </a>
+                                </li>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Personal_Information')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Personal Information</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ParentOrganization')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-building"></i>
+                                        </div>
+                                        <span>Parent Organization Details</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Education_Qualification')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-graduate"></i>
+                                        </div>
+                                        <span>Educational Qualifications</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Employment_Details')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-edit"></i>
+                                        </div>
+                                        <span>Employment Details</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                        <div class="tab-link" ng-hide="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success"></div>
+                            </div>
+                            <ul>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-friends"></i>
+                                        </div>
+                                        <span>Pairing Details</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Personal Information</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-building"></i>
+                                        </div>
+                                        <span>Parent Organization Details</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-graduate"></i>
+                                        </div>
+                                        <span>Educational Qualifications</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-edit"></i>
+                                        </div>
+                                        <span>Employment Details</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mx-5">
+                    <div class="col-md-12">
+                        <div class="tab-link" ng-show="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Achievements_Pecfar')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-trophy"></i>
+                                        </div>
+                                        <span>Achievements</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Fellowship_Details')">
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Fellowship Details</span>
+                                    </a>
+                                </li>
+
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Attachments_Pecfar')">
+                                        <div class="icon-circle">
+                                            <i class="fa fa-paperclip"></i>
+                                        </div>
+                                        <span>Attachments</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Declaration_Pecfar')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                        <span>Declaration</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ReviewSubmit_Pecfar')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-signature"></i>
+                                        </div>
+                                        <span>Review and Submit</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-link" ng-hide="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success wp-0"></div>
+                            </div>
+                            <ul>
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-trophy"></i>
+                                        </div>
+                                        <span>Achievements</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Fellowship Details</span>
+                                    </a>
+                                </li>
+
+
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa fa-paperclip"></i>
+                                        </div>
+                                        <span>Attachments</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                        <span>Declaration</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-signature"></i>
+                                        </div>
+                                        <span>Review and Submit</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <form name="formPrjDet">
+
+                    <div class="row mx-5">
+
+                        <!-- ** Commented to add new Points Provided by Isha Goel on 25-03-2026 **
+                        <div class="col-md-12 alert bg-color-list" role="alert">
+                            <ul class="font-if">
+                                <li><i class="fa-solid fa-circle text-success me-3"></i>If there is a problem in
+                                    submitting, kindly press "CTRL+Shift+R" in one go and then try to submit. If the
+                                    problem still<br />&nbsp;&nbsp;&nbsp;&nbsp; persists, then contact us.</li><br />
+                                <li>
+                                    <h4 class="color-theme pb-4"><b>
+                                            Who can apply?
+                                        </b></h4>
+                                </li>
+
+                                <li><i class="fa-solid fa-circle text-success me-3"></i>Early career researchers holding
+                                    regular position in academia/research institution/industry or holding a long-term
+                                    nationally recognized fellowship.</li>
+                                <li><i class="fa-solid fa-circle text-success me-3"></i>Minimum Qualification: Master’s
+                                    in Science/Bachelor’s in Engineering (4 years).</li>
+                                <li><i class="fa-solid fa-circle text-success me-3"></i>Applicants must have a valid
+                                    employment contract/residual fellowship for a minimum period of 18 months commencing
+                                    from the application deadline.</li><br />
+
+                                <li>
+                                    <h5 class="color-theme pb-4"><b>
+                                            Instructions for Application Submission
+                                        </b></h5>
+                                </li>
+
+                                <li><i class="fa-solid fa-circle text-success me-3"></i>Please check your eligibility
+                                    before applying for the fellowship.</li>
+                                <!-- <li><i class="fa-solid fa-circle text-success me-3"></i>To start the online application, you must register on the portal first using your email address.</li><span
+                                    id="dots"></span>
+                                <span id="more">
+                                    <li><i class="fa-solid fa-circle text-success me-3"></i>Registration can be done by
+                                        any both the applicants of pair. Once the registration is completed, he/she can
+                                        add his/her partner from India/Germany.</li>
+                                    <li><i class="fa-solid fa-circle text-success me-3"></i>Please enter the email
+                                        address of the paired partner, which they have used to register in the portal,
+                                        as the system will send a link to them to start filling </li>
+                                    <li><i class="me-4"></i>their part of application.</li>
+                                    <li><i class="fa-solid fa-circle text-success me-3"></i>The one who starts the
+                                        application first (from the Pair) will be known as the Primary applicant.</li>
+                                    <li><i class="fa-solid fa-circle text-success me-3"></i>In case the paired partner
+                                        does not receive an email, please check your ‘SPAM’ or ‘JUNK’ folder. If you
+                                        still fail to find the email, please try reaching</li>
+                                    <li><i class="me-4"></i>us at pecfar@igstc.org.</li>
+                                    <li><i class="fa-solid fa-circle text-success me-3"></i>Both the members (from India
+                                        and Germany) must individually complete their part within the same application.
+                                        Once completed, the final</li>
+                                    <li><i class="me-4"></i>submission of the application will be done by the Primary
+                                        applicant only.</li>
+                                    <li><i class="fa-solid fa-circle text-success me-3"></i>The Primary applicant shall
+                                        be able to do the final submission only when all the sections of the application
+                                        are completed both members.</li>
+                                    <!-- <li><i class="fa-solid fa-circle text-success me-3"></i>It is the responsibility of the Primary applicant to make sure that the application is completed by his/her partner before final submission.</li> --
+                                    <li><i class="fa-solid fa-circle text-success me-3"></i>Applicants must strictly
+                                        follow the instructions given for application submission. Failure to do so may
+                                        result in cancellation of the application.</li>
+                                </span>
+                                <a onclick="myFunction()" id="myBtn"><u>Read more....</u></a>
+                            </ul>
+                        </div>
+                        -->
+
+                        <div class="col-md-12 alert bg-color-list" role="alert">
+                                <ul class="font-if" style="list-style: none; padding-left: 0; margin-bottom: 0;">
+                                    <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                        <h5 class="color-theme pb-4"><b>Instructions for submission of the application</b></h5>
+                                    </li>
+                                    <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                        <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                        <span style="flex: 1;">Applicants must check their eligibility before applying for the fellowship.</span>
+                                    </li>
+                                    <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                        <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                        <span style="flex: 1;">Applicants are advised to initiate their applications at least five days in advance to avoid any last-minute rush.</span>
+                                    </li>
+                                    <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                        <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                        <span style="flex: 1;">The application must be submitted online via the “Application Portal” only.</span>
+                                    </li>
+                                    <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                        <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                        <span style="flex: 1;">Both applicants (India and Germany) must register individually on the portal using their email addresses.</span>
+                                    </li>
+                                    <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                        <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                        <span style="flex: 1;">Ensure that correct and active email addresses are used, as a verification link will be sent to complete registration.</span>
+                                    </li>
+                                    <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                        <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                        <span style="flex: 1;">After successful registration, either applicant may log in and initiate the PECFAR application.</span>
+                                    </li>
+                                    <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                        <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                        <span style="flex: 1;">The applicant who starts the application will be designated as the Primary Applicant.</span>
+                                    </li>
+                                    <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                        <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                        <span style="flex: 1;">The Primary Applicant must add the Paired Applicant (India/Germany) within the application portal.</span>
+                                    </li>
+                                    <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                        <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                        <span style="flex: 1;">The Paired Applicant will then receive a link via email to log in and complete their respective part of the application.</span>
+                                    </li>
+                                    <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                        <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                        <span style="flex: 1;">Both applicants must, individually complete their respective parts, save the entries as a draft version.</span>
+                                    </li>
+                                    <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                        <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                        <span style="flex: 1;">The final submission can be done only by the Primary Applicant.</span>
+                                    </li>
+                                    <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                        <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                        <span style="flex: 1;">It is the responsibility of the Primary Applicant to ensure that the Paired Applicant has fully completed their section before submission.</span>
+                                    </li>
+                                    <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                        <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                        <span style="flex: 1;">In case emails are not received or any technical issues are encountered, applicants should raise a ticket via 'Get Help' or 'Contact Us' in the IGSTC Application Portal. The IGSTC Support Team will respond within 48 hours.</span>
+                                    </li>
+                                    <li style="margin-bottom: 0; display: flex; align-items: flex-start;">
+                                        <i class="fa-solid fa-circle text-success" style="font-size: 8px; margin-top: 6px; margin-right: 12px; flex-shrink: 0;"></i>
+                                        <span style="flex: 1;">Applicants must strictly follow all instructions provided. Failure to comply may result in rejection of the application.</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+
+                        <div class="col-md-6">
+
+                            <div class="row mx-5 mb-3">
+                                <div class="col-md-12 p-3">
+                                    <i ng-show="pairingDetails.MailingCountry == 'India'">
+                                        <apex:image url="{!$Resource.indiaFlag}" styleClass="img-fluid"
+                                            style="max-width:30px;" />
+                                    </i>
+                                    <i ng-show="pairingDetails.MailingCountry == 'Germany'">
+                                        <apex:image url="{!$Resource.germanyFlag}" styleClass="img-fluid"
+                                            style="max-width:30px;" />
+                                    </i>
+                                    <h4 class="pb-3 pt-2 color-theme w-75 float-end" style="font-weight:700">
+                                        {{country1}} Member of the Pair</h4>
+                                </div>
+                            </div>
+
+                            <div class="row box-shadow-3 ms-1 me-2">
+                                <div class="col-md-12 mt-5">
+                                    <label class="font-if">
+                                        Email<span class="required-asterisk" style="color:red;">*</span></label>
+                                    <input type="text" class="form-control" ng-model="pairingDetails.Email"
+                                        ng-focus="removeClass('txtIndEmail')" id="txtIndEmail"
+                                        ng-disabled="proposalStage || primary || pairingDetails.Email"
+                                        ng-change="checkEmail(pairingDetails.Email,pairingDetails.Id)" />
+                                </div>
+                                <div class="col-md-12 mt-5">
+                                    <label class="font-if">
+                                        First Name<span class="required-asterisk" style="color:red;">*</span></label>
+                                    <input type="text" class="form-control" ng-focus="removeClass('txtIndFN')"
+                                        id="txtIndFN" ng-model="pairingDetails.FirstName"
+                                        ng-disabled="proposalStage || primary" />
+                                </div>
+                                <div class="col-md-12 mt-5">
+                                    <label class="font-if">Last Name<span class="required-asterisk"
+                                            style="color:red;">*</span></label>
+                                    <input type="text" class="form-control" ng-focus="removeClass('txtIndLN')"
+                                        id="txtIndLN" ng-model="pairingDetails.LastName"
+                                        ng-disabled="proposalStage || primary" />
+                                </div>
+                                <div class="col-md-12 mt-5">
+                                    <label class="font-if">
+                                        Institution / Organization<span class="required-asterisk"
+                                            style="color:red;">*</span></label>
+                                    <input type="text" class="form-control" ng-focus="removeClass('txtIndOrg')"
+                                        id="txtIndOrg" ng-model="pairingDetails.Account.Name"
+                                        ng-disabled="proposalStage || primary || pairingDetails.Account.Name" />
+                                </div>
+                                <div class="col-md-12 mt-5 mb-5">
+                                    <label class="font-if">Date of Birth
+                                        <span class="required-asterisk" style="color:red;">*</span></label>
+                                    <!-- <md-datepicker ng-disabled="proposalStage" ng-model="pairingDetails.Birthdate" ng-focus="removeClass('txtIndBD')" id="txtIndBD" md-placeholder="Birthdate" class="form-control" md-current-view="year"></md-datepicker> -->
+                                    <input type="date" class="form-control" ng-focus="removeClass('txtIndBD')"
+                                        id="txtIndBD" ng-model="pairingDetails.Birthdate"
+                                        ng-disabled="proposalStage || primary || pairingDetails.Birthdate" />
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="row mx-5 mb-3">
+                                <div class="col-md-12 p-3">
+                                    <i ng-show="pairList.MailingCountry == 'India'">
+                                        <apex:image url="{!$Resource.indiaFlag}" styleClass="img-fluid"
+                                            style="max-width:30px;" />
+                                    </i>
+                                    <i ng-show="pairList.MailingCountry == 'Germany'">
+                                        <apex:image url="{!$Resource.germanyFlag}" styleClass="img-fluid"
+                                            style="max-width:30px;" />
+                                    </i>
+                                    <h4 class="pb-3 pt-2 color-theme w-75 float-end" style="font-weight:700">
+                                        {{country2}} Member of the Pair</h4>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-12 my-4" style="padding-left: 0px;">
+<label class="color-theme ms-2">German Counter Part</label>
+</div> -->
+
+                            <div class="row box-shadow-3 ms-1 me-2">
+                                <div class="col-md-12 mt-5">
+                                    <label class="font-if">
+                                        Email<span class="required-asterisk" style="color:red;">*</span></label>
+                                    <input type="text" class="form-control" ng-focus="removeClass('txtGerEmail')"
+                                        id="txtGerEmail" ng-model="pairList.Email"
+                                        ng-disabled="proposalStage || (pairingDetails.Id && pairingDetails.Id !== '' && pairList.Id && pairList.Id !== '')"
+                                        ng-change="checkEmail(pairList.Email,pairList.Id)" />
+                                </div>
+                                <div class="col-md-12 mt-5">
+                                    <label class="font-if">
+                                        First Name<span class="required-asterisk" style="color:red;">*</span></label>
+                                    <input type="text" class="form-control" ng-focus="removeClass('txtGerFN')"
+                                        id="txtGerFN" ng-model="pairList.FirstName" ng-disabled="proposalStage" />
+                                </div>
+                                <div class="col-md-12 mt-5">
+                                    <label class="font-if">Last Name<span class="required-asterisk"
+                                            style="color:red;">*</span></label>
+                                    <input type="text" class="form-control" ng-focus="removeClass('txtGerLn')"
+                                        id="txtGerLn" ng-model="pairList.LastName" ng-disabled="proposalStage" />
+                                </div>
+                                <div class="col-md-12 mt-5">
+                                    <label class="font-if">
+                                        Institution / Organization<span class="required-asterisk"
+                                            style="color:red;">*</span></label>
+                                    <input type="text" class="form-control" ng-focus="removeClass('txtGerOrg')"
+                                        id="txtGerOrg" ng-model="pairList.Account.Name"
+                                        ng-disabled="proposalStage || (pairingDetails.Id && pairingDetails.Id !== '' && pairList.Id && pairList.Id !== '')" />
+                                </div>
+
+                                <div class="col-md-12 mt-5 mb-5">
+                                    <label class="font-if">Date of Birth
+                                        <span class="required-asterisk" style="color:red;">*</span></label>
+                                    <!-- <md-datepicker ng-disabled="proposalStage" ng-model="pairList.Birthdate" ng-focus="removeClass('txtGerBD')" id="txtGerBD" md-placeholder="Birthdate" class="form-control" md-current-view="year"></md-datepicker> -->
+                                    <input type="date" class="form-control" ng-focus="removeClass('txtGerBD')"
+                                        id="txtGerBD" ng-model="pairList.Birthdate"
+                                        ng-init="pairList.Birthdate=(pairList.Birthdate | date:'')"
+                                        ng-disabled="proposalStage" />
+                                </div>
+                                <!-- {{ pairList.Birthdate }}
+{{mydate}} -->
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12 my-4 mb-5 mt-5" ng-if="!proposalStage">
+                            <button id="btnPairSave" class="blue-btn float-end" ng-click="insertPairingDetails()" type="button">
+                                <i class="fa-solid fa-check me-2"></i>Save and Next</button>
+                            <button class="blue-btn float-end me-2" ng-click="redirectToApplicantPortal()"
+                                type="button">
+                                <i class="fa-solid fa-check me-2"></i>Back</button>
+                        </div>
+                    </div>
+
+
+                </form>
+
+            </div>
+            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        </body>
+    </div>
+
+    </html>
+</apex:page>

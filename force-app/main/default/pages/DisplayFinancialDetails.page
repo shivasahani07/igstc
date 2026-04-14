@@ -1,0 +1,46 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+    <html>
+        <head>
+            <c:Libraries ></c:Libraries>
+        </head>
+        <body>
+            <div>
+                <div>
+                    Please use one table for each partner. Detailed break-up and justification for individual items in each head needed (please use additional sheet if necessary) 
+                </div>
+                <br/>
+                <p>
+                    <b>1. Manpower costs</b><br/>
+                    • No. of project manpower should commensurate with the work packages being handled by the partner. Detailed justification with scope of work by each project manpower to be clearly mentioned indicating their designation/status. Indicate gross annual salary / fellowship and percentage of time devoted on the project in the explanation along with institutional norms, if any.  
+                </p>
+                <br/>
+                <p>
+                    <b>2. Consumables</b><br/>
+                    • Summarise consumables to be used in meaningful categories
+                </p>
+                <br/>
+                <p>
+                    <b>3. Equipment</b><br/>
+                    • Justification for each item of equipment (including their accessories, specific characteristics, resolution etc in relation to specific experiments / measurements / tests) contemplated in the project to be provided.
+                    <br/>
+                    <b>•For German Applicants</b><br/>
+                    • Equipments that are not part of the applicant’s basic equipment only can be supported.
+                    <br/>
+                    <b>•For Indian Applicants</b><br/>
+                    • Large equipment / upgradation of existing equipment is not encouraged. Details on whether purchase/lease – provide details such as manufacturer, make, rate etc. 
+                    <br/>
+                </p>
+                <p>
+                    <b>4. Exchange Visits</b><br/>
+                    • It is expected that all partners meet at least once per year in person either in India or Germany. IGSTC Project visits are on reciprocal basis. Sending side takes care of the travel expenses (in economy class) whereas receiving side provides stay expenses. In case of German partner visiting India, the Indian partner will provide accommodation (up to Rs 4500/- per day max, in absence of suitable guest house accommodation) plus perdiem. In case of Indian visiting Germany, German partner will provide accommodation + perdiem within present limit of € 104 per day.
+                    <br/>
+                </p>
+                <p>
+                    <b>5. Outsourcing/Subcontract</b><br/>
+                    • Explain services to be performed and provide name and address of Indian or German subcontractors (if applicable).
+                    <br/>
+                </p>
+            </div>
+        </body>
+    </html>
+</apex:page>

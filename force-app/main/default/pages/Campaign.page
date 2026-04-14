@@ -1,0 +1,202 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+    <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+    <apex:stylesheet value="{!$Resource.ReviewerPortalCss}" />
+    <apex:stylesheet value="{!$Resource.SlickThemeCSS}" />
+    <apex:stylesheet value="{!$Resource.SlickCss}" />
+    <apex:stylesheet value="{!$Resource.SmallCss}" />
+    <apex:stylesheet value="{!$Resource.MediumCss}" />
+    <apex:stylesheet value="{!$Resource.LargCss}" />
+    <style>
+        .row {
+            padding-right: none !important;
+            padding-left: none !important;
+        }
+
+        .card {
+            min-height: 400px;
+            min-width: 300px;
+            margin-right: 4%;
+        }
+
+        .custom-scrollbar-js,
+        .custom-scrollbar-css {}
+
+
+        /* Custom Scrollbar using CSS */
+
+        .custom-scrollbar-css {
+            overflow-x: scroll;
+        }
+
+        /* scrollbar width */
+
+        .custom-scrollbar-css::-webkit-scrollbar {
+            width: 1px;
+        }
+
+        /* scrollbar track */
+
+        .custom-scrollbar-css::-webkit-scrollbar-track {
+            background: #eee;
+        }
+
+        /* scrollbar handle */
+
+        .custom-scrollbar-css::-webkit-scrollbar-thumb {
+            border-radius: 1rem;
+            background-color: #e99957;
+            background-image: linear-gradient(to top, #f3c78d 0%, #fd9d0e 100%);
+        }
+
+
+        /*
+*
+* ==========================================
+* FOR DEMO PURPOSES
+* ==========================================
+*
+*/
+    </style>
+    <script> 
+        $(function () {
+            /* Rounded Dots Dark */
+            $("#content-1").mCustomScrollbar({
+                theme: "rounded-dots-dark"
+            });
+
+            /* Rounded Dark */
+            $("#content-2").mCustomScrollbar({
+                theme: "rounded-dark"
+            });
+
+            /* Inset Dark */
+            $("#content-3").mCustomScrollbar({
+                theme: "inset-3-dark"
+            });
+
+            /* 3d Dark */
+            $("#content-4").mCustomScrollbar({
+                theme: "3d-dark"
+            });
+
+            /* Dark Thin */
+            $("#content-5").mCustomScrollbar({
+                theme: "dark-thin"
+            });
+        });
+    </script>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'>
+    </script>
+    <div ng-controller='campaign_ctrl'>
+        <div ng-switch="myVar">
+            <div ng-switch-when="allCampaigns">
+                <div class="carousel-banner bg">
+                    <div class="container-fluid mx-5">
+                        <div class="row align-items-center">
+                            <div class="col-12 col-md-7 col-lg-5">
+                                <h1>Our</h1>
+                                <h2>Campaign</h2>
+                                <p style="font-size:20px !important;font-weight:500;">IGSTC intends to catalyse innovation centric R and D projects by synergising the strength of research institution and industry from India and Germany.</p>
+                            </div>
+                            <div class="col-12 col-md-5 col-lg-7 pt-4 pt-md-0 text-end">                    
+                                <apex:image url="{!$Resource.about_campaign}" styleClass="img-fluid" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="row m-5">
+                    <div class="col-md-4 mb-5" ng-repeat="campaign in campaignList">
+                        <div class="campaign">
+                            <img src="{{campaign.Image_URL__c}}" class="w-100" alt="..." />
+                            <div class="campaign-detail">
+                                <h4>
+                                    {{campaign.Name}}
+                                    <!-- <span>(SMALL IMMEDIATE NEED GRANTS)</span> -->
+                                </h4>
+                                <p style="min-height: 174px;">{{campaign.Description}}</p>
+                                <div class="d-flex justify-content-center">
+                                <a  ng-click="detailPage(campaign)" class="button view">View</a>
+                                <a  ng-click="downloadDetails(campaign.Attachments[0].Id)" class="button faq">Download</a>
+                            </div>
+                                <!-- <a href="#" class="button faq">FAQ</a> -->
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+            
+            <div class="banner pb-5 pb-md-0" ng-switch-when="selectedcam">
+                <div class="container-fluid mx-5">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-12 col-md-5 col-lg-5 col-xl-5">
+                        <h2 class="heading-border">{{selectedCampaign.Name}}</h2>
+                        <h4 class="pb-5">
+                          {{selectedCampaign.Description}}
+                        </h4>
+                        <button type="button" ng-click="ShowBasicGuidelinesFAQ()" class="blue-btn">
+                            FAQ<i class='fas fa-arrow-right ps-2'></i>
+                        </button>
+                        <button class="blue-btn ms-4" type="submit" ng-click="redirectPageURL()">Back</button>
+                        <button ng-if="campaignName == selectedCampaign.Name || campaignName == '' " type="button" class="blue-bordered-btn ms-4" ng-click="applyForProgram()">Apply</button>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-6 col-xl-6 position-relative d-none d-md-inline-block justify-content-between align-items-center" style="text-align: center !important;">
+                        <apex:image url="{{selectedCampaign.Image_URL__c}}" styleClass="img-fluid justify-content-between align-items-center pt-5"/>
+                    </div>
+                </div>
+              </div>
+          </div>
+
+
+            <div class="container-fluid" ng-switch-when="basicGuidelines">
+                <div class="row justify-content-center" style="background-color:#171347;color:white;min-height:300px;">
+                   
+                    <div class="col-md-6 align-middle">
+                        <div style="text-align:center !important;height:100%;" class="align-middle">
+                            <h1 style="font-size: 70px;font-weight:700;padding-top:70px;">{{selectedCampaign.Name}}</h1>
+                        <h4 class="pt-5 pb-5">IGSTC intends to catalyse innovation centric R and D projects by synergising the strength of research
+                            institution and industry from India and Germany.</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center pt-5 pb-5">
+                    <div class="col-md-8">
+                        <!-- <div class="d-flex float-left">
+                            <br/>
+                            <button type="button" class="blue-btn" ng-click="redirectPageURLSelectedCam()"><i class="fa-solid fa-arrow-left pe-2"></i>Back</button>
+                        </div> -->
+                        <div class="card" style="margin-top: 1%;">
+                            <div class="card-body">
+                                <div class="accordion accordion-flush" id="accordionFlushExample_{{campIndex}}" ng-repeat="camp in selectedCampaign.Campaign_Guidlines__r"
+                                    ng-init="campIndex=$index">
+                                    <div class="card-body accordion-item">
+                                        <div class="accordion-header" id="flush-headingOne_{{campIndex}}">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne_{{campIndex}}"
+                                                aria-expanded="true" aria-controls="flush-collapseOne_{{campIndex}}">
+                                                <h3 class="card-title">
+                                                    <b>{{camp.Name}}</b>
+                                                </h3>&nbsp;
+                                            </button>
+                                        </div>
+                                        <div id="flush-collapseOne_{{campIndex}}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne_{{campIndex}}"
+                                            data-bs-parent="#accordionFlushExample_{{campIndex}}">
+                                            <div ng-bind-html="camp.Description__c"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="d-flex float-end">
+                                    <br/>
+                                    <button type="button" class="blue-btn" ng-click="redirectPageURLSelectedCam()"><i class="fa-solid fa-arrow-left pe-2"></i>Back</button>
+                                </div>    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</apex:page>

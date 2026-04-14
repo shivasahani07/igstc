@@ -1,0 +1,193 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+    <html>
+        <div ng-controller="additional_ctrl">
+            <head>
+                <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+                <apex:stylesheet value="{!$Resource.timeLineCss}" />
+                <script>
+                    var userId = '{!$CurrentPage.parameters.id}';
+                </script>
+            </head>
+
+            <body>
+                <div class="container mt-5">
+                    <div class="row box-shadow-2 mt-3 mx-5 p-3">
+
+                        <div class="col-md-12 mt-5">
+                            <h5 class="pb-3 color-theme"><b>PERSONAL DETAILS</b></h5>
+                        </div>
+
+                        <div class="row mt-5 ms-3">
+                            <div class="col-md-4">
+                                <label class="font-if">First Name<span class="ms-2 text-danger">*</span></label>
+                                <input ng-focus="removeClass('fName')" id="fName" type="text" ng-model="contactDetails.FirstName" class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="font-if">Last Name<span class="ms-2 text-danger">*</span></label>
+                                <input ng-focus="removeClass('lName')" id="lName" type="text" ng-model="contactDetails.LastName" class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="font-if">Email<span class="ms-2 text-danger">*</span></label>
+                                <input ng-focus="removeClass('email')" id="email" type="email" ng-model="contactDetails.Email" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="row mt-5 ms-3">
+                            <div class="col-md-4">
+                                <label class="font-if">Department<span class="ms-2 text-danger">*</span></label>
+                                <input ng-focus="removeClass('dept')" id="dept" type="text" ng-model="contactDetails.Department" class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="font-if">Designation<span class="ms-2 text-danger">*</span></label>
+                                <input ng-focus="removeClass('designation')" id="designation" type="text" ng-model="contactDetails.Designation__c" class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="font-if">Institution/Industry Name<span class="ms-2 text-danger">*</span></label>
+                                <input ng-focus="removeClass('inst')" id="inst" type="text" ng-model="contactDetails.Account.Name" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="row mt-5 ms-3">
+                            <div class="col-md-4">
+                                <label class="font-if">Phone<span class="ms-2 text-danger">*</span></label>
+                                <input ng-focus="removeClass('phone')" id="phone" type="text" ng-model="contactDetails.Phone" class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="font-if">Street</label>
+                                <input type="text" ng-model="contactDetails.MailingStreet" class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="font-if">City</label>
+                                <input type="text" ng-model="contactDetails.MailingCity" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="row mt-5 mb-5 ms-3">
+                            
+                            <div class="col-md-4">
+                                <label class= "font-if">Country<span class="ms-2 text-danger">*</span></label>
+                                <input ng-focus="removeClass('country')" id="country" type="text" ng-model="contactDetails.MailingCountry" class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="font-if">State</label>
+                                <input type="text" ng-model="contactDetails.MailingState" class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="font-if">Pin Code<span class="ms-2 text-danger">*</span></label>
+                                <input ng-focus="removeClass('pin')" id="pin" type="text" ng-model="contactDetails.MailingPostalCode" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mt-5">
+                            <h5 class="pb-3 color-theme"><b>HOST DETAILS</b></h5>
+                        </div>
+
+                        <div class="row mt-5 ms-3">
+                            <div class="col-md-4">
+                                <label class="font-if">Organisation Name<span class="ms-2 text-danger">*</span></label>
+                                <input class="form-control" ng-focus="removeClass('org')" id="org" type="text" ng-model="hostDetails.Name" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="font-if">Street</label>
+                                <input class="form-control" type="text" ng-model="hostDetails.BillingStreet" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="font-if">City</label>
+                                <input class="form-control" type="text" ng-model="hostDetails.BillingCity" />
+                            </div>
+                        </div>
+
+                        <div class="row mt-5 ms-3">
+                            <div class="col-md-4">
+                                <label class="font-if">Country<span class="ms-2 text-danger">*</span></label>
+                                <input type="text" ng-focus="removeClass('country2')" id="country2" ng-model="hostDetails.BillingCountry" class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="font-if">State</label>
+                                <input type="text" ng-model="hostDetails.BillingState" class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="font-if">Pin code<span class="ms-2 text-danger">*</span></label>
+                                <input class="form-control" type="text" ng-focus="removeClass('pincode')" id="pincode" ng-model="hostDetails.BillingPostalCode" />
+                            </div>
+                        </div>
+
+                        <div class="row mt-5 ms-3">
+                            <div class="col-md-4">
+                                <label class="font-if">Name of Mentor<span class="ms-2 text-danger">*</span></label>
+                                <input class="form-control" type="text" ng-focus="removeClass('mentor')" id="mentor" ng-model="hostDetails.Name_of_Mentor__c" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="font-if">Designation/Position of the Mentor<span class="ms-2 text-danger">*</span></label>
+                                <input class="form-control" type="text" ng-focus="removeClass('designation2')" id="designation2" ng-model="hostDetails.Designation_Position_of_the_Mentor__c" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="font-if">Mentor contact number<span class="ms-2 text-danger">*</span></label>
+                                <input class="form-control" type="text" ng-focus="removeClass('number')" id="number" ng-model="hostDetails.Mentor_contact_number__c" />
+                            </div>
+                        </div>
+
+                        <div class="row mt-5 mb-5 ms-3">
+                            
+                            <div class="col-md-4">
+                                <label class= "font-if">Mentor E-mail Id<span class="ms-2 text-danger">*</span></label>
+                                <input class="form-control" type="email" ng-focus="removeClass('email2')" id="email2" ng-model="hostDetails.Mentor_E_mail_Id__c" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mt-5">
+                            <h5 class="pb-3 color-theme"><b>PROJECT DETAILS</b></h5>
+                        </div>
+
+                        <div class="row mt-5 ms-3">
+                            <div class="col-md-4">
+                                <label class="font-if">Thematic Area of the Proposal<span class="ms-2 text-danger">*</span></label>
+                                <input ng-focus="removeClass('Thematic')" id="Thematic" type="text" ng-model="contactDetails.Proposals__r.Thematic_Area__c" class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="font-if">Title Of Proposal<span class="ms-2 text-danger">*</span></label>
+                                <input ng-focus="removeClass('Title')" id="Title" type="text" ng-model="contactDetails.Proposals__r.Title_Of__c" class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="font-if">Title des Antrages(In German)<span class="ms-2 text-danger">*</span></label>
+                                <input ng-focus="removeClass('German')" id="German" type="text" ng-model="contactDetails.Proposals__r.Title_In_German__c" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="row mt-5 ms-3">
+                            <div class="col-md-4">
+                                <label class="font-if">Acronym<span class="ms-2 text-danger">*</span></label>
+                                <input ng-focus="removeClass('acronym')" id="acronym" type="text" ng-model="contactDetails.Proposals__r.Acronym__c" class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="font-if">Proposed Date</label>
+                                <input class="form-control" ng-init="proposedDate=(proposedDate | date:'yyyy-MM-dd')" type="date" ng-model="proposedDate" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="font-if">End Date</label>
+                                <input class="form-control" ng-init="endDate=(endDate | date:'yyyy-MM-dd')" type="date" ng-model="endDate" />
+                            </div>
+                        </div>
+
+                        <div class="row mt-5 ms-3">
+                            <div class="col-md-12">
+                                <label class="font-if">Summary</label>
+                                <ng-ckeditor ng-model="contactDetails.Proposals__r.Summary__c" name="ckEditor1"></ng-ckeditor>
+                            </div>
+                        </div>
+
+                        <div class="row mt-5 mb-3">
+                            <div class="col-md-12">
+                                
+                                <button class="blue-btn float-end" ng-click="insertConnectadditionalPoints()" type="button">
+                                    <i class="fa-solid fa-check me-2"></i>Save</button>
+                               
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </body>
+        </div>
+    </html>
+</apex:page>

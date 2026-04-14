@@ -1,0 +1,46 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="AllPrograms_Controller">
+    <html>
+        <head>
+            <c:Libraries ></c:Libraries>
+            <script>
+            var app = angular.module('myApp',[]);
+            app.controller('myCtrl', function($scope){
+                debugger;
+                //var campaignList = JSON.parse('{!campaignList}');
+                $scope.campaignList = campaignList;
+                $scope.fetchCampaign = function(){
+                    AllPrograms_Controller.fetchCampaignsPrograms(function (result, event){
+                        if(event.status && result != null) {
+                            debugger;
+                            $scope.$apply();
+                        }
+                        )
+                    }
+                     {escape: false});
+                   }
+                });
+            </script>
+        </head>
+        
+        <body ng-app='myApp' ng-controller='myCtrl'>
+            <div  style="width: 80%;margin-top:1%;margin-left:10%;">
+                <div class="container" width="100%">
+                    <div class="row">
+                        <div class="col-sm-4" style="margin-bottom: 2%;" ng-repeat="campaign in campaignList">
+                            <div class="card mx-auto" style="">
+                                <div class="card-body">
+                                    <h5 style="font-size:20px;text-align:center"><b>{{campaign.Name}}</b></h5>
+                                    <p style="font-size:15px;padding:2%">{{campaign.Description}}</p>
+                                    <div class="row">
+                                        <div class="col-sm-2"></div>
+                                        <div class="col-sm-2"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </body>
+    </html>
+</apex:page>

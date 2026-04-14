@@ -1,0 +1,1113 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="IndustrialFellowshipController">
+    <c:Controllers />
+    <html>
+    <div ng-controller="ConsortiaContacts_Ctrl">
+
+        <head>
+            <apex:stylesheet value="{!$Resource.ApplicantPortalCSS}" />
+            <apex:stylesheet value="{!$Resource.timeLineCss}" />
+            <script>
+                var userId = '{!$CurrentPage.parameters.id}'; 
+            </script>
+        </head>
+
+        <body ng-app="cp_app">
+
+            <div class="container mt-5">
+                <div class="row mx-5">
+                    <div class="col-md-12">
+                        <div class="tab-link" ng-show="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success w-100"></div>
+                            </div>
+                            <ul>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ProjectDetailPage')">
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Basic Details</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Consortia')">
+                                        <div class="icon-circle">
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                        <span>Consortia Details</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ConsortiaContacts')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>CV Details</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('Financial_Overview')">
+                                        <div class="icon-circle">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <span>Financial Contribution</span>
+                                    </a>
+                                </li>
+                                <li class="active pb-cursor">
+                                    <a ng-click="redirectPageURL('ProjectDetail')">
+                                        <div class="icon-circle">
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Project Details</span>
+                                    </a>
+                                </li>
+                                <!-- <li class="active pb-cursor" ng-hide="secondStage">
+                                    <a ng-click="redirectPageURL('WorkPackages')">
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-box"></i>
+                                        </div>
+                                        <span>Work Package</span>
+                                    </a>
+                                </li> -->
+                            </ul>
+                        </div>
+
+                        <div ng-show="proposalStage">
+                            <div class="tab-link" ng-show="secondStage">
+                                <div class="progress">
+                                    <div class="progress-success w-100"></div>
+                                </div>
+                                <ul>
+                                    <!-- <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('WorkPackages')">
+                                            <div class="icon-circle">
+                                                <i class="fa-solid fa-box"></i>
+                                            </div>
+                                            <span>Work Package</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('PIDeliverables')">
+                                            <div class="icon-circle">
+                                                <i class="fa-solid fa-business-time"></i>
+                                            </div>
+                                            <span>PI Deliverables</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Network_Meeting')">
+                                            <div class="icon-circle">
+                                                <i class="fa fa-group"></i>
+                                            </div>
+                                            <span>Network Meeting</span>
+                                        </a>
+                                    </li> -->
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('ExpenseDeclaration')">
+                                            <div class="icon-circle">
+                                                <i class="fa fa-money"></i>
+                                            </div>
+                                            <span>Expense Details</span>
+                                        </a>
+                                    </li>
+                                    <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('Declartion_2plus2')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-donate"></i>
+                                            </div>
+                                            <span>Declaration</span>
+                                        </a>
+                                    </li>
+                                    <!-- <li class="active pb-cursor">
+                                        <a ng-click="redirectPageURL('GrantApplication')">
+                                            <div class="icon-circle">
+                                                <i class="fas fa-donate"></i>
+                                            </div>
+                                            <span>Grant Application</span>
+                                        </a>
+                                    </li> -->
+                                </ul>
+                            </div>
+                        </div>
+
+
+                        <div class="tab-link" ng-hide="proposalStage">
+                            <div class="progress">
+                                <div class="progress-success wp-5"></div>
+                            </div>
+                            <ul>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                        <span>Basic Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                        <span>Consortia Details</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <span>CV Details</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <span>Financial Contribution</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="far fa-address-card"></i>
+                                        </div>
+                                        <span>Project Details</span>
+                                    </a>
+                                </li>
+                                <!-- <li ng-hide="secondStage">
+                                    <a>
+                                        <div class="icon-circle">
+                                            <i class="fa-solid fa-box"></i>
+                                        </div>
+                                        <span>Work Package</span>
+                                    </a>
+                                </li> -->
+                            </ul>
+                        </div>
+
+                        <div ng-hide="proposalStage">
+                            <div class="tab-link" ng-show="secondStage">
+                                <div class="progress">
+                                    <div class=""></div>
+                                </div>
+                                <ul>
+                                    <!-- <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa fa-home"></i>
+                                            </div>
+                                            <span>Work Packages</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa-solid fa-business-time"></i>
+                                            </div>
+                                            <span>PI Deliverables</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa fa-group"></i>
+                                            </div>
+                                            <span>Network Meeting</span>
+                                        </a>
+                                    </li> -->
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fa fa-money"></i>
+                                            </div>
+                                            <span>Expense Details</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-donate"></i>
+                                            </div>
+                                            <span>Declaration</span>
+                                        </a>
+                                    </li>
+                                    <!-- <li>
+                                        <a>
+                                            <div class="icon-circle">
+                                                <i class="fas fa-donate"></i>
+                                            </div>
+                                            <span>Grant Details</span>
+                                        </a>
+                                    </li> -->
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mx-5">
+                    <div class="col-md-12 mt-5 box-shadow-1 mb-5" style="padding-bottom: 7px; padding-top: 7px;">
+                        <i ng-if="allDetailList.Account.ShippingCountry=='India'">
+                            <apex:image url="{!$Resource.indiaFlag}" styleClass="img-fluid" style="max-width:30px;" />
+                        </i>
+                        <i ng-if="allDetailList.Account.ShippingCountry=='Germany'">
+                            <apex:image url="{!$Resource.germanyFlag}" styleClass="img-fluid" style="max-width:30px;" />
+                        </i>
+                        <span class="pb-3 h4 color-theme ms-3">{{allDetailList.Account.Name}}</span>
+                    </div>
+                </div>
+
+                <div class="row box-shadow-2 mt-3 mx-5 p-3 mb-5">
+                    <div class="col-12">
+                        <div class="vertical-scroll">
+                            <div class="progress-icon">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-4">
+                                    <label class="font-if">
+                                        <b>Basic Details</b>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <!-- <div class="col-md-2">
+                                    <label class="font-if">Salutation<span class="ms-2 text-danger">*</span></label>
+                                    <select class="form-control" id="ddTitle" ng-focus="removeClass('txtFirstName')" ng-model='allDetailList.Title' ng-disabled="proposalStage">
+                                        <option value="Prof." ng-selected="Mr">Prof.</option>
+                                        <option value="Dr.">Dr.</option>
+                                        <option value="Mr.">Mr.</option>
+                                        <option value="Ms.">Ms.</option>
+                                    </select>
+                                </div> -->
+                                <div class="col-md-4">
+                                    <label class="font-if">First Name (Max. char 40)
+                                        <span class="text-danger ms-2">*</span>
+                                    </label>
+                                    <input ng-focus="removeClass2('FName')" id="FName" class="form-control" ng-model="allDetailList.FirstName" type="text" ng-disabled="proposalStage"
+                                    />
+                                </div>
+                                <!-- <div class="col-md-4">
+                                    <label class="font-if">Last Name (Max. char 80)
+                                        <span class="text-danger ms-2">*</span>
+                                    </label>
+                                    <input ng-focus="removeClass2('LName')" id="LName" class="form-control" ng-model="allDetailList.LastName" type="text" ng-disabled="proposalStage"
+                                    />
+                                </div> -->
+
+                                <div class="col-md-4">
+                                    <label class="font-if">
+                                        Last Name (Max. char 80)
+                                        <span class="text-danger ms-2">*</span>
+                                    </label>
+
+                                    <input type="text" id="LName" class="form-control" ng-model="allDetailList.LastName" ng-disabled="proposalStage" ng-focus="removeClass2('LName')"
+                                        ng-change="checkCharLimit(allDetailList, 'LastName', 80)" />
+
+                                    <small class="text-danger" ng-if="allDetailList._charLimitMap && allDetailList._charLimitMap.LastName">
+                                        Maximum 80 characters allowed
+                                    </small>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="font-if">Email
+                                        <span class="text-danger ms-2">*</span>
+                                    </label>
+                                    <input ng-focus="removeClass2('email')" id="email" class="form-control" ng-model="allDetailList.Email" type="text" ng-disabled="true"
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <!-- <div class="col-md-4">
+                                    <label class="font-if">Actual Position (Max. char 80)
+                                        <span class="text-danger ms-2">*</span>
+                                    </label>
+                                    <input ng-focus="removeClass2('position')" id="position" class="form-control" ng-model="allDetailList.Actual_Position__c"
+                                        type="text" ng-disabled="proposalStage" />
+                                </div> -->
+
+                                <div class="col-md-4">
+                                    <label class="font-if">
+                                        Actual Position (Max. char 80)
+                                        <span class="text-danger ms-2">*</span>
+                                    </label>
+
+                                    <input type="text" id="position" class="form-control" ng-model="allDetailList.Actual_Position__c" ng-disabled="proposalStage"
+                                        ng-focus="removeClass2('position')" ng-change="checkCharLimit(allDetailList, 'Actual_Position__c', 80)"
+                                    />
+
+                                    <small class="text-danger" ng-if="allDetailList._charLimitMap &&
+                                            allDetailList._charLimitMap.Actual_Position__c">
+                                        Maximum 80 characters allowed
+                                    </small>
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <label class="font-if">Street
+                                        <span class="text-danger ms-2">*</span>
+                                    </label>
+                                    <input ng-focus="removeClass2('street')" id="street" class="form-control" ng-model="allDetailList.MailingStreet" type="text"
+                                        ng-disabled="proposalStage" />
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="font-if">City
+                                        <span class="text-danger ms-2">*</span>
+                                    </label>
+                                    <input ng-focus="removeClass2('city')" id="city" class="form-control" ng-model="allDetailList.MailingCity" type="text" ng-disabled="proposalStage"
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="row mt-3 pb-5">
+                                <div class="col-md-4">
+                                    <label class="font-if">Country
+                                        <span class="text-danger ms-2">*</span>
+                                    </label>
+                                    <select class="form-control" aria-label="Default select example" ng-focus="removeClass2('country')" id="country" ng-model="allDetailList.MailingCountry"
+                                        required="true" ng-disabled="proposalStage" ng-change="onCountryChange()">
+                                        <option ng-repeat="staff in countrytype">{{staff}}</option>
+                                    </select>
+                                    <!-- <input class="form-control" ng-model="allDetailList.MailingCountry" type="text" ng-disabled="proposalStage" ng-change="onCountryChange()"/> -->
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="font-if">State
+                                        <span class="text-danger ms-2">*</span>
+                                    </label>
+                                    <select class="form-control" aria-label="Default select example" ng-focus="removeClass2('state')" id="state" ng-model="allDetailList.MailingState"
+                                        required="true" ng-disabled="proposalStage">
+                                        <option ng-repeat="staff in allDetailList.stateList">{{staff}}</option>
+                                    </select>
+                                    <!-- <input class="form-control" ng-model="allDetailList.MailingState" type="text" ng-disabled="proposalStage"/> -->
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="font-if">Post Code
+                                        <span class="text-danger ms-2">*</span>
+                                    </label>
+                                    <input class="form-control" ng-focus="removeClass2('pCode')" id="pCode" ng-model="allDetailList.MailingPostalCode" type="text"
+                                        ng-disabled="proposalStage" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="vertical-scroll">
+                            <div class="progress-icon">
+                                <i class="fa-solid fa-user-graduate"></i>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="font-if">
+                                        <b>Education (Reverse chronological order)</b>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class=" row mt-3 pb-5">
+                                <div class="col-md-12">
+                                    <table class="table2" style="width: 100%" cellpadding="4">
+                                        <thead>
+                                            <tr>
+                                                <th class="pb-3 color-theme">Degree
+                                                    <span class="required-asterisk" style="color:red;">*</span>
+                                                    <br/>
+                                                    <span style="font-size: 8px; font-weight: normal; color: #666; margin-left: 4px;"></span>
+                                                </th>
+                                                <th class="pb-3 color-theme">Institution
+                                                    <span class="required-asterisk" style="color:red;">*</span>
+                                                    <br/> (Max. char 255)
+                                                </th>
+                                                <th class="pb-3 color-theme">Specialization
+                                                    <span class="required-asterisk" style="color:red;">*</span>
+                                                    <br/> (Max. char 255)
+                                                </th>
+                                                <th class="pb-3 color-theme">Start Year
+                                                    <span class="required-asterisk" style="color:red;">*</span>
+                                                    <br/> (Max. char 4)
+                                                </th>
+                                                <th class="pb-3 color-theme">End Year
+                                                    <span class="required-asterisk" style="color:red;">*</span>
+                                                    <br/> (Max. char 4)
+                                                </th>
+                                                <th ng-hide="proposalStage" class="text-center">
+                                                    <i class="fas fa-plus-circle icon" ng-click="addEducationRow()"></i>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="row in allDetailList.Education_Details__r">
+                                                <td>
+                                                    <input ng-focus="removeClass('degree',$index)" id="degree{{$index}}" ng-model="row.Degree__c" ng-disabled="proposalStage"
+                                                        class="form-control" type="text" />
+                                                </td>
+                                                <!-- <td>
+                                                    <input type="text" ng-focus="removeClass('institution',$index)" id="institution{{$index}}" ng-model="row.Institution_Name__c"
+                                                        class="form-control" ng-disabled="proposalStage" />
+                                                </td> -->
+                                                <td>
+                                                    <input type="text" id="institution{{$index}}" ng-model="row.Institution_Name__c" class="form-control" ng-disabled="proposalStage"
+                                                        ng-focus="removeClass('institution',$index)" ng-change="checkCharLimit(row, 'Institution_Name__c', 255)"
+                                                    />
+
+                                                    <small class="text-danger" ng-if="row._charLimitMap &&
+                                                            row._charLimitMap.Institution_Name__c">
+                                                        Maximum 255 characters allowed
+                                                    </small>
+                                                </td>
+
+
+                                                <!-- <td>
+                                                    <input ng-focus="removeClass('specialization',$index)" id="specialization{{$index}}" ng-model="row.Area_of_specialization__c"
+                                                        ng-disabled="proposalStage" class="form-control" type="text" />
+                                                </td> -->
+                                                <td>
+                                                    <input type="text" id="specialization{{$index}}" ng-model="row.Area_of_specialization__c" class="form-control" ng-disabled="proposalStage"
+                                                        ng-focus="removeClass('specialization',$index)" ng-change="checkCharLimit(row, 'Area_of_specialization__c', 255)"
+                                                    />
+
+                                                    <small class="text-danger" ng-if="row._charLimitMap &&
+                                                            row._charLimitMap.Area_of_specialization__c">
+                                                        Maximum 255 characters allowed
+                                                    </small>
+                                                </td>
+
+
+                                                <!-- <td>
+                                                    <input type="text" ng-focus="removeClass('zipCode1',$index)" maxlength="100" ng-model="row.Start_Year__c" id="zipCode1{{$index}}"
+                                                        class="form-control" ng-disabled="proposalStage" />
+                                                </td> -->
+                                                <td>
+                                                    <input type="text" id="zipCode1{{$index}}" ng-model="row.Start_Year__c" class="form-control" ng-disabled="proposalStage"
+                                                        ng-focus="removeClass('zipCode1',$index)" ng-change="checkCharLimit(row, 'Start_Year__c', 4)"
+                                                    />
+
+                                                    <small class="text-danger" ng-if="row._charLimitMap && row._charLimitMap.Start_Year__c">
+                                                        Maximum 4 characters allowed
+                                                    </small>
+                                                </td>
+
+
+                                                <!-- <td>
+                                                    <input type="text" ng-focus="removeClass('zipCode2',$index)" maxlength="100" ng-model="row.End_Year__c" id="zipCode2{{$index}}"
+                                                        class="form-control" ng-disabled="proposalStage" />
+                                                </td> -->
+
+                                                <td>
+                                                    <input type="text" id="zipCode2{{$index}}" ng-model="row.End_Year__c" class="form-control" ng-disabled="proposalStage" ng-focus="removeClass('zipCode2',$index)"
+                                                        ng-change="checkCharLimit(row, 'End_Year__c', 4)" />
+
+                                                    <small class="text-danger" ng-if="row._charLimitMap &&
+                                                                row._charLimitMap.End_Year__c">
+                                                        Maximum 4 characters allowed
+                                                    </small>
+                                                </td>
+
+                                                <td ng-show="!proposalStage" class="text-center">
+                                                    <i class="fa-sharp fa-solid fa-circle-xmark fa-2x text-danger" ng-click="removeEducationRow($index)"></i>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="vertical-scroll">
+                            <div class="progress-icon">
+                                <i class="fa-solid fa-briefcase"></i>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="font-if">
+                                        <b>Employment (Reverse Chronological order) </b>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3 pb-5">
+                                <div class="col-md-12">
+                                    <table class="table2" cellpadding="4" style="width: 100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="pb-3 color-theme">Organization (Max. char 255)
+                                                    <span class="required-asterisk" style="color:red;">*</span>
+                                                </th>
+                                                <th class="pb-3 color-theme">Position (Max. char 255)
+                                                    <span class="required-asterisk" style="color:red;">*</span>
+                                                </th>
+                                                <th class="pb-3 color-theme">Start Year (Max. char 4)
+                                                    <span class="required-asterisk" style="color:red;">*</span>
+                                                </th>
+                                                <th class="pb-3 color-theme">End Year (Max. char 4)
+                                                    <span class="required-asterisk" style="color:red;">*</span>
+                                                </th>
+                                                <th ng-hide="proposalStage" class="text-center">
+                                                    <i class="fas fa-plus-circle icon" ng-click="addEmploymentRow()"></i>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="row in allDetailList.Employment_Details__r">
+                                                <!-- <td>
+                                                    <input type="text" ng-focus="removeClass('org',$index)" id="org{{$index}}" ng-model="row.Organization_Name__c" class="form-control"
+                                                        ng-disabled="proposalStage" />
+                                                </td> -->
+                                                <td>
+                                                    <input type="text" id="org{{$index}}" ng-model="row.Organization_Name__c" class="form-control" ng-disabled="proposalStage"
+                                                        ng-focus="removeClass('org',$index)" ng-change="checkCharLimit(row, 'Organization_Name__c', 255)"
+                                                    />
+
+                                                    <small class="text-danger" ng-if="row._charLimitMap && row._charLimitMap.Organization_Name__c">
+                                                        Maximum 255 characters allowed
+                                                    </small>
+                                                </td>
+
+                                                <!-- <td>
+                                                    <input type="text" ng-focus="removeClass('position1',$index)" id="position1{{$index}}" ng-model="row.Position__c" class="form-control"
+                                                        ng-disabled="proposalStage" />
+                                                </td> -->
+
+                                                <td>
+                                                    <input type="text" id="position1{{$index}}" ng-model="row.Position__c" class="form-control" ng-disabled="proposalStage" ng-focus="removeClass('position1',$index)"
+                                                        ng-change="checkCharLimit(row, 'Position__c', 255)" />
+
+                                                    <small class="text-danger" ng-if="row._charLimitMap && row._charLimitMap.Position__c">
+                                                        Maximum 255 characters allowed
+                                                    </small>
+                                                </td>
+
+                                                <!-- <td>
+                                                    <input type="text" number="row.Start_Year__c" ng-focus="removeClass('zipCode11',$index)" ng-model="row.Start_Year__c" min="1000"
+                                                        max="9999" maxlength="4" minlength="4" id="zipCode11{{$index}}" class="form-control"
+                                                        ng-disabled="proposalStage" />
+                                                </td> -->
+
+                                                <td>
+                                                    <input type="text" id="zipCode11{{$index}}" ng-model="row.Start_Year__c" class="form-control" ng-disabled="proposalStage"
+                                                        ng-focus="removeClass('zipCode11',$index)" ng-change="checkCharLimit(row, 'Start_Year__c', 4)"
+                                                    />
+
+                                                    <small class="text-danger" ng-if="row._charLimitMap && row._charLimitMap.Start_Year__c">
+                                                        Maximum 4 characters allowed
+                                                    </small>
+                                                </td>
+
+                                                <!-- <td>
+                                                    <input type="text" ng-focus="removeClass('zipCode22',$index)" ng-model="row.End_Year__c" id="zipCode22{{$index}}" class="form-control"
+                                                        ng-disabled="proposalStage" />
+                                                </td> -->
+
+                                                <td>
+                                                    <input type="text" id="zipCode22{{$index}}" ng-model="row.End_Year__c" class="form-control" ng-disabled="proposalStage" ng-focus="removeClass('zipCode22',$index)"
+                                                        ng-change="checkCharLimit(row, 'End_Year__c', 4)" />
+
+                                                    <small class="text-danger" ng-if="row._charLimitMap && row._charLimitMap.End_Year__c">
+                                                        Maximum 4 characters allowed
+                                                    </small>
+                                                </td>
+
+
+
+                                                <td ng-show="!proposalStage" class="text-center">
+                                                    <i class="fa-sharp fa-solid fa-circle-xmark fa-2x text-danger" ng-click="removeEmploymentRow($index)"></i>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="vertical-scroll">
+                            <div class="progress-icon">
+                                <i class="fas fa-file-invoice"></i>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label class="font-if">
+                                        <b>Publications/Patents
+                                            <i>(Only five relevant to the proposals / best five in last five years)</i>
+                                        </b>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mb-5">
+                                <ng-ckeditor id="publication" ng-model="allDetailList.Publications_Patents__c" name="ckEditor" ng-config="config" ng-disabled="proposalStage"></ng-ckeditor>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3" ng-if="!proposalStage">
+                            <div class="col-md-12">
+                                <button class="blue-btn float-end" id="btnSubmit" ng-click="saveAllDetails()" type="button">
+                                    <i class="fa-solid fa-check me-2"></i>Save and Next</button>
+                                <button class="btn btn-secondary float-end me-2" style="padding: 8px 20px !important;font-size: 16px !important;" ng-click="redirectPageURL('ConsortiaAddress')"
+                                    type="button">
+                                    <i class="fa-solid fa-arrow-left me-2"></i>Back</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- <div class="container my-5">
+                <div class="row mb-3">
+                    <div class="col-md-8">
+                        <div class="alert alert-primary" role="alert">
+                            <i class="fa-solid fa-circle-info me-2"></i>Please provide contact details of every partner
+                            <br/>
+                            <i class="fa-solid fa-circle-info me-2"></i><span class="text-danger">* Mandatory fields</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4 pull-right" ng-if="!proposalStage">
+                        <button type="button" ng-click="saveAndNext('Financial_Overview')" class="btn btn-secondary pull-right ms-3">
+                            <i class="fa-sharp fa-solid fa-check me-2"></i>Save and Next
+                        </button>
+                        <button type="button" ng-click="redirectPageURL('Consortia')" class="btn btn-warning pull-right">
+                            <i class="fa-solid fa-arrow-left me-2"></i>Back
+                        </button>
+                    </div>
+                </div>
+                <div class="card mb-4" ng-repeat="account in AccountContactData">
+                    <div class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading{{$index}}">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$index}}" aria-expanded="true"
+                                    aria-controls="collapse{{$index}}">
+                                    <i ng-if="account.Country=='India'">
+                                        <apex:image url="{!$Resource.indiaFlag}" styleClass="img-fluid" style="max-width:30px;"
+                                        />
+                                    </i>
+                                    <i ng-if="account.Country=='Germany'">
+                                        <apex:image url="{!$Resource.germanyFlag}" styleClass="img-fluid" style="max-width:30px;"
+                                        />
+                                    </i>
+                                    <h4 class="ms-3">{{account.AccName}}</h4>
+                                </button>
+                            </h2>
+                            <div id="collapse{{$index}}" class="accordion-collapse collapse show" aria-labelledby="heading{{$index}}" data-bs-parent="#accordionExample">
+                                
+                                <div class="row mt-3">
+                                    <div class="col-md-4" ng-repeat="contact in account.Lcon" ng-click="updateContactDet($parent.$index,$index)">
+                                        <div class="card-body">
+                                            <div class="card card-reviewer">
+                                                <div class="card-body">
+                                                    <p style="font-size: 15px;">
+                                                        <i class="fa-solid fa-user me-3"></i>{{contact.FirstName}} {{contact.LastName}}</p>
+                                                    <p style="font-size: 15px;">
+                                                        <i class="fa-sharp fa-solid fa-at me-3"></i>{{contact.Email}}</p>
+                                                    <p style="font-size: 15px;">
+                                                        <i class="fa-solid fa-user-tie me-3"></i>{{contact.Actual_Position__c}}</p>
+                                                    <p style="font-size: 15px;">
+                                                        <i class="fa-solid fa-pencil me-3"></i>Modify Details</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" ng-click="addContact($index)">
+                                        <div class="card-body align-items-center justify-content-center">
+                                            <div class="card card-reviewer align-items-center justify-content-center">
+                                                <div class="card-body d-flex align-items-center justify-content-center" style="min-height: 106px;">
+                                                    <p style="font-size: 15px;">
+                                                        <i class="fa-solid fa-plus me-3"></i>Add Contact</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="p-3" ng-repeat="contact in account.Lcon">
+                                    <div id="contactBasicDet{{$parent.$index}}{{$index}}" style="display: none;">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <h4 class="heading-border-2">Basic Details</h4>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label>First Name
+                                                    <span class="text-danger ms-2">*</span>
+                                                </label>
+                                                <input class="form-control" ng-model="contact.FirstName" type="text" ng-disabled="proposalStage"/>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>Last Name
+                                                    <span class="ms-2 text-danger">*</span>
+                                                </label>
+                                                <input class="form-control" ng-model="contact.LastName" type="text" ng-disabled="proposalStage"/>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button type="button" ng-cloak="true" class="btn btn-danger mt-5" ng-disabled="proposalStage" ng-click="deleteContact($parent.$index,$index)">
+                                                    <i class="fa-solid fa-circle-xmark me-2"></i>Delete</button>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-md-4">
+                                                <label>Email
+                                                    <span class="text-danger ms-2">*</span>
+                                                </label>
+                                                <input class="form-control" ng-model="contact.Email" type="email" ng-disabled="proposalStage"/>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>Actual Position (Max. char 80)
+                                                    <span class="text-danger ms-2">*</span>
+                                                </label>
+                                                <input class="form-control" ng-model="contact.Actual_Position__c" type="text" maxlength="80" ng-disabled="proposalStage"
+                                                    ng-change="checkCharLimit(contact, 'Actual_Position__c', 80)"/>
+                                                <small class="text-danger" ng-if="contact._charLimitMap && contact._charLimitMap.Actual_Position__c">
+                                                    Maximum 80 characters allowed
+                                                </small>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>Street
+                                                    <span class="text-danger ms-2">*</span>
+                                                </label>
+                                                <input class="form-control" ng-model="contact.MailingStreet" type="text" ng-disabled="proposalStage"/>
+                                            </div>
+
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-md-4">
+                                                <label>City
+                                                    <span class="text-danger ms-2">*</span>
+                                                </label>
+                                                <input class="form-control" ng-model="contact.MailingCity" type="text" ng-disabled="proposalStage"/>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>State
+                                                    <span class="text-danger ms-2">*</span>
+                                                </label>
+                                                <input class="form-control" ng-model="contact.MailingState" type="text" ng-disabled="proposalStage"/>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>Post Code
+                                                    <span class="text-danger ms-2">*</span>
+                                                </label>
+                                                <input class="form-control" ng-model="contact.MailingPostalCode" type="text" ng-disabled="proposalStage"/>
+                                            </div>
+
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-md-4">
+                                                <label>Country
+                                                    <span class="text-danger ms-2">*</span>
+                                                </label>
+                                                <select class="form-control" aria-label="Default select example" ng-model="contact.MailingCountry" required="true" ng-disabled="proposalStage">
+                                                    <option ng-repeat="staff in countrytype">{{staff}}</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <button class="blue-btn mt-5" type="button" ng-click="saveDetail('basicDet',$parent.$index,$index)">Next</button>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="cd-horizontal-timeline loaded">
+                                                    <div class="timeline">
+                                                        <div class="events-wrapper">
+                                                            <div class="events" style="width: 1800px;">
+                                                                <ol>
+                                                                    <li>
+                                                                        <i class="selected"
+                                                                            style="left: 120px; font-style: normal;font-size:15px;">Basic Details</i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i style="left: 270px;font-style: normal;font-size:15px;">Education</i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i style="left: 420px;font-style: normal;font-size:15px;">Employment</i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i style="left: 570px;font-style: normal;font-size:15px;">Publications</i>
+                                                                    </li>
+                                                                </ol>
+                                                                <span class="filling-line" aria-hidden="true" style="transform: scaleX(0.09006);"></span>
+                                                            </div>
+                                                        </div>
+                                                        <ul class="cd-timeline-navigation">
+                                                            <li>
+                                                                <i class="prev">Prev</i>
+                                                            </li>
+                                                            <li>
+                                                                <i class="next">Next</i>
+                                                            </li>
+                                                        </ul>                                                    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="educationDet{{$parent.$index}}{{$index}}" ng-cloak="true" style="display: none;">
+                                        <div class="row mt-5">
+                                            <div class="col-md-12">
+                                                <h4 class="heading-border-2">Education Qualification</h4>
+                                            </div>
+                                        </div>                                        
+                                        <div class="row mt-3">
+                                            <div class="col-md-12" ng-cloak="true">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <th>Institution
+                                                            <span class="text-danger ms-2">*</span>
+                                                        </th>
+                                                        <th>Specialization
+                                                            <span class="text-danger ms-2">*</span>
+                                                        </th>
+                                                        <th>Degree
+                                                            <span class="text-danger ms-2">*</span>
+                                                        </th>
+                                                        <th>Start Year
+                                                            <span class="text-danger ms-2">*</span>
+                                                        </th>
+                                                        <th>End Year
+                                                            <span class="text-danger ms-2">*</span>
+                                                        </th>
+                                                        <th ng-show="!proposalStage">
+                                                            <i class="fa-sharp fa-solid fa-plus fa-2x text-success me-3" ng-click="addEducationRow($parent.$index,$index)"></i>
+                                                        </th>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="row in contact.Education_Details__r">
+                                                            <td>
+                                                                <input type="text" ng-model="row.Institution_Name__c" class="form-control" ng-disabled="proposalStage"/>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control" aria-label="Default select example" ng-model="row.Specialization__c" required="true" ng-disabled="proposalStage">
+                                                                    <option ng-repeat="staff in specialization">{{staff}}</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control" aria-label="Default select example" ng-model="row.Degree__c" required="true" ng-disabled="proposalStage">
+                                                                    <option ng-repeat="staff in degree">{{staff}}</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <input type="number" ng-model="row.Start_Year__c" min="1000" max="9999" maxlength="4" id="zipCode" class="form-control" ng-disabled="proposalStage"/>
+                                                            </td>
+                                                            <td>
+                                                                <input type="number" ng-model="row.End_Year__c" min="1000" max="9999" maxlength="4" id="zipCode" class="form-control" ng-disabled="proposalStage"/>
+                                                            </td>
+                                                            <td ng-show="!proposalStage">
+                                                                <i class="fa-sharp fa-solid fa-circle-xmark fa-2x text-danger" ng-click="removeEducationRow($index,$parent.$index,$parent.$parent.$index)"></i>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-md-12">
+                                                <button class="blue-btn float-end" type="button" ng-cloak="true" ng-click="saveDetail('education',$parent.$index,$index)">Next</button>
+                                                <button class="blue-bordered-btn float-end me-2" ng-cloak="true" ng-click="backComp($parent.$index,$index)" type="button">
+                                                    <i class="fa-sharp fa-solid fa-arrow-left me-2"></i>Back</button>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="cd-horizontal-timeline loaded">
+                                                    <div class="timeline">
+                                                        <div class="events-wrapper">
+                                                            <div class="events" style="width: 1800px;">
+                                                                <ol>
+                                                                    <li>
+                                                                        <i class="older-event"
+                                                                            style="left: 120px; font-style: normal;font-size:15px;">Basic Details</i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i style="left: 270px;font-style: normal;font-size:15px;"
+                                                                            class="selected">Education</i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i style="left: 420px;font-style: normal;font-size:15px;"
+                                                                            >Employment</i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i style="left: 570px;font-style: normal;font-size:15px;">Publications</i>
+                                                                    </li>
+                                                                </ol>
+                                                                <span class="filling-line" aria-hidden="true" style="transform: scaleX(0.16512);"></span>
+                                                            </div>
+                                                        </div>
+                                                        <ul class="cd-timeline-navigation">
+                                                            <li>
+                                                                <i class="prev">Prev</i>
+                                                            </li>
+                                                            <li>
+                                                                <i class="next">Next</i>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="employementEx{{$parent.$index}}{{$index}}" ng-cloak="true" style="display: none;">
+                                        <div class="row mt-3">
+                                            <div class="col-md-12">
+                                                <h4 class="heading-border-2">Employment Experience</h4>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-md-12">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <th>Organization
+                                                            <span class="text-danger ms-2">*</span>
+                                                        </th>
+                                                        <th>Position
+                                                            <span class="text-danger ms-2">*</span>
+                                                        </th>
+                                                        <th>Start Year
+                                                            <span class="text-danger ms-2">*</span>
+                                                        </th>
+                                                        <th>End Year
+                                                            <span class="text-danger ms-2">*</span>
+                                                        </th>
+                                                        <th ng-show="!proposalStage">
+                                                            <i class="fa-sharp fa-solid fa-plus fa-2x text-success me-3" ng-click="addEmploymentRow($parent.$index,$index)"></i>
+                                                        </th>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="row in contact.Employment_Details__r" ng-cloak="true" class="ng-cloak">
+                                                            <td>
+                                                                <input type="text" ng-model="row.Organization_Name__c" class="form-control" ng-disabled="proposalStage"/>
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" ng-model="row.Position__c" class="form-control" ng-disabled="proposalStage"/>
+                                                            </td>
+                                                            <td>
+                                                                <input type="number" ng-model="row.Start_Year__c" min="1000" max="9999" maxlength="4" id="zipCode" class="form-control" ng-disabled="proposalStage"/>
+                                                            </td>
+                                                            <td>
+                                                                <input type="number" ng-model="row.End_Year__c" min="1000" max="9999" maxlength="4" id="zipCode" class="form-control" ng-disabled="proposalStage"/>
+                                                            </td>
+                                                            <td ng-show="!proposalStage">
+
+                                                                <i class="fa-sharp fa-solid fa-circle-xmark fa-2x text-danger" ng-click="removeEmploymentRow($index,$parent.$index,$parent.$parent.$index)"></i>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-md-12">
+                                                <button class="blue-btn float-end" type="button" ng-click="saveDetail('employment',$parent.$index,$index)">Next</button>
+                                                <button class="blue-bordered-btn float-end me-2" ng-cloak="true" ng-click="backCompEmployment($parent.$index,$index)" type="button">
+                                                    <i class="fa-sharp fa-solid fa-arrow-left me-2"></i>Back</button>
+                                            </div>
+                                        </div>
+                                         <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="cd-horizontal-timeline loaded">
+                                                    <div class="timeline">
+                                                        <div class="events-wrapper">
+                                                            <div class="events" style="width: 1800px;">
+                                                                <ol>
+                                                                    <li>
+                                                                        <i class="older-event"
+                                                                            style="left: 120px; font-style: normal;font-size:15px;">Basic Details</i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i style="left: 270px;font-style: normal;font-size:15px;" class="older-event">Education</i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i style="left: 420px;font-style: normal;font-size:15px;" class="selected">Employment</i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i style="left: 570px;font-style: normal;font-size:15px;">Publications</i>
+                                                                    </li>
+                                                                </ol>
+                                                                <span class="filling-line" aria-hidden="true" style="transform: scaleX(0.25512);"></span>
+                                                            </div>
+                                                        </div>
+                                                        <ul class="cd-timeline-navigation">
+                                                            <li>
+                                                                <i class="prev">Prev</i>
+                                                            </li>
+                                                            <li>
+                                                                <i class="next">Next</i>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="publication{{$parent.$index}}{{$index}}" style="display: none;">
+                                        <div class="row mt-3">
+                                            <div class="col-md-12">
+                                                <h4>Publications/Patents (relevant to last 5 years and maximum 5)
+                                                    <span class="required-asterisk" style="color:red;">*</span>
+                                                </h4>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-md-10">
+                                                <ng-ckeditor ng-model="contact.Publications_Patents__c" ng-config="config" required="true" ng-disabled="proposalStage"></ng-ckeditor>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-md-12">
+                                                <button class="blue-btn float-end" type="button" ng-click="saveDetail('publication',$parent.$index,$index)">Next</button>
+                                                
+                                            </div>
+                                        </div>
+                                         <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="cd-horizontal-timeline loaded">
+                                                    <div class="timeline">
+                                                        <div class="events-wrapper">
+                                                            <div class="events" style="width: 1800px;">
+                                                                <ol>
+                                                                    <li>
+                                                                        <i class="older-event"
+                                                                            style="left: 120px; font-style: normal;font-size:15px;">Basic Details</i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i style="left: 270px;font-style: normal;font-size:15px;" class="older-event">Education</i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i style="left: 420px;font-style: normal;font-size:15px;" class="older-event">Employment</i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i style="left: 570px;font-style: normal;font-size:15px;" class="selected">Publications</i>
+                                                                    </li>
+                                                                </ol>
+                                                                <span class="filling-line" aria-hidden="true" style="transform: scaleX(0.34212);"></span>
+                                                            </div>
+                                                        </div>
+                                                        <ul class="cd-timeline-navigation">
+                                                            <li>
+                                                                <i class="prev">Prev</i>
+                                                            </li>
+                                                            <li>
+                                                                <i class="next">Next</i>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div> -->
+            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        </body>
+    </div>
+
+    </html>
+</apex:page>
